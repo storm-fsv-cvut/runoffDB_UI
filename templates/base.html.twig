@@ -5,18 +5,23 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>{% block title %}Welcome!{% endblock %}</title>
+    <script
+            src="https://code.jquery.com/jquery-3.4.1.js"
+            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+            crossorigin="anonymous"></script>
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
         <!-- Google Font -->
         <link rel="stylesheet"
               href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     {% endblock %}
+
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
     <header class="main-header">
         <a href="index2.html" class="logo">
-            <span class="logo-mini"><b>L</b>OGO</span>
+            <span class="logo-mini"><b>LO</b>GO</span>
             <span class="logo-lg"><b>Lo</b>Go</span>
         </a>
 
@@ -26,22 +31,9 @@
             </a>
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
-                    <li class="dropdown user user-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <span class="hidden-xs">Pavel Prokop</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="user-footer">
-                                <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">Profile</a>
-                                </div>
-                                <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
-
+                    {{ render(controller(
+                        'App\\Controller\\SecurityController::usermenu'
+                    )) }}
                 </ul>
             </div>
         </nav>
@@ -50,13 +42,8 @@
 
         <section class="sidebar">
             <ul class="sidebar-menu" data-widget="tree">
-                <li class="header">HEADER</li>
-                <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>
-                <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
-                <li class="treeview">
-                    <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
-                        <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
+                <li class="header">NASTAVENÍ</li>
+                <li class="active"><a href="{{ path('operation_types') }}"><i class="fa fa-link"></i> <span>Typy Operací</span></a></li>
               </span>
                     </a>
                     <ul class="treeview-menu">
@@ -76,8 +63,9 @@
     </footer>
 </div>
 {% block javascripts %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     {{ encore_entry_script_tags('app') }}
+{% endblock %}
+{% block dtc_grid_javascripts %}
 {% endblock %}
 </body>
 </html>

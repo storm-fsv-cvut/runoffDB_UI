@@ -26,3 +26,13 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    APY\DataGridBundle\Grid\Grid:
+        public: true
+        autowire: true
+        autoconfigure: true
+        arguments:
+            - '@Symfony\Component\DependencyInjection\ContainerInterface'
+
+    Dtc\GridBundle\Grid\Column\ActionGridColumn:
+        alias: '@App\Grid\ActionGridColumn'
+

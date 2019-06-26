@@ -3,8 +3,11 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Dtc\GridBundle\Annotation as Grid;
+use App\Grid\EditAction;
 
 /**
+ * @Grid\Grid(actions={@Grid\ShowAction(), @Grid\DeleteAction()})
  * @ORM\Entity(repositoryClass="App\Repository\OperationTypeRepository")
  */
 class OperationType
@@ -17,11 +20,13 @@ class OperationType
     private $id;
 
     /**
+     * @Grid\Column(label="CZ", sortable=true, searchable=true)
      * @ORM\Column(type="string", length=50)
      */
     private $nameCZ;
 
     /**
+     * @Grid\Column(label="EN", sortable=true, searchable=true)
      * @ORM\Column(type="string", length=50)
      */
     private $nameEN;

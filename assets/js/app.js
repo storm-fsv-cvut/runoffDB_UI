@@ -17,3 +17,4 @@ require('../css/app.css');
 require('../bower_components/bootstrap/dist/js/bootstrap.min.js');
 require('../dist/js/adminlte.min.js');
 
+
