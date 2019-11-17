@@ -3,11 +3,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Dtc\GridBundle\Annotation as Grid;
 
 /**
+ * @Grid\Grid(actions={@Grid\ShowAction(), @Grid\DeleteAction()})
  * @ORM\Entity(repositoryClass="App\Repository\OperationRepository")
  */
-class Operation
+class Operation implements DefinitionEntityInterface
 {
     /**
      * @ORM\Id()
@@ -123,5 +125,9 @@ class Operation
         $this->operationType = $operationType;
 
         return $this;
+    }
+
+    public function getLabel(): string {
+       return $this->getNameCZ();
     }
 }

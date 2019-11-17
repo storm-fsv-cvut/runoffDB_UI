@@ -5,11 +5,13 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Dtc\GridBundle\Annotation as Grid;
 
 /**
+ * @Grid\Grid(actions={@Grid\ShowAction(), @Grid\DeleteAction()})
  * @ORM\Entity(repositoryClass="App\Repository\PlotRepository")
  */
-class Plot
+class Plot implements DefinitionEntityInterface
 {
     /**
      * @ORM\Id()
@@ -69,9 +71,15 @@ class Plot
      */
     private $soilSamples;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Sequence", mappedBy="plot")
+     */
+    private $sequences;
+
     public function __construct()
     {
         $this->soilSamples = new ArrayCollection();
+        $this->sequences = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -212,6 +220,41 @@ class Plot
             // set the owning side to null (unless already changed)
             if ($soilSample->getPlot() === $this) {
                 $soilSample->setPlot(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getLabel(): string {
+        return $this->name;
+    }
+
+    /**
+     * @return Collection|Sequence[]
+     */
+    public function getSequences(): Collection
+    {
+        return $this->sequences;
+    }
+
+    public function addSequence(Sequence $sequence): self
+    {
+        if (!$this->sequences->contains($sequence)) {
+            $this->sequences[] = $sequence;
+            $sequence->setPlot($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSequence(Sequence $sequence): self
+    {
+        if ($this->sequences->contains($sequence)) {
+            $this->sequences->removeElement($sequence);
+            // set the owning side to null (unless already changed)
+            if ($sequence->getPlot() === $this) {
+                $sequence->setPlot(null);
             }
         }
 

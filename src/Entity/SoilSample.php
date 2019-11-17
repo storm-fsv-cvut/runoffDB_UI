@@ -2,12 +2,16 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Dtc\GridBundle\Annotation as Grid;
 
 /**
+ * @Grid\Grid(actions={@Grid\ShowAction(), @Grid\DeleteAction()})
  * @ORM\Entity(repositoryClass="App\Repository\SoilSampleRepository")
  */
-class SoilSample
+class SoilSample implements DefinitionEntityInterface
 {
     /**
      * @ORM\Id()
@@ -22,7 +26,7 @@ class SoilSample
     private $dateSampled;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Organization")
      */
     private $processedAt;
 
@@ -70,6 +74,16 @@ class SoilSample
      * @ORM\ManyToOne(targetEntity="App\Entity\Locality", inversedBy="soilSamples")
      */
     private $locality;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\TextureData", mappedBy="soilSample")
+     */
+    private $textureData;
+
+    public function __construct()
+    {
+        $this->textureData = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -204,6 +218,41 @@ class SoilSample
     public function setLocality(?Locality $locality): self
     {
         $this->locality = $locality;
+
+        return $this;
+    }
+
+    public function getLabel(): string {
+       return $this->id;
+    }
+
+    /**
+     * @return Collection|TextureData[]
+     */
+    public function getTextureData(): Collection
+    {
+        return $this->textureData;
+    }
+
+    public function addTextureData(TextureData $textureData): self
+    {
+        if (!$this->textureData->contains($textureData)) {
+            $this->textureData[] = $textureData;
+            $textureData->setSoilSample($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTextureData(TextureData $textureData): self
+    {
+        if ($this->textureData->contains($textureData)) {
+            $this->textureData->removeElement($textureData);
+            // set the owning side to null (unless already changed)
+            if ($textureData->getSoilSample() === $this) {
+                $textureData->setSoilSample(null);
+            }
+        }
 
         return $this;
     }

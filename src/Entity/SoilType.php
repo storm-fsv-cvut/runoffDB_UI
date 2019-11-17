@@ -3,11 +3,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Dtc\GridBundle\Annotation as Grid;
 
 /**
+ * @Grid\Grid(actions={@Grid\ShowAction(), @Grid\DeleteAction()})
  * @ORM\Entity(repositoryClass="App\Repository\SoilTypeRepository")
  */
-class SoilType
+class SoilType implements DefinitionEntityInterface
 {
     /**
      * @ORM\Id()
@@ -36,5 +38,9 @@ class SoilType
         $this->soilType = $soilType;
 
         return $this;
+    }
+
+    public function getLabel(): string {
+        return $this->soilType;
     }
 }

@@ -3,11 +3,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Dtc\GridBundle\Annotation as Grid;
 
 /**
+ * @Grid\Grid(actions={@Grid\ShowAction(), @Grid\DeleteAction()})
  * @ORM\Entity(repositoryClass="App\Repository\OperationIntensityRepository")
  */
-class OperationIntensity {
+class OperationIntensity implements DefinitionEntityInterface {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -47,5 +49,9 @@ class OperationIntensity {
         $this->descriptionEN = $descriptionEN;
 
         return $this;
+    }
+
+    public function getLabel(): string {
+        return $this->descriptionCZ;
     }
 }

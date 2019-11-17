@@ -102,6 +102,12 @@
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
+    "knplabs/knp-menu": {
+        "version": "2.3.0"
+    },
+    "knplabs/knp-menu-bundle": {
+        "version": "2.2.2"
+    },
     "mmucklo/grid-bundle": {
         "version": "4.2",
         "recipe": {

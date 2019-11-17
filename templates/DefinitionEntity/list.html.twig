@@ -12,8 +12,8 @@
 {% block body %}
     <section class="content-header">
         <h1>
-            Typy Operací
-            <a href="{{ path('operation_type') }}" class="btn btn-primary"><i></i> Nový</a>
+            {{class}}
+            <a href="{{ path('definition_entity',{'class':class}) }}" class="btn btn-primary"><i></i> New</a>
         </h1>
     </section>
 

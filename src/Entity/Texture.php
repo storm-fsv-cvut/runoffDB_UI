@@ -2,12 +2,16 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Dtc\GridBundle\Annotation as Grid;
 
 /**
+ * @Grid\Grid(actions={@Grid\ShowAction(), @Grid\DeleteAction()})
  * @ORM\Entity(repositoryClass="App\Repository\TextureRepository")
  */
-class Texture
+class Texture implements DefinitionEntityInterface
 {
     /**
      * @ORM\Id()
@@ -45,6 +49,16 @@ class Texture
      * @ORM\Column(type="string", length=500, nullable=true)
      */
     private $note;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\TextureData", mappedBy="texture")
+     */
+    private $textureData;
+
+    public function __construct()
+    {
+        $this->textureData = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -119,6 +133,41 @@ class Texture
     public function setNote(?string $note): self
     {
         $this->note = $note;
+
+        return $this;
+    }
+
+    public function getLabel(): string {
+        return $this->textureRecord;
+    }
+
+    /**
+     * @return Collection|TextureData[]
+     */
+    public function getTextureData(): Collection
+    {
+        return $this->textureData;
+    }
+
+    public function addTextureData(TextureData $textureData): self
+    {
+        if (!$this->textureData->contains($textureData)) {
+            $this->textureData[] = $textureData;
+            $textureData->setTexture($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTextureData(TextureData $textureData): self
+    {
+        if ($this->textureData->contains($textureData)) {
+            $this->textureData->removeElement($textureData);
+            // set the owning side to null (unless already changed)
+            if ($textureData->getTexture() === $this) {
+                $textureData->setTexture(null);
+            }
+        }
 
         return $this;
     }

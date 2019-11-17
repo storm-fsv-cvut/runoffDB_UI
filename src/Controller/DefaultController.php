@@ -8,6 +8,7 @@
 
 namespace App\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -16,7 +17,7 @@ class DefaultController extends AbstractController {
     /**
      * @Route("/", name="homepage")
      */
-    public function index() {
+    public function index(EntityManagerInterface $entityManager) {
         $user = $this->getUser();
         return $this->render('default/index.html.twig',['user'=>$user]);
     }

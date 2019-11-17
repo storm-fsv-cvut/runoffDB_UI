@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Entity\DefinitionEntityInterface;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;

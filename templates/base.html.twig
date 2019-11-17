@@ -41,17 +41,8 @@
     <aside class="main-sidebar">
 
         <section class="sidebar">
-            <ul class="sidebar-menu" data-widget="tree">
-                <li class="header">NASTAVENÍ</li>
-                <li class="active"><a href="{{ path('operation_types') }}"><i class="fa fa-link"></i> <span>Typy Operací</span></a></li>
-              </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="#">Link in level 2</a></li>
-                        <li><a href="#">Link in level 2</a></li>
-                    </ul>
-                </li>
-            </ul>
+
+                {{ knp_menu_render('main') }}
         </section>
     </aside>
 

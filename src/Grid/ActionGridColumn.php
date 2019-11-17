@@ -1,8 +1,9 @@
 <?php
 namespace App\Grid;
+use Dtc\GridBundle\Grid\Column\AbstractGridColumn;
 use Dtc\GridBundle\Grid\Source\GridSourceInterface;
 use Symfony\Component\Routing\RouterInterface;
-class ActionGridColumn extends \Dtc\GridBundle\Grid\Column\ActionGridColumn
+class ActionGridColumn extends AbstractGridColumn
 {
     protected $actions;
     protected $idField;
@@ -39,7 +40,7 @@ class ActionGridColumn extends \Dtc\GridBundle\Grid\Column\ActionGridColumn
                     $route = $this->router->generate('dtc_grid_delete', ['identifier' => $id, 'id' => $this->gridSourceId]);
                     $route = htmlspecialchars($route);
                     $content .= "<button class=\"btn btn-primary grid-delete\" data-route=\"$route\" data-id=\"$idHtml\"";
-                    $content .= "onclick=\"dtc_grid_delete(this)\"><i class=\"fa fa-circle-o-notch fa-spin dtc-grid-hidden\"></i> $label</button>";
+                    $content .= "onclick=\"dtc_grid_delete(this)\"> $label</button>";
                     break;
             }
         }

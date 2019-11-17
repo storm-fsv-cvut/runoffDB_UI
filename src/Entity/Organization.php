@@ -5,11 +5,14 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Dtc\GridBundle\Annotation as Grid;
+use Symfony\Component\Form\Form;
 
 /**
- * @ORM\Entity(repositoryClass="OrganizationRepository")
+ * @Grid\Grid(actions={@Grid\ShowAction(), @Grid\DeleteAction()})
+ * @ORM\Entity(repositoryClass="App\Repository\OrganizationRepository")
  */
-class Organization
+class Organization implements DefinitionEntityInterface
 {
     /**
      * @ORM\Id()
@@ -43,9 +46,15 @@ class Organization
      */
     private $localities;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Simulator", mappedBy="organization")
+     */
+    private $simulators;
+
     public function __construct()
     {
         $this->localities = new ArrayCollection();
+        $this->simulators = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -126,6 +135,41 @@ class Organization
             // set the owning side to null (unless already changed)
             if ($locality->getOrganization() === $this) {
                 $locality->setOrganization(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getLabel(): string {
+        return $this->name;
+    }
+
+    /**
+     * @return Collection|Simulator[]
+     */
+    public function getSimulators(): Collection
+    {
+        return $this->simulators;
+    }
+
+    public function addSimulator(Simulator $simulator): self
+    {
+        if (!$this->simulators->contains($simulator)) {
+            $this->simulators[] = $simulator;
+            $simulator->setOrganization($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSimulator(Simulator $simulator): self
+    {
+        if ($this->simulators->contains($simulator)) {
+            $this->simulators->removeElement($simulator);
+            // set the owning side to null (unless already changed)
+            if ($simulator->getOrganization() === $this) {
+                $simulator->setOrganization(null);
             }
         }
 

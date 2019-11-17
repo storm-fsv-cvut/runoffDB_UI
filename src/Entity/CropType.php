@@ -3,11 +3,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Dtc\GridBundle\Annotation as Grid;
 
 /**
+ * @Grid\Grid(actions={@Grid\ShowAction(), @Grid\DeleteAction()})
  * @ORM\Entity(repositoryClass="App\Repository\CropTypeRepository")
  */
-class CropType
+class CropType implements DefinitionEntityInterface
 {
     /**
      * @ORM\Id()
@@ -70,5 +72,9 @@ class CropType
         $this->description = $description;
 
         return $this;
+    }
+
+    public function getLabel(): string {
+        return $this->getNameCZ();
     }
 }

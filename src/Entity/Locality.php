@@ -5,11 +5,13 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Dtc\GridBundle\Annotation as Grid;
 
 /**
+ * @Grid\Grid(actions={@Grid\ShowAction(), @Grid\DeleteAction()})
  * @ORM\Entity(repositoryClass="App\Repository\LocalityRepository")
  */
-class Locality
+class Locality implements DefinitionEntityInterface
 {
     /**
      * @ORM\Id()
@@ -202,5 +204,9 @@ class Locality
         }
 
         return $this;
+    }
+
+    public function getLabel(): string {
+        $this->name;
     }
 }

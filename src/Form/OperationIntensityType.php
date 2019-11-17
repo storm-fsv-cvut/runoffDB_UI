@@ -15,7 +15,6 @@ class OperationIntensityType extends AbstractType
             ->add('descriptionCZ')
             ->add('descriptionEN')
             ->add('save', SubmitType::class);
-        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
