@@ -459,12 +459,12 @@ test('data objects use the text of the option', function (assert) {
 test('select option construction accepts id=0 (zero) value', function (assert) {
   var $select = $('#qunit-fixture .single');
 
-  var selectOptions = [{ id: 0, text: 'Zero Value'}];
+  var selectOptions = [{ id: 0, text: 'Zero Unit'}];
   var data = new SelectData($select, selectOptions);
 
   var optionElem = data.option(selectOptions[0]);
 
-  // If was "Zero Value"", then it ignored id property
+  // If was "Zero Unit"", then it ignored id property
   assert.equal(
     optionElem[0].value,
     '0',

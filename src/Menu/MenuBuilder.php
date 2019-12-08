@@ -58,8 +58,12 @@ class MenuBuilder
         $menu = $this->factory->createItem('root');
         $menu->setChildrenAttribute('class','sidebar-menu tree');
         $menu->setChildrenAttribute('data-widget','tree');
-
         $menu->addChild($this->translator->trans('Home'), ['route' => 'homepage']);
+        $measurement = $menu->addChild($this->translator->trans('sequences'), ['uri' => '#']);
+        $measurement->setAttribute('class','treeview');
+        $measurement->setChildrenAttribute('class','treeview-menu');
+        $measurement->addChild($this->translator->trans('add'), ['route' => 'sequence']);
+        $measurement->addChild($this->translator->trans('list'), ['route' => 'sequences']);
         $setup = $menu->addChild($this->translator->trans('Setup'), ['uri' => '#']);
         $setup->setAttribute('class','treeview');
         $setup->setChildrenAttribute('class','treeview-menu');

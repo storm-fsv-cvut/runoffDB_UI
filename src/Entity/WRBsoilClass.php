@@ -9,7 +9,7 @@ use Dtc\GridBundle\Annotation as Grid;
  * @Grid\Grid(actions={@Grid\ShowAction(), @Grid\DeleteAction()})
  * @ORM\Entity(repositoryClass="App\Repository\SoilTypeRepository")
  */
-class SoilType implements DefinitionEntityInterface
+class WRBsoilClass implements DefinitionEntityInterface
 {
     /**
      * @ORM\Id()
@@ -21,26 +21,26 @@ class SoilType implements DefinitionEntityInterface
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $soilType;
+    private $name;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getSoilType(): ?string
+    public function getName(): ?string
     {
-        return $this->soilType;
+        return $this->name;
     }
 
-    public function setSoilType(string $soilType): self
+    public function setName(string $name): self
     {
-        $this->soilType = $soilType;
+        $this->name = $name;
 
         return $this;
     }
 
     public function getLabel(): string {
-        return $this->soilType;
+        return $this->name;
     }
 }

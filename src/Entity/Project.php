@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProjectRepository")
  */
-class Project
+class Project implements DefinitionEntityInterface
 {
     /**
      * @ORM\Id()
@@ -74,5 +74,9 @@ class Project
         }
 
         return $this;
+    }
+
+    public function getLabel(): string {
+        // TODO: Implement getLabel() method.
     }
 }

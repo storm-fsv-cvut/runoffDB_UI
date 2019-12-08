@@ -51,6 +51,11 @@ class Organization implements DefinitionEntityInterface
      */
     private $simulators;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $name_code;
+
     public function __construct()
     {
         $this->localities = new ArrayCollection();
@@ -172,6 +177,18 @@ class Organization implements DefinitionEntityInterface
                 $simulator->setOrganization(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNameCode(): ?string
+    {
+        return $this->name_code;
+    }
+
+    public function setNameCode(?string $name_code): self
+    {
+        $this->name_code = $name_code;
 
         return $this;
     }

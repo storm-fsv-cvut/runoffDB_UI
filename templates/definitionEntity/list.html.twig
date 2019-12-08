@@ -12,8 +12,8 @@
 {% block body %}
     <section class="content-header">
         <h1>
-            {{class}}
-            <a href="{{ path('definition_entity',{'class':class}) }}" class="btn btn-primary"><i></i> New</a>
+            {{class_name}}
+            <a href="{{ path('definition_entity',{'class':class}) }}" class="btn btn-primary"><i></i> {% trans %}new{% endtrans %}</a>
         </h1>
     </section>
 

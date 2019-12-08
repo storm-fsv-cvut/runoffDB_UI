@@ -31,6 +31,11 @@ class Plot implements DefinitionEntityInterface
     private $locality;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Locality", inversedBy="plots")
+     */
+    private $soilOriginLocality;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Crop")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -62,11 +67,6 @@ class Plot implements DefinitionEntityInterface
     private $plotSlope;
 
     /**
-     * @ORM\Column(type="string", length=500, nullable=true)
-     */
-    private $note;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\SoilSample", mappedBy="plot")
      */
     private $soilSamples;
@@ -75,6 +75,16 @@ class Plot implements DefinitionEntityInterface
      * @ORM\OneToMany(targetEntity="App\Entity\Sequence", mappedBy="plot")
      */
     private $sequences;
+
+    /**
+     * @ORM\Column(type="string", length=512, nullable=true)
+     */
+    private $noteCZ;
+
+    /**
+     * @ORM\Column(type="string", length=512, nullable=true)
+     */
+    private $noteEN;
 
     public function __construct()
     {
@@ -257,6 +267,44 @@ class Plot implements DefinitionEntityInterface
                 $sequence->setPlot(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSoilOriginLocality() {
+        return $this->soilOriginLocality;
+    }
+
+    /**
+     * @param mixed $soilOriginLocality
+     */
+    public function setSoilOriginLocality($soilOriginLocality): void {
+        $this->soilOriginLocality = $soilOriginLocality;
+    }
+
+    public function getNoteCZ(): ?string
+    {
+        return $this->noteCZ;
+    }
+
+    public function setNoteCZ(?string $noteCZ): self
+    {
+        $this->noteCZ = $noteCZ;
+
+        return $this;
+    }
+
+    public function getNoteEN(): ?string
+    {
+        return $this->noteEN;
+    }
+
+    public function setNoteEN(?string $noteEN): self
+    {
+        $this->noteEN = $noteEN;
 
         return $this;
     }

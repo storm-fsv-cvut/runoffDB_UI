@@ -1,5 +1,5 @@
 /*!
- * jQuery UI Menu 1.11.4
+ * jQuery UI menu 1.11.4
  * http://jqueryui.com
  *
  * Copyright jQuery Foundation and other contributors

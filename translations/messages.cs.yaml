@@ -1,0 +1,38 @@
+fullname: Name
+email: Email
+username: Login
+password: Password
+save: Save
+new: New
+edit: Edit
+delete: Delete
+list: Seznam
+add: Přidat
+continue: Pokračovat
+setup: Nastavení
+App\Entity\Plot: Plot
+App\Entity\Locality: Locality
+App\Entity\Organization: Organization
+App\Entity\SoilType: Soil Type
+App\Entity\Agrotechnology: Agrotechnology
+App\Entity\Crop: Crop
+App\Entity\CropType: Crop Type
+App\Entity\Operation: Operation
+App\Entity\SoilSample: Soil Sample
+App\Entity\OperationIntensity: Operation Intensity
+App\Entity\OperationType: Operation Type
+App\Entity\Texture: Texture
+App\Entity\AssignmentType: Assignment Type
+App\Entity\CropErType: Crop ER Type
+App\Entity\Project: Project
+App\Entity\RecordType: Record Type
+App\Entity\RunType: Run Type
+App\Entity\Simulator: Simulator
+sequence: Sekvence
+sequences: Sekvence
+
+
+
+
+
+

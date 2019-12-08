@@ -83,7 +83,7 @@ jvm.VMLElement.prototype.addClass = function( className ){
 /**
  * Applies attribute value to the underlying DOM element.
  * @param {String} name Name of attribute
- * @param {Number|String} config Value of attribute to apply
+ * @param {Number|String} config Unit of attribute to apply
  * @private
  */
 jvm.VMLElement.prototype.applyAttr = function( attr, value ){

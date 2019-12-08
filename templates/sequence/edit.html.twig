@@ -1,0 +1,533 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <section class="content-header">
+        <h1>
+            5. 4. 2016 - NOVÉ STRAŠECÍ - pšenice ozimá
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-list"></i> Seznam</a></li>
+            <li class="active">5. 4. 2016 - NOVÉ STRAŠECÍ - pšenice ozimá</li>
+        </ol>
+    </section>
+
+    <section class="content">
+        <div class="box box-solid">
+            <div class="panel box box-solid">
+                <div class="box-body">
+                    <dl class="dl-horizontal">
+                        <dt>agrotechnologie:</dt>
+                        <dd>orba-podmítka-setí (Nové Strašecí 2016)</dd>
+                        <dt>počet dnů od poslední agro-operace:</dt>
+                        <dd>188</dd>
+                        <dt>canopy cover:</dt>
+                        <dd>neurčeno</dd>
+                        <dt>BBCH plodiny:</dt>
+                        <dd>24</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <div class="box box-primary collapsed-box">
+            <div class="box-header with-border">
+                <h3 class="box-title">Nová simulace</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body" style="display: none;">
+                <form role="form">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Intenzita srážky</label>
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <th><i class="fa fa-clock-o"></i></th>
+                                            <th>mm.h-1</th>
+                                            <th><a class="text-success"><i class="fa fa-plus"></i></a></th>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                <input type="text" class="form-control" data-inputmask="'alias': 'HH:ii:ss'" data-mask>
+                                            </th>
+                                            <th><input type="text" class="form-control"></th>
+                                            <th><a class="text-danger"><i class="fa fa-minus"></i></a></th>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Počáteční vlhkost</label>
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <th><i class="fa fa-clock-o"></i></th>
+                                            <th>mm.h-1</th>
+                                            <th><a class="text-success"><i class="fa fa-plus"></i></a></th>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                <input type="text" class="form-control" data-inputmask="'alias': 'HH:ii:ss'" data-mask>
+                                            </th>
+                                            <th><input type="text" class="form-control"></th>
+                                            <th><a class="text-danger"><i class="fa fa-minus"></i></a></th>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label>Soil sample bulk</label>
+                                    <input type="text" class="form-control"/>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Assignment type</label>
+                                    <select class="form-control select2" style="width: 100%;">
+                                        <option selected="selected">a</option>
+                                        <option>b</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label>Soil sample texture</label>
+                                    <input type="text" class="form-control"/>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Assignment type</label>
+                                    <select class="form-control select2" style="width: 100%;">
+                                        <option selected="selected">a</option>
+                                        <option>b</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label>Soil sample CORG</label>
+                                    <input type="text" class="form-control"/>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Assignment type</label>
+                                    <select class="form-control select2" style="width: 100%;">
+                                        <option selected="selected">a</option>
+                                        <option>b</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label>Typ simulace</label>
+                                    <select class="form-control select2" style="width: 100%;">
+                                        <option selected="selected">Suchá</option>
+                                        <option>Mokrá</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label>Začátek zadešťování</label>
+                                    <input type="text" class="form-control" data-inputmask="'alias': 'HH:ii:ss'" data-mask>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label>Poznámka</label>
+                                    <textarea class="form-control" rows="5">
+                                            </textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label>Surová data</label>
+                                    <p></p>
+                                    <div class="form-group">
+                                        <div class="btn btn-default btn-file">
+                                            <i class="fa fa-paperclip"></i> Připojit soubor(y)
+                                            <input type="file" name="attachment">
+                                        </div>
+                                        <p class="help-block">Max. 32MB, *.zip</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <button class="btn btn-success">Založit</button>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h2 class="page-header">
+                    Suchá simulace
+                </h2>
+            </div>
+            <div class="col-md-4">
+                <div class="panel box box-solid">
+                    <div class="box-body">
+                        <dl class="dl-horizontal">
+                            <dt>začátek zadešťování:</dt>
+                            <dd>11:33</dd>
+                            <dt>do začátku povrchového odtoku:</dt>
+                            <dd>00:38:00</dd>
+                            <dt>intenzita srážky:</dt>
+                            <dd>konstantní 60 mm.h-1</dd>
+                            <dt>počáteční vlhkost:</dt>
+                            <dd>25 %V</dd>
+                            <dt>bulk density soil sample:</dt>
+                            <dd></dd>
+                            <dt>texture soil sample:</dt>
+                            <dd>8 <i>(přiřazeno dle podobnosti)</i></dd>
+                            <dt>raw data:</dt>
+                            <dd><a>file.zip <i class="fa fa-download"></i></a>, <a>file2.zip
+                                    <i class="fa fa-download"></i></a></dd>
+                        </dl>
+                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#measurement-1">
+                            Přidat sadu měření
+                        </button>
+
+                        <button class="btn btn-primary">Zobrazit graf</button>
+                        <button class="btn btn-primary">Uložit csv</button>
+
+                        <div class="modal modal-success fade" id="measurement-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title">Přidat novou sadu měření</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form role="form">
+                                            <div class="form-group">
+                                                <label>Popis</label>
+                                                <textarea class="form-control"></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Poznámka</label>
+                                                <textarea class="form-control"></textarea>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">
+                                            Zavřít
+                                        </button>
+                                        <button type="button" class="btn btn-outline">Uložit</button>
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                        <!-- /.modal -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>Data
+                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#add-1">
+                                Přidat
+                            </button>
+                        </h4>
+                        <div class="modal modal-success fade" id="add-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title">Nahrát data</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form role="form">
+                                            <div class="form-group">
+                                                <label>Typ</label>
+                                                <select class="form-control">
+                                                    <option>hrubá data</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Jednotka</label>
+                                                <select class="form-control">
+                                                    <option>intenzita povrchového odtoku</option>
+                                                </select>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox"> je závislé na čase
+                                                </label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Jednotka rozměru (pokud není závislé pouze na čase)</label>
+                                                <select class="form-control">
+                                                    <option>mg.l-1</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Poznámka</label>
+                                                <textarea class="form-control"></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Nahrát datový soubor</label>
+                                                <div class="btn btn-default btn-file">
+                                                    <i class="fa fa-paperclip"></i> Připojit *.csv
+                                                    <input type="file" name="attachment">
+                                                </div>
+                                                <p class="help-block">Max. 32MB, *.csv</p>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">
+                                            Zavřít
+                                        </button>
+                                        <button type="button" class="btn btn-outline">Uložit</button>
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                        <div class="box-group" id="accordion">
+                            <div class="panel box box-solid">
+                                <div class="box-header">
+                                    <h4 class="box-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" class="collapsed" aria-expanded="false">
+                                             intenzita povrchového odtoku
+                                        </a>
+                                        <small>homogenizovaná hrubá data</small>
+                                        <span class="badge bg-primary">#5</span>
+                                        <span class="badge bg-yellow">odvozeno z #210</span>
+                                    </h4>
+                                    <div class="box-tools pull-right">
+
+                                        <input type="checkbox" class="icheckbox_flat-green">
+                                    </div>
+                                </div>
+                                <div id="collapse1" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                    <div class="box-body">
+                                        <p><i>přepočteno lineární interpolací do časového kroku 30s</i></p>
+                                        <table class="table table-bordered">
+                                            <tr>
+                                                <th>čas</th>
+                                                <th>povrchový odtok [l.min-1]</th>
+                                            </tr>
+                                            {% for m in mockups[0] %}
+                                                <tr><td>{{ m[0]}}</td><td>{{ m[1]}}</td></tr>
+                                            {% endfor %}
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel box box-solid">
+                                <div class="box-header">
+                                    <h4 class="box-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2" class="collapsed" aria-expanded="false">
+                                            intenzita povrchového odtoku
+                                        </a>
+                                        <small>hrubá data</small>
+                                        <span class="badge bg-primary">#210</span>
+                                    </h4>
+                                    <div class="box-tools pull-right">
+
+                                        <input type="checkbox" class="icheckbox_flat-green">
+                                    </div>
+                                </div>
+                                <div id="collapse2" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                    <div class="box-body">
+                                        <table class="table table-bordered">
+                                            <tr>
+                                                <th>čas</th>
+                                                <th>povrchový odtok [l.min-1]</th>
+                                            </tr>
+                                            {% for m in mockups[0] %}
+                                                <tr><td>{{ m[0]}}</td><td>{{ m[1]}}</td></tr>
+                                            {% endfor %}
+
+                                            <script type="text/javascript">
+                                                var line_data1 = {
+                                                    yaxis: 1,
+                                                    lines: {
+                                                        show: true
+                                                    },
+                                                    points:{
+                                                        show:true
+                                                    },
+                                                    label: "povrchový odtok [l.min-1]",
+                                                    data : [
+                                                            {% for d in grafdata %}
+                                                        [{{d[0]}},{{d[1]}}],
+                                                             {% endfor %}
+                                                    ],
+                                                    color: '#66bc40'
+                                                }
+
+                                                var rain_data = {
+                                                    yaxis: 2,
+                                                    bars: {
+                                                        show: true,
+                                                        barWidth: 3930-2280
+                                                    },
+                                                    label: "intenzita srážky [mm.h-1]",
+                                                    data : [
+                                                        [2280,60]
+                                                    ],
+                                                    color: '#3c8dbc'
+                                                }
+                                            </script>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>Data
+                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#add-1">
+                                Přidat
+                            </button>
+                        </h4>
+                        <div class="modal modal-success fade" id="add-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title">Nahrát data</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form role="form">
+                                            <div class="form-group">
+                                                <label>Typ</label>
+                                                <select class="form-control">
+                                                    <option>hrubá data</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Jednotka</label>
+                                                <select class="form-control">
+                                                    <option>intenzita povrchového odtoku</option>
+                                                </select>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox"> je závislé na čase
+                                                </label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Jednotka rozměru (pokud není závislé pouze na čase)</label>
+                                                <select class="form-control">
+                                                    <option>mg.l-1</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Poznámka</label>
+                                                <textarea class="form-control"></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Nahrát datový soubor</label>
+                                                <div class="btn btn-default btn-file">
+                                                    <i class="fa fa-paperclip"></i> Připojit *.csv
+                                                    <input type="file" name="attachment">
+                                                </div>
+                                                <p class="help-block">Max. 32MB, *.csv</p>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">
+                                            Zavřít
+                                        </button>
+                                        <button type="button" class="btn btn-outline">Uložit</button>
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                        <div class="box-group" id="accordion">
+                            <div class="panel box box-solid">
+                                <div class="box-header">
+                                    <h4 class="box-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" class="collapsed" aria-expanded="false">
+                                            celková hmotnost sedimentu v odtoku za daný interval
+                                        </a>
+                                        <small>odvozená data</small>
+                                        <span class="badge bg-primary">#466</span>
+                                        <span class="badge bg-yellow">odvozeno z #330</span>
+                                        <span class="badge bg-yellow">odvozeno z #210</span>
+                                    </h4>
+                                    <div class="box-tools pull-right">
+                                        <input type="checkbox" class="icheckbox_flat-green">
+                                    </div>
+                                </div>
+                                <div id="collapse1" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                    <div class="box-body">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel box box-solid">
+                                <div class="box-header">
+                                    <h4 class="box-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2" class="collapsed" aria-expanded="false">
+                                            koncentrace nerozpuštěných látek
+                                        </a>
+                                        <small>hrubá data</small>
+                                        <span class="badge bg-primary">#330</span>
+                                    </h4>
+                                    <div class="box-tools pull-right">
+                                        <input type="checkbox" class="icheckbox_flat-green">
+                                    </div>
+                                </div>
+                                <div id="collapse2" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                    <div class="box-body">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <i class="fa fa-bar-chart-o"></i>
+                        <h3 class="box-title">Suchá simulace</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove">
+                                <i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div id="line-chart" style="height: 300px;"></div>
+
+                    </div>
+                    <!-- /.box-body-->
+                </div>
+            </div>
+        </div>
+        <hr class="divider"/>
+    </section>
+
+{% endblock %}

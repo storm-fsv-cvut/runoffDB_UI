@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -107,6 +109,16 @@ class Run
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $noteEN;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\SoilSample", mappedBy="Run")
+     */
+    private $soilSamples;
+
+    public function __construct()
+    {
+        $this->soilSamples = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -325,6 +337,37 @@ class Run
     public function setNoteEN(?string $noteEN): self
     {
         $this->noteEN = $noteEN;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|SoilSample[]
+     */
+    public function getSoilSamples(): Collection
+    {
+        return $this->soilSamples;
+    }
+
+    public function addSoilSample(SoilSample $soilSample): self
+    {
+        if (!$this->soilSamples->contains($soilSample)) {
+            $this->soilSamples[] = $soilSample;
+            $soilSample->setRun($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSoilSample(SoilSample $soilSample): self
+    {
+        if ($this->soilSamples->contains($soilSample)) {
+            $this->soilSamples->removeElement($soilSample);
+            // set the owning side to null (unless already changed)
+            if ($soilSample->getRun() === $this) {
+                $soilSample->setRun(null);
+            }
+        }
 
         return $this;
     }

@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SimulatorRepository")
  */
-class Simulator
+class Simulator implements DefinitionEntityInterface
 {
     /**
      * @ORM\Id()
@@ -147,5 +147,9 @@ class Simulator
         }
 
         return $this;
+    }
+
+    public function getLabel(): string {
+        return $this->getNameCZ();
     }
 }

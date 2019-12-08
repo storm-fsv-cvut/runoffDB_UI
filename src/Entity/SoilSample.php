@@ -11,7 +11,7 @@ use Dtc\GridBundle\Annotation as Grid;
  * @Grid\Grid(actions={@Grid\ShowAction(), @Grid\DeleteAction()})
  * @ORM\Entity(repositoryClass="App\Repository\SoilSampleRepository")
  */
-class SoilSample implements DefinitionEntityInterface
+class SoilSample
 {
     /**
      * @ORM\Id()
@@ -48,12 +48,7 @@ class SoilSample implements DefinitionEntityInterface
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private $moistureGkg;
-
-    /**
-     * @ORM\Column(type="string", length=500, nullable=true)
-     */
-    private $note;
+    private $moistureVperc;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Texture")
@@ -66,9 +61,9 @@ class SoilSample implements DefinitionEntityInterface
     private $plot;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\SoilType")
+     * @ORM\ManyToOne(targetEntity="App\Entity\WRBsoilClass")
      */
-    private $soilType;
+    private $wRBsoilClass;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Locality", inversedBy="soilSamples")
@@ -79,6 +74,26 @@ class SoilSample implements DefinitionEntityInterface
      * @ORM\OneToMany(targetEntity="App\Entity\TextureData", mappedBy="soilSample")
      */
     private $textureData;
+
+    /**
+     * @ORM\Column(type="string", length=512, nullable=true)
+     */
+    private $descriptionCZ;
+
+    /**
+     * @ORM\Column(type="string", length=512, nullable=true)
+     */
+    private $descriptionEN;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Run", inversedBy="soilSamples")
+     */
+    private $Run;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $sampleDepthM;
 
     public function __construct()
     {
@@ -150,26 +165,14 @@ class SoilSample implements DefinitionEntityInterface
         return $this;
     }
 
-    public function getMoistureGkg(): ?float
+    public function getMoistureVperc(): ?float
     {
-        return $this->moistureGkg;
+        return $this->moistureVperc;
     }
 
-    public function setMoistureGkg(?float $moistureGkg): self
+    public function setMoistureVperc(?float $moistureVperc): self
     {
-        $this->moistureGkg = $moistureGkg;
-
-        return $this;
-    }
-
-    public function getNote(): ?string
-    {
-        return $this->note;
-    }
-
-    public function setNote(?string $note): self
-    {
-        $this->note = $note;
+        $this->moistureVperc = $moistureVperc;
 
         return $this;
     }
@@ -198,14 +201,14 @@ class SoilSample implements DefinitionEntityInterface
         return $this;
     }
 
-    public function getSoilType(): ?SoilType
+    public function getWRBsoilClass(): ?WRBsoilClass
     {
-        return $this->soilType;
+        return $this->wRBsoilClass;
     }
 
-    public function setSoilType(?SoilType $soilType): self
+    public function setWRBsoilClass(?WRBsoilClass $wRBsoilClass): self
     {
-        $this->soilType = $soilType;
+        $this->wRBsoilClass = $wRBsoilClass;
 
         return $this;
     }
@@ -253,6 +256,54 @@ class SoilSample implements DefinitionEntityInterface
                 $textureData->setSoilSample(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDescriptionCZ(): ?string
+    {
+        return $this->descriptionCZ;
+    }
+
+    public function setDescriptionCZ(?string $descriptionCZ): self
+    {
+        $this->descriptionCZ = $descriptionCZ;
+
+        return $this;
+    }
+
+    public function getDescriptionEN(): ?string
+    {
+        return $this->descriptionEN;
+    }
+
+    public function setDescriptionEN(?string $descriptionEN): self
+    {
+        $this->descriptionEN = $descriptionEN;
+
+        return $this;
+    }
+
+    public function getRun(): ?Run
+    {
+        return $this->Run;
+    }
+
+    public function setRun(?Run $Run): self
+    {
+        $this->Run = $Run;
+
+        return $this;
+    }
+
+    public function getSampleDepthM(): ?float
+    {
+        return $this->sampleDepthM;
+    }
+
+    public function setSampleDepthM(?float $sampleDepthM): self
+    {
+        $this->sampleDepthM = $sampleDepthM;
 
         return $this;
     }

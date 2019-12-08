@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RunTypeRepository")
  */
-class RunType
+class RunType implements DefinitionEntityInterface
 {
     /**
      * @ORM\Id()
@@ -87,5 +87,9 @@ class RunType
         $this->descriptionEN = $descriptionEN;
 
         return $this;
+    }
+
+    public function getLabel(): string {
+        return $this->getNameCZ();
     }
 }

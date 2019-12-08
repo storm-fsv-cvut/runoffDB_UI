@@ -19,47 +19,45 @@ class OperationType implements DefinitionEntityInterface
     private $id;
 
     /**
-     * @Grid\Column(label="CZ", sortable=true, searchable=true)
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=512, nullable=true)
      */
-    private $nameCZ;
+    private $descriptionCZ;
 
     /**
-     * @Grid\Column(label="EN", sortable=true, searchable=true)
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=512, nullable=true)
      */
-    private $nameEN;
+    private $descriptionEN;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNameCZ(): ?string
-    {
-        return $this->nameCZ;
-    }
-
-    public function setNameCZ(string $nameCZ): self
-    {
-        $this->nameCZ = $nameCZ;
-
-        return $this;
-    }
-
-    public function getNameEN(): ?string
-    {
-        return $this->nameEN;
-    }
-
-    public function setNameEN(string $nameEN): self
-    {
-        $this->nameEN = $nameEN;
-
-        return $this;
-    }
-
     public function getLabel(): string {
-        return $this->nameCZ;
+        return $this->descriptionCZ;
+    }
+
+    public function getDescriptionCZ(): ?string
+    {
+        return $this->descriptionCZ;
+    }
+
+    public function setDescriptionCZ(?string $descriptionCZ): self
+    {
+        $this->descriptionCZ = $descriptionCZ;
+
+        return $this;
+    }
+
+    public function getDescriptionEN(): ?string
+    {
+        return $this->descriptionEN;
+    }
+
+    public function setDescriptionEN(?string $descriptionEN): self
+    {
+        $this->descriptionEN = $descriptionEN;
+
+        return $this;
     }
 }

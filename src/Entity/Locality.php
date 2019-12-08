@@ -36,19 +36,14 @@ class Locality implements DefinitionEntityInterface
     private $lng;
 
     /**
-     * @ORM\Column(type="string", length=500, nullable=true)
-     */
-    private $note;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Organization", inversedBy="localities")
      */
     private $organization;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\SoilType")
+     * @ORM\ManyToOne(targetEntity="App\Entity\WRBsoilClass")
      */
-    private $soilType;
+    private $wRBsoilClass;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Plot", mappedBy="locality")
@@ -59,6 +54,16 @@ class Locality implements DefinitionEntityInterface
      * @ORM\OneToMany(targetEntity="App\Entity\SoilSample", mappedBy="locality")
      */
     private $soilSamples;
+
+    /**
+     * @ORM\Column(type="string", length=512, nullable=true)
+     */
+    private $descriptionCZ;
+
+    /**
+     * @ORM\Column(type="string", length=512, nullable=true)
+     */
+    private $descriptionEN;
 
     public function __construct()
     {
@@ -132,14 +137,14 @@ class Locality implements DefinitionEntityInterface
         return $this;
     }
 
-    public function getSoilType(): ?SoilType
+    public function getWRBsoilClass(): ?WRBsoilClass
     {
-        return $this->soilType;
+        return $this->wRBsoilClass;
     }
 
-    public function setSoilType(?SoilType $soilType): self
+    public function setWRBsoilClass(?WRBsoilClass $wRBsoilClass): self
     {
-        $this->soilType = $soilType;
+        $this->wRBsoilClass = $wRBsoilClass;
 
         return $this;
     }
@@ -208,5 +213,29 @@ class Locality implements DefinitionEntityInterface
 
     public function getLabel(): string {
         $this->name;
+    }
+
+    public function getDescriptionCZ(): ?string
+    {
+        return $this->descriptionCZ;
+    }
+
+    public function setDescriptionCZ(?string $descriptionCZ): self
+    {
+        $this->descriptionCZ = $descriptionCZ;
+
+        return $this;
+    }
+
+    public function getDescriptionEN(): ?string
+    {
+        return $this->descriptionEN;
+    }
+
+    public function setDescriptionEN(?string $descriptionEN): self
+    {
+        $this->descriptionEN = $descriptionEN;
+
+        return $this;
     }
 }

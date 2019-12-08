@@ -34,14 +34,29 @@ class Crop implements DefinitionEntityInterface
     private $variety;
 
     /**
-     * @ORM\Column(type="string", length=500, nullable=true)
-     */
-    private $note;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CropType")
      */
     private $cropType;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\CropErType")
+     */
+    private $croperType;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isCatchCrop;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $descriptionCZ;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $descriptionEN;
 
     public function getId(): ?int
     {
@@ -84,18 +99,6 @@ class Crop implements DefinitionEntityInterface
         return $this;
     }
 
-    public function getNote(): ?string
-    {
-        return $this->note;
-    }
-
-    public function setNote(?string $note): self
-    {
-        $this->note = $note;
-
-        return $this;
-    }
-
     public function getCropType(): ?CropType
     {
         return $this->cropType;
@@ -110,5 +113,53 @@ class Crop implements DefinitionEntityInterface
 
     public function getLabel(): string {
         $this->nameCZ;
+    }
+
+    public function getCroperType(): ?CropErType
+    {
+        return $this->croperType;
+    }
+
+    public function setCroperType(?CropErType $croperType): self
+    {
+        $this->croperType = $croperType;
+
+        return $this;
+    }
+
+    public function getIsCatchCrop(): ?bool
+    {
+        return $this->isCatchCrop;
+    }
+
+    public function setIsCatchCrop(?bool $isCatchCrop): self
+    {
+        $this->isCatchCrop = $isCatchCrop;
+
+        return $this;
+    }
+
+    public function getDescriptionCZ(): ?string
+    {
+        return $this->descriptionCZ;
+    }
+
+    public function setDescriptionCZ(?string $descriptionCZ): self
+    {
+        $this->descriptionCZ = $descriptionCZ;
+
+        return $this;
+    }
+
+    public function getDescriptionEN(): ?string
+    {
+        return $this->descriptionEN;
+    }
+
+    public function setDescriptionEN(?string $descriptionEN): self
+    {
+        $this->descriptionEN = $descriptionEN;
+
+        return $this;
     }
 }

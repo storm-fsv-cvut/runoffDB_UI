@@ -29,9 +29,14 @@ class CropType implements DefinitionEntityInterface
     private $nameEN;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $description;
+    private $descriptionCZ;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $descriptionEN;
 
     public function getId(): ?int
     {
@@ -62,19 +67,31 @@ class CropType implements DefinitionEntityInterface
         return $this;
     }
 
-    public function getDescription(): ?string
-    {
-        return $this->description;
+    public function getLabel(): string {
+        return $this->getNameCZ();
     }
 
-    public function setDescription(?string $description): self
+    public function getDescriptionCZ(): ?string
     {
-        $this->description = $description;
+        return $this->descriptionCZ;
+    }
+
+    public function setDescriptionCZ(?string $descriptionCZ): self
+    {
+        $this->descriptionCZ = $descriptionCZ;
 
         return $this;
     }
 
-    public function getLabel(): string {
-        return $this->getNameCZ();
+    public function getDescriptionEN(): ?string
+    {
+        return $this->descriptionEN;
+    }
+
+    public function setDescriptionEN(string $descriptionEN): self
+    {
+        $this->descriptionEN = $descriptionEN;
+
+        return $this;
     }
 }

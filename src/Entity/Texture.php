@@ -26,34 +26,19 @@ class Texture implements DefinitionEntityInterface
     private $dateProcessed;
 
     /**
-     * @ORM\Column(type="string", length=50)
-     */
-    private $classKA4;
-
-    /**
-     * @ORM\Column(type="string", length=50)
-     */
-    private $classWRB;
-
-    /**
-     * @ORM\Column(type="string", length=50)
-     */
-    private $classNovak;
-
-    /**
-     * @ORM\Column(type="string", length=50)
-     */
-    private $textureRecord;
-
-    /**
-     * @ORM\Column(type="string", length=500, nullable=true)
-     */
-    private $note;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\TextureData", mappedBy="texture")
      */
     private $textureData;
+
+    /**
+     * @ORM\Column(type="string", length=512, nullable=true)
+     */
+    private $descriptionCZ;
+
+    /**
+     * @ORM\Column(type="string", length=512, nullable=true)
+     */
+    private $descriptionEN;
 
     public function __construct()
     {
@@ -77,65 +62,6 @@ class Texture implements DefinitionEntityInterface
         return $this;
     }
 
-    public function getClassKA4(): ?string
-    {
-        return $this->classKA4;
-    }
-
-    public function setClassKA4(string $classKA4): self
-    {
-        $this->classKA4 = $classKA4;
-
-        return $this;
-    }
-
-    public function getClassWRB(): ?string
-    {
-        return $this->classWRB;
-    }
-
-    public function setClassWRB(string $classWRB): self
-    {
-        $this->classWRB = $classWRB;
-
-        return $this;
-    }
-
-    public function getClassNovak(): ?string
-    {
-        return $this->classNovak;
-    }
-
-    public function setClassNovak(string $classNovak): self
-    {
-        $this->classNovak = $classNovak;
-
-        return $this;
-    }
-
-    public function getTextureRecord(): ?string
-    {
-        return $this->textureRecord;
-    }
-
-    public function setTextureRecord(string $textureRecord): self
-    {
-        $this->textureRecord = $textureRecord;
-
-        return $this;
-    }
-
-    public function getNote(): ?string
-    {
-        return $this->note;
-    }
-
-    public function setNote(?string $note): self
-    {
-        $this->note = $note;
-
-        return $this;
-    }
 
     public function getLabel(): string {
         return $this->textureRecord;
@@ -168,6 +94,30 @@ class Texture implements DefinitionEntityInterface
                 $textureData->setTexture(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDescriptionCZ(): ?string
+    {
+        return $this->descriptionCZ;
+    }
+
+    public function setDescriptionCZ(?string $descriptionCZ): self
+    {
+        $this->descriptionCZ = $descriptionCZ;
+
+        return $this;
+    }
+
+    public function getDescriptionEN(): ?string
+    {
+        return $this->descriptionEN;
+    }
+
+    public function setDescriptionEN(?string $descriptionEN): self
+    {
+        $this->descriptionEN = $descriptionEN;
 
         return $this;
     }

@@ -61,7 +61,7 @@ test('Custom date formatter functions', function(){
         dp = input.data('datepicker'),
         picker = dp.picker,
         target;
-    //Value is ISO format and is 7 days older than UI
+    //Unit is ISO format and is 7 days older than UI
     equal(input.val(), '2015-09-18T00:00:00.000Z');
     datesEqual(dp.dates[0], UTCDate(2015, 8, 25));
     datesEqual(dp.viewDate, UTCDate(2015, 8, 25));
@@ -73,7 +73,7 @@ test('Custom date formatter functions', function(){
 
     target.click();
     ok(picker.is(':not(:visible)'), 'Picker is hidden');
-    //Value is now 28th Aug 2015 in ISO format
+    //Unit is now 28th Aug 2015 in ISO format
     //and is 7 days older than UI
     equal(input.val(), '2015-08-28T00:00:00.000Z');
     datesEqual(dp.dates[0], UTCDate(2015, 8, 4));

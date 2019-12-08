@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Dtc\GridBundle\Annotation as Grid;
 
 /**
- * @Grid\Grid(actions={@Grid\ShowAction(), @Grid\DeleteAction()})
+ * @Grid\Grid(actions={@Grid\EditAction(), @Grid\DeleteAction()})
  * @ORM\Entity(repositoryClass="App\Repository\AgrotechnologyRepository")
  */
 class Agrotechnology implements DefinitionEntityInterface
@@ -19,6 +19,16 @@ class Agrotechnology implements DefinitionEntityInterface
     private $id;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $nameCZ;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $nameEN;
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private $descriptionCZ;
@@ -29,24 +39,9 @@ class Agrotechnology implements DefinitionEntityInterface
     private $descriptionEN;
 
     /**
-     * @ORM\Column(type="string", length=100, nullable=true)
-     */
-    private $operationSequence;
-
-    /**
      * @ORM\Column(type="string", length=500, nullable=true)
      */
     private $note;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $nameCZ;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $nameEN;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)

@@ -19,11 +19,6 @@ class Measurement
     private $id;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isTimeline;
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $descriptionCZ;
@@ -53,6 +48,11 @@ class Measurement
      * @ORM\OneToMany(targetEntity="App\Entity\Record", mappedBy="measurement")
      */
     private $records;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Model")
+     */
+    private $model;
 
     public function __construct()
     {
@@ -163,6 +163,18 @@ class Measurement
                 $value->setMeasurement(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getModel(): ?Model
+    {
+        return $this->model;
+    }
+
+    public function setModel(?Model $model): self
+    {
+        $this->model = $model;
 
         return $this;
     }

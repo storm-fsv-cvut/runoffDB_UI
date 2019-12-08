@@ -1,8 +1,11 @@
-fullname: Celé jméno
+fullname: Name
 email: Email
 username: Login
-password: Heslo
-save: Uložit
+password: Password
+save: Save
+new: New
+edit: Edit
+delete: Delete
 App\Entity\Plot: Plot
 App\Entity\Locality: Locality
 App\Entity\Organization: Organization
@@ -15,6 +18,12 @@ App\Entity\SoilSample: Soil Sample
 App\Entity\OperationIntensity: Operation Intensity
 App\Entity\OperationType: Operation Type
 App\Entity\Texture: Texture
+App\Entity\AssignmentType: Assignment Type
+App\Entity\CropErType: Crop ER Type
+App\Entity\Project: Project
+App\Entity\RecordType: Record Type
+App\Entity\RunType: Run Type
+App\Entity\Simulator: Simulator
 
 
 

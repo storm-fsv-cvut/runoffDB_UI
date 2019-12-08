@@ -2,12 +2,14 @@
 
 namespace App\Entity;
 
+use Dtc\GridBundle\Annotation as Grid;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @Grid\Grid(actions={@Grid\ShowAction(), @Grid\DeleteAction()})
  * @ORM\Entity(repositoryClass="App\Repository\AssigmentTypeRepository")
  */
-class AssignmentType
+class AssignmentType implements DefinitionEntityInterface
 {
     /**
      * @ORM\Id()
@@ -53,5 +55,9 @@ class AssignmentType
         $this->descriptionEN = $descriptionEN;
 
         return $this;
+    }
+
+    public function getLabel(): string {
+        return $this->getDescriptionCZ();
     }
 }

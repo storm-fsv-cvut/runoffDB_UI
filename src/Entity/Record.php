@@ -23,7 +23,7 @@ class Record
     private $measurement;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Value")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Unit")
      * @ORM\JoinColumn(nullable=false)
      */
     private $value;
@@ -61,12 +61,12 @@ class Record
         return $this;
     }
 
-    public function getValue(): ?Value
+    public function getValue(): ?Unit
     {
         return $this->value;
     }
 
-    public function setValue(?Value $value): self
+    public function setValue(?Unit $value): self
     {
         $this->value = $value;
 

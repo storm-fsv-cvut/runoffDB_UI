@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\Value;
+use App\Entity\Unit;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * @method Value|null find($id, $lockMode = null, $lockVersion = null)
- * @method Value|null findOneBy(array $criteria, array $orderBy = null)
- * @method Value[]    findAll()
- * @method Value[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Unit|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Unit|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Unit[]    findAll()
+ * @method Unit[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class ValueRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, Value::class);
+        parent::__construct($registry, Unit::class);
     }
 
     // /**
-    //  * @return Value[] Returns an array of Value objects
+    //  * @return Unit[] Returns an array of Unit objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class ValueRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Value
+    public function findOneBySomeField($value): ?Unit
     {
         return $this->createQueryBuilder('v')
             ->andWhere('v.exampleField = :val')

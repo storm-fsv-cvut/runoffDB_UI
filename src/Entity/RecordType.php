@@ -3,11 +3,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Dtc\GridBundle\Annotation as Grid;
 
 /**
+ * @Grid\Grid(actions={@Grid\ShowAction(), @Grid\DeleteAction()})
  * @ORM\Entity(repositoryClass="App\Repository\RecordTypeRepository")
  */
-class RecordType
+class RecordType implements DefinitionEntityInterface
 {
     /**
      * @ORM\Id()
@@ -87,5 +89,9 @@ class RecordType
         $this->descriptionCZ = $descriptionCZ;
 
         return $this;
+    }
+
+    public function getLabel(): string {
+        return $this->getNameCZ();
     }
 }

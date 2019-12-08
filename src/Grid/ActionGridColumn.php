@@ -19,11 +19,12 @@ class ActionGridColumn extends AbstractGridColumn
     }
     public function format($object, GridSourceInterface $gridsource)
     {
-        exit;
         $method = 'get'.ucfirst($this->idField);
         $id = $object->$method();
         $idHtml = htmlspecialchars($id);
         $content = '';
+        dump($this->actions);
+        exit;
         foreach ($this->actions as $action => $options) {
             $label = $options['label'];
             if ($content) {

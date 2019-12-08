@@ -40,15 +40,20 @@ class Operation implements DefinitionEntityInterface
     private $operationDepthM;
 
     /**
-     * @ORM\Column(type="string", length=500, nullable=true)
-     */
-    private $note;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\OperationType")
      * @ORM\JoinColumn(nullable=false)
      */
     private $operationType;
+
+    /**
+     * @ORM\Column(type="string", length=512, nullable=true)
+     */
+    private $descriptionCZ;
+
+    /**
+     * @ORM\Column(type="string", length=512, nullable=true)
+     */
+    private $descriptionEN;
 
     public function getId(): ?int
     {
@@ -103,18 +108,6 @@ class Operation implements DefinitionEntityInterface
         return $this;
     }
 
-    public function getNote(): ?string
-    {
-        return $this->note;
-    }
-
-    public function setNote(?string $note): self
-    {
-        $this->note = $note;
-
-        return $this;
-    }
-
     public function getOperationType(): ?OperationType
     {
         return $this->operationType;
@@ -129,5 +122,29 @@ class Operation implements DefinitionEntityInterface
 
     public function getLabel(): string {
        return $this->getNameCZ();
+    }
+
+    public function getDescriptionCZ(): ?string
+    {
+        return $this->descriptionCZ;
+    }
+
+    public function setDescriptionCZ(?string $descriptionCZ): self
+    {
+        $this->descriptionCZ = $descriptionCZ;
+
+        return $this;
+    }
+
+    public function getDescriptionEN(): ?string
+    {
+        return $this->descriptionEN;
+    }
+
+    public function setDescriptionEN(?string $descriptionEN): self
+    {
+        $this->descriptionEN = $descriptionEN;
+
+        return $this;
     }
 }
