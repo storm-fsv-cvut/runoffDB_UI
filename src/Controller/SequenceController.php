@@ -8,19 +8,21 @@
 
 namespace App\Controller;
 
+use App\Repository\SequenceRepository;
+use App\Services\SequenceService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class SequenceController extends AbstractController {
 
     /**
-     * @Route("/sequence", name="sequence")
+     * @Route("/sequence/{id}", name="sequence")
      */
 
-    public function edit(EntityManagerInterface $entityManager, Request $request) {
-        $id = $request->get('id');
+    public function edit(EntityManagerInterface $entityManager, Request $request, int $id = null, SequenceService $sequenceService) {
         if ($id) {
             /*intenzita povrchového odtoku (homogenizovaná hrubá data)*/
             $mockup[] = [
@@ -134,9 +136,14 @@ class SequenceController extends AbstractController {
                 return [($timearray[0] * 3600) + ($timearray[1] * 60) + $timearray[2],$m[1]];
             },$mockup[0]);
 
-            dump($mockup);
-            dump($grafdata);
-            return $this->render('sequence/edit.html.twig', ['mockups' => $mockup, 'grafdata'=>$grafdata]);
+            $sequence = $sequenceService->getSequenceById($id);
+
+            return $this->render('sequence/edit.html.twig', [
+                'header'=>$sequenceService->getSequenceHeader($sequence),
+                'runs'=>$sequenceService->getRunsArray($sequence),
+                'mockups' => $mockup,
+                'grafdata'=>$grafdata
+            ]);
         } else {
             return $this->render('sequence/add.html.twig');
         }
@@ -145,7 +152,11 @@ class SequenceController extends AbstractController {
     /**
      * @Route("/sequences", name="sequences")
      */
-    public function list(EntityManagerInterface $entityManager) {
-        return $this->render('sequence/list.html.twig');
+    public function list(ContainerInterface $container, EntityManagerInterface $entityManager) {
+        $renderer = $container->get('dtc_grid.renderer.factory')->create('datatables');
+        $gridSource = $container->get('dtc_grid.manager.source')->get("App\Entity\Sequence");
+        $renderer->bind($gridSource);
+        $params = $renderer->getParams();
+        return $this->render('sequence/list.html.twig',$params);
     }
 }

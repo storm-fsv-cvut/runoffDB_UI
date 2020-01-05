@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Dtc\GridBundle\Annotation as Grid;
 
@@ -44,9 +46,20 @@ class Agrotechnology implements DefinitionEntityInterface
     private $note;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\TillageSequence", mappedBy="agrotechnology")
+     */
+    private $tillageSequences;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $managTyp;
+
+
+    public function __construct()
+    {
+        $this->tillageSequences = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -85,6 +98,37 @@ class Agrotechnology implements DefinitionEntityInterface
     public function setOperationSequence(?string $operationSequence): self
     {
         $this->operationSequence = $operationSequence;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|TillageSequence[]
+     */
+    public function getTillageSequences(): Collection
+    {
+        return $this->tillageSequences;
+    }
+
+    public function addTillageSequence(TillageSequence $tillageSequence): self
+    {
+        if (!$this->tillageSequences->contains($tillageSequence)) {
+            $this->tillageSequences[] = $tillageSequence;
+            $tillageSequence->setAgrotechnology($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTillageSequence(TillageSequence $tillageSequence): self
+    {
+        if ($this->tillageSequences->contains($tillageSequence)) {
+            $this->tillageSequences->removeElement($tillageSequence);
+            // set the owning side to null (unless already changed)
+            if ($tillageSequence->getAgrotechnology() === $this) {
+                $tillageSequence->setAgrotechnology(null);
+            }
+        }
 
         return $this;
     }

@@ -24,6 +24,7 @@ App\Entity\Project: Project
 App\Entity\RecordType: Record Type
 App\Entity\RunType: Run Type
 App\Entity\Simulator: Simulator
+App\Entity\WRBsoilClass: WRB Soil Class
 
 
 

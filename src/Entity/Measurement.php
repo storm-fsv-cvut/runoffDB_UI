@@ -50,13 +50,14 @@ class Measurement
     private $records;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Model")
+     * @ORM\OneToMany(targetEntity="App\Entity\Run", mappedBy="initMoistureMeasurement")
      */
-    private $model;
+    private $runs;
 
     public function __construct()
     {
         $this->records = new ArrayCollection();
+        $this->runs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -64,17 +65,6 @@ class Measurement
         return $this->id;
     }
 
-    public function getIsTimeline(): ?bool
-    {
-        return $this->isTimeline;
-    }
-
-    public function setIsTimeline(bool $isTimeline): self
-    {
-        $this->isTimeline = $isTimeline;
-
-        return $this;
-    }
 
     public function getDescriptionCZ(): ?string
     {
@@ -167,14 +157,33 @@ class Measurement
         return $this;
     }
 
-    public function getModel(): ?Model
+    /**
+     * @return Collection|Run[]
+     */
+    public function getRuns(): Collection
     {
-        return $this->model;
+        return $this->runs;
     }
 
-    public function setModel(?Model $model): self
+    public function addRun(Run $run): self
     {
-        $this->model = $model;
+        if (!$this->runs->contains($run)) {
+            $this->runs[] = $run;
+            $run->setInitMoistureMeasurement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRun(Run $run): self
+    {
+        if ($this->runs->contains($run)) {
+            $this->runs->removeElement($run);
+            // set the owning side to null (unless already changed)
+            if ($run->getInitMoistureMeasurement() === $this) {
+                $run->setInitMoistureMeasurement(null);
+            }
+        }
 
         return $this;
     }

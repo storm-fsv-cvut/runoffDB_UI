@@ -55,6 +55,16 @@ class Operation implements DefinitionEntityInterface
      */
     private $descriptionEN;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $machineryTypeCZ;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $machineryTypeEN;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -144,6 +154,30 @@ class Operation implements DefinitionEntityInterface
     public function setDescriptionEN(?string $descriptionEN): self
     {
         $this->descriptionEN = $descriptionEN;
+
+        return $this;
+    }
+
+    public function getMachineryTypeCZ(): ?string
+    {
+        return $this->machineryTypeCZ;
+    }
+
+    public function setMachineryTypeCZ(string $machineryTypeCZ): self
+    {
+        $this->machineryTypeCZ = $machineryTypeCZ;
+
+        return $this;
+    }
+
+    public function getMachineryTypeEN(): ?string
+    {
+        return $this->machineryTypeEN;
+    }
+
+    public function setMachineryTypeEN(string $machineryTypeEN): self
+    {
+        $this->machineryTypeEN = $machineryTypeEN;
 
         return $this;
     }

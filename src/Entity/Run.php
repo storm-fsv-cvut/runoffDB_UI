@@ -19,7 +19,7 @@ class Run
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Sequence")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Sequence", inversedBy="sequence")
      * @ORM\JoinColumn(nullable=false)
      */
     private $sequence;
@@ -71,17 +71,12 @@ class Run
     private $rainIntensityMeasurement;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $initMoisture;
-
-    /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", nullable=true)
      */
     private $precedingPrecipitation;
 
     /**
-     * @ORM\Column(type="time")
+     * @ORM\Column(type="time", nullable=true)
      */
     private $runoffStart;
 
@@ -114,6 +109,16 @@ class Run
      * @ORM\OneToMany(targetEntity="App\Entity\SoilSample", mappedBy="Run")
      */
     private $soilSamples;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Measurement", inversedBy="runs")
+     */
+    private $initMoistureMeasurement;
+
+    /**
+     * @ORM\Column(type="time", nullable=true)
+     */
+    private $pondingStart;
 
     public function __construct()
     {
@@ -245,18 +250,6 @@ class Run
         return $this;
     }
 
-    public function getInitMoisture(): ?int
-    {
-        return $this->initMoisture;
-    }
-
-    public function setInitMoisture(?int $initMoisture): self
-    {
-        $this->initMoisture = $initMoisture;
-
-        return $this;
-    }
-
     public function getPrecedingPrecipitation(): ?float
     {
         return $this->precedingPrecipitation;
@@ -368,6 +361,30 @@ class Run
                 $soilSample->setRun(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getInitMoistureMeasurement(): ?Measurement
+    {
+        return $this->initMoistureMeasurement;
+    }
+
+    public function setInitMoistureMeasurement(?Measurement $initMoistureMeasurement): self
+    {
+        $this->initMoistureMeasurement = $initMoistureMeasurement;
+
+        return $this;
+    }
+
+    public function getPondingStart(): ?\DateTimeInterface
+    {
+        return $this->pondingStart;
+    }
+
+    public function setPondingStart(?\DateTimeInterface $pondingStart): self
+    {
+        $this->pondingStart = $pondingStart;
 
         return $this;
     }

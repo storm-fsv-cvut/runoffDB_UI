@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,7 +18,7 @@ class TillageSequence
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Agrotechnology")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Agrotechnology", inversedBy="tillageSequence")
      * @ORM\JoinColumn(nullable=false)
      */
     private $agrotechnology;

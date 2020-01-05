@@ -95,6 +95,11 @@ class SoilSample
      */
     private $sampleDepthM;
 
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $dateProcessed;
+
     public function __construct()
     {
         $this->textureData = new ArrayCollection();
@@ -117,7 +122,7 @@ class SoilSample
         return $this;
     }
 
-    public function getProcessedAt(): ?string
+    public function getProcessedAt(): ?Organization
     {
         return $this->processedAt;
     }
@@ -304,6 +309,18 @@ class SoilSample
     public function setSampleDepthM(?float $sampleDepthM): self
     {
         $this->sampleDepthM = $sampleDepthM;
+
+        return $this;
+    }
+
+    public function getDateProcessed(): ?\DateTimeInterface
+    {
+        return $this->dateProcessed;
+    }
+
+    public function setDateProcessed(?\DateTimeInterface $dateProcessed): self
+    {
+        $this->dateProcessed = $dateProcessed;
 
         return $this;
     }

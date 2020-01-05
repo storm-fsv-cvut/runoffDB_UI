@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -23,12 +25,6 @@ class Record
     private $measurement;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Unit")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $value;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\RecordType")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -43,6 +39,38 @@ class Record
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $noteEN;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Unit")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $unit;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Record", inversedBy="relatedRecords")
+     */
+    private $sourceRecords;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Record", mappedBy="sourceRecords")
+     */
+    private $relatedRecords;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Unit")
+     */
+    private $relatedValueUnit;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isTimeline;
+
+    public function __construct()
+    {
+        $this->sourceRecords = new ArrayCollection();
+        $this->relatedRecords = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -61,17 +89,6 @@ class Record
         return $this;
     }
 
-    public function getValue(): ?Unit
-    {
-        return $this->value;
-    }
-
-    public function setValue(?Unit $value): self
-    {
-        $this->value = $value;
-
-        return $this;
-    }
 
     public function getRecordType(): ?RecordType
     {
@@ -105,6 +122,96 @@ class Record
     public function setNoteEN(?string $noteEN): self
     {
         $this->noteEN = $noteEN;
+
+        return $this;
+    }
+
+    public function getUnit(): ?Unit
+    {
+        return $this->unit;
+    }
+
+    public function setUnit(?Unit $unit): self
+    {
+        $this->unit = $unit;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getSourceRecords(): Collection
+    {
+        return $this->sourceRecords;
+    }
+
+    public function addSourceRecord(self $sourceRecord): self
+    {
+        if (!$this->sourceRecords->contains($sourceRecord)) {
+            $this->sourceRecords[] = $sourceRecord;
+        }
+
+        return $this;
+    }
+
+    public function removeSourceRecord(self $sourceRecord): self
+    {
+        if ($this->sourceRecords->contains($sourceRecord)) {
+            $this->sourceRecords->removeElement($sourceRecord);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getRelatedRecords(): Collection
+    {
+        return $this->relatedRecords;
+    }
+
+    public function addRelatedRecord(self $relatedRecord): self
+    {
+        if (!$this->relatedRecords->contains($relatedRecord)) {
+            $this->relatedRecords[] = $relatedRecord;
+            $relatedRecord->addSourceRecord($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRelatedRecord(self $relatedRecord): self
+    {
+        if ($this->relatedRecords->contains($relatedRecord)) {
+            $this->relatedRecords->removeElement($relatedRecord);
+            $relatedRecord->removeSourceRecord($this);
+        }
+
+        return $this;
+    }
+
+    public function getRelatedValueUnit(): ?Unit
+    {
+        return $this->relatedValueUnit;
+    }
+
+    public function setRelatedValueUnit(?Unit $relatedValueUnit): self
+    {
+        $this->relatedValueUnit = $relatedValueUnit;
+
+        return $this;
+    }
+
+    public function getIsTimeline(): ?bool
+    {
+        return $this->isTimeline;
+    }
+
+    public function setIsTimeline(bool $isTimeline): self
+    {
+        $this->isTimeline = $isTimeline;
 
         return $this;
     }

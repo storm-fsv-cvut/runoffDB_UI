@@ -22,19 +22,20 @@ class Data
     private $time;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Unit")
-     */
-    private $dimensionUnit;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $dimensionValue;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $value;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $relatedValue;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Record")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $record;
 
     public function getId(): ?int
     {
@@ -53,30 +54,6 @@ class Data
         return $this;
     }
 
-    public function getDimensionUnit(): ?Unit
-    {
-        return $this->dimensionUnit;
-    }
-
-    public function setDimensionUnit(?Unit $dimensionUnit): self
-    {
-        $this->dimensionUnit = $dimensionUnit;
-
-        return $this;
-    }
-
-    public function getDimensionValue(): ?string
-    {
-        return $this->dimensionValue;
-    }
-
-    public function setDimensionValue(?string $dimensionValue): self
-    {
-        $this->dimensionValue = $dimensionValue;
-
-        return $this;
-    }
-
     public function getValue(): ?string
     {
         return $this->value;
@@ -85,6 +62,30 @@ class Data
     public function setValue(string $value): self
     {
         $this->value = $value;
+
+        return $this;
+    }
+
+    public function getRelatedValue(): ?float
+    {
+        return $this->relatedValue;
+    }
+
+    public function setRelatedValue(?float $relatedValue): self
+    {
+        $this->relatedValue = $relatedValue;
+
+        return $this;
+    }
+
+    public function getRecord(): ?Record
+    {
+        return $this->record;
+    }
+
+    public function setRecord(?Record $record): self
+    {
+        $this->record = $record;
 
         return $this;
     }

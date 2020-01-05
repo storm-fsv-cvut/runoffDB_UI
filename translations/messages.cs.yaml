@@ -3,6 +3,7 @@ email: Email
 username: Login
 password: Password
 save: Save
+close: Zavřít
 new: New
 edit: Edit
 delete: Delete
@@ -28,8 +29,13 @@ App\Entity\Project: Project
 App\Entity\RecordType: Record Type
 App\Entity\RunType: Run Type
 App\Entity\Simulator: Simulator
+App\Entity\WRBsoilClass: WRB Soil Class
 sequence: Sekvence
 sequences: Sekvence
+na: Nezadáno
+soil_sample_bulk: půdní vzorek pro objemovou hmotnost
+soil_sample_texture: Půdní vzorek pro zrnitost
+soil_sample_corq: půdní vzorek pro organický uhlík
 
 
 

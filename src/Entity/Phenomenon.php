@@ -3,13 +3,11 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Dtc\GridBundle\Annotation as Grid;
 
 /**
- * @Grid\Grid(actions={@Grid\EditAction()})
- * @ORM\Entity(repositoryClass="App\Repository\RunTypeRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\PhenomenonRepository")
  */
-class RunType implements DefinitionEntityInterface
+class Phenomenon
 {
     /**
      * @ORM\Id()
@@ -19,7 +17,7 @@ class RunType implements DefinitionEntityInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $nameCZ;
 
@@ -38,6 +36,11 @@ class RunType implements DefinitionEntityInterface
      */
     private $descriptionEN;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $modelParameterSet;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -48,7 +51,7 @@ class RunType implements DefinitionEntityInterface
         return $this->nameCZ;
     }
 
-    public function setNameCZ(?string $nameCZ): self
+    public function setNameCZ(string $nameCZ): self
     {
         $this->nameCZ = $nameCZ;
 
@@ -91,7 +94,15 @@ class RunType implements DefinitionEntityInterface
         return $this;
     }
 
-    public function getLabel(): string {
-        return $this->getNameCZ();
+    public function getModelParameterSet(): ?string
+    {
+        return $this->modelParameterSet;
+    }
+
+    public function setModelParameterSet(?string $modelParameterSet): self
+    {
+        $this->modelParameterSet = $modelParameterSet;
+
+        return $this;
     }
 }

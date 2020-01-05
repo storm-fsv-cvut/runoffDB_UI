@@ -56,10 +56,16 @@ class Organization implements DefinitionEntityInterface
      */
     private $name_code;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Project", mappedBy="organisations")
+     */
+    private $projects;
+
     public function __construct()
     {
         $this->localities = new ArrayCollection();
         $this->simulators = new ArrayCollection();
+        $this->projects = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -189,6 +195,34 @@ class Organization implements DefinitionEntityInterface
     public function setNameCode(?string $name_code): self
     {
         $this->name_code = $name_code;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Project[]
+     */
+    public function getProjects(): Collection
+    {
+        return $this->projects;
+    }
+
+    public function addProject(Project $project): self
+    {
+        if (!$this->projects->contains($project)) {
+            $this->projects[] = $project;
+            $project->addOrganisation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProject(Project $project): self
+    {
+        if ($this->projects->contains($project)) {
+            $this->projects->removeElement($project);
+            $project->removeOrganisation($this);
+        }
 
         return $this;
     }

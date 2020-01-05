@@ -28,9 +28,15 @@ class Project implements DefinitionEntityInterface
      */
     private $sequences;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Organization", inversedBy="projects")
+     */
+    private $organisations;
+
     public function __construct()
     {
         $this->sequences = new ArrayCollection();
+        $this->organisations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -78,5 +84,31 @@ class Project implements DefinitionEntityInterface
 
     public function getLabel(): string {
         // TODO: Implement getLabel() method.
+    }
+
+    /**
+     * @return Collection|Organization[]
+     */
+    public function getOrganisations(): Collection
+    {
+        return $this->organisations;
+    }
+
+    public function addOrganisation(Organization $organisation): self
+    {
+        if (!$this->organisations->contains($organisation)) {
+            $this->organisations[] = $organisation;
+        }
+
+        return $this;
+    }
+
+    public function removeOrganisation(Organization $organisation): self
+    {
+        if ($this->organisations->contains($organisation)) {
+            $this->organisations->removeElement($organisation);
+        }
+
+        return $this;
     }
 }
