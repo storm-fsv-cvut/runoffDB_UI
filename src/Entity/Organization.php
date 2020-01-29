@@ -61,6 +61,10 @@ class Organization implements DefinitionEntityInterface
      */
     private $projects;
 
+    public function __toString() {
+        return $this->getName();
+    }
+
     public function __construct()
     {
         $this->localities = new ArrayCollection();

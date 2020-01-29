@@ -1,5 +1,5 @@
 {% macro soilsample(key, soilsample, assignment) %}
-    <dt>{% trans %}key{% endtrans %}</dt>
+    <dt>{{ key|trans }}</dt>
     {% if soilsample!=null %}
         <dd>{{ soilsample.getId() }} <i>({{ assignment.getDescriptionCZ() }})</i></dd>
         {#
@@ -24,8 +24,4 @@
     {% else %}
         <dd>{% trans %}na{% endtrans %}</dd>
     {% endif %}
-{% endmacro %}
-
-{% macro datatable(data) %}
-
 {% endmacro %}

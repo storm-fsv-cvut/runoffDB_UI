@@ -1,0 +1,142 @@
+<div class="box box-primary collapsed-box">
+    <div class="box-header with-border">
+        <h3 class="box-title">Nová simulace</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body" style="display: none;">
+        {{ form_start(formRun) }}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        {{ form_row(formRun.runType) }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        {{ form_row(formRun.precedingPrecipitation) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        {{ form_row(formRun.datetime) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        {{ form_row(formRun.pondingStart) }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        {{ form_row(formRun.runoffStart) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <div class="nav-tabs-custom">
+                            <ul class="nav nav-tabs">
+                                <li class="active">
+                                    <a href="#tab_1" data-toggle="tab" aria-expanded="true">{{ form_label(formRun.noteCZ) }}</a>
+                                </li>
+                                <li class="">
+                                    <a href="#tab_2" data-toggle="tab" aria-expanded="false">{{ form_label(formRun.noteEN) }}</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="tab_1">
+                                    {{ form_widget(formRun.noteCZ) }}
+                                </div>
+                                <div class="tab-pane" id="tab_2">
+                                    {{ form_widget(formRun.noteEN) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            {{ form_row(formRun.rawData) }}
+                            <p class="help-block">Max. 32MB, *.zip</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form_label(formRun.rainIntensityData) }}
+                        <table class="table table-bordered">
+                            <tr>
+                                <td data-prototype="{{ form_widget(formRun.rainIntensityData.vars.prototype.time)|e }}">
+                                    <i class="fa fa-clock-o"></i></td>
+                                <td data-prototype="{{ form_widget(formRun.rainIntensityData.vars.prototype.value)|e }}">
+                                    mm.h-1
+                                </td>
+                                <td>
+                                    <a class="text-danger removeRow" style="display: none;"><i class="fa fa-minus"></i></a>
+                                    <a class="text-success addFormRow"><i class="fa fa-plus"></i></a>
+                                </td>
+                            </tr>
+                            {% for rainIntensityDataField in formRun.rainIntensityData %}
+                                <li>
+                                    {{ form_errors(rainIntensityDataField) }}
+                                    {{ form_widget(rainIntensityDataField) }}
+                                </li>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_label(formRun.initMoistureData) }}
+                        <table class="table table-bordered">
+                            <tr>
+                                <td data-prototype="{{ form_widget(formRun.initMoistureData.vars.prototype.time)|e }}">
+                                    <i class="fa fa-clock-o"></i></td>
+                                <td data-prototype="{{ form_widget(formRun.initMoistureData.vars.prototype.value)|e }}">
+                                    mm.h-1
+                                </td>
+                                <td>
+                                    <a class="text-danger removeRow" style="display: none;"><i class="fa fa-minus"></i></a>
+                                    <a class="text-success addFormRow"><i class="fa fa-plus"></i></a>
+                                </td>
+                            </tr>
+
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        {{ form_row(formRun.soilSampleBulk) }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        {{ form_row(formRun.bulkAssignmentType) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        {{ form_row(formRun.soilSampleTexture) }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        {{ form_row(formRun.textureAssignmentType) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        {{ form_row(formRun.soilSampleCorq) }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        {{ form_row(formRun.corqAssignmentType) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    {{ form_row(formRun.save) }}
+                </div>
+            </div>
+        </div>
+        {{ form_end(formRun) }}
+    </div>
+</div>

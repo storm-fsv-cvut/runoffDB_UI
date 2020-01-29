@@ -1,0 +1,59 @@
+<?php
+
+namespace App\Form;
+
+use App\Entity\Record;
+use App\Entity\Unit;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+class RecordType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add('noteCZ',TextareaType::class,['label'=>'noteCZ'])
+            ->add('noteEN',TextareaType::class,['label'=>'noteEN'])
+            ->add('isTimeline',CheckboxType::class,['label'=>'isTimeline','data'=>true])
+            ->add('measurement_id',HiddenType::class,['mapped'=>false])
+            ->add('recordType')
+            ->add('unit', EntityType::class, ['class'=>Unit::class,'label'=>'unit','attr'=>['data-change-label'=>true]])
+            ->add('relatedValueUnit', EntityType::class, ['required'=>false,'class'=>Unit::class, 'placeholder' => "",'label'=>'relatedValueUnit','attr'=>['data-change-label'=>true]])
+            ->add('sourceRecords', EntityType::class, ['required'=>false,'class'=>Record::class,'label'=>'sourceRecords', 'multiple'=>true])
+            ->add('relatedRecords', EntityType::class, ['required'=>false,'class'=>Record::class,'label'=>'relatedRecords', 'multiple'=>true])
+            ->add('datafile', FileType::class, [
+                'label'=>'loadDataFile',
+                'mapped'=>false,
+                'attr'=>['data-validate'=>"/validate-file"]
+            ])
+            ->add('save', SubmitType::class,[
+                'attr'=>['class'=>'btn btn-success'],
+                'label'=>'save'
+            ]);
+
+        $builder->add('data', CollectionType::class, [
+            'entry_type' => DataType::class,
+            'label'=>'data',
+            'mapped' => false,
+            'prototype' => true,
+            'allow_add' => true,
+            'allow_delete' => true,
+        ]);
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => Record::class,
+        ]);
+    }
+}

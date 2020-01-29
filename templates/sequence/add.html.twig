@@ -12,72 +12,34 @@
             <div class="box-header with-border">
                 <h3 class="box-title">Hlavička</h3>
             </div>
-            <form role="form">
+            {{form_start(form)}}
                 <div class="box-body">
                     <div class="row">
-                        <div class="form-group col-md-4">
-                            <label>Organizace</label>
-                            <select class="form-control select2" style="width: 100%;">
-                                <option selected="selected">Katedra hydromeliorací a krajinného inženýrství, Fakulta stavební ČVUT v Praze</option>
-                            </select>
+                        <div class="form-group col-md-8">
+                            {{ form_row(form.simulator) }}
                         </div>
                         <div class="form-group col-md-4">
-                            <label>Simulátor</label>
-                            <select class="form-control select2" style="width: 100%;">
-                                <option selected="selected">mobilní dešťový simulátor ČVUT</option>
-                            </select>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label>Datum</label>
-                            <div class="input-group date">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
-                                </div>
-                                <input type="text" class="form-control pull-right" id="datepicker">
-                            </div>
+                            {{ form_row(form.date) }}
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-md-3">
-                            <label>Lokalita</label>
-                            <div class="input-group">
-                                <select class="form-control select2" style="width: 100%;">
-                                    <option selected="selected">Řisuty</option>
-                                </select>
-                                <a class="input-group-addon">
-                                    <i class="fa fa-plus"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label>Plot</label>
-                            <div class="input-group">
-                                <select class="form-control select2" style="width: 100%;">
-                                    <option selected="selected">#1 G</option>
-                                </select>
-                                <a class="input-group-addon">
-                                    <i class="fa fa-plus"></i>
-                                </a>
-                            </div>
+                        <div class="form-group col-md-6">
+                            {{ form_row(form.plot) }}
                         </div>
                         <div class="form-group col-md-2">
-                            <label>BBCH plodiny </label>
-                            <input class="form-control" type="text"/>
+                            {{ form_row(form.cropBBCH) }}
                         </div>
                         <div class="form-group col-md-2">
-                            <label>Zakrytí povrchu listovou plochou </label>
-                            <input class="form-control" type="text"/>
+                            {{ form_row(form.canopyCover) }}
                         </div>
                         <div class="form-group col-md-2">
-                            <label>Stav plodiny</label>
-                            <input class="form-control" type="text"/>
+                            {{ form_row(form.cropCondition) }}
                         </div>
                     </div>
                 </div>
                 <div class="box-footer">
-                    <a type="submit" class="btn btn-success" href="{{ path('sequence',{'id':1}) }}">Pokračovat</a>
+                    {{ form_row(form.continue) }}
                 </div>
-            </form>
         </div>
     </section>
 

@@ -38,6 +38,10 @@ class RunType implements DefinitionEntityInterface
      */
     private $descriptionEN;
 
+    public function __toString() {
+        return $this->getNameCZ();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

@@ -1,0 +1,91 @@
+{{ form_start(formRecord) }}
+{{ form_widget(formRecord.measurement_id,{'attr':{'value':measurement['id']}}) }}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">{% trans %}upload data{% endtrans %}</h4>
+</div>
+<div class="modal-body">
+
+        <div class="row">
+            <div class="form-group col-sm-12">
+                {{ form_row(formRecord.recordType) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-6">
+                {{ form_row(formRecord.unit) }}
+            </div>
+            <div class="form-group col-sm-6">
+                {{ form_row(formRecord.relatedValueUnit) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-12">
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#{{ formRecord.noteCZ.vars.id }}" data-toggle="tab" aria-expanded="true">{{ form_label(formRecord.noteCZ) }}</a>
+                        </li>
+                        <li class="">
+                            <a href="#{{ formRecord.noteEN.vars.id }}" data-toggle="tab" aria-expanded="false">{{ form_label(formRecord.noteEN) }}</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="{{ formRecord.noteCZ.vars.id }}">
+                            {{ form_widget(formRecord.noteCZ) }}
+                        </div>
+                        <div class="tab-pane" id="{{ formRecord.noteEN.vars.id }}">
+                            {{ form_widget(formRecord.noteEN) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-6">
+                {{ form_row(formRecord.sourceRecords) }}
+            </div>
+            <div class="form-group col-sm-6">
+                {{ form_row(formRecord.relatedRecords) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label>Nahrát datový soubor</label>
+                {{ form_row(formRecord.datafile) }}
+                <p class="help-block">Max. 32MB, *.csv</p>
+            </div>
+            <div class="col-md-12">
+                <table class="table table-bordered">
+                    <tr>
+                        <td data-prototype="{{ form_widget(formRecord.data.vars.prototype.time)|e }}">
+                            <i class="fa fa-clock-o"></i></td>
+                        <td data-prototype="{{ form_widget(formRecord.data.vars.prototype.value)|e }}">
+                            <span data-depends="record[unit]"></span>
+                        </td>
+                        <td data-prototype="{{ form_widget(formRecord.data.vars.prototype.related_value)|e }}">
+                            <span data-depends="record[relatedValueUnit]"></span>
+                        </td>
+                        <td>
+                            <a class="text-danger removeRow" style="display: none;"><i class="fa fa-minus"></i></a>
+                            <a class="text-success addFormRow"><i class="fa fa-plus"></i></a>
+                        </td>
+                    </tr>
+                    {% for dataField in formRecord.data %}
+                        <li>
+                            {{ form_errors(dataField) }}
+                            {{ form_widget(dataField) }}
+                        </li>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-warning pull-left" data-dismiss="modal">
+        {% trans %}close{% endtrans %}
+    </button>
+    {{ form_row(formRecord.save) }}
+</div>
+{{ form_end(formRecord) }}

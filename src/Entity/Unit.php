@@ -5,7 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ValueRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\UnitRepository")
  */
 class Unit
 {
@@ -40,6 +40,10 @@ class Unit
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $descriptionEN;
+
+    public function __toString() {
+        return $this->getNameCZ()." [".$this->getUnit()."]";
+    }
 
     public function getId(): ?int
     {

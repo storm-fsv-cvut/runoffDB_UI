@@ -33,12 +33,47 @@ App\Entity\WRBsoilClass: WRB Soil Class
 sequence: Sekvence
 sequences: Sekvence
 na: Nezadáno
-soil_sample_bulk: půdní vzorek pro objemovou hmotnost
+soil_sample_bulk: Půdní vzorek pro objemovou hmotnost
+soilSampleBulk: Půdní vzorek pro objemovou hmotnost
 soil_sample_texture: Půdní vzorek pro zrnitost
-soil_sample_corq: půdní vzorek pro organický uhlík
-
-
-
-
-
+soilSampleTexture: Půdní vzorek pro zrnitos
+soil_sample_corq: Půdní vzorek pro organický uhlík
+soilSampleCorq: Půdní vzorek pro organický uhlík
+assignmentType: Typ přiřazení
+rain_intensity: intenzita srážky
+init_moisture: počáteční vlhkost
+time: čas
+rain_start: začátek zadešťování
+runoff_start: do začátku povrchového odtoku
+Organization: Organizace
+Simulator: Simulátor
+Date: Datum
+Locality: Lokalita
+Plot: Plocha
+Canopy cover: Zakrytí povrchu listovou plochou
+Crop condition: stav plodiny
+Crop b b c h: BBCH plodiny
+runType: Typ simulace
+runoffStart: Počátek povrchového odtoku
+pondingStart: Začátek zavlažování
+precedingPrecipitation: Předchozí srážky
+note: Poznámka
+descriptionCZ: Popis (cs)
+descriptionEN: Popis (en)
+nameCZ: Název (cs)
+nameEN: Název (en)
+noteCZ: Poznámka (cs)
+noteEN: Poznámka (en)
+rawData: Surová data
+datetime: Datum a čas
+add measurement: Přidat měření
+add run: Přidat simulaci
+save csv: Uložit csv
+upload data: Uložit data
+isTimeline: Je závislé pouze na čase
+unit: Měřená veličina
+relatedValueUnit: Veličina dalšího rozměru
+sourceRecords: Zdrojové záznamy
+relatedRecords: Jiné vztažené záznamy
+derived from: Odvozeno z
 

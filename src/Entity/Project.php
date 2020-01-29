@@ -33,6 +33,10 @@ class Project implements DefinitionEntityInterface
      */
     private $organisations;
 
+    public function __toString() {
+        return $this->getProjectName();
+    }
+
     public function __construct()
     {
         $this->sequences = new ArrayCollection();

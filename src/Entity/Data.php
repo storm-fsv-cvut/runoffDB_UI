@@ -32,7 +32,7 @@ class Data
     private $relatedValue;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Record")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Record", inversedBy="data")
      * @ORM\JoinColumn(nullable=false)
      */
     private $record;

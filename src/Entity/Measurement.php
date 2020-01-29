@@ -39,13 +39,12 @@ class Measurement
     private $noteEN;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Run")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Run", inversedBy="measurements")
      */
     private $run;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Record", mappedBy="measurement")
+     * @ORM\OneToMany(targetEntity="App\Entity\Record", mappedBy="measurement", cascade={"persist"})
      */
     private $records;
 
@@ -53,6 +52,10 @@ class Measurement
      * @ORM\OneToMany(targetEntity="App\Entity\Run", mappedBy="initMoistureMeasurement")
      */
     private $runs;
+
+    public function __toString() {
+        return $this->getDescriptionCZ();
+    }
 
     public function __construct()
     {
@@ -134,23 +137,23 @@ class Measurement
         return $this->records;
     }
 
-    public function addValue(Record $value): self
+    public function addRecord(Record $record): self
     {
-        if (!$this->records->contains($value)) {
-            $this->records[] = $value;
-            $value->setMeasurement($this);
+        if (!$this->records->contains($record)) {
+            $this->records[] = $record;
+            $record->setMeasurement($this);
         }
 
         return $this;
     }
 
-    public function removeValue(Record $value): self
+    public function removeRecord(Record $record): self
     {
-        if ($this->records->contains($value)) {
-            $this->records->removeElement($value);
+        if ($this->records->contains($record)) {
+            $this->records->removeElement($record);
             // set the owning side to null (unless already changed)
-            if ($value->getMeasurement() === $this) {
-                $value->setMeasurement(null);
+            if ($record->getMeasurement() === $this) {
+                $record->setMeasurement(null);
             }
         }
 

@@ -28,6 +28,10 @@ class AssignmentType implements DefinitionEntityInterface
      */
     private $descriptionEN;
 
+    public function __toString() {
+        return $this->getDescriptionCZ();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

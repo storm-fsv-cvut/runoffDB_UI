@@ -86,6 +86,10 @@ class Plot implements DefinitionEntityInterface
      */
     private $noteEN;
 
+    public function __toString() {
+        return $this->getLocality()->getName()." - #".$this->getId()." ".$this->getName();
+    }
+
     public function __construct()
     {
         $this->soilSamples = new ArrayCollection();

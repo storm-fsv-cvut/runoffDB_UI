@@ -65,6 +65,10 @@ class Locality implements DefinitionEntityInterface
      */
     private $descriptionEN;
 
+    public function __toString() {
+        return $this->getName();
+    }
+
     public function __construct()
     {
         $this->plots = new ArrayCollection();

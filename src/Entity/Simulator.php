@@ -48,6 +48,10 @@ class Simulator implements DefinitionEntityInterface
      */
     private $sequences;
 
+    public function __toString() {
+        return $this->getNameCZ().' ('.$this->getOrganization()->getName().')';
+    }
+
     public function __construct()
     {
         $this->sequences = new ArrayCollection();

@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Dtc\GridBundle\Annotation as Grid;
+use phpDocumentor\Reflection\Types\Integer;
 
 /**
  * @Grid\Grid(actions={@Grid\ShowAction(), @Grid\DeleteAction()})
@@ -99,6 +100,10 @@ class SoilSample
      * @ORM\Column(type="date", nullable=true)
      */
     private $dateProcessed;
+
+    public function __toString() {
+        return $this->getId()."";
+    }
 
     public function __construct()
     {

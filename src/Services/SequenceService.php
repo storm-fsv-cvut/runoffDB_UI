@@ -34,7 +34,29 @@ class SequenceService {
         $runsArray = [];
         $runs = $sequence->getRuns();
         foreach ($runs as $run) {
+
+            if (
+                $run->getRainIntensityMeasurement() != null &&
+                $run->getRainIntensityMeasurement()->getRecords() != null &&
+                $run->getRainIntensityMeasurement()->getRecords()->get(0)->getData()->get(0) != null
+            ) {
+                $rain_intensity = $run->getRainIntensityMeasurement()->getRecords()->get(0)->getData()->get(0)->getValue();
+                } else {
+                $rain_intensity = "";
+            }
+
+           if (
+                $run->getInitMoistureMeasurement() != null &&
+                $run->getInitMoistureMeasurement()->getRecords() != null &&
+                $run->getInitMoistureMeasurement()->getRecords()->get(0)->getData()->get(0) != null
+            ) {
+                $init_moisture = $run->getInitMoistureMeasurement()->getRecords()->get(0)->getData()->get(0)->getValue();
+            } else {
+                $init_moisture = "";
+            }
+
             $runArray = [
+                'id'=>$run->getId(),
                 'run_type'=>$run->getRunType()->getNameCZ(),
                 'rain_start' => $run->getDatetime()->format("H:i"),
                 'runoff_start'=> $run->getRunoffStart()->format("H:i"),
@@ -43,8 +65,24 @@ class SequenceService {
                 'soil_sample_bulk'=> $run->getSoilSampleBulk(),
                 'soil_sample_bulk_assignment'=> $run->getBulkAssignmentType(),
                 'soil_sample_corq'=> $run->getSoilSampleCorq(),
+                'rain_intensity'=> $rain_intensity,
+                'init_moisture'=> $init_moisture,
                 'soil_sample_corq_assignment'=> $run->getCorqAssignmentType()
             ];
+
+            $measurements = $run->getMeasurements();
+            $measurementsArray = [];
+
+            foreach ($measurements as $measurement) {
+                $measurementArray = [
+                    'id' =>$measurement->getId(),
+                    'note' =>$measurement->getNoteCZ(),
+                    'description'=> $measurement->getDescriptionCZ(),
+                    'records'=>$measurement->getRecords()
+                ];
+                $measurementsArray[]=$measurementArray;
+            }
+            $runArray['measurements'] = $measurementsArray;
             $runsArray[]=$runArray;
         }
         return $runsArray;
@@ -74,4 +112,5 @@ class SequenceService {
             'crop_bbch' => $sequence->getCropBBCH()
         ];
     }
+
 }

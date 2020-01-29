@@ -38,6 +38,10 @@ class RecordType implements DefinitionEntityInterface
      */
     private $descriptionCZ;
 
+    public function __toString() {
+        return $this->getNameCZ();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

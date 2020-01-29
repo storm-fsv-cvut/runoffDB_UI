@@ -66,7 +66,7 @@ class Run
     private $datetime;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Measurement")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Measurement", cascade={"persist"})
      */
     private $rainIntensityMeasurement;
 
@@ -111,9 +111,14 @@ class Run
     private $soilSamples;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Measurement", inversedBy="runs")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Measurement", cascade={"persist"})
      */
     private $initMoistureMeasurement;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Measurement", mappedBy="run", cascade={"persist"})
+     */
+    private $measurements;
 
     /**
      * @ORM\Column(type="time", nullable=true)
@@ -123,6 +128,39 @@ class Run
     public function __construct()
     {
         $this->soilSamples = new ArrayCollection();
+        $this->measurements = new ArrayCollection();
+        return $this;
+    }
+
+    /**
+     * @return Collection|Measurement[]
+     */
+    public function getMeasurements(): Collection
+    {
+        return $this->measurements;
+    }
+
+    public function addMeasurement(Measurement $measurement): self
+    {
+        if (!$this->measurements->contains($measurement)) {
+            $this->measurements[] = $measurement;
+            $measurement->setRun($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMeasurement(Measurement $measurement): self
+    {
+        if ($this->measurements->contains($measurement)) {
+            $this->measurements->removeElement($measurement);
+            // set the owning side to null (unless already changed)
+            if ($measurement->getRun() === $this) {
+                $measurement->setRun(null);
+            }
+        }
+
+        return $this;
     }
 
     public function getId(): ?int
