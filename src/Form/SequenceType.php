@@ -1,40 +1,22 @@
 <?php
 
+
 namespace App\Form;
 
-use App\Entity\Locality;
-use App\Entity\Organization;
+
+use App\Entity\Run;
 use App\Entity\Sequence;
-use App\Entity\Simulator;
-use App\Repository\OrganizationRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
-class SequenceType extends AbstractType
-{
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-    /**
-     * @var OrganizationRepository
-     */
-    private $organizationRepository;
-
-    public function __construct(TranslatorInterface $translator, OrganizationRepository $organizationRepository) {
-        $this->translator = $translator;
-        $this->organizationRepository = $organizationRepository;
+class SequenceType extends AbstractType {
+    public function __construct() {
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
+    public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
             ->add('simulator')
             ->add('plot')
@@ -46,10 +28,16 @@ class SequenceType extends AbstractType
                 'attr'=>['class'=>'btn btn-success']
             ]);
 
+        $builder->add('runs', CollectionType::class, [
+            'entry_type' => RunType::class,
+            'label'=>'rain_intensity',
+            'mapped' => true,
+            'prototype' => true,
+            'allow_add' => true,
+            'allow_delete' => true,
+        ]);
     }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
+    public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults([
             'data_class' => Sequence::class,
         ]);

@@ -15,6 +15,7 @@ use App\Entity\Sequence;
 use App\Form\MeasurementType;
 use App\Form\RecordType;
 use App\Form\RunType;
+use App\Form\SequenceBasicType;
 use App\Form\SequenceType;
 use App\Repository\MeasurementRepository;
 use App\Repository\RunRepository;
@@ -55,8 +56,8 @@ class SequenceController extends AbstractController {
     public function edit(EntityManagerInterface $entityManager, Request $request, SequenceService $sequenceService, RunService $runService, RunRepository $runRepository, MeasurementRepository $measurementRepository, int $id = null) {
         if ($id) {
             $sequence = $sequenceService->getSequenceById($id);
-
-            $formRun[0] = $this->createForm(RunType::class, new Run());
+            $sequenceForm = $this->createForm(SequenceType::class, $sequence);
+            /*$formRun[0] = $this->createForm(RunType::class, new Run());
             foreach ($sequence->getRuns() as $run) {
                 $formRun[$run->getId()] = $this->createForm(RunType::class, $run);
             }
@@ -101,18 +102,16 @@ class SequenceController extends AbstractController {
                     return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
                 }
 
-            }
+            }*/
 
-            return $this->render('sequence/edit.html.twig', [
+            return $this->render('sequence/editSequence.html.twig', [
                 'header' => $sequenceService->getSequenceHeader($sequence),
                 'runs' => $sequenceService->getRunsArray($sequence),
-                'formsRun' => $formRun,
-                'formMeasurement' => $formMeasurementNew->createView(),
-                'formRecord' => $formRecordNew->createView(),
+                'form'=>$sequenceForm->createView()
             ]);
 
         } else {
-            $form = $this->createForm(SequenceType::class, new Sequence());
+            $form = $this->createForm(SequenceBasicType::class, new Sequence());
             if ($request->isMethod('POST')) {
                 $form->handleRequest($request);
                 if ($form->isSubmitted()) {

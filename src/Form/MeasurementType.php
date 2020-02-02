@@ -6,6 +6,7 @@ namespace App\Form;
 
 use App\Entity\Measurement;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -25,6 +26,15 @@ class MeasurementType extends AbstractType {
                 'attr' => ['class' => 'btn btn-success'],
                 'label' => 'save'
             ]);
+
+        $builder->add('records', CollectionType::class, [
+            'entry_type' => RecordType::class,
+            'label'=>'record',
+            'mapped' => true,
+            'prototype' => true,
+            'allow_add' => true,
+            'allow_delete' => true,
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver) {

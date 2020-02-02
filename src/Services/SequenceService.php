@@ -80,10 +80,10 @@ class SequenceService {
                     'description'=> $measurement->getDescriptionCZ(),
                     'records'=>$measurement->getRecords()
                 ];
-                $measurementsArray[]=$measurementArray;
+                $measurementsArray[$measurement->getId()]=$measurementArray;
             }
             $runArray['measurements'] = $measurementsArray;
-            $runsArray[]=$runArray;
+            $runsArray[$run->getId()]=$runArray;
         }
         return $runsArray;
     }

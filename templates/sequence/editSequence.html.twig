@@ -1,6 +1,5 @@
 {% extends 'base.html.twig' %}
 {% import 'macros.twig' as macros %}
-
 {% block body %}
     <section class="content-header">
         <h1>
@@ -13,34 +12,36 @@
     </section>
 
     <section class="content">
+        {{ form_start(form) }}
         <div class="box box-solid">
-            <div class="panel box box-solid">
-                <div class="box-body">
-                    <dl class="dl-horizontal">
-                        <dt>agrotechnologie:</dt>
-                        <dd>{{ header['agrotechnology'] }}</dd>
-                        <dt>počet dnů od poslední agro-operace:</dt>
-                        <dd>{{ header['last_agrooperation_days'] }}</dd>
-                        <dt>canopy cover:</dt>
-                        <dd>{{ header['canopy_cover'] }}</dd>
-                        <dt>BBCH plodiny:</dt>
-                        <dd>{{ header['crop_bbch'] }}</dd>
-                    </dl>
-                    {% set fr = formsRun[0].createView() %}
-                    {% include "forms/runTypeModal.html.twig" with fr%}
-                </div>
+            <div class="box-body">
+                <dl class="dl-horizontal">
+                    <dt>agrotechnologie:</dt>
+                    <dd>{{ header['agrotechnology'] }}</dd>
+                    <dt>počet dnů od poslední agro-operace:</dt>
+                    <dd>{{ header['last_agrooperation_days'] }}</dd>
+                    <dt>canopy cover:</dt>
+                    <dd>{{ header['canopy_cover'] }}</dd>
+                    <dt>BBCH plodiny:</dt>
+                    <dd>{{ header['crop_bbch'] }}</dd>
+                </dl>
+                {% include "forms/sequenceType.html.twig" %}
             </div>
         </div>
+        {% include "forms/runTypeModalNew.html.twig" %}
 
-        {% for run in runs %}
+
+        {% for runForm in form.runs.children %}
+            {% set runArray = runs[runForm.vars.value.getId() ] %}
             <div class="row">
                 <div class="col-xs-12">
                     <h2 class="page-header">
-                        {{ run['run_type'] }}
+                        {{ runArray['run_type'] }}
                     </h2>
-                    {% set fr = formsRun[run.id].createView() %}
-                    {% include "forms/runTypeModal.html.twig" with fr%}
+                    {% include "forms/runTypeModalEdit.html.twig" %}
                 </div>
+            </div>
+            <div class="row">
                 <div class="col-md-4">
                     <div class="panel box box-solid">
                         <div class="box-body">
@@ -48,59 +49,38 @@
                                 <div class="col-md-12">
                                     <dl class="dl-horizontal">
                                         <dt>{% trans %}rain_start{% endtrans %}:</dt>
-                                        <dd>{{ run['rain_start'] }}</dd>
+                                        <dd>{{ runArray['rain_start'] }}</dd>
                                         <dt>{% trans %}runoff_start{% endtrans %}:</dt>
-                                        <dd>{{ run['runoff_start'] }}</dd>
+                                        <dd>{{ runArray['runoff_start'] }}</dd>
                                         <dt>{% trans %}rain_intensity{% endtrans %}:</dt>
-                                        <dd>{{ run['rain_intensity'] }}</dd>
+                                        <dd>{{ runArray['rain_intensity'] }}</dd>
                                         <dt>{% trans %}init_moisture{% endtrans %}:</dt>
-                                        <dd>{{ run['init_moisture'] }}</dd>
-                                        {{ macros.soilsample('soil_sample_corq', run['soil_sample_corq'], run['soil_sample_corq_assignment']) }}
-                                        {{ macros.soilsample('soil_sample_bulk', run['soil_sample_bulk'], run['soil_sample_bulk_assignment']) }}
-                                        {{ macros.soilsample('soil_sample_texture', run['soil_sample_texture'], run['soil_sample_texture_assignment']) }}
+                                        <dd>{{ runArray['init_moisture'] }}</dd>
+                                        {{ macros.soilsample('soil_sample_corq', runArray['soil_sample_corq'], runArray['soil_sample_corq_assignment']) }}
+                                        {{ macros.soilsample('soil_sample_bulk', runArray['soil_sample_bulk'], runArray['soil_sample_bulk_assignment']) }}
+                                        {{ macros.soilsample('soil_sample_texture', runArray['soil_sample_texture'], runArray['soil_sample_texture_assignment']) }}
                                         <dt>raw data:</dt>
                                         <dd><a>file.zip <i class="fa fa-download"></i></a>, <a>file2.zip
                                                 <i class="fa fa-download"></i></a></dd>
                                     </dl>
-                                    <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#measurement-1">
-                                        {% trans %}add measurement{% endtrans %}
-                                    </button>
+                                    {% include "forms/measurementTypeModalNew.html.twig" %}
                                     <button class="btn btn-primary btn-sm">{% trans %}save csv{% endtrans %}</button>
-                                    <div class="modal fade" id="measurement-1">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                {% include "forms/measurementType.html.twig" %}
-                                            </div>
-                                            <!-- /.modal-content -->
-                                        </div>
-                                        <!-- /.modal-dialog -->
-                                    </div>
                                     <!-- /.modal -->
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+
                 <div class="col-md-8">
-                    {% for measurement in run['measurements'] %}
+                    {% for formMeasurement in runForm.measurements %}
+                        {% set measurementArray = runArray.measurements[formMeasurement.vars.value.getId()] %}
                         <div class="row">
                             <div class="col-md-12">
-                                <h4>Data
-                                    <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#add-1">
-                                        Přidat
-                                    </button>
-                                </h4>
-                                <div class="modal fade" id="add-1">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            {% include "forms/recordType.html.twig" %}
-                                        </div>
-                                        <!-- /.modal-content -->
-                                    </div>
-                                    <!-- /.modal-dialog -->
-                                </div>
+                                {% include "forms/recordTypeModalNew.html.twig" %}
                                 <div class="box-group" id="accordion">
-                                    {% for record in measurement['records'] %}
+                                    {% for record in measurementArray['records'] %}
                                         <div class="panel box box-solid">
                                             <div class="box-header">
                                                 <h4 class="box-title">
@@ -132,8 +112,6 @@
                                                                 [{{ record.getUnit().getUnit() }}]
                                                             </th>
                                                         </tr>
-
-
                                                         {% for data in record.getData() %}
                                                             <tr>
                                                                 <td>{{ data.getTime().format("H:i:s") }}</td>
@@ -153,35 +131,9 @@
                         </div>
                     {% endfor %}
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <i class="fa fa-bar-chart-o"></i>
-                            <h3 class="box-title">{{ run['run_type'] }}</h3>
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                                    <i class="fa fa-minus"></i>
-                                </button>
-                                <button type="button" class="btn btn-box-tool" data-widget="remove">
-                                    <i class="fa fa-times"></i></button>
-                            </div>
-                        </div>
-                        <div class="box-body">
-                            <div id="chart-run-{{ run['id'] }}" style="height: 300px;" data-datalink="{{ path('chartData') }}"></div>
-                            <script type="text/javascript">
-                                google.charts.load('current', {'packages': ['corechart']});
-                                google.charts.setOnLoadCallback(drawChart);
-                                drawChart("chart-run-{{ run['id'] }}", [5, 210, 330]);
-                            </script>
-                        </div>
-                        <!-- /.box-body-->
-                    </div>
-                </div>
+
             </div>
         {% endfor %}
-        <hr class="divider"/>
+        {{ form_end(form,{'render_rest': false}) }}
     </section>
-
 {% endblock %}

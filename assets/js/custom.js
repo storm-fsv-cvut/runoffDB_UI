@@ -19,9 +19,10 @@ $(document).ready(function (e) {
     });
 
     $("[data-change-label]").each((i,e)=>{
-        $('[data-depends="'+$(e).attr('name')+'"]').text($(e).find("option:selected").text());
+        let parentModal = $(e).parents('.modal');
+        $(parentModal).find('[data-depends="'+$(e).attr('name')+'"]').text($(e).find("option:selected").text());
         $(e).change((event)=>{
-            $('[data-depends="'+$(e).attr('name')+'"]').text($(e).find("option:selected").text());
+            $(parentModal).find('[data-depends="'+$(e).attr('name')+'"]').text($(e).find("option:selected").text());
         })
     });
 

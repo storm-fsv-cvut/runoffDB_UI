@@ -100,6 +100,14 @@ class RunType extends AbstractType {
             'allow_delete' => true,
         ]);
 
+        $builder->add('measurements', CollectionType::class, [
+            'entry_type' => MeasurementType::class,
+            'label'=>'measurement',
+            'prototype' => true,
+            'allow_add' => true,
+            'allow_delete' => true,
+        ]);
+
 
     }
 

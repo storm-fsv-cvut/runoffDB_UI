@@ -1,11 +1,9 @@
-{% set formRun = fr %}
-<button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#runType{{ formRun.vars.value.getId() }}">
+<button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#runType">
     {% trans %}add run{% endtrans %}
 </button>
-<div class="modal fade" id="runType{{ formRun.vars.value.getId() }}">
+<div class="modal fade" id="runType">
     <div class="modal-dialog">
         <div class="modal-content">
-            {{ form_start(formRun) }}
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
@@ -14,23 +12,23 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="form-group col-md-6">
-                        {{ form_row(formRun.runType) }}
+                        {{ form_row(form.runs.vars.prototype.runType) }}
                     </div>
                     <div class="form-group col-md-6">
-                        {{ form_row(formRun.precedingPrecipitation) }}
+                        {{ form_row(form.runs.vars.prototype.precedingPrecipitation) }}
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-12">
-                        {{ form_row(formRun.datetime) }}
+                        {{ form_row(form.runs.vars.prototype.datetime) }}
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        {{ form_row(formRun.pondingStart) }}
+                        {{ form_row(form.runs.vars.prototype.pondingStart) }}
                     </div>
                     <div class="form-group col-md-6">
-                        {{ form_row(formRun.runoffStart) }}
+                        {{ form_row(form.runs.vars.prototype.runoffStart) }}
                     </div>
                 </div>
                 <div class="row">
@@ -38,18 +36,18 @@
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs">
                                 <li class="active">
-                                    <a href="#tab_1" data-toggle="tab" aria-expanded="true">{{ form_label(formRun.noteCZ) }}</a>
+                                    <a href="#tab_1" data-toggle="tab" aria-expanded="true">{{ form_label(form.runs.vars.prototype.noteCZ) }}</a>
                                 </li>
                                 <li class="">
-                                    <a href="#tab_2" data-toggle="tab" aria-expanded="false">{{ form_label(formRun.noteEN) }}</a>
+                                    <a href="#tab_2" data-toggle="tab" aria-expanded="false">{{ form_label(form.runs.vars.prototype.noteEN) }}</a>
                                 </li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="tab_1">
-                                    {{ form_widget(formRun.noteCZ) }}
+                                    {{ form_widget(form.runs.vars.prototype.noteCZ) }}
                                 </div>
                                 <div class="tab-pane" id="tab_2">
-                                    {{ form_widget(formRun.noteEN) }}
+                                    {{ form_widget(form.runs.vars.prototype.noteEN) }}
                                 </div>
                             </div>
                         </div>
@@ -58,87 +56,80 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            {{ form_row(formRun.rawData) }}
+                            {{ form_row(form.runs.vars.prototype.rawData) }}
                             <p class="help-block">Max. 32MB, *.zip</p>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        {{ form_row(formRun.soilSampleBulk) }}
+                        {{ form_row(form.runs.vars.prototype.soilSampleBulk) }}
                     </div>
                     <div class="form-group col-md-6">
-                        {{ form_row(formRun.bulkAssignmentType) }}
+                        {{ form_row(form.runs.vars.prototype.bulkAssignmentType) }}
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        {{ form_row(formRun.soilSampleTexture) }}
+                        {{ form_row(form.runs.vars.prototype.soilSampleTexture) }}
                     </div>
                     <div class="form-group col-md-6">
-                        {{ form_row(formRun.textureAssignmentType) }}
+                        {{ form_row(form.runs.vars.prototype.textureAssignmentType) }}
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        {{ form_row(formRun.soilSampleCorq) }}
+                        {{ form_row(form.runs.vars.prototype.soilSampleCorq) }}
                     </div>
                     <div class="form-group col-md-6">
-                        {{ form_row(formRun.corqAssignmentType) }}
+                        {{ form_row(form.runs.vars.prototype.corqAssignmentType) }}
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6">
-                        {{ form_label(formRun.rainIntensityData) }}
-                        <table class="table table-bordered">
-                            <tr>
-                                <td data-prototype="{{ form_widget(formRun.rainIntensityData.vars.prototype.time)|e }}">
-                                    <i class="fa fa-clock-o"></i></td>
-                                <td data-prototype="{{ form_widget(formRun.rainIntensityData.vars.prototype.value)|e }}">
-                                    mm.h-1
-                                </td>
-                                <td>
-                                    <a class="text-danger removeRow" style="display: none;"><i class="fa fa-minus"></i></a>
-                                    <a class="text-success addFormRow"><i class="fa fa-plus"></i></a>
-                                </td>
-                            </tr>
-                            {% for rainIntensityDataField in formRun.rainIntensityData %}
-                                <li>
-                                    {{ form_errors(rainIntensityDataField) }}
-                                    {{ form_widget(rainIntensityDataField) }}
-                                </li>
-                            {% endfor %}
-                        </table>
-                    </div>
-                    <div class="col-md-6">
-                        {{ form_label(formRun.initMoistureData) }}
-                        <table class="table table-bordered">
-                            <tr>
-                                <td data-prototype="{{ form_widget(formRun.initMoistureData.vars.prototype.time)|e }}">
-                                    <i class="fa fa-clock-o"></i></td>
-                                <td data-prototype="{{ form_widget(formRun.initMoistureData.vars.prototype.value)|e }}">
-                                    mm.h-1
-                                </td>
-                                <td>
-                                    <a class="text-danger removeRow" style="display: none;"><i class="fa fa-minus"></i></a>
-                                    <a class="text-success addFormRow"><i class="fa fa-plus"></i></a>
-                                </td>
-                            </tr>
 
+                    <div class="col-md-6">
+                        {{ form_label(form.runs.vars.prototype.rainIntensityData) }}
+                        <table class="table table-bordered">
+                            <tr>
+                                <td data-prototype='{{ form_widget(form.runs.vars.prototype.rainIntensityData.vars.prototype.time) }}'>
+                                    <i class="fa fa-clock-o"></i></td>
+                                <td data-prototype='{{ form_widget(form.runs.vars.prototype.rainIntensityData.vars.prototype.value) }}'>
+                                    mm.h-1
+                                </td>
+                                <td>
+                                    <a class="text-danger removeRow" style="display: none;"><i class="fa fa-minus"></i></a>
+                                    <a class="text-success addFormRow"><i class="fa fa-plus"></i></a>
+                                </td>
+                            </tr>
                         </table>
                     </div>
+                    <div class="col-md-6">
+                        {{ form_label(form.runs.vars.prototype.initMoistureData) }}
+                        <table class="table table-bordered">
+                            <tr>
+                                <td data-prototype='{{ form_widget(form.runs.vars.prototype.initMoistureData.vars.prototype.time) }}'>
+                                    <i class="fa fa-clock-o"></i></td>
+                                <td data-prototype='{{ form_widget(form.runs.vars.prototype.initMoistureData.vars.prototype.value) }}'>
+                                    mm.h-1
+                                </td>
+                                <td>
+                                    <a class="text-danger removeRow" style="display: none;"><i class="fa fa-minus"></i></a>
+                                    <a class="text-success addFormRow"><i class="fa fa-plus"></i></a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
                 </div>
             </div>
             <div class="modal-footer">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            {{ form_row(formRun.save) }}
                         </div>
                     </div>
                 </div>
             </div>
-            {{ form_end(formRun) }}
         </div>
         <!-- /.modal-content -->
     </div>
