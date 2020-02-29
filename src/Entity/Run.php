@@ -111,12 +111,12 @@ class Run
     private $soilSamples;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Measurement", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Measurement", cascade={"persist","remove"})
      */
     private $initMoistureMeasurement;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Measurement", mappedBy="run", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Measurement", mappedBy="run", cascade={"persist","remove"})
      */
     private $measurements;
 
@@ -124,6 +124,10 @@ class Run
      * @ORM\Column(type="time", nullable=true)
      */
     private $pondingStart;
+
+    public function __toString() {
+        return $this->sequence." - #".$this->getId();
+    }
 
     public function __construct()
     {
@@ -269,7 +273,7 @@ class Run
         return $this->datetime;
     }
 
-    public function setDatetime(\DateTimeInterface $datetime): self
+    public function setDatetime(?\DateTimeInterface $datetime): self
     {
         $this->datetime = $datetime;
 
@@ -305,7 +309,7 @@ class Run
         return $this->runoffStart;
     }
 
-    public function setRunoffStart(\DateTimeInterface $runoffStart): self
+    public function setRunoffStart(?\DateTimeInterface $runoffStart): self
     {
         $this->runoffStart = $runoffStart;
 

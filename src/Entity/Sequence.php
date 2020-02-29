@@ -5,10 +5,8 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Dtc\GridBundle\Annotation as Grid;
 
 /**
- * @Grid\Grid(actions={@Grid\EditAction()})
  * @ORM\Entity(repositoryClass="App\Repository\SequenceRepository")
  */
 class Sequence {
@@ -61,6 +59,9 @@ class Sequence {
      */
     private $runs;
 
+    public function __toString(): string {
+        return $this->getDate()->format("d.m.Y") . " - " . $this->getPlot()->getLocality()->getName() . " - " . $this->getPlot()->getCrop();
+    }
 
     public function __construct() {
         $this->projects = new ArrayCollection();
@@ -187,7 +188,4 @@ class Sequence {
         return $this;
     }
 
-    public function getLabel() {
-        return $this->getDate() . " - " . $this->getPlot()->getLocality()->getName() . " - " . $this->getPlot()->getCrop();
-    }
 }

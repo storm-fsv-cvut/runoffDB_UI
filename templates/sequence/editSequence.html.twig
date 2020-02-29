@@ -1,6 +1,10 @@
 {% extends 'base.html.twig' %}
 {% import 'macros.twig' as macros %}
 {% block body %}
+    <script type="text/javascript">
+        google.charts.load('current', {'packages': ['corechart']});
+    </script>
+
     <section class="content-header">
         <h1>
             {{ header['date'] }} - {{ header['locality'] }} - {{ header['crop'] }}
@@ -11,9 +15,14 @@
         </ol>
     </section>
 
+
+
     <section class="content">
         {{ form_start(form) }}
         <div class="box box-solid">
+            <div class="box-header">
+                {% include "forms/sequenceTypeModalEdit.html.twig" %}
+            </div>
             <div class="box-body">
                 <dl class="dl-horizontal">
                     <dt>agrotechnologie:</dt>
@@ -25,11 +34,13 @@
                     <dt>BBCH plodiny:</dt>
                     <dd>{{ header['crop_bbch'] }}</dd>
                 </dl>
-                {% include "forms/sequenceType.html.twig" %}
+            </div>
+            <div class="box-footer">
+                <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#runType">
+                    {% trans %}add run{% endtrans %}
+                </button>
             </div>
         </div>
-        {% include "forms/runTypeModalNew.html.twig" %}
-
 
         {% for runForm in form.runs.children %}
             {% set runArray = runs[runForm.vars.value.getId() ] %}
@@ -38,12 +49,30 @@
                     <h2 class="page-header">
                         {{ runArray['run_type'] }}
                     </h2>
-                    {% include "forms/runTypeModalEdit.html.twig" %}
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="panel box box-solid">
+                        <div class="box-header">
+                            <div class="box-tools pull-right">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li role="presentation">
+                                            <a role="menuitem" data-toggle="modal" data-target="#runType{{ runForm.vars.value.getId() }}" tabindex="-1" href="javascript:;">{% trans %}edit{% endtrans %}</a>
+                                        </li>
+                                        <li role="presentation" class="divider"></li>
+                                        <li role="presentation">
+                                            <a role="menuitem" tabindex="-1" href="{{ path('sequence', {id:header['id'],delete_run:runForm.vars.value.getId()}) }}">{% trans %}delete{% endtrans %}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                {% include "forms/runTypeModalEdit.html.twig" %}
+                            </div>
+                        </div>
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-md-12">
@@ -63,24 +92,53 @@
                                         <dd><a>file.zip <i class="fa fa-download"></i></a>, <a>file2.zip
                                                 <i class="fa fa-download"></i></a></dd>
                                     </dl>
-                                    {% include "forms/measurementTypeModalNew.html.twig" %}
-                                    <button class="btn btn-primary btn-sm">{% trans %}save csv{% endtrans %}</button>
-                                    <!-- /.modal -->
                                 </div>
                             </div>
+                        </div>
+                        <div class="box-footer">
+                            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-parent="{{ runArray['id'] }}" data-target="#measurement">
+                                {% trans %}add measurement{% endtrans %}
+                            </button>
                         </div>
                     </div>
                 </div>
 
-
-                <div class="col-md-8">
+                <div class="col-md-6 records">
                     {% for formMeasurement in runForm.measurements %}
                         {% set measurementArray = runArray.measurements[formMeasurement.vars.value.getId()] %}
                         <div class="row">
                             <div class="col-md-12">
-                                {% include "forms/recordTypeModalNew.html.twig" %}
+                                <h4>
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                            Data <span class="caret"></span>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li role="presentation">
+                                                <a role="menuitem" tabindex="-1" href="javascript:;" data-toggle="modal" data-parent="{{ measurementArray['id'] }}" data-target="#record">{% trans %}add record{% endtrans %}</a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a role="menuitem" data-toggle="modal" data-target="#measurement{{ formMeasurement.vars.value.getId() }}" tabindex="-1" href="#">{% trans %}edit{% endtrans %}</a>
+                                            </li>
+                                            <li role="presentation" class="divider"></li>
+                                            <li role="presentation">
+                                                <a role="menuitem" tabindex="-1" href="{{ path('sequence', {id:header['id'],delete_measurement:formMeasurement.vars.value.getId()}) }}">{% trans %}delete{% endtrans %}</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </h4>
+                                {% include "forms/measurementTypeModalEdit.html.twig" %}
+                                <p>
+                                    {% if measurementArray['description'] %}
+                                        {{ measurementArray['description'] }}
+                                    {% endif %}
+                                </p>
+                                {% if measurementArray['note'] %}
+                                    <i>* {{ measurementArray['note'] }}</i>
+                                {% endif %}
                                 <div class="box-group" id="accordion">
-                                    {% for record in measurementArray['records'] %}
+                                    {% for formRecord in formMeasurement.records %}
+                                        {% set record = formRecord.vars.value %}
                                         <div class="panel box box-solid">
                                             <div class="box-header">
                                                 <h4 class="box-title">
@@ -90,15 +148,26 @@
                                                     <small>{{ record.getRecordType().getNameCZ() }}</small>
                                                     <span class="badge bg-primary">#{{ record.getId() }}</span>
                                                     {% for sourceRecord in record.getSourceRecords() %}
-                                                        <span class="badge bg-primary">{% trans %}derived from{% endtrans %} #{{ sourceRecord.getId()}}</span>
+                                                        <span class="badge bg-primary">{% trans %}derived from{% endtrans %} #{{ sourceRecord.getId() }}</span>
                                                     {% endfor %}
                                                 </h4>
                                                 <div class="box-tools pull-right">
-                                                    <input type="checkbox" class="icheckbox_flat-green">
+                                                    <input type="checkbox" class="icheckbox_flat-green" data-toggle="chart" data-target="#chart-run-{{ runArray['id'] }}" data-run="{{ runArray['id'] }}" data-record="{{ record.getId() }}">
+                                                    <div class="dropdown inline">
+                                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                                            <span class="caret"></span>
+                                                        </a>
+                                                        <ul class="dropdown-menu">
+                                                            <li role="presentation">
+                                                                <a role="menuitem" tabindex="-1" href="{{ path('sequence', {id:header['id'],delete_record:record.getId()}) }}">{% trans %}delete{% endtrans %}</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div id="record-{{ record.getId() }}" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
                                                 <div class="box-body">
+                                                    {#% include "forms/recordTypeModalEdit.html.twig" %#}
                                                     <p><i>{{ record.getNoteCZ() }}</i></p>
                                                     <table class="table table-bordered">
                                                         <tr>
@@ -115,8 +184,12 @@
                                                         {% for data in record.getData() %}
                                                             <tr>
                                                                 <td>{{ data.getTime().format("H:i:s") }}</td>
-                                                                {% if record.getRelatedValueUnit() is not same as(null) %}
-                                                                    <td>{{ data.getRelatedValue() }} {{ record.getUnit().getRelatedValueUnit() }}</td>
+                                                                {% if  record.getRelatedValueUnit() is not same as(null) %}
+                                                                    {% if data.getRelatedValue() is not same as(null) %}
+                                                                        <td>{{ data.getRelatedValue() }} {{ record.getRelatedValueUnit().getUnit() }}</td>
+                                                                    {% else %}
+                                                                        <td></td>
+                                                                    {% endif %}
                                                                 {% endif %}
                                                                 <td>{{ data.getValue() }} {{ record.getUnit().getUnit() }}</td>
                                                             </tr>
@@ -127,13 +200,31 @@
                                         </div>
                                     {% endfor %}
                                 </div>
+
                             </div>
                         </div>
                     {% endfor %}
                 </div>
-
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box box-primary chart-box">
+                        <div class="box-header with-border">
+                            <i class="fa fa-bar-chart-o"></i>
+                            <h3 class="box-title">{{ runArray['run_type'] }}</h3>
+                        </div>
+                        <div class="box-body collapse">
+                            <div id="chart-run-{{ runArray['id'] }}" style="height: 300px;" data-datalink="{{ path('chartData') }}"></div>
+                        </div>
+                        <!-- /.box-body-->
+                    </div>
+                </div>
             </div>
         {% endfor %}
         {{ form_end(form,{'render_rest': false}) }}
     </section>
+
+    {% include "forms/measurementTypeModalNew.html.twig" %}
+    {% include "forms/recordTypeModalNew.html.twig" %}
+    {% include "forms/runTypeModalNew.html.twig" %}
 {% endblock %}

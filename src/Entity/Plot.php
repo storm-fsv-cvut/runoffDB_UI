@@ -5,10 +5,8 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Dtc\GridBundle\Annotation as Grid;
 
 /**
- * @Grid\Grid(actions={@Grid\ShowAction(), @Grid\DeleteAction()})
  * @ORM\Entity(repositoryClass="App\Repository\PlotRepository")
  */
 class Plot implements DefinitionEntityInterface
@@ -193,18 +191,6 @@ class Plot implements DefinitionEntityInterface
     public function setPlotSlope(float $plotSlope): self
     {
         $this->plotSlope = $plotSlope;
-
-        return $this;
-    }
-
-    public function getNote(): ?string
-    {
-        return $this->note;
-    }
-
-    public function setNote(?string $note): self
-    {
-        $this->note = $note;
 
         return $this;
     }

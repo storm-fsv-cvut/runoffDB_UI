@@ -1,7 +1,4 @@
-<button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#runType{{ runForm.vars.value.getId() }}">
-    {% trans %}edit run{% endtrans %}
-</button>
-<div class="modal fade" id="runType{{ runForm.vars.value.getId() }}">
+<div class="modal fade" data-collection='runs' id="runType{{ runForm.vars.value.getId() }}">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -123,12 +120,10 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                        </div>
-                    </div>
-                </div>
+                <button type="button" class="btn btn-warning pull-left" data-dismiss="modal">
+                    {% trans %}close{% endtrans %}
+                </button>
+                {{ form_row(runForm.save) }}
             </div>
         </div>
         <!-- /.modal-content -->

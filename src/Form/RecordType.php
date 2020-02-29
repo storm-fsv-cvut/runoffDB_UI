@@ -21,11 +21,11 @@ class RecordType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('noteCZ',TextareaType::class,['label'=>'noteCZ'])
-            ->add('noteEN',TextareaType::class,['label'=>'noteEN'])
-            ->add('isTimeline',CheckboxType::class,['label'=>'isTimeline','data'=>true])
-            ->add('measurement_id',HiddenType::class,['mapped'=>false])
+            ->add('noteCZ',TextareaType::class,['label'=>'noteCZ','required'=>false])
+            ->add('noteEN',TextareaType::class,['label'=>'noteEN','required'=>false])
+            ->add('isTimeline',CheckboxType::class,['label'=>'isTimeline','data'=>true,'required'=>false])
             ->add('recordType')
+            ->add('parent_id', HiddenType::class, ['mapped' => false])
             ->add('unit', EntityType::class, ['class'=>Unit::class,'label'=>'unit','attr'=>['data-change-label'=>true]])
             ->add('relatedValueUnit', EntityType::class, ['required'=>false,'class'=>Unit::class, 'placeholder' => "",'label'=>'relatedValueUnit','attr'=>['data-change-label'=>true]])
             ->add('sourceRecords', EntityType::class, ['required'=>false,'class'=>Record::class,'label'=>'sourceRecords', 'multiple'=>true])
@@ -40,13 +40,14 @@ class RecordType extends AbstractType
                 'label'=>'save'
             ]);
 
-        $builder->add('data', CollectionType::class, [
+        $builder->add('datas', CollectionType::class, [
             'entry_type' => DataType::class,
             'label'=>'data',
-            'mapped' => false,
+            'mapped' => true,
             'prototype' => true,
             'allow_add' => true,
             'allow_delete' => true,
+            'required'=>false
         ]);
     }
 

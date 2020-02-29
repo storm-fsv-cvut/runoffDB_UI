@@ -17,11 +17,11 @@ class MeasurementType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-            ->add('run_id', HiddenType::class,['mapped'=>false])
-            ->add('descriptionCZ', TextareaType::class, ['label' => 'descriptionCZ'])
-            ->add('descriptionEN', TextareaType::class, ['label' => 'descriptionEN'])
-            ->add('noteCZ', TextareaType::class, ['label' => 'noteCZ'])
-            ->add('noteEN', TextareaType::class, ['label' => 'noteEN'])
+            ->add('descriptionCZ', TextareaType::class, ['label' => 'descriptionCZ','required'=>false])
+            ->add('parent_id', HiddenType::class, ['mapped' => false])
+            ->add('descriptionEN', TextareaType::class, ['label' => 'descriptionEN','required'=>false])
+            ->add('noteCZ', TextareaType::class, ['label' => 'noteCZ','required'=>false])
+            ->add('noteEN', TextareaType::class, ['label' => 'noteEN','required'=>false])
             ->add('save', SubmitType::class, [
                 'attr' => ['class' => 'btn btn-success'],
                 'label' => 'save'
@@ -34,6 +34,7 @@ class MeasurementType extends AbstractType {
             'prototype' => true,
             'allow_add' => true,
             'allow_delete' => true,
+            'required'=>false
         ]);
     }
 

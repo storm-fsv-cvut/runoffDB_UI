@@ -24,7 +24,7 @@ class SequenceType extends AbstractType {
             ->add('cropBBCH')
             ->add('canopyCover')
             ->add('cropCondition')
-            ->add('continue', SubmitType::class,[
+            ->add('save', SubmitType::class,[
                 'attr'=>['class'=>'btn btn-success']
             ]);
 

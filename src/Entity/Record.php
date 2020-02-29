@@ -68,7 +68,7 @@ class Record {
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Data", mappedBy="record", cascade={"persist"})
      */
-    private $data;
+    private $datas;
 
     public function __toString() {
         return $this->getId()."";
@@ -77,7 +77,7 @@ class Record {
     public function __construct() {
         $this->sourceRecords = new ArrayCollection();
         $this->relatedRecords = new ArrayCollection();
-        $this->data = new ArrayCollection();
+        $this->datas = new ArrayCollection();
     }
 
     public function getId(): ?int {
@@ -135,26 +135,31 @@ class Record {
         return $this;
     }
 
+    /**
+ * @return Collection|Data[]
+ */
+    public function getData(): Collection {
+        return $this->datas;
+    }
 
     /**
      * @return Collection|Data[]
      */
-    public function getData(): Collection {
-        return $this->data;
+    public function getDatas(): Collection {
+        return $this->getData();
     }
 
     public function addData(Data $data): self {
-        if (!$this->data->contains($data)) {
-            $this->data[] = $data;
+        if (!$this->datas->contains($data)) {
             $data->setRecord($this);
+            $this->datas[] = $data;
         }
         return $this;
     }
 
     public function removeData(Data $data): self {
-        if ($this->data->contains($data)) {
-            $this->data->removeElement($data);
-            // set the owning side to null (unless already changed)
+        if ($this->datas->contains($data)) {
+            $this->datas->removeElement($data);
             if ($data->getRecord() === $this) {
                 $data->setRecord(null);
             }

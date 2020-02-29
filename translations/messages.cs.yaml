@@ -1,14 +1,15 @@
 fullname: Name
 email: Email
 username: Login
-password: Password
-save: Save
+password: Heslo
+save: Uložit
 close: Zavřít
 new: New
-edit: Edit
-delete: Delete
+edit: Upravit
+delete: Smazat
 list: Seznam
 add: Přidat
+add record: Přidat data
 continue: Pokračovat
 setup: Nastavení
 App\Entity\Plot: Plot
@@ -76,4 +77,25 @@ relatedValueUnit: Veličina dalšího rozměru
 sourceRecords: Zdrojové záznamy
 relatedRecords: Jiné vztažené záznamy
 derived from: Odvozeno z
+label_next: Další
+label_previous: Předchozí
+Search: Hledat
+add plot: Přidat plochu
 
+name: Název
+established: Zasloženo
+plotWidth: Šířka plochy
+plotLength: Délka plochy
+plotSlope: Sklon
+Soil origin locality: Lokalita vzorku půdy
+Crop: Plodina
+Agrotechnology: Agrotechnologie
+
+dateSampled: Datum odebrání
+dateProcessed: Datum zpracování
+processedAt: Místo zpracování
+corg: CORQ
+moistureVperc: moistureVperc
+sampleDepthM: Hloubka odběru (m)
+texture: Textura
+locality: Lokalita

@@ -3,10 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Dtc\GridBundle\Annotation as Grid;
 
 /**
- * @Grid\Grid(actions={@Grid\EditAction()})
  * @ORM\Entity(repositoryClass="App\Repository\RunTypeRepository")
  */
 class RunType implements DefinitionEntityInterface

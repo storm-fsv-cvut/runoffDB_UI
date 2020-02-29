@@ -5,11 +5,9 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Dtc\GridBundle\Annotation as Grid;
 use Symfony\Component\Form\Form;
 
 /**
- * @Grid\Grid(actions={@Grid\ShowAction(), @Grid\DeleteAction()})
  * @ORM\Entity(repositoryClass="App\Repository\OrganizationRepository")
  */
 class Organization implements DefinitionEntityInterface

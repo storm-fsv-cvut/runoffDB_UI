@@ -87,7 +87,7 @@ class Project implements DefinitionEntityInterface
     }
 
     public function getLabel(): string {
-        // TODO: Implement getLabel() method.
+        return $this->getProjectName();
     }
 
     /**

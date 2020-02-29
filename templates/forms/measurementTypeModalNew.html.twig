@@ -1,8 +1,7 @@
-<button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#measurement-1">
-    {% trans %}add measurement{% endtrans %}
-</button>
-<div class="modal fade" id="measurement-1">
-    <div class="modal-dialog">
+<div class="modal fade appendToCollection" id="measurement">
+    {{ form_start(measurementForm) }}
+    {{ form_widget(measurementForm.parent_id) }}
+    <div class="modal-dialog" id="measurement">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -14,18 +13,18 @@
                     <div class="nav-tabs-custom">
                         <ul class="nav nav-tabs">
                             <li class="active">
-                                <a href="#run_{{ runArray['id'] }}_measurement_description_cz" data-toggle="tab" aria-expanded="true">{{ form_label(runForm.measurements.vars.prototype.descriptionCZ) }}</a>
+                                <a href="#measurement_description_cz" data-toggle="tab" aria-expanded="true">{{ form_label(measurementForm.descriptionCZ) }}</a>
                             </li>
                             <li class="">
-                                <a href="#run_{{ runArray['id'] }}_measurement_description_en" data-toggle="tab" aria-expanded="false">{{ form_label(runForm.measurements.vars.prototype.descriptionEN) }}</a>
+                                <a href="#measurement_description_en" data-toggle="tab" aria-expanded="false">{{ form_label(measurementForm.descriptionEN) }}</a>
                             </li>
                         </ul>
                         <div class="tab-content">
-                            <div class="tab-pane active" id="run_{{ runArray['id'] }}_measurement_description_cz">
-                                {{ form_widget(runForm.measurements.vars.prototype.descriptionCZ) }}
+                            <div class="tab-pane active" id="measurement_description_cz">
+                                {{ form_widget(measurementForm.descriptionCZ) }}
                             </div>
-                            <div class="tab-pane" id="run_{{ runArray['id'] }}_measurement_description_en">
-                                {{ form_widget(runForm.measurements.vars.prototype.descriptionEN) }}
+                            <div class="tab-pane" id="measurement_description_en">
+                                {{ form_widget(measurementForm.descriptionEN) }}
                             </div>
                         </div>
                     </div>
@@ -34,18 +33,18 @@
                     <div class="nav-tabs-custom">
                         <ul class="nav nav-tabs">
                             <li class="active">
-                                <a href="#run_{{ runArray['id'] }}_measurement_note_cz" data-toggle="tab" aria-expanded="true">{{ form_label(runForm.measurements.vars.prototype.noteCZ) }}</a>
+                                <a href="#measurement_note_cz" data-toggle="tab" aria-expanded="true">{{ form_label(measurementForm.noteCZ) }}</a>
                             </li>
                             <li class="">
-                                <a href="#run_{{ runArray['id'] }}_measurement_note_en" data-toggle="tab" aria-expanded="false">{{ form_label(runForm.measurements.vars.prototype.noteEN) }}</a>
+                                <a href="#measurement_note_en" data-toggle="tab" aria-expanded="false">{{ form_label(measurementForm.noteEN) }}</a>
                             </li>
                         </ul>
                         <div class="tab-content">
-                            <div class="tab-pane active" id="run_{{ runArray['id'] }}_measurement_note_cz">
-                                {{ form_widget(runForm.measurements.vars.prototype.noteCZ) }}
+                            <div class="tab-pane active" id="measurement_note_cz">
+                                {{ form_widget(measurementForm.noteCZ) }}
                             </div>
-                            <div class="tab-pane" id="run_{{ runArray['id'] }}_measurement_note_en">
-                                {{ form_widget(runForm.measurements.vars.prototype.noteEN) }}
+                            <div class="tab-pane" id="measurement_note_en">
+                                {{ form_widget(measurementForm.noteEN) }}
                             </div>
                         </div>
                     </div>
@@ -54,11 +53,13 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">
-                    Zavřít
+                    {% trans %}close{% endtrans %}
                 </button>
+                {{ form_widget(measurementForm.save) }}
             </div>
         </div>
         <!-- /.modal-content -->
     </div>
+    {{ form_end(form,{'render_rest': false}) }}
     <!-- /.modal-dialog -->
 </div>

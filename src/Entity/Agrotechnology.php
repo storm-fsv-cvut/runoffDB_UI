@@ -5,10 +5,8 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Dtc\GridBundle\Annotation as Grid;
 
 /**
- * @Grid\Grid(actions={@Grid\EditAction(), @Grid\DeleteAction()})
  * @ORM\Entity(repositoryClass="App\Repository\AgrotechnologyRepository")
  */
 class Agrotechnology implements DefinitionEntityInterface
@@ -55,6 +53,9 @@ class Agrotechnology implements DefinitionEntityInterface
      */
     private $managTyp;
 
+    public function __toString(): string {
+        return $this->getNameCZ();
+    }
 
     public function __construct()
     {

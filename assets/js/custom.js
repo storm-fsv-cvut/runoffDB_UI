@@ -1,9 +1,9 @@
 $(document).ready(function (e) {
-    $(".addFormRow").on('click',function (e) {
+    $(".addFormRow").on('click', function (e) {
         let table = $(this).parents('table');
         let rows = $(table).find('tr').length;
-        let tr =  $(this).parents('tr').clone();
-        $(tr).find("td").each(function (i,e) {
+        let tr = $(this).parents('tr').clone();
+        $(tr).find("td").each(function (i, e) {
             let prototype = $(e).data('prototype');
             if (prototype != undefined) {
                 let element = prototype.replace(/__name__/g, rows);
@@ -13,42 +13,82 @@ $(document).ready(function (e) {
         $(tr).appendTo(table);
         $(tr).find(".addFormRow").remove();
         $(tr).find(".removeRow").show();
-        $(tr).find(".removeRow").on('click',function (e) {
+        $(tr).find(".removeRow").on('click', function (e) {
             $(this).parents('tr').remove();
         });
     });
 
-    $("[data-change-label]").each((i,e)=>{
+    $("[data-change-label]").each((i, e) => {
         let parentModal = $(e).parents('.modal');
-        $(parentModal).find('[data-depends="'+$(e).attr('name')+'"]').text($(e).find("option:selected").text());
-        $(e).change((event)=>{
-            $(parentModal).find('[data-depends="'+$(e).attr('name')+'"]').text($(e).find("option:selected").text());
+        $(parentModal).find('[data-depends="' + $(e).attr('name') + '"]').text($(e).find("option:selected").text());
+        $(e).change((event) => {
+            $(parentModal).find('[data-depends="' + $(e).attr('name') + '"]').text($(e).find("option:selected").text());
         })
     });
 
-    $("input:file[data-validate]").change(function (){
+    $('[data-parent]').click(function (e) {
+        let modal = $($(this).data('target'));
+        $(modal).find('[name="' + $(modal).attr('id') + '[parent_id]"]').val($(this).data('parent'));
+    })
+
+    $(".modal.appendToCollection").on('show.bs.modal', function (e) {
+        let nr = $('[data-collection="' + $(this).data('append') + '"]').length;
+        $(this).find('input,submit,select,option,textarea').each(function (i, e) {
+            if ($(e).attr('name') != undefined) {
+                $(e).attr('name', $(e).attr('name').replace(/__name__/g, nr));
+            }
+        })
+    });
+
+    $('form.ajax').on('submit',function (e) {
+        e.preventDefault();
+        let data = new FormData(this);
+        var form = this;
+        $.ajax({
+            url: $(this).data('validate'),
+            type: 'POST',
+            data: data,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                if (data.error != undefined) {
+                    alert(data.error);
+                } else {
+                    if (data.id!='undefined') {
+                        let modal = $(form).parents('.modal');
+                        let select = $('[data-target="#'+$(modal).attr("id")+'"]').parents('.form-group').find('select');
+                        $(select).find('option:selected').prop("selected", false)
+                        $('<option value="'+data.id+'">'+data.label+'</option>').appendTo(select).prop("selected", true);
+                        $(modal).find('[data-dismiss]').click();
+                    }
+                }
+            }
+        });
+    })
+
+    $("input:file[data-validate]").change(function () {
         var form = $(this).parents("form");
         let data = new FormData(form[0]);
         $.ajax({
-            url : $(this).data('validate'),
-            type : 'POST',
-            data : data,
+            url: $(this).data('validate'),
+            type: 'POST',
+            data: data,
             processData: false,
             contentType: false,
-            success : function(data) {
+            success: function (data) {
                 if (data.error != undefined) {
                     alert(data.error);
                 } else {
                     let table = $(form).find('table');
-                    $(table).find("tr").each((i,e) => {
-                        if (i>0) {
+                    $(table).find("tr").each((i, e) => {
+                        if (i > 0) {
                             $(e).remove();
                         }
                     })
 
-                    for(i in data.data) {
+                    for (i in data.data) {
                         let rows = $(table).find('tr').length;
-                        let tr =  $(table).find('tr').first().clone();
+                        let tr = $(table).find('tr').first().clone();
                         $(tr).appendTo(table);
                         $(tr).find(".addFormRow").remove();
                         $(tr).find(".removeRow").show();
@@ -72,6 +112,17 @@ $(document).ready(function (e) {
             }
         });
     });
+
+    $("[data-toggle='chart']").on('change', function (event) {
+        var ids = [];
+        $(this).parents('.records').find("[data-toggle='chart']").each(function (i, e) {
+            if ($(e).is(':checked')) {
+                ids.push($(e).data('record'));
+            }
+        })
+
+        drawChart($($(this).data('target')), ids);
+    })
 })
 
 $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
@@ -79,37 +130,33 @@ $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
     radioClass: 'iradio_minimal-blue'
 })
 
-function drawChart(element_id, ids) {
-
+function drawChart(element, ids) {
     var data = new google.visualization.DataTable();
-    data.addColumn('timeofday', '');
-    data.addColumn('number', 'intenzita srážky [mm.h-1]');
-    data.addColumn('number', 'povrchový odtok [l.min-1]');
-
-    data.addRows([
-        [[0, 0, 0], 60, null],
-        [[1, 5, 30], 0, null],
-    ]);
+    var chart = new google.visualization.ComboChart(document.getElementById($(element).attr('id')));
 
     var options = {
-        vAxes: {0: {}, 1: {}},
-        series: {
-            0: {
-                type: 'steppedArea',
-                targetAxisIndex: 0
-            },
-            1: {
-                type: 'line',
-                targetAxisIndex: 1
-            },
-        },
         bar: {groupWidth: "100%"},
-        title: 'Suchá simulace',
         curveType: 'function',
         legend: {position: 'bottom'},
     };
 
-    var chart = new google.visualization.ComboChart(document.getElementById('line-chart'));
-
-    chart.draw(data, options);
+    $.ajax($(element).data('datalink'), {
+            method: 'GET',
+            data: {'ids':ids},
+            complete: function (xhr, status) {
+                if (xhr.responseText!='0') {
+                    $(element).parents('.chart-box').find('.box-body').collapse('show');
+                    let json = xhr.responseJSON;
+                    for (i in json[0]) {
+                        data.addColumn(json[0][i][0], json[0][i][1]);
+                    }
+                    data.addRows(json[1]);
+                    chart.draw(data, options);
+                } else {
+                    $(element).parents('.chart-box').find('.box-body').collapse('hide');
+                    chart.clearChart();
+                }
+            }
+        }
+    );
 }

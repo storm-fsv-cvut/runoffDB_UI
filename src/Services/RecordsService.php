@@ -34,7 +34,7 @@ class RecordsService {
                 ];
                 for ($i = 1; $i <= sizeof($records); $i++) {
                     if ($i == $counter) {
-                        $datarow[$i] = $data->getValue();
+                        $datarow[$i] = $data->getValue()+0;
                     } else {
                         $datarow[$i] = null;
                     }

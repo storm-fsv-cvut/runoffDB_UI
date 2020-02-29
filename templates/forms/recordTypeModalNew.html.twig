@@ -1,10 +1,8 @@
-<h4>Data
-    <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#add-record-measurement-{{ measurementArray.id }}">
-        {% trans %}add{% endtrans %}
-    </button>
-</h4>
-<div class="modal fade" id="add-record-measurement-{{ measurementArray.id }}">
-    <div class="modal-dialog">
+<div class="modal fade" id="record">
+    {{ form_start(recordForm) }}
+    {{ form_widget(recordForm.parent_id) }}
+
+    <div class="modal-dialog" id="record">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -15,15 +13,15 @@
 
                 <div class="row">
                     <div class="form-group col-sm-12">
-                        {{ form_row(formMeasurement.records.vars.prototype.recordType) }}
+                        {{ form_row(recordForm.recordType) }}
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-sm-6">
-                        {{ form_row(formMeasurement.records.vars.prototype.unit) }}
+                        {{ form_row(recordForm.unit) }}
                     </div>
                     <div class="form-group col-sm-6">
-                        {{ form_row(formMeasurement.records.vars.prototype.relatedValueUnit) }}
+                        {{ form_row(recordForm.relatedValueUnit) }}
                     </div>
                 </div>
                 <div class="row">
@@ -31,18 +29,18 @@
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs">
                                 <li class="active">
-                                    <a href="#{{ formMeasurement.records.vars.prototype.noteCZ.vars.id }}" data-toggle="tab" aria-expanded="true">{{ form_label(formMeasurement.records.vars.prototype.noteCZ) }}</a>
+                                    <a href="#{{ recordForm.noteCZ.vars.id }}" data-toggle="tab" aria-expanded="true">{{ form_label(recordForm.noteCZ) }}</a>
                                 </li>
                                 <li class="">
-                                    <a href="#{{ formMeasurement.records.vars.prototype.noteEN.vars.id }}" data-toggle="tab" aria-expanded="false">{{ form_label(formMeasurement.records.vars.prototype.noteEN) }}</a>
+                                    <a href="#{{ recordForm.noteEN.vars.id }}" data-toggle="tab" aria-expanded="false">{{ form_label(recordForm.noteEN) }}</a>
                                 </li>
                             </ul>
                             <div class="tab-content">
-                                <div class="tab-pane active" id="{{ formMeasurement.records.vars.prototype.noteCZ.vars.id }}">
-                                    {{ form_widget(formMeasurement.records.vars.prototype.noteCZ) }}
+                                <div class="tab-pane active" id="{{ recordForm.noteCZ.vars.id }}">
+                                    {{ form_widget(recordForm.noteCZ) }}
                                 </div>
-                                <div class="tab-pane" id="{{ formMeasurement.records.vars.prototype.noteEN.vars.id }}">
-                                    {{ form_widget(formMeasurement.records.vars.prototype.noteEN) }}
+                                <div class="tab-pane" id="{{ recordForm.noteEN.vars.id }}">
+                                    {{ form_widget(recordForm.noteEN) }}
                                 </div>
                             </div>
                         </div>
@@ -50,28 +48,28 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-sm-6">
-                        {{ form_row(formMeasurement.records.vars.prototype.sourceRecords) }}
+                        {{ form_row(recordForm.sourceRecords) }}
                     </div>
                     <div class="form-group col-sm-6">
-                        {{ form_row(formMeasurement.records.vars.prototype.relatedRecords) }}
+                        {{ form_row(recordForm.relatedRecords) }}
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-12">
                         <label>{% trans %}load data{% endtrans %}</label>
-                        {{ form_row(formMeasurement.records.vars.prototype.datafile) }}
+                        {{ form_row(recordForm.datafile) }}
                         <p class="help-block">Max. 32MB, *.csv</p>
                     </div>
                     <div class="col-md-12">
                         <table class="table table-bordered">
                             <tr>
-                                <td data-prototype="{{ form_widget(formMeasurement.records.vars.prototype.data.vars.prototype.time)|e }}">
+                                <td data-prototype="{{ form_widget(recordForm.datas.vars.prototype.time)|e }}">
                                     <i class="fa fa-clock-o"></i></td>
-                                <td data-prototype="{{ form_widget(formMeasurement.records.vars.prototype.data.vars.prototype.value)|e }}">
-                                    <span data-depends="{{ formMeasurement.records.vars.prototype.unit.vars.full_name }}"></span>
+                                <td data-prototype="{{ form_widget(recordForm.datas.vars.prototype.value)|e }}">
+                                    <span data-depends="{{ recordForm.unit.vars.full_name }}"></span>
                                 </td>
-                                <td data-prototype="{{ form_widget(formMeasurement.records.vars.prototype.data.vars.prototype.related_value)|e }}">
-                                    <span data-depends="{{ formMeasurement.records.vars.prototype.relatedValueUnit.vars.full_name }}"></span>
+                                <td data-prototype="{{ form_widget(recordForm.datas.vars.prototype.related_value)|e }}">
+                                    <span data-depends="{{ recordForm.relatedValueUnit.vars.full_name }}"></span>
                                 </td>
                                 <td>
                                     <a class="text-danger removeRow" style="display: none;"><i class="fa fa-minus"></i></a>
@@ -83,12 +81,14 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-warning pull-left" data-dismiss="modal">
+                <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">
                     {% trans %}close{% endtrans %}
                 </button>
+                {{ form_widget(recordForm.save) }}
             </div>
         </div>
         <!-- /.modal-content -->
     </div>
+    {{ form_end(recordForm,{'render_rest': false}) }}
     <!-- /.modal-dialog -->
 </div>

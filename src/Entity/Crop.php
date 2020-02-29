@@ -3,10 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Dtc\GridBundle\Annotation as Grid;
 
 /**
- * @Grid\Grid(actions={@Grid\ShowAction(), @Grid\DeleteAction()})
  * @ORM\Entity(repositoryClass="App\Repository\CropRepository")
  */
 class Crop implements DefinitionEntityInterface
@@ -57,6 +55,10 @@ class Crop implements DefinitionEntityInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $descriptionEN;
+
+    public function __toString(): string {
+        return $this->nameCZ;
+    }
 
     public function getId(): ?int
     {

@@ -51,9 +51,11 @@ class RunService {
         $initMoistureMeasurement_record->setRecordType($this->recordTypeRepository->find(5));
         $initMoistureMeasurement_record->setUnit($this->unitRepository->find(6));
         $initMoistureData = $formRun->get('initMoistureData')->getData();
+
         foreach ($initMoistureData as $data) {
             $initMoistureMeasurement_record->addData($data);
         }
+
         $initMoistureMeasurement->addRecord($initMoistureMeasurement_record);
         $run->setInitMoistureMeasurement($initMoistureMeasurement);
 
@@ -76,8 +78,8 @@ class RunService {
         $run->addMeasurement($rainIntensityMeasurement);
 
         $this->entityManager->persist($run);
-       /* dump($run);
-        exit;*/
         $this->entityManager->flush();
     }
+
+
 }

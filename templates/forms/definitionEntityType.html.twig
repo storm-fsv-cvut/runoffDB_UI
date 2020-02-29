@@ -1,0 +1,29 @@
+{% for child in form.children %}
+    {% if child.vars['allow_add'] is defined %}
+        <div class="row">
+            <div class="form-group col-md-12">
+                {{ form_label(child) }}
+                <table class="table table-bordered">
+
+                    <tr>
+                        {% for subchild in child.vars.prototype.children %}
+                            <td data-prototype='{{ form_widget(subchild) }}'>
+                                {{ form_label(subchild) }}
+                            </td>
+                            {% endfor %}
+                        <td>
+                            <a class="text-danger removeRow" style="display: none;"><i class="fa fa-minus"></i></a>
+                            <a class="text-success addFormRow"><i class="fa fa-plus"></i></a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <div class="row">
+            <div class="form-group col-md-12">
+                {{ form_row(child) }}
+            </div>
+        </div>
+    {% endif %}
+{% endfor %}

@@ -102,23 +102,17 @@
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
+    "knplabs/knp-components": {
+        "version": "v1.3.10"
+    },
     "knplabs/knp-menu": {
         "version": "2.3.0"
     },
     "knplabs/knp-menu-bundle": {
         "version": "2.2.2"
     },
-    "mmucklo/grid-bundle": {
-        "version": "4.2",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "4.2",
-            "ref": "df7c5b826e9ceca9b28e9dc0b37c31f066a165f9"
-        },
-        "files": [
-            "./config/routes/dtc_grid.yaml"
-        ]
+    "knplabs/knp-paginator-bundle": {
+        "version": "v4.1.1"
     },
     "monolog/monolog": {
         "version": "1.24.0"
@@ -440,7 +434,7 @@
         ]
     },
     "symfony/templating": {
-        "version": "v4.2.8"
+        "version": "v4.2.12"
     },
     "symfony/test-pack": {
         "version": "v1.0.5"

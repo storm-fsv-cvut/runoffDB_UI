@@ -3,10 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Dtc\GridBundle\Annotation as Grid;
 
 /**
- * @Grid\Grid(actions={@Grid\ShowAction(), @Grid\DeleteAction()})
  * @ORM\Entity(repositoryClass="App\Repository\OperationIntensityRepository")
  */
 class OperationIntensity implements DefinitionEntityInterface {
@@ -26,6 +24,10 @@ class OperationIntensity implements DefinitionEntityInterface {
      * @ORM\Column(type="string", length=255)
      */
     private $descriptionEN;
+
+    public function __toString() {
+        return $this->getDescriptionCZ();
+    }
 
     public function getId(): ?int {
         return $this->id;

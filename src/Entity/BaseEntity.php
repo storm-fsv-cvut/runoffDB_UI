@@ -24,4 +24,5 @@ class BaseEntity {
      * @var string
      */
     private $nameEN;
+
 }

@@ -103,6 +103,7 @@ class SequenceService {
             $daysFromLastAgro = $daysFromLastAgro > $days ? $days : $daysFromLastAgro;
         }
         return [
+            'id'=>$sequence->getId(),
             'date'=>$sequence->getDate()->format("d.m.Y"),
             'locality'=>$locality->getName(),
             'crop'=>$plot->getCrop()->getNameCZ(),

@@ -10,7 +10,7 @@ namespace App\Controller;
 
 use App\Form\DefinitionEntityType;
 use Doctrine\ORM\EntityManagerInterface;
-use PhpParser\Node\Scalar\String_;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,36 +25,37 @@ class DefinitionEntityControler extends AbstractController {
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    function list(ContainerInterface $container, Request $request, TranslatorInterface $translator) {
+    function list(EntityManagerInterface $em, Request $request, TranslatorInterface $translator, PaginatorInterface $paginator) {
         $class = $request->get('class');
-        $renderer = $container->get('dtc_grid.renderer.factory')->create('datatables');
-        $gridSource = $container->get('dtc_grid.manager.source')->get($class);
-        $renderer->bind($gridSource);
-        $params = $renderer->getParams();
         $params['class'] = $class;
         $params['class_name'] = $translator->trans($class);
-        return $this->render('definitionEntity/list.html.twig',$params);
+        $repo = $em->getRepository($class);
+        $pagination = $paginator->paginate(
+            $repo->createQueryBuilder('e'),
+            $request->query->getInt('page', 1),
+            5
+        );
+
+        $params['pagination'] = $pagination;
+        return $this->render('definitionEntity/list.html.twig', $params);
     }
 
     /**
-     * @Route("/setting", name="definition_entity")
-     * @param int|null $id
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/setting/{id}", name="definition_entity")
      */
-    function edit(Request $request, EntityManagerInterface $entityManager, TranslatorInterface $translator) {
+    function edit(Request $request, EntityManagerInterface $entityManager, TranslatorInterface $translator, ?int $id = null) {
         $class = $request->get('class');
         $id = $request->get('identifier');
-        $dataClass = $id ? $entityManager->find($class,$id) : null;
-        $form = $this->createForm(DefinitionEntityType::class,$dataClass,['data_class'=>$class]);
+        $dataClass = $id ? $entityManager->find($class, $id) : null;
+        $form = $this->createForm(DefinitionEntityType::class, $dataClass, ['data_class' => $class]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $operationType = $form->getData();
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($operationType);
             $entityManager->flush();
-            return $this->redirectToRoute('definition_entities',['class'=>$class]);
+            return $this->redirectToRoute('definition_entities', ['class' => $class]);
         }
-        return $this->render('definitionEntity/edit.html.twig',['form'=>$form->createView(),'class_name'=>$translator->trans($class),'class'=>$class]);
+        return $this->render('definitionEntity/edit.html.twig', ['form' => $form->createView(), 'class_name' => $translator->trans($class), 'class' => $class]);
     }
 }

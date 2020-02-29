@@ -5,14 +5,12 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Dtc\GridBundle\Annotation as Grid;
 use phpDocumentor\Reflection\Types\Integer;
 
 /**
- * @Grid\Grid(actions={@Grid\ShowAction(), @Grid\DeleteAction()})
  * @ORM\Entity(repositoryClass="App\Repository\SoilSampleRepository")
  */
-class SoilSample
+class SoilSample implements DefinitionEntityInterface
 {
     /**
      * @ORM\Id()
@@ -72,11 +70,6 @@ class SoilSample
     private $locality;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\TextureData", mappedBy="soilSample")
-     */
-    private $textureData;
-
-    /**
      * @ORM\Column(type="string", length=512, nullable=true)
      */
     private $descriptionCZ;
@@ -102,12 +95,12 @@ class SoilSample
     private $dateProcessed;
 
     public function __toString() {
-        return $this->getId()."";
+        return "#".$this->getId()." - ".$this->getLocality();
     }
 
     public function __construct()
     {
-        $this->textureData = new ArrayCollection();
+
     }
 
     public function getId(): ?int

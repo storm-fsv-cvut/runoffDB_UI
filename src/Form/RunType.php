@@ -13,6 +13,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -53,24 +54,31 @@ class RunType extends AbstractType {
             ])
             ->add('runoffStart', TimeType::class, [
                 'label' => 'runoffStart',
-                'widget'=>'single_text'
+                'widget'=>'single_text',
+                'required'=>false
             ])
             ->add('pondingStart', TimeType::class, [
                 'label' => 'pondingStart',
-                'widget'=>'single_text'
+                'widget'=>'single_text',
+                'required'=>false
             ])
             ->add('precedingPrecipitation', NumberType::class, [
-                'label' => 'precedingPrecipitation'
+                'label' => 'precedingPrecipitation',
+                'required'=>false,
+                'required'=>false
             ])
             ->add('noteCZ', TextareaType::class, [
-                'label' => 'noteCZ'
+                'label' => 'noteCZ',
+                'required'=>false
             ])
             ->add('noteEN', TextareaType::class, [
-                'label' => 'noteEN'
+                'label' => 'noteEN',
+                'required'=>false
             ])
             ->add('datetime', DateTimeType::class, [
                 'label' => 'datetime',
-                'widget'=>'single_text'
+                'widget'=>'single_text',
+                'required'=>false
             ])
             ->add('rawData', FileType::class, [
                 'label' => 'rawData',
@@ -89,6 +97,7 @@ class RunType extends AbstractType {
             'prototype' => true,
             'allow_add' => true,
             'allow_delete' => true,
+            'required'=>false
         ]);
 
         $builder->add('initMoistureData', CollectionType::class, [
@@ -98,6 +107,7 @@ class RunType extends AbstractType {
             'prototype' => true,
             'allow_add' => true,
             'allow_delete' => true,
+            'required'=>false
         ]);
 
         $builder->add('measurements', CollectionType::class, [
@@ -106,6 +116,7 @@ class RunType extends AbstractType {
             'prototype' => true,
             'allow_add' => true,
             'allow_delete' => true,
+            'required'=>false
         ]);
 
 

@@ -1,7 +1,5 @@
-<button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#runType">
-    {% trans %}add run{% endtrans %}
-</button>
-<div class="modal fade" id="runType">
+<div class="modal fade appendToCollection" id="runType">
+    {{ form_start(runForm) }}
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -12,23 +10,23 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="form-group col-md-6">
-                        {{ form_row(form.runs.vars.prototype.runType) }}
+                        {{ form_row(runForm.runType) }}
                     </div>
                     <div class="form-group col-md-6">
-                        {{ form_row(form.runs.vars.prototype.precedingPrecipitation) }}
+                        {{ form_row(runForm.precedingPrecipitation) }}
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-12">
-                        {{ form_row(form.runs.vars.prototype.datetime) }}
+                        {{ form_row(runForm.datetime) }}
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        {{ form_row(form.runs.vars.prototype.pondingStart) }}
+                        {{ form_row(runForm.pondingStart) }}
                     </div>
                     <div class="form-group col-md-6">
-                        {{ form_row(form.runs.vars.prototype.runoffStart) }}
+                        {{ form_row(runForm.runoffStart) }}
                     </div>
                 </div>
                 <div class="row">
@@ -36,18 +34,18 @@
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs">
                                 <li class="active">
-                                    <a href="#tab_1" data-toggle="tab" aria-expanded="true">{{ form_label(form.runs.vars.prototype.noteCZ) }}</a>
+                                    <a href="#tab_1" data-toggle="tab" aria-expanded="true">{{ form_label(runForm.noteCZ) }}</a>
                                 </li>
                                 <li class="">
-                                    <a href="#tab_2" data-toggle="tab" aria-expanded="false">{{ form_label(form.runs.vars.prototype.noteEN) }}</a>
+                                    <a href="#tab_2" data-toggle="tab" aria-expanded="false">{{ form_label(runForm.noteEN) }}</a>
                                 </li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="tab_1">
-                                    {{ form_widget(form.runs.vars.prototype.noteCZ) }}
+                                    {{ form_widget(runForm.noteCZ) }}
                                 </div>
                                 <div class="tab-pane" id="tab_2">
-                                    {{ form_widget(form.runs.vars.prototype.noteEN) }}
+                                    {{ form_widget(runForm.noteEN) }}
                                 </div>
                             </div>
                         </div>
@@ -56,44 +54,44 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            {{ form_row(form.runs.vars.prototype.rawData) }}
+                            {{ form_row(runForm.rawData) }}
                             <p class="help-block">Max. 32MB, *.zip</p>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        {{ form_row(form.runs.vars.prototype.soilSampleBulk) }}
+                        {{ form_row(runForm.soilSampleBulk) }}
                     </div>
                     <div class="form-group col-md-6">
-                        {{ form_row(form.runs.vars.prototype.bulkAssignmentType) }}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        {{ form_row(form.runs.vars.prototype.soilSampleTexture) }}
-                    </div>
-                    <div class="form-group col-md-6">
-                        {{ form_row(form.runs.vars.prototype.textureAssignmentType) }}
+                        {{ form_row(runForm.bulkAssignmentType) }}
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        {{ form_row(form.runs.vars.prototype.soilSampleCorq) }}
+                        {{ form_row(runForm.soilSampleTexture) }}
                     </div>
                     <div class="form-group col-md-6">
-                        {{ form_row(form.runs.vars.prototype.corqAssignmentType) }}
+                        {{ form_row(runForm.textureAssignmentType) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        {{ form_row(runForm.soilSampleCorq) }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        {{ form_row(runForm.corqAssignmentType) }}
                     </div>
                 </div>
                 <div class="row">
 
                     <div class="col-md-6">
-                        {{ form_label(form.runs.vars.prototype.rainIntensityData) }}
+                        {{ form_label(runForm.rainIntensityData) }}
                         <table class="table table-bordered">
                             <tr>
-                                <td data-prototype='{{ form_widget(form.runs.vars.prototype.rainIntensityData.vars.prototype.time) }}'>
+                                <td data-prototype='{{ form_widget(runForm.rainIntensityData.vars.prototype.time) }}'>
                                     <i class="fa fa-clock-o"></i></td>
-                                <td data-prototype='{{ form_widget(form.runs.vars.prototype.rainIntensityData.vars.prototype.value) }}'>
+                                <td data-prototype='{{ form_widget(runForm.rainIntensityData.vars.prototype.value) }}'>
                                     mm.h-1
                                 </td>
                                 <td>
@@ -104,12 +102,12 @@
                         </table>
                     </div>
                     <div class="col-md-6">
-                        {{ form_label(form.runs.vars.prototype.initMoistureData) }}
+                        {{ form_label(runForm.initMoistureData) }}
                         <table class="table table-bordered">
                             <tr>
-                                <td data-prototype='{{ form_widget(form.runs.vars.prototype.initMoistureData.vars.prototype.time) }}'>
+                                <td data-prototype='{{ form_widget(runForm.initMoistureData.vars.prototype.time) }}'>
                                     <i class="fa fa-clock-o"></i></td>
-                                <td data-prototype='{{ form_widget(form.runs.vars.prototype.initMoistureData.vars.prototype.value) }}'>
+                                <td data-prototype='{{ form_widget(runForm.initMoistureData.vars.prototype.value) }}'>
                                     mm.h-1
                                 </td>
                                 <td>
@@ -123,16 +121,15 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                        </div>
-                    </div>
-                </div>
+                <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">
+                    {% trans %}close{% endtrans %}
+                </button>
+                {{ form_widget(runForm.save) }}
             </div>
         </div>
         <!-- /.modal-content -->
     </div>
+    {{ form_end(runForm,{'render_rest': false}) }}
     <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->

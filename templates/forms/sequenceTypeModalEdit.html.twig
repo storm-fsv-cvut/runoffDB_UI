@@ -1,6 +1,8 @@
-<button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#sequenceType">
-    {% trans %}edit{% endtrans %}
-</button>
+<div class="box-tools pull-right">
+    <button type="button" class="btn btn-box-tool" data-toggle="modal" data-target="#sequenceType">
+        <i class="fa fa-edit"></i>
+    </button>
+</div>
 <div class="modal fade" id="sequenceType">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -36,6 +38,12 @@
                         {{ form_row(form.cropCondition) }}
                     </div>
                 </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning pull-left" data-dismiss="modal">
+                    {% trans %}close{% endtrans %}
+                </button>
+                {{ form_row(form.save) }}
             </div>
         </div>
     </div>

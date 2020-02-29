@@ -35,7 +35,16 @@ class SequenceBasicType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
+        $builder
+            ->add('simulator')
+            ->add('plot')
+            ->add('date')
+            ->add('cropBBCH')
+            ->add('canopyCover')
+            ->add('cropCondition')
+            ->add('save', SubmitType::class,[
+                'attr'=>['class'=>'btn btn-success']
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

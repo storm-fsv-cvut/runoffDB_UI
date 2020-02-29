@@ -2,11 +2,9 @@
 
 namespace App\Entity;
 
-use Dtc\GridBundle\Annotation as Grid;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Grid\Grid(actions={@Grid\ShowAction(), @Grid\DeleteAction()})
  * @ORM\Entity(repositoryClass="App\Repository\AssigmentTypeRepository")
  */
 class AssignmentType implements DefinitionEntityInterface
