@@ -2,7 +2,6 @@
     <dt>{{ key|trans }}</dt>
     {% if soilsample!=null %}
         <dd><a href="javascript:;" data-toggle="modal" data-target="#soilSample-{{ key }}-{{ soilsample.getId() }}">{{ soilsample.getId() }}</a> <i>({{ assignment.getDescriptionCZ() }})</i></dd>
-        {{ printEntity(soilsample)|raw }}
         {% include 'definitionEntity/viewModal.html.twig' with {'dataClass': soilsample, 'id':('soilSample-' ~ key ~ '-' ~ soilsample.getId())} %}
     {% else %}
         <dd>{% trans %}na{% endtrans %}</dd>

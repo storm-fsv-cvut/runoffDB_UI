@@ -27,9 +27,6 @@
                                 <td>{{ entity.getId() }}</td>
                                 <td>{{ entity}}</td>
                                 <td>
-                                    {{ printEntity(entity)|raw }}
-
-
                                     <a class="btn btn-sm btn-primary"  href="javascript:;" data-toggle="modal" data-target="#{{ entity.getId() }}"><i class="fa fa-eye"></i></a>
                                     {% include 'definitionEntity/viewModal.html.twig' with {'dataClass': entity, 'id':(entity.getId())} %}
                                     <a class="btn btn-sm btn-primary" href="{{ path('definition_entity',{class:class,id:entity.getId()}) }}"><i class="fa fa-edit"></i></a>

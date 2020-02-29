@@ -33,7 +33,7 @@ class DefinitionEntityControler extends AbstractController {
         $pagination = $paginator->paginate(
             $repo->createQueryBuilder('e'),
             $request->query->getInt('page', 1),
-            5
+            20
         );
 
         $params['pagination'] = $pagination;

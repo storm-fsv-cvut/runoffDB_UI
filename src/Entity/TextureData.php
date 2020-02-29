@@ -23,11 +23,6 @@ class TextureData
     private $texture;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\SoilSample", inversedBy="textureData")
-     */
-    private $soilSample;
-
-    /**
      * @ORM\Column(type="float")
      */
     private $upClassLimit;
@@ -55,18 +50,6 @@ class TextureData
     public function setTexture(?Texture $texture): self
     {
         $this->texture = $texture;
-
-        return $this;
-    }
-
-    public function getSoilSample(): ?SoilSample
-    {
-        return $this->soilSample;
-    }
-
-    public function setSoilSample(?SoilSample $soilSample): self
-    {
-        $this->soilSample = $soilSample;
 
         return $this;
     }

@@ -2,6 +2,7 @@
 
 namespace App\Twig;
 
+use App\Entity\DefinitionEntityInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
@@ -30,7 +31,7 @@ class PrintEntityExtension extends AbstractExtension {
     }
 
     function printEntity($entity): string {
-        $html = "<dl>";
+        $html = "<dl class='dl-vertical'>";
         $metadata = $this->em->getMetadataFactory()->getMetadataFor(get_class($entity));
 
         foreach ($metadata->getFieldNames() as $field) {
@@ -50,11 +51,38 @@ class PrintEntityExtension extends AbstractExtension {
         foreach ($metadata->getAssociationNames() as $associationName) {
             if (strpos($metadata->getReflectionClass()->getProperty($associationName)->getDocComment(), "mappedBy")) {
                 $var = call_user_func_array([$entity, 'get' . ucfirst($associationName)], []);
-                dump($associationName);
-                dump($var);
             } else {
                 $var = call_user_func_array([$entity, 'get' . ucfirst($associationName)], []);
-                if($var) {
+                if ($var instanceof DefinitionEntityInterface) {
+                    $html .= "<dt>{$this->translator->trans($associationName)}</dt>";
+                    $html .= "<dd>" . $var . "<br />";
+                    $metadataSub = $this->em->getMetadataFactory()->getMetadataFor(get_class($var));
+                    foreach ($metadataSub->getAssociationNames() as $fieldSub) {
+                        if (strpos($fieldSub,'Data') && method_exists($var,'get' . ucfirst($fieldSub))) {
+                            $data = call_user_func_array([$var, 'get' . ucfirst($fieldSub)], []);
+                            if (sizeof($data)) {
+                                //dump($data);
+                                $html .= "<table class='table'>";
+                                $metadataDataclass = $this->em->getMetadataFactory()->getMetadataFor(get_class($data[0]));
+                                $html .= "<tr>";
+                                foreach ($metadataDataclass->getFieldNames() as $field) {
+                                    $html .= "<th>".$this->translator->trans($field)."</th>";
+                                }
+                                $html .= "</tr>";
+                                foreach ($data as $dataEntity) {
+                                    $html .= "<tr>";
+                                    foreach ($metadataDataclass->getFieldNames() as $field) {
+                                        $var = call_user_func_array([$dataEntity, 'get' . ucfirst($field)], []);
+                                        $html .= "<td>".$var."</td>";
+                                    }
+                                    $html .= "</tr>";
+                                }
+                                $html .= "</table>";
+                            }
+                        }
+                    }
+                    $html .= "</dd>";
+                } else if($var) {
                     $html .= "<dt>{$this->translator->trans($associationName)}</dt>";
                     $html .= "<dd>" . $var . "</dd>";
                 }

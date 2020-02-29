@@ -64,7 +64,6 @@ class Texture implements DefinitionEntityInterface
         return $this;
     }
 
-
     public function getLabel(): string {
         return $this->textureRecord;
     }

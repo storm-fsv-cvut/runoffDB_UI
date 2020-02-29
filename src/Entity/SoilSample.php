@@ -232,37 +232,6 @@ class SoilSample implements DefinitionEntityInterface
        return $this->id;
     }
 
-    /**
-     * @return Collection|TextureData[]
-     */
-    public function getTextureData(): Collection
-    {
-        return $this->textureData;
-    }
-
-    public function addTextureData(TextureData $textureData): self
-    {
-        if (!$this->textureData->contains($textureData)) {
-            $this->textureData[] = $textureData;
-            $textureData->setSoilSample($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTextureData(TextureData $textureData): self
-    {
-        if ($this->textureData->contains($textureData)) {
-            $this->textureData->removeElement($textureData);
-            // set the owning side to null (unless already changed)
-            if ($textureData->getSoilSample() === $this) {
-                $textureData->setSoilSample(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getDescriptionCZ(): ?string
     {
         return $this->descriptionCZ;
