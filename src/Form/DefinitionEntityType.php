@@ -32,17 +32,16 @@ class DefinitionEntityType extends AbstractType {
             $targetClass = ($metadata->getAssociationTargetClass($associationName));
             $targetClassArray = explode("\\",$targetClass);
             if (strpos($metadata->getReflectionClass()->getProperty($associationName)->getDocComment(), "mappedBy")) {
-                dump($targetClassArray);
-                dump("App\Form\\".end($targetClassArray)."Type");
                 if (class_exists("App\Form\\".end($targetClassArray)."Type")) {
                     $builder->add($associationName, CollectionType::class, [
-                        'entry_type' => TextureDataType::class,
+                        'entry_type' => "App\Form\\".end($targetClassArray)."Type",
                         'label' => $associationName,
                         'mapped' => true,
                         'prototype' => true,
                         'allow_add' => true,
                         'allow_delete' => true,
-                        'required' => false
+                        'required' => false,
+                        'by_reference' => false
                     ]);
                 }
             } else {

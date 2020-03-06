@@ -80,7 +80,7 @@ class Organization implements DefinitionEntityInterface
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
@@ -192,6 +192,11 @@ class Organization implements DefinitionEntityInterface
     public function getNameCode(): ?string
     {
         return $this->name_code;
+    }
+
+    public function getName_code(): ?string
+    {
+        return $this->getNameCode();
     }
 
     public function setNameCode(?string $name_code): self

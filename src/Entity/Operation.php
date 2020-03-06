@@ -63,6 +63,10 @@ class Operation implements DefinitionEntityInterface
      */
     private $machineryTypeEN;
 
+    public function __toString() {
+        return $this->getNameCZ();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -85,7 +89,7 @@ class Operation implements DefinitionEntityInterface
         return $this->nameEN;
     }
 
-    public function setNameEN(string $nameEN): self
+    public function setNameEN(?string $nameEN): self
     {
         $this->nameEN = $nameEN;
 
@@ -109,7 +113,7 @@ class Operation implements DefinitionEntityInterface
         return $this->operationDepthM;
     }
 
-    public function setOperationDepthM(float $operationDepthM): self
+    public function setOperationDepthM(?float $operationDepthM): self
     {
         $this->operationDepthM = $operationDepthM;
 
@@ -161,7 +165,7 @@ class Operation implements DefinitionEntityInterface
         return $this->machineryTypeCZ;
     }
 
-    public function setMachineryTypeCZ(string $machineryTypeCZ): self
+    public function setMachineryTypeCZ(?string $machineryTypeCZ): self
     {
         $this->machineryTypeCZ = $machineryTypeCZ;
 
@@ -173,7 +177,7 @@ class Operation implements DefinitionEntityInterface
         return $this->machineryTypeEN;
     }
 
-    public function setMachineryTypeEN(string $machineryTypeEN): self
+    public function setMachineryTypeEN(?string $machineryTypeEN): self
     {
         $this->machineryTypeEN = $machineryTypeEN;
 

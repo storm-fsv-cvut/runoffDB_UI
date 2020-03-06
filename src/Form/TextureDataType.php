@@ -11,7 +11,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class TextureDataType extends AbstractType {
       public function buildForm(FormBuilderInterface $builder, array $options) {
           $builder
-              ->add('soilSample')
               ->add('upClassLimit')
               ->add('mass')
               ->add('cumulMass');

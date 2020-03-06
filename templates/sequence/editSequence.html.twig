@@ -88,9 +88,13 @@
                                         {{ macros.soilsample('soil_sample_corq', runArray['soil_sample_corq'], runArray['soil_sample_corq_assignment']) }}
                                         {{ macros.soilsample('soil_sample_bulk', runArray['soil_sample_bulk'], runArray['soil_sample_bulk_assignment']) }}
                                         {{ macros.soilsample('soil_sample_texture', runArray['soil_sample_texture'], runArray['soil_sample_texture_assignment']) }}
-                                        <dt>raw data:</dt>
-                                        <dd><a>file.zip <i class="fa fa-download"></i></a>, <a>file2.zip
-                                                <i class="fa fa-download"></i></a></dd>
+
+                                        <dt>{% trans %}files{% endtrans %}</dt>
+                                        <dd>
+                                            {% for file in runArray['files'] %}
+                                                <a href="{{path('downloadFile',{'runId':runArray['id'],'filename':file})}}" target="_blank">{{file}}</a> <a class="text-danger" href="{{path('deleteFile',{'runId':runArray['id'],'filename':file})}}" ><i class="fa fa-trash"></i></a><br />
+                                            {% endfor %}
+                                        </dd>
                                     </dl>
                                 </div>
                             </div>

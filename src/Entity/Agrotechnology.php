@@ -72,7 +72,7 @@ class Agrotechnology implements DefinitionEntityInterface
         return $this->descriptionCZ;
     }
 
-    public function setDescriptionCZ(string $descriptionCZ): self
+    public function setDescriptionCZ(?string $descriptionCZ): self
     {
         $this->descriptionCZ = $descriptionCZ;
 
@@ -84,7 +84,7 @@ class Agrotechnology implements DefinitionEntityInterface
         return $this->descriptionEN;
     }
 
-    public function setDescriptionEN(string $descriptionEN): self
+    public function setDescriptionEN(?string $descriptionEN): self
     {
         $this->descriptionEN = $descriptionEN;
 

@@ -45,14 +45,13 @@ class DefinitionEntityControler extends AbstractController {
      */
     function edit(Request $request, EntityManagerInterface $entityManager, TranslatorInterface $translator, ?int $id = null) {
         $class = $request->get('class');
-        $id = $request->get('identifier');
         $dataClass = $id ? $entityManager->find($class, $id) : null;
         $form = $this->createForm(DefinitionEntityType::class, $dataClass, ['data_class' => $class]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $operationType = $form->getData();
+            $entity = $form->getData();
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($operationType);
+            $entityManager->persist($entity);
             $entityManager->flush();
             return $this->redirectToRoute('definition_entities', ['class' => $class]);
         }

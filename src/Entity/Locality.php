@@ -84,7 +84,7 @@ class Locality implements DefinitionEntityInterface
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
@@ -96,7 +96,7 @@ class Locality implements DefinitionEntityInterface
         return $this->lat;
     }
 
-    public function setLat(float $lat): self
+    public function setLat(?float $lat): self
     {
         $this->lat = $lat;
 
@@ -108,7 +108,7 @@ class Locality implements DefinitionEntityInterface
         return $this->lng;
     }
 
-    public function setLng(float $lng): self
+    public function setLng(?float $lng): self
     {
         $this->lng = $lng;
 

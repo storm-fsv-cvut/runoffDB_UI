@@ -10,5 +10,4 @@ namespace App\Entity;
 
 
 interface DefinitionEntityInterface {
-    public function getLabel():string;
 }

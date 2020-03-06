@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UnitRepository")
  */
-class Unit
+class Unit implements DefinitionEntityInterface
 {
     /**
      * @ORM\Id()
@@ -103,7 +103,7 @@ class Unit
         return $this->descriptionEN;
     }
 
-    public function setDescriptionEN(string $descriptionEN): self
+    public function setDescriptionEN(?string $descriptionEN): self
     {
         $this->descriptionEN = $descriptionEN;
 

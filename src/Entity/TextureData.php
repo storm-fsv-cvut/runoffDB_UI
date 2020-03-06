@@ -17,7 +17,7 @@ class TextureData
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Texture", inversedBy="textureData")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Texture", inversedBy="textureDatas")
      * @ORM\JoinColumn(nullable=false)
      */
     private $texture;
@@ -59,7 +59,7 @@ class TextureData
         return $this->upClassLimit;
     }
 
-    public function setUpClassLimit(float $upClassLimit): self
+    public function setUpClassLimit(?float $upClassLimit): self
     {
         $this->upClassLimit = $upClassLimit;
 
@@ -71,7 +71,7 @@ class TextureData
         return $this->mass;
     }
 
-    public function setMass(float $mass): self
+    public function setMass(?float $mass): self
     {
         $this->mass = $mass;
 
@@ -83,7 +83,7 @@ class TextureData
         return $this->cumulMass;
     }
 
-    public function setCumulMass(float $cumulMass): self
+    public function setCumulMass(?float $cumulMass): self
     {
         $this->cumulMass = $cumulMass;
 

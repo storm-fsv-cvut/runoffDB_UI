@@ -26,6 +26,10 @@ class WRBsoilClass implements DefinitionEntityInterface
      */
     private $code;
 
+    public function __toString() {
+        return $this->getName();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -41,10 +45,6 @@ class WRBsoilClass implements DefinitionEntityInterface
         $this->name = $name;
 
         return $this;
-    }
-
-    public function getLabel(): string {
-        return $this->name;
     }
 
     public function getCode(): ?string

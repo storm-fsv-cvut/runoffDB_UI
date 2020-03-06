@@ -18,6 +18,10 @@ $(document).ready(function (e) {
         });
     });
 
+    $(".removeRow").on('click', function (e) {
+        $(this).parents('tr').remove();
+    });
+
     $("[data-change-label]").each((i, e) => {
         let parentModal = $(e).parents('.modal');
         $(parentModal).find('[data-depends="' + $(e).attr('name') + '"]').text($(e).find("option:selected").text());

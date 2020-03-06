@@ -113,7 +113,7 @@ class SoilSample implements DefinitionEntityInterface
         return $this->dateSampled;
     }
 
-    public function setDateSampled(\DateTimeInterface $dateSampled): self
+    public function setDateSampled(?\DateTimeInterface $dateSampled): self
     {
         $this->dateSampled = $dateSampled;
 
@@ -125,7 +125,7 @@ class SoilSample implements DefinitionEntityInterface
         return $this->processedAt;
     }
 
-    public function setProcessedAt(string $processedAt): self
+    public function setProcessedAt(?string $processedAt): self
     {
         $this->processedAt = $processedAt;
 

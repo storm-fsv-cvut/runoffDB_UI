@@ -70,11 +70,6 @@ class Plot implements DefinitionEntityInterface
     private $soilSamples;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Sequence", mappedBy="plot")
-     */
-    private $sequences;
-
-    /**
      * @ORM\Column(type="string", length=512, nullable=true)
      */
     private $noteCZ;
@@ -91,7 +86,6 @@ class Plot implements DefinitionEntityInterface
     public function __construct()
     {
         $this->soilSamples = new ArrayCollection();
-        $this->sequences = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -152,7 +146,7 @@ class Plot implements DefinitionEntityInterface
         return $this->established;
     }
 
-    public function setEstablished(\DateTimeInterface $established): self
+    public function setEstablished(?\DateTimeInterface $established): self
     {
         $this->established = $established;
 
@@ -164,7 +158,7 @@ class Plot implements DefinitionEntityInterface
         return $this->plotWidth;
     }
 
-    public function setPlotWidth(float $plotWidth): self
+    public function setPlotWidth(?float $plotWidth): self
     {
         $this->plotWidth = $plotWidth;
 
@@ -176,7 +170,7 @@ class Plot implements DefinitionEntityInterface
         return $this->plotLength;
     }
 
-    public function setPlotLength(float $plotLength): self
+    public function setPlotLength(?float $plotLength): self
     {
         $this->plotLength = $plotLength;
 
@@ -188,7 +182,7 @@ class Plot implements DefinitionEntityInterface
         return $this->plotSlope;
     }
 
-    public function setPlotSlope(float $plotSlope): self
+    public function setPlotSlope(?float $plotSlope): self
     {
         $this->plotSlope = $plotSlope;
 
@@ -228,37 +222,6 @@ class Plot implements DefinitionEntityInterface
 
     public function getLabel(): string {
         return $this->name;
-    }
-
-    /**
-     * @return Collection|Sequence[]
-     */
-    public function getSequences(): Collection
-    {
-        return $this->sequences;
-    }
-
-    public function addSequence(Sequence $sequence): self
-    {
-        if (!$this->sequences->contains($sequence)) {
-            $this->sequences[] = $sequence;
-            $sequence->setPlot($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSequence(Sequence $sequence): self
-    {
-        if ($this->sequences->contains($sequence)) {
-            $this->sequences->removeElement($sequence);
-            // set the owning side to null (unless already changed)
-            if ($sequence->getPlot() === $this) {
-                $sequence->setPlot(null);
-            }
-        }
-
-        return $this;
     }
 
     /**

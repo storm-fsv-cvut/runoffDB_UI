@@ -21,14 +21,17 @@ use App\Form\SequenceBasicType;
 use App\Form\SequenceFilterType;
 use App\Form\SequenceType;
 use App\Repository\MeasurementRepository;
+use App\Repository\RecordTypeRepository;
 use App\Repository\RunRepository;
 use App\Repository\SequenceRepository;
+use App\Repository\UnitRepository;
 use App\Services\RecordsService;
 use App\Services\RunService;
 use App\Services\SequenceService;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -60,9 +63,37 @@ class SequenceController extends AbstractController {
     }
 
     /**
+     * @Route("/download-file", name="downloadFile")
+     */
+    public function downloadFile(RunRepository $runRepository, Request $request) {
+        $run = $runRepository->find($request->get('runId'));
+        $filename = $request->get('filename');
+        return $this->file('data/'.$run->getSequence()->getId().'/'.$run->getId().'/'.$filename);
+    }
+
+    /**
+     * @Route("/delete-file", name="deleteFile")
+     */
+    public function deleteFile(RunRepository $runRepository, Request $request) {
+        $run = $runRepository->find($request->get('runId'));
+        $filename = $request->get('filename');
+        $run->removeFile($filename);
+        return $this->redirectToRoute('sequence', ['id' => $run->getSequence()->getId()]);
+    }
+
+    /**
      * @Route("/sequence/{id}", name="sequence")
      */
-    public function edit(EntityManagerInterface $entityManager, Request $request, SequenceService $sequenceService, RunService $runService, RunRepository $runRepository, MeasurementRepository $measurementRepository, int $id = null) {
+    public function edit(EntityManagerInterface $entityManager,
+                         Request $request,
+                         SequenceService $sequenceService,
+                         RunService $runService,
+                         RunRepository $runRepository,
+                         MeasurementRepository $measurementRepository,
+                         ParameterBagInterface $parameterBag,
+                         RecordTypeRepository $recordTypeRepository,
+                         UnitRepository $unitRepository,
+                         int $id = null) {
         if ($id) {
             $sequence = $sequenceService->getSequenceById($id);
             $sequenceForm = $this->createForm(SequenceType::class, $sequence);
@@ -92,9 +123,8 @@ class SequenceController extends AbstractController {
 
                 if ($newRecordForm->isSubmitted()) {
                     $record = $newRecordForm->getData();
-                    $record->setMeasurement($measurementRepository->find($newRecordForm->get('parent_id')->getData()));
-                    $datas = $newRecordForm->get('datas')->getData();
-
+                    $measurement = $measurementRepository->find($newRecordForm->get('parent_id')->getData());
+                    $record->setMeasurement($measurement);
                     if ($record->getRelatedValueUnit() === null) {
                         $record->setIsTimeline(true);
                     } else {
@@ -104,12 +134,45 @@ class SequenceController extends AbstractController {
                     foreach ($record->getData() as $data) {
                         $data->setRecord($record);
                     }
+
+                    $file = $newRecordForm->get('datafile')->getData();
+                    if ($file) {
+                       $runService->uploadFile($file, $measurement->getRun());
+                    }
                     $entityManager->flush();
+
                     return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
                 }
 
                 if ($sequenceForm->isSubmitted()) {
-                    $sequence = $sequenceForm->getData();
+                    $partialForm = $sequenceForm->getClickedButton()->getParent();
+                    $partialData = $partialForm->getData();
+
+                    if ($partialForm->has('rainIntensityData')) {
+                        $rainIntensityData = $partialForm->get('rainIntensityData')->getData();
+                        if ($partialData->getRainIntensityMeasurement()==null) {
+                            $rainIntensityMeasurement = new Measurement();
+                            $rainIntensityMeasurement->setRun($partialData);
+                            $rainIntensityMeasurement->setDescriptionCZ('intenzita srážky');
+                            $rainIntensityMeasurement->setDescriptionEN('rain intensity');
+                            $rainIntensityMeasurement_record = new Record();
+                            $rainIntensityMeasurement_record->setRecordType($recordTypeRepository->find(5));
+                            $rainIntensityMeasurement_record->setUnit($unitRepository->find(6));
+                        }
+                        foreach ($rainIntensityData as $data) {
+                            $rainIntensityMeasurement_record->addData($data);
+                        }
+                        $rainIntensityMeasurement->addRecord($rainIntensityMeasurement_record);
+                        $partialData->setRainIntensityMeasurement($rainIntensityMeasurement);
+                        $partialData->addMeasurement($rainIntensityMeasurement);
+                    }
+
+                    if ($partialForm->has('rawData') && $partialForm->get('rawData')) {
+                        foreach ($partialForm->get('rawData')->getData() as $file) {
+                            $runService->uploadFile($file, $partialData);
+                        }
+                    }
+                    $entityManager->persist($partialData);
                     $entityManager->flush();
                 }
 

@@ -26,6 +26,10 @@ class CropErType implements DefinitionEntityInterface
      */
     private $nameEN;
 
+    public function __toString() {
+        return $this->getNameCZ();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -53,9 +57,5 @@ class CropErType implements DefinitionEntityInterface
         $this->nameCZ = $nameCZ;
 
         return $this;
-    }
-
-    public function getLabel(): string {
-        // TODO: Implement getLabel() method.
     }
 }

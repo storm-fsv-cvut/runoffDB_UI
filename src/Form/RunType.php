@@ -78,7 +78,7 @@ class RunType extends AbstractType {
             ->add('datetime', DateTimeType::class, [
                 'label' => 'datetime',
                 'widget'=>'single_text',
-                'required'=>false
+                'required'=>true
             ])
             ->add('rawData', FileType::class, [
                 'label' => 'rawData',
@@ -90,7 +90,7 @@ class RunType extends AbstractType {
                 'attr'=>['class'=>'btn btn-success']
             ]);
 
-        $builder->add('rainIntensityData', CollectionType::class, [
+        /*$builder->add('rainIntensityData', CollectionType::class, [
             'entry_type' => DataType::class,
             'label'=>'rain_intensity',
             'mapped' => false,
@@ -108,7 +108,7 @@ class RunType extends AbstractType {
             'allow_add' => true,
             'allow_delete' => true,
             'required'=>false
-        ]);
+        ]);*/
 
         $builder->add('measurements', CollectionType::class, [
             'entry_type' => MeasurementType::class,

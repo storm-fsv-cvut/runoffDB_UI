@@ -67,7 +67,8 @@ class SequenceService {
                 'soil_sample_corq'=> $run->getSoilSampleCorq(),
                 'rain_intensity'=> $rain_intensity,
                 'init_moisture'=> $init_moisture,
-                'soil_sample_corq_assignment'=> $run->getCorqAssignmentType()
+                'soil_sample_corq_assignment'=> $run->getCorqAssignmentType(),
+                'files'=>$run->getFiles()
             ];
 
             $measurements = $run->getMeasurements();
@@ -96,19 +97,21 @@ class SequenceService {
         $plot = $sequence->getPlot();
         $locality = $plot->getLocality();
         $agrotechnology = $plot->getAgrotechnology();
-        $tillageSequences = $agrotechnology->getTillageSequences();
-        $daysFromLastAgro = 100000000;
-        foreach ($tillageSequences as $tillageSequence) {
-            $days = $sequence->getDate()->diff($tillageSequence->getDate())->days;
-            $daysFromLastAgro = $daysFromLastAgro > $days ? $days : $daysFromLastAgro;
+        if ($agrotechnology) {
+            $tillageSequences = $agrotechnology->getTillageSequences();
+            $daysFromLastAgro = 100000000;
+            foreach ($tillageSequences as $tillageSequence) {
+                $days = $sequence->getDate()->diff($tillageSequence->getDate())->days;
+                $daysFromLastAgro = $daysFromLastAgro > $days ? $days : $daysFromLastAgro;
+            }
         }
         return [
             'id'=>$sequence->getId(),
             'date'=>$sequence->getDate()->format("d.m.Y"),
             'locality'=>$locality->getName(),
-            'crop'=>$plot->getCrop()->getNameCZ(),
-            'agrotechnology'=>$agrotechnology->getNameCZ(),
-            'last_agrooperation_days'=>$daysFromLastAgro,
+            'crop'=>$plot->getCrop() ? $plot->getCrop()->getNameCZ() : null,
+            'agrotechnology'=>$agrotechnology ? $agrotechnology->getNameCZ() : null,
+            'last_agrooperation_days'=>$daysFromLastAgro ?? null,
             'canopy_cover' => $sequence->getCanopyCover(),
             'crop_bbch' => $sequence->getCropBBCH()
         ];

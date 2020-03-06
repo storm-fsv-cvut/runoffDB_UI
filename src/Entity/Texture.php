@@ -24,9 +24,9 @@ class Texture implements DefinitionEntityInterface
     private $dateProcessed;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\TextureData", mappedBy="texture")
+     * @ORM\OneToMany(targetEntity="App\Entity\TextureData", mappedBy="texture", cascade={"persist","remove"}, orphanRemoval=true)
      */
-    private $textureData;
+    private $textureDatas;
 
     /**
      * @ORM\Column(type="string", length=512, nullable=true)
@@ -39,12 +39,12 @@ class Texture implements DefinitionEntityInterface
     private $descriptionEN;
 
     public function __toString() {
-        return $this->getDescriptionCZ()."";
+        return "#".$this->getId()." ".$this->getDescriptionCZ()."";
     }
 
     public function __construct()
     {
-        $this->textureData = new ArrayCollection();
+        $this->textureDatas = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -57,7 +57,7 @@ class Texture implements DefinitionEntityInterface
         return $this->dateProcessed;
     }
 
-    public function setDateProcessed(\DateTimeInterface $dateProcessed): self
+    public function setDateProcessed(?\DateTimeInterface $dateProcessed): self
     {
         $this->dateProcessed = $dateProcessed;
 
@@ -71,16 +71,16 @@ class Texture implements DefinitionEntityInterface
     /**
      * @return Collection|TextureData[]
      */
-    public function getTextureData(): Collection
+    public function getTextureDatas(): Collection
     {
-        return $this->textureData;
+        return $this->textureDatas;
     }
 
     public function addTextureData(TextureData $textureData): self
     {
-        if (!$this->textureData->contains($textureData)) {
-            $this->textureData[] = $textureData;
+        if (!$this->textureDatas->contains($textureData)) {
             $textureData->setTexture($this);
+            $this->textureDatas[] = $textureData;
         }
 
         return $this;
@@ -88,8 +88,8 @@ class Texture implements DefinitionEntityInterface
 
     public function removeTextureData(TextureData $textureData): self
     {
-        if ($this->textureData->contains($textureData)) {
-            $this->textureData->removeElement($textureData);
+        if ($this->textureDatas->contains($textureData)) {
+            $this->textureDatas->removeElement($textureData);
             // set the owning side to null (unless already changed)
             if ($textureData->getTexture() === $this) {
                 $textureData->setTexture(null);
