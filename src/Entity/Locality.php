@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\LocalityRepository")
  */
-class Locality implements DefinitionEntityInterface
+class Locality extends BaseEntity implements DefinitionEntityInterface
 {
     /**
      * @ORM\Id()
@@ -65,6 +65,10 @@ class Locality implements DefinitionEntityInterface
 
     public function __toString() {
         return $this->getName();
+    }
+
+    public function getDescription():string {
+        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
     public function __construct()

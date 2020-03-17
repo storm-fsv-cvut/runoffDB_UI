@@ -44,7 +44,7 @@ class Measurement
     private $run;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Record", mappedBy="measurement", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Record", mappedBy="measurement", cascade={"persist","remove"}, orphanRemoval=true)
      */
     private $records;
 
@@ -53,8 +53,16 @@ class Measurement
      */
     private $runs;
 
-    public function __toString() {
-        return $this->getDescriptionCZ();
+    public function __toString(): string {
+        return $this->getDescription();
+    }
+
+    public function getNote():string {
+        return $this->getLocale() == 'en' ? $this->getNoteEN() : $this->getNoteCZ();
+    }
+
+    public function getDescription():string {
+        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
     public function __construct()

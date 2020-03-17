@@ -20,8 +20,19 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RunType extends AbstractType {
+
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    public function __construct(TranslatorInterface $translator) {
+        $this->translator = $translator;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
             ->add('runType', EntityType::class, [
@@ -30,7 +41,9 @@ class RunType extends AbstractType {
             ])
             ->add('soilSampleBulk', EntityType::class, [
                 'class' => SoilSample::class,
-                'label' => "soilSampleBulk"
+                'label' => "soilSampleBulk",
+                'required'=>false,
+                'placeholder' => $this->translator->trans("not set")
             ])
             ->add('bulkAssignmentType', EntityType::class, [
                 'class' => AssignmentType::class,
@@ -38,7 +51,9 @@ class RunType extends AbstractType {
             ])
             ->add('soilSampleTexture', EntityType::class, [
                 'class' => SoilSample::class,
-                'label' => "soilSampleBulk"
+                'label' => "soilSampleBulk",
+                'required'=>false,
+                'placeholder' => $this->translator->trans("not set")
             ])
             ->add('textureAssignmentType', EntityType::class, [
                 'class' => AssignmentType::class,
@@ -46,7 +61,9 @@ class RunType extends AbstractType {
             ])
             ->add('soilSampleCorq', EntityType::class, [
                 'class' => SoilSample::class,
-                'label' => "soilSampleBulk"
+                'label' => "soilSampleBulk",
+                'required'=>false,
+                'placeholder' => $this->translator->trans("not set")
             ])
             ->add('corqAssignmentType', EntityType::class, [
                 'class' => AssignmentType::class,
@@ -89,26 +106,6 @@ class RunType extends AbstractType {
             ->add('save', SubmitType::class,[
                 'attr'=>['class'=>'btn btn-success']
             ]);
-
-        /*$builder->add('rainIntensityData', CollectionType::class, [
-            'entry_type' => DataType::class,
-            'label'=>'rain_intensity',
-            'mapped' => false,
-            'prototype' => true,
-            'allow_add' => true,
-            'allow_delete' => true,
-            'required'=>false
-        ]);
-
-        $builder->add('initMoistureData', CollectionType::class, [
-            'entry_type' => DataType::class,
-            'label'=>'init_moisture',
-            'mapped' => false,
-            'prototype' => true,
-            'allow_add' => true,
-            'allow_delete' => true,
-            'required'=>false
-        ]);*/
 
         $builder->add('measurements', CollectionType::class, [
             'entry_type' => MeasurementType::class,

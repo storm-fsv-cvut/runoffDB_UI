@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Sequence;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -19,32 +21,18 @@ class SequenceRepository extends ServiceEntityRepository
         parent::__construct($registry, Sequence::class);
     }
 
-    // /**
-    //  * @return Sequence[] Returns an array of Sequence objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+    public function getPaginatorQuery(?array $filter, string $order, string $direction):QueryBuilder {
+        $queryBuilder = $this->createQueryBuilder('sequence');
+      /*  $expr = $queryBuilder->expr();
+        if (isset($filter['plot']) && $filter['plot']) {
+            $queryBuilder->andWhere()->add('where',$queryBuilder->expr()->eq('sequence.plot',$filter['plot']->getId()));
+        }
+        if (isset($filter['date']) && $filter['date']) {
+            $queryBuilder->andWhere()->add('where',$queryBuilder->expr()->eq('sequence.date',"'".$filter['date']->format("Y-m-d")."'"));
+        }
 
-    /*
-    public function findOneBySomeField($value): ?Sequence
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        echo $queryBuilder;*/
+        return $queryBuilder;
     }
-    */
+
 }

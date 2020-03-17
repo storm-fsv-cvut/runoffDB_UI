@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OperationIntensityRepository")
  */
-class OperationIntensity implements DefinitionEntityInterface {
+class OperationIntensity extends BaseEntity implements DefinitionEntityInterface {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -25,8 +25,12 @@ class OperationIntensity implements DefinitionEntityInterface {
      */
     private $descriptionEN;
 
-    public function __toString() {
-        return $this->getDescriptionCZ();
+    public function __toString(): string {
+        return $this->getDescription();
+    }
+
+    public function getDescription():string {
+        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
     public function getId(): ?int {

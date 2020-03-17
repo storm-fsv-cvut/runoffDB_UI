@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a44039a414bc0ae43926288970712976",
+    "content-hash": "bff8ff198a042c6f2c63e786db38f6e6",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -3549,16 +3549,16 @@
         },
         {
             "name": "symfony/http-kernel",
-            "version": "v4.2.8",
+            "version": "v4.2.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-kernel.git",
-                "reference": "a7713bc522f1a1cdf0b39f809fa4542523fc3114"
+                "reference": "8a7c5ef599466af6e972c705507f815df9c490ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/a7713bc522f1a1cdf0b39f809fa4542523fc3114",
-                "reference": "a7713bc522f1a1cdf0b39f809fa4542523fc3114",
+                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/8a7c5ef599466af6e972c705507f815df9c490ae",
+                "reference": "8a7c5ef599466af6e972c705507f815df9c490ae",
                 "shasum": ""
             },
             "require": {
@@ -3568,7 +3568,8 @@
                 "symfony/debug": "~3.4|~4.0",
                 "symfony/event-dispatcher": "~4.1",
                 "symfony/http-foundation": "^4.1.1",
-                "symfony/polyfill-ctype": "~1.8"
+                "symfony/polyfill-ctype": "~1.8",
+                "symfony/polyfill-php56": "~1.8"
             },
             "conflict": {
                 "symfony/config": "<3.4",
@@ -3634,7 +3635,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "https://symfony.com",
-            "time": "2019-05-01T13:31:08+00:00"
+            "time": "2019-11-13T08:51:34+00:00"
         },
         {
             "name": "symfony/inflector",

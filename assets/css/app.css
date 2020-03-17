@@ -6,4 +6,16 @@ body {
         width: 700px;
         margin: 30px auto;
     }
+    .dl-horizontal dd {
+        margin-left: 280px;
+    }
+    .dl-horizontal dt {
+        float: left;
+        width: 260px;
+        clear: left;
+        text-align: right;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 }

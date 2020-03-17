@@ -5,11 +5,12 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AgrotechnologyRepository")
  */
-class Agrotechnology implements DefinitionEntityInterface
+class Agrotechnology extends BaseEntity implements DefinitionEntityInterface
 {
     /**
      * @ORM\Id()
@@ -54,7 +55,15 @@ class Agrotechnology implements DefinitionEntityInterface
     private $managTyp;
 
     public function __toString(): string {
-        return $this->getNameCZ();
+        return $this->getName();
+    }
+
+    public function getName():string {
+        return $this->getLocale() == 'en' ? $this->getNameEN() : $this->getNameCZ();
+    }
+
+    public function getDescription():string {
+        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
     public function __construct()
@@ -75,7 +84,6 @@ class Agrotechnology implements DefinitionEntityInterface
     public function setDescriptionCZ(?string $descriptionCZ): self
     {
         $this->descriptionCZ = $descriptionCZ;
-
         return $this;
     }
 
@@ -144,10 +152,6 @@ class Agrotechnology implements DefinitionEntityInterface
         $this->note = $note;
 
         return $this;
-    }
-
-    public function getLabel(): string {
-        return $this->descriptionCZ;
     }
 
     public function getNameCZ(): ?string

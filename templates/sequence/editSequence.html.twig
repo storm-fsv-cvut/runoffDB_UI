@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% block title %}Rainsimulator - {{ header['date'] }} - {{ header['locality'] }} - {{ header['crop'] }}{% endblock %}
 {% import 'macros.twig' as macros %}
 {% block body %}
     <script type="text/javascript">
@@ -15,31 +16,33 @@
         </ol>
     </section>
 
-
-
     <section class="content">
         {{ form_start(form) }}
         <div class="box box-solid">
             <div class="box-header">
-                {% include "forms/sequenceTypeModalEdit.html.twig" %}
+                {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+                    {% include "forms/sequenceTypeModalEdit.html.twig" %}
+                {% endif %}
             </div>
             <div class="box-body">
                 <dl class="dl-horizontal">
-                    <dt>agrotechnologie:</dt>
+                    <dt>{% trans %}agrotechnology{% endtrans %}:</dt>
                     <dd>{{ header['agrotechnology'] }}</dd>
-                    <dt>počet dnů od poslední agro-operace:</dt>
+                    <dt>{% trans %}days from last agrooperation{% endtrans %}:</dt>
                     <dd>{{ header['last_agrooperation_days'] }}</dd>
-                    <dt>canopy cover:</dt>
+                    <dt>{% trans %}canopy cover{% endtrans %}:</dt>
                     <dd>{{ header['canopy_cover'] }}</dd>
-                    <dt>BBCH plodiny:</dt>
+                    <dt>{% trans %}Crop b b c h{% endtrans %}:</dt>
                     <dd>{{ header['crop_bbch'] }}</dd>
                 </dl>
             </div>
-            <div class="box-footer">
-                <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#runType">
-                    {% trans %}add run{% endtrans %}
-                </button>
-            </div>
+            {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+                <div class="box-footer">
+                    <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#runType">
+                        {% trans %}add run{% endtrans %}
+                    </button>
+                </div>
+            {% endif %}
         </div>
 
         {% for runForm in form.runs.children %}
@@ -54,25 +57,27 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="panel box box-solid">
-                        <div class="box-header">
-                            <div class="box-tools pull-right">
-                                <div class="dropdown">
-                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                        <span class="caret"></span>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li role="presentation">
-                                            <a role="menuitem" data-toggle="modal" data-target="#runType{{ runForm.vars.value.getId() }}" tabindex="-1" href="javascript:;">{% trans %}edit{% endtrans %}</a>
-                                        </li>
-                                        <li role="presentation" class="divider"></li>
-                                        <li role="presentation">
-                                            <a role="menuitem" tabindex="-1" href="{{ path('sequence', {id:header['id'],delete_run:runForm.vars.value.getId()}) }}">{% trans %}delete{% endtrans %}</a>
-                                        </li>
-                                    </ul>
+                        {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+                            <div class="box-header">
+                                <div class="box-tools pull-right">
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                            <span class="caret"></span>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li role="presentation">
+                                                <a role="menuitem" data-toggle="modal" data-target="#runType{{ runForm.vars.value.getId() }}" tabindex="-1" href="javascript:;">{% trans %}edit{% endtrans %}</a>
+                                            </li>
+                                            <li role="presentation" class="divider"></li>
+                                            <li role="presentation">
+                                                <a role="menuitem" data-confirm="{% trans %}delete?{% endtrans %}" tabindex="-1" href="{{ path('sequence', {id:header['id'],delete_run:runForm.vars.value.getId()}) }}">{% trans %}delete{% endtrans %}</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    {% include "forms/runTypeModalEdit.html.twig" %}
                                 </div>
-                                {% include "forms/runTypeModalEdit.html.twig" %}
                             </div>
-                        </div>
+                        {% endif %}
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-md-12">
@@ -92,18 +97,22 @@
                                         <dt>{% trans %}files{% endtrans %}</dt>
                                         <dd>
                                             {% for file in runArray['files'] %}
-                                                <a href="{{path('downloadFile',{'runId':runArray['id'],'filename':file})}}" target="_blank">{{file}}</a> <a class="text-danger" href="{{path('deleteFile',{'runId':runArray['id'],'filename':file})}}" ><i class="fa fa-trash"></i></a><br />
+                                                <a href="{{ path('downloadFile',{'runId':runArray['id'],'filename':file}) }}" target="_blank">{{ file }}</a>
+                                                <a class="text-danger" data-confirm="{% trans %}delete?{% endtrans %}" href="{{ path('deleteFile',{'runId':runArray['id'],'filename':file}) }}"><i class="fa fa-trash"></i></a>
+                                                <br/>
                                             {% endfor %}
                                         </dd>
                                     </dl>
                                 </div>
                             </div>
                         </div>
-                        <div class="box-footer">
-                            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-parent="{{ runArray['id'] }}" data-target="#measurement">
-                                {% trans %}add measurement{% endtrans %}
-                            </button>
-                        </div>
+                        {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+                            <div class="box-footer">
+                                <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-parent="{{ runArray['id'] }}" data-target="#measurement">
+                                    {% trans %}add measurement{% endtrans %}
+                                </button>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
 
@@ -112,26 +121,35 @@
                         {% set measurementArray = runArray.measurements[formMeasurement.vars.value.getId()] %}
                         <div class="row">
                             <div class="col-md-12">
-                                <h4>
-                                    <div class="dropdown">
-                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                            Data <span class="caret"></span>
-                                        </a>
-                                        <ul class="dropdown-menu">
-                                            <li role="presentation">
-                                                <a role="menuitem" tabindex="-1" href="javascript:;" data-toggle="modal" data-parent="{{ measurementArray['id'] }}" data-target="#record">{% trans %}add record{% endtrans %}</a>
-                                            </li>
-                                            <li role="presentation">
-                                                <a role="menuitem" data-toggle="modal" data-target="#measurement{{ formMeasurement.vars.value.getId() }}" tabindex="-1" href="#">{% trans %}edit{% endtrans %}</a>
-                                            </li>
-                                            <li role="presentation" class="divider"></li>
-                                            <li role="presentation">
-                                                <a role="menuitem" tabindex="-1" href="{{ path('sequence', {id:header['id'],delete_measurement:formMeasurement.vars.value.getId()}) }}">{% trans %}delete{% endtrans %}</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </h4>
-                                {% include "forms/measurementTypeModalEdit.html.twig" %}
+                                {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+                                    <h4>
+                                        <div class="dropdown">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                                Data <span class="caret"></span>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <li role="presentation">
+                                                    <a role="menuitem" tabindex="-1" href="javascript:;" data-toggle="modal" data-parent="{{ measurementArray['id'] }}" data-target="#record">{% trans %}add record{% endtrans %}</a>
+                                                </li>
+                                                <li role="presentation" class="divider"></li>
+                                                <li role="presentation">
+                                                    <a role="menuitem" data-toggle="modal" data-target="#measurement{{ formMeasurement.vars.value.getId() }}" tabindex="-1" href="#">{% trans %}edit{% endtrans %}</a>
+                                                </li>
+                                                <li role="presentation">
+                                                    <a role="menuitem" href="{{ path('isinitmoisturem', {runId:runArray.id,measurementId:formMeasurement.vars.value.getId()}) }}">{% trans %}set as init moisture{% endtrans %}</a>
+                                                </li>
+                                                <li role="presentation">
+                                                    <a role="menuitem" href="{{ path('israinintensitym', {runId:runArray.id,measurementId:formMeasurement.vars.value.getId()}) }}">{% trans %}set as rain intensity{% endtrans %}</a>
+                                                </li>
+                                                <li role="presentation" class="divider"></li>
+                                                <li role="presentation">
+                                                    <a role="menuitem" tabindex="-1" data-confirm="{% trans %}delete?{% endtrans %}" href="{{ path('sequence', {id:header['id'],delete_measurement:formMeasurement.vars.value.getId()}) }}">{% trans %}delete{% endtrans %}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </h4>
+                                    {% include "forms/measurementTypeModalEdit.html.twig" %}
+                                {% endif %}
                                 <p>
                                     {% if measurementArray['description'] %}
                                         {{ measurementArray['description'] }}
@@ -147,7 +165,7 @@
                                             <div class="box-header">
                                                 <h4 class="box-title">
                                                     <a data-toggle="collapse" data-parent="#accordion" href="#record-{{ record.getId() }}" class="collapsed" aria-expanded="false">
-                                                        {{ record.getUnit().getDescriptionCZ() }}
+                                                        {{ record.getUnit().getNameCZ() }}
                                                     </a>
                                                     <small>{{ record.getRecordType().getNameCZ() }}</small>
                                                     <span class="badge bg-primary">#{{ record.getId() }}</span>
@@ -157,21 +175,28 @@
                                                 </h4>
                                                 <div class="box-tools pull-right">
                                                     <input type="checkbox" class="icheckbox_flat-green" data-toggle="chart" data-target="#chart-run-{{ runArray['id'] }}" data-run="{{ runArray['id'] }}" data-record="{{ record.getId() }}">
-                                                    <div class="dropdown inline">
-                                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                                            <span class="caret"></span>
-                                                        </a>
-                                                        <ul class="dropdown-menu">
-                                                            <li role="presentation">
-                                                                <a role="menuitem" tabindex="-1" href="{{ path('sequence', {id:header['id'],delete_record:record.getId()}) }}">{% trans %}delete{% endtrans %}</a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
+                                                    {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+                                                        <div class="dropdown inline">
+                                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                                                <span class="caret"></span>
+                                                            </a>
+                                                            <ul class="dropdown-menu">
+                                                                <li role="presentation">
+                                                                    <a role="menuitem" data-confirm="{% trans %}delete?{% endtrans %}" tabindex="-1" href="{{ path('sequence', {id:header['id'],delete_record:record.getId()}) }}">{% trans %}delete{% endtrans %}</a>
+                                                                </li>
+                                                                <li role="presentation">
+                                                                    <a role="menuitem" tabindex="-1" href="#" data-toggle="modal" data-target="#record{{ record.getId() }}">{% trans %}edit{% endtrans %}</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    {% endif %}
                                                 </div>
                                             </div>
+                                            {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+                                                {% include "forms/recordTypeModalEdit.html.twig" %}
+                                            {% endif %}
                                             <div id="record-{{ record.getId() }}" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
                                                 <div class="box-body">
-                                                    {#% include "forms/recordTypeModalEdit.html.twig" %#}
                                                     <p><i>{{ record.getNoteCZ() }}</i></p>
                                                     <table class="table table-bordered">
                                                         <tr>
@@ -227,8 +252,9 @@
         {% endfor %}
         {{ form_end(form,{'render_rest': false}) }}
     </section>
-
-    {% include "forms/measurementTypeModalNew.html.twig" %}
-    {% include "forms/recordTypeModalNew.html.twig" %}
-    {% include "forms/runTypeModalNew.html.twig" %}
+    {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+        {% include "forms/measurementTypeModalNew.html.twig" %}
+        {% include "forms/recordTypeModalNew.html.twig" %}
+        {% include "forms/runTypeModalNew.html.twig" %}
+    {% endif %}
 {% endblock %}

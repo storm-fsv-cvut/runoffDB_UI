@@ -18,7 +18,7 @@ class TillageSequence
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Agrotechnology", inversedBy="tillageSequence")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Agrotechnology", inversedBy="tillageSequences")
      * @ORM\JoinColumn(nullable=false)
      */
     private $agrotechnology;

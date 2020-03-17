@@ -53,13 +53,43 @@ class SequenceController extends AbstractController {
      * @Route("/validate-file", name="validateFile")
      */
     public function validateFile(RecordsService $recordsService, Request $request) {
-        $files = $request->files;
-        foreach ($files as $file) {
-            if (isset($file['datafile'])) {
-                return $this->json($recordsService->validateDataFile($file['datafile']));
-            }
+        $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
+        $file = $request->files;
+        if ($file->get('file')) {
+            return $this->json($recordsService->validateDataFile($file->get('file')));
         }
-        exit;
+    }
+
+    /**
+     * @Route("/israinintensitym", name="israinintensitym")
+     */
+    public function israinintensitym(MeasurementRepository $measurementRepository, RunRepository $runRepository,EntityManagerInterface $entityManager, Request $request) {
+        $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
+        if ($request->get('runId') && $request->get('measurementId')) {
+            $run = $runRepository->find($request->get('runId'));
+            $sequence = $run->getSequence();
+            $measurement = $measurementRepository->find($request->get('measurementId'));
+            $run->setRainIntensityMeasurement($measurement);
+            $entityManager->persist($run);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
+    }
+
+    /**
+     * @Route("/isinitmoisturem", name="isinitmoisturem")
+     */
+    public function isinitmoisturem(MeasurementRepository $measurementRepository, RunRepository $runRepository,EntityManagerInterface $entityManager, Request $request) {
+        $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
+        if ($request->get('runId') && $request->get('measurementId')) {
+            $run = $runRepository->find($request->get('runId'));
+            $sequence = $run->getSequence();
+            $measurement = $measurementRepository->find($request->get('measurementId'));
+            $run->setInitMoistureMeasurement($measurement);
+            $entityManager->persist($run);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
     }
 
     /**
@@ -75,6 +105,7 @@ class SequenceController extends AbstractController {
      * @Route("/delete-file", name="deleteFile")
      */
     public function deleteFile(RunRepository $runRepository, Request $request) {
+        $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
         $run = $runRepository->find($request->get('runId'));
         $filename = $request->get('filename');
         $run->removeFile($filename);
@@ -148,29 +179,25 @@ class SequenceController extends AbstractController {
                     $partialForm = $sequenceForm->getClickedButton()->getParent();
                     $partialData = $partialForm->getData();
 
-                    if ($partialForm->has('rainIntensityData')) {
-                        $rainIntensityData = $partialForm->get('rainIntensityData')->getData();
-                        if ($partialData->getRainIntensityMeasurement()==null) {
-                            $rainIntensityMeasurement = new Measurement();
-                            $rainIntensityMeasurement->setRun($partialData);
-                            $rainIntensityMeasurement->setDescriptionCZ('intenzita srážky');
-                            $rainIntensityMeasurement->setDescriptionEN('rain intensity');
-                            $rainIntensityMeasurement_record = new Record();
-                            $rainIntensityMeasurement_record->setRecordType($recordTypeRepository->find(5));
-                            $rainIntensityMeasurement_record->setUnit($unitRepository->find(6));
-                        }
-                        foreach ($rainIntensityData as $data) {
-                            $rainIntensityMeasurement_record->addData($data);
-                        }
-                        $rainIntensityMeasurement->addRecord($rainIntensityMeasurement_record);
-                        $partialData->setRainIntensityMeasurement($rainIntensityMeasurement);
-                        $partialData->addMeasurement($rainIntensityMeasurement);
-                    }
-
                     if ($partialForm->has('rawData') && $partialForm->get('rawData')) {
                         foreach ($partialForm->get('rawData')->getData() as $file) {
                             $runService->uploadFile($file, $partialData);
                         }
+                    }
+
+                    if ($partialData instanceof Measurement) {
+                        $run = $partialData->getRun();
+                        if ($partialForm->has('isRainIntensityMeasurement')) {
+                            if ($partialForm->get('isRainIntensityMeasurement')->getData()) {
+                                $run->setRainIntensityMeasurement($partialData);
+                            };
+                        }
+                        if ($partialForm->has('isInitMoistureMeasurement')) {
+                            if ($partialForm->get('isInitMoistureMeasurement')->getData()) {
+                                $run->setInitMoistureMeasurement($partialData);
+                            };
+                        }
+                        $entityManager->persist($run);
                     }
                     $entityManager->persist($partialData);
                     $entityManager->flush();
@@ -198,6 +225,8 @@ class SequenceController extends AbstractController {
 
                 return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
             }
+
+
 
             if ($request->get('delete_measurement')) {
                 $measurement = $entityManager->find(Measurement::class, $request->get('delete_measurement'));
@@ -239,6 +268,7 @@ class SequenceController extends AbstractController {
             ]);
 
         } else {
+            $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
             $formPlot = $this->createForm(DefinitionEntityType::class, new Plot(), ['data_class' => Plot::class]);
             $form = $this->createForm(SequenceBasicType::class, new Sequence());
 
@@ -276,13 +306,15 @@ class SequenceController extends AbstractController {
      */
     public function list(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request, SequenceRepository $sequenceRepository) {
         $filter = $this->createForm(SequenceFilterType::class);
+        $filter->handleRequest($request);
 
         $pagination = $paginator->paginate(
-            $sequenceRepository->createQueryBuilder('sequence'),
+            $sequenceRepository->getPaginatorQuery($filter->getData(), $request->get('order','date'), $request->get('direction','DESC')),
             $request->query->getInt('page', 1),
-            20
+            20,
+            [PaginatorInterface::DEFAULT_SORT_FIELD_NAME=>'sequence.date',
+                PaginatorInterface::DEFAULT_SORT_DIRECTION=>'DESC']
         );
-
         return $this->render('sequence/list.html.twig', ['pagination' => $pagination, 'filter' => $filter->createView()]);
     }
 }

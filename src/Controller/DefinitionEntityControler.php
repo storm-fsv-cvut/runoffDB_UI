@@ -26,6 +26,7 @@ class DefinitionEntityControler extends AbstractController {
      * @throws \Exception
      */
     function list(EntityManagerInterface $em, Request $request, TranslatorInterface $translator, PaginatorInterface $paginator) {
+        $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
         $class = $request->get('class');
         $params['class'] = $class;
         $params['class_name'] = $translator->trans($class);
@@ -44,6 +45,7 @@ class DefinitionEntityControler extends AbstractController {
      * @Route("/setting/{id}", name="definition_entity")
      */
     function edit(Request $request, EntityManagerInterface $entityManager, TranslatorInterface $translator, ?int $id = null) {
+        $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
         $class = $request->get('class');
         $dataClass = $id ? $entityManager->find($class, $id) : null;
         $form = $this->createForm(DefinitionEntityType::class, $dataClass, ['data_class' => $class]);

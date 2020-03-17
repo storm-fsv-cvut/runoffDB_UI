@@ -82,6 +82,12 @@ label_next: Další
 label_previous: Předchozí
 Search: Hledat
 add plot: Přidat plochu
+not set: Nenastaveno
+Soil Samples: Vzorky půdy
+Users: Uživatelé
+agrotechnology: Agrotechnologie
+days from last agrooperation: Počet dnů od poslední agro-operace
+canopy cover: Stupeň zakrytí listy
 
 name: Název
 established: Zasloženo
@@ -114,3 +120,8 @@ contactEmail: Email
 name_code: Zkratka
 
 files: Soubory
+delete?: Opravdu smazat?
+users: Uživatelé
+new user: Nový uživatel
+sign out: Odhlásit
+sign in: Přihlásit

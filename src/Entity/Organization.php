@@ -40,7 +40,7 @@ class Organization implements DefinitionEntityInterface
     private $contactEmail;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Locality", mappedBy="organisation")
+     * @ORM\OneToMany(targetEntity="App\Entity\Locality", mappedBy="organization")
      */
     private $localities;
 

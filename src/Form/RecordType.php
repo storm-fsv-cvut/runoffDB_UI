@@ -29,7 +29,6 @@ class RecordType extends AbstractType
             ->add('unit', EntityType::class, ['class'=>Unit::class,'label'=>'unit','attr'=>['data-change-label'=>true]])
             ->add('relatedValueUnit', EntityType::class, ['required'=>false,'class'=>Unit::class, 'placeholder' => "",'label'=>'relatedValueUnit','attr'=>['data-change-label'=>true]])
             ->add('sourceRecords', EntityType::class, ['required'=>false,'class'=>Record::class,'label'=>'sourceRecords', 'multiple'=>true])
-            ->add('relatedRecords', EntityType::class, ['required'=>false,'class'=>Record::class,'label'=>'relatedRecords', 'multiple'=>true])
             ->add('datafile', FileType::class, [
                 'label'=>'loadDataFile',
                 'mapped'=>false,
@@ -47,7 +46,8 @@ class RecordType extends AbstractType
             'prototype' => true,
             'allow_add' => true,
             'allow_delete' => true,
-            'required'=>false
+            'required'=>false,
+            'by_reference' => false
         ]);
     }
 

@@ -37,20 +37,20 @@ class SequenceService {
 
             if (
                 $run->getRainIntensityMeasurement() != null &&
-                $run->getRainIntensityMeasurement()->getRecords() != null &&
+                $run->getRainIntensityMeasurement()->getRecords()->get(0) != null &&
                 $run->getRainIntensityMeasurement()->getRecords()->get(0)->getData()->get(0) != null
             ) {
-                $rain_intensity = $run->getRainIntensityMeasurement()->getRecords()->get(0)->getData()->get(0)->getValue();
+                $rain_intensity =  number_format($run->getRainIntensityMeasurement()->getRecords()->get(0)->getData()->get(0)->getValue(),0)." ".$run->getRainIntensityMeasurement()->getRecords()->get(0)->getUnit()->getUnit();
                 } else {
                 $rain_intensity = "";
             }
 
            if (
                 $run->getInitMoistureMeasurement() != null &&
-                $run->getInitMoistureMeasurement()->getRecords() != null &&
+                $run->getInitMoistureMeasurement()->getRecords()->get(0) != null &&
                 $run->getInitMoistureMeasurement()->getRecords()->get(0)->getData()->get(0) != null
             ) {
-                $init_moisture = $run->getInitMoistureMeasurement()->getRecords()->get(0)->getData()->get(0)->getValue();
+                $init_moisture = number_format($run->getInitMoistureMeasurement()->getRecords()->get(0)->getData()->get(0)->getValue(),0)." ".$run->getInitMoistureMeasurement()->getRecords()->get(0)->getUnit()->getUnit();
             } else {
                 $init_moisture = "";
             }
@@ -58,8 +58,8 @@ class SequenceService {
             $runArray = [
                 'id'=>$run->getId(),
                 'run_type'=>$run->getRunType()->getNameCZ(),
-                'rain_start' => $run->getDatetime()->format("H:i"),
-                'runoff_start'=> $run->getRunoffStart()->format("H:i"),
+                'rain_start' => $run->getDatetime() ? $run->getDatetime()->format("H:i") : "",
+                'runoff_start'=> $run->getRunoffStart() ? $run->getRunoffStart()->format("H:i") : "",
                 'soil_sample_texture'=> $run->getSoilSampleTexture(),
                 'soil_sample_texture_assignment'=> $run->getTextureAssignmentType(),
                 'soil_sample_bulk'=> $run->getSoilSampleBulk(),

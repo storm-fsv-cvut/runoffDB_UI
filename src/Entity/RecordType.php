@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RecordTypeRepository")
  */
-class RecordType implements DefinitionEntityInterface
+class RecordType extends BaseEntity implements DefinitionEntityInterface
 {
     /**
      * @ORM\Id()
@@ -36,8 +36,16 @@ class RecordType implements DefinitionEntityInterface
      */
     private $descriptionCZ;
 
-    public function __toString() {
-        return $this->getNameCZ();
+    public function __toString(): string {
+        return $this->getName();
+    }
+
+    public function getName():string {
+        return $this->getLocale() == 'en' ? $this->getNameEN() : $this->getNameCZ();
+    }
+
+    public function getDescription():string {
+        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
     public function getId(): ?int

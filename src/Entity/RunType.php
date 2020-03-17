@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RunTypeRepository")
  */
-class RunType implements DefinitionEntityInterface
+class RunType extends BaseEntity implements DefinitionEntityInterface
 {
     /**
      * @ORM\Id()
@@ -36,8 +36,16 @@ class RunType implements DefinitionEntityInterface
      */
     private $descriptionEN;
 
-    public function __toString() {
-        return $this->getNameCZ();
+    public function __toString(): string {
+        return $this->getName();
+    }
+
+    public function getName():string {
+        return $this->getLocale() == 'en' ? $this->getNameEN() : $this->getNameCZ();
+    }
+
+    public function getDescription():string {
+        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
     public function getId(): ?int

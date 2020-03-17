@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
-{% block title %}Rainsimulator - {{class_name}}{% endblock %}
+{% block title %}Rainsimulator - {% trans %}Users{% endtrans %}{% endblock %}
 {% block body %}
     <section class="content-header">
         <h1>
-            {{class_name}}
-            <a href="{{ path('definition_entity',{'class':class}) }}" class="btn btn-primary"><i></i> {% trans %}new{% endtrans %}</a>
+            {% trans %}Users{% endtrans %}
+            <a href="{{ path('user') }}" class="btn btn-primary"><i></i> {% trans %}new{% endtrans %}</a>
         </h1>
     </section>
 
@@ -14,21 +14,14 @@
                 <div class="box-body">
                     {# total items count #}
                     <table class="table table-bordered table-hover table-striped">
-                        <thead>
-                        <tr>
-                            <th>#</th>
-                            <th></th>
-                        </tr>
-                        </thead>
                         {# table body #}
                         {% for entity in pagination %}
                             <tr {% if loop.index is odd %}class="color"{% endif %}>
                                 <td>{{ entity.getId() }}</td>
-                                <td>{{ entity|localize}}</td>
+                                <td>{{ entity}}</td>
                                 <td>
-                                    <a class="btn btn-sm btn-primary"  href="javascript:;" data-toggle="modal" data-target="#{{ entity.getId() }}"><i class="fa fa-eye"></i></a>
-                                    {% include 'definitionEntity/viewModal.html.twig' with {'dataClass': entity, 'id':(entity.getId())} %}
-                                    <a class="btn btn-sm btn-primary" href="{{ path('definition_entity',{class:class,id:entity.getId()}) }}"><i class="fa fa-edit"></i></a>
+                                    <a class="btn btn-sm btn-primary" href="{{ path('user',{id:entity.getId()}) }}"><i class="fa fa-edit"></i></a>
+                                    <a class="btn btn-sm btn-danger" data-confirm="{% trans %}delete?{% endtrans %}"  href="{{ path('delete_user',{id:entity.getId()}) }}"><i class="fa fa-trash"></i></a>
                                 </td>
                             </tr>
                         {% endfor %}

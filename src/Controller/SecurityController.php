@@ -2,13 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SecurityController extends AbstractController
 {
@@ -26,11 +31,11 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/user/{id}", name="edit_user")
+     * @Route("/user/{id}", name="user")
      */
-    public function user(int $id, Request $request, UserPasswordEncoderInterface $encoder) {
-        $user = $this->getUser();
-        $form = $this->createForm(UserType::class,$user);
+    public function user(UserRepository $userRepository, Request $request, UserPasswordEncoderInterface $encoder, ?int $id = null) {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $form = $this->createForm(UserType::class,$id ? $userRepository->find($id) : NULL);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
@@ -45,8 +50,40 @@ class SecurityController extends AbstractController
         return $this->render('security/user.html.twig', ['form' => $form->createView()]);
     }
 
+    /**
+     * @Route("/delete-user/{id}", name="delete_user")
+     */
+    public function deleteUser(UserRepository $userRepository, EntityManagerInterface $entityManager, ?int $id = null) {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $user = $userRepository->find($id);
+        $entityManager->remove($user);
+        $entityManager->flush();
+        return $this->redirectToRoute('users');
+    }
+
+    /**
+     * @Route("/users", name="users")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
+     */
+    function list(EntityManagerInterface $em, Request $request, TranslatorInterface $translator, PaginatorInterface $paginator) {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $repo = $em->getRepository(User::class);
+        $pagination = $paginator->paginate(
+            $repo->createQueryBuilder('e'),
+            $request->query->getInt('page', 1),
+            20
+        );
+
+        $params['pagination'] = $pagination;
+        return $this->render('security/list.html.twig', $params);
+    }
+
     public function userMenu() {
         $user = $this->getUser();
         return $this->render('security/usermenu.html.twig', ['user' => $user]);
     }
+
+
 }

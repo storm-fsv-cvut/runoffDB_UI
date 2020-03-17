@@ -56,7 +56,7 @@ class TextureData
 
     public function getUpClassLimit(): ?float
     {
-        return $this->upClassLimit;
+        return number_format( $this->upClassLimit, 3, ".", "" );
     }
 
     public function setUpClassLimit(?float $upClassLimit): self
@@ -68,7 +68,7 @@ class TextureData
 
     public function getMass(): ?float
     {
-        return $this->mass;
+        return number_format( $this->mass, 3, ".", "" );
     }
 
     public function setMass(?float $mass): self
@@ -80,7 +80,7 @@ class TextureData
 
     public function getCumulMass(): ?float
     {
-        return $this->cumulMass;
+        return number_format( $this->cumulMass, 3, ".", "" );
     }
 
     public function setCumulMass(?float $cumulMass): self

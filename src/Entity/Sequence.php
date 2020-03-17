@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SequenceRepository")
  */
-class Sequence {
+class Sequence extends BaseEntity {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -29,7 +29,7 @@ class Sequence {
     private $simulator;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Plot", inversedBy="sequences")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Plot")
      * @ORM\JoinColumn(nullable=false)
      */
     private $plot;
@@ -188,4 +188,11 @@ class Sequence {
         return $this;
     }
 
+    public function validateSoilSamples():array {
+        $res = [];
+        foreach ($this->getRuns() as $run) {
+            $res[]=$run->validateSoilSamples();
+        }
+        return $res;
+    }
 }

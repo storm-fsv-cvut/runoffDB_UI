@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TextureRepository")
  */
-class Texture implements DefinitionEntityInterface
+class Texture extends BaseEntity implements DefinitionEntityInterface
 {
     /**
      * @ORM\Id()
@@ -40,6 +40,10 @@ class Texture implements DefinitionEntityInterface
 
     public function __toString() {
         return "#".$this->getId()." ".$this->getDescriptionCZ()."";
+    }
+
+    public function getDescription():string {
+        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
     public function __construct()

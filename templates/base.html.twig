@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>{% block title %}Welcome!{% endblock %}</title>
+    <title>{% block title %}Rainsimulator{% endblock %}</title>
     <script
             src="https://code.jquery.com/jquery-3.4.1.js"
             integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
@@ -22,7 +22,7 @@
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
     <header class="main-header">
-        <a href="index2.html" class="logo">
+        <a href="/" class="logo">
             <span class="logo-mini"><b>LO</b>GO</span>
             <span class="logo-lg"><b>Lo</b>Go</span>
         </a>
@@ -33,6 +33,26 @@
             </a>
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            {{ app.request.getLocale() }}
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% set route = app.request.attributes.get('_route') %}
+                            {% set route_params = app.request.attributes.get('_route_params') %}
+                            {% set params = route_params|merge(app.request.query.all) %}
+                            <li>
+                                <a class="" href="{{ path(route, params|merge({ _locale: 'cs' })) }}">
+                                    cs
+                                </a>
+                            </li>
+                            <li>
+                                <a class="" href="{{ path(route, params|merge({ _locale: 'en' })) }}">
+                                    en
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                     {{ render(controller(
                         'App\\Controller\\SecurityController::usermenu'
                     )) }}
@@ -43,8 +63,14 @@
     <aside class="main-sidebar">
 
         <section class="sidebar">
+            {% if is_granted('ROLE_ADMIN') %}
+                {{ knp_menu_render('admin') }}
+            {% elseif is_granted('ROLE_EDITOR') %}
+                {{ knp_menu_render('editor') }}
+            {% else %}
+                {{ knp_menu_render('guest') }}
+            {% endif %}
 
-            {{ knp_menu_render('main') }}
         </section>
     </aside>
 

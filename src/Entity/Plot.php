@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PlotRepository")
  */
-class Plot implements DefinitionEntityInterface
+class Plot extends BaseEntity implements DefinitionEntityInterface
 {
     /**
      * @ORM\Id()
@@ -29,7 +29,7 @@ class Plot implements DefinitionEntityInterface
     private $locality;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Locality", inversedBy="plots")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Locality")
      */
     private $soilOriginLocality;
 
@@ -81,6 +81,10 @@ class Plot implements DefinitionEntityInterface
 
     public function __toString() {
         return $this->getLocality()->getName()." - #".$this->getId()." ".$this->getName();
+    }
+
+    public function getNote():string {
+        return $this->getLocale() == 'en' ? $this->getNoteEN() : $this->getNoteCZ();
     }
 
     public function __construct()

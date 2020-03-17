@@ -1,9 +1,18 @@
 {% extends 'base.html.twig' %}
-
+{% block title %}Rainsimulator -
+    {% if form.vars.value %}
+    {{ form.vars.value.getFullName() }}
+{% else %}
+    {% trans %}new user{% endtrans %}
+{% endif %}{% endblock %}
 {% block body %}
     <section class="content-header">
         <h1>
-            {{ user.getFullname() }}
+            {% if form.vars.value %}
+            {{ form.vars.value.getFullName() }}
+            {% else %}
+                {% trans %}new user{% endtrans %}
+            {% endif %}
         </h1>
     </section>
 

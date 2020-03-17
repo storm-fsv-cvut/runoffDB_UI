@@ -10,7 +10,7 @@ use phpDocumentor\Reflection\Types\Integer;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SoilSampleRepository")
  */
-class SoilSample implements DefinitionEntityInterface
+class SoilSample extends BaseEntity implements DefinitionEntityInterface
 {
     /**
      * @ORM\Id()
@@ -96,6 +96,10 @@ class SoilSample implements DefinitionEntityInterface
 
     public function __toString() {
         return "#".$this->getId()." - ".$this->getLocality();
+    }
+
+    public function getDescription():string {
+        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
     public function __construct()

@@ -57,44 +57,6 @@ class RunService {
         $run = $formRun->getData();
         $run->setSequence($sequence);
         $this->entityManager->persist($run);
-
-        $initMoistureData = $formRun->get('initMoistureData')->getData();
-        if (sizeof($initMoistureData)) {
-            $initMoistureMeasurement = new Measurement();
-            $initMoistureMeasurement->setRun($run);
-            $initMoistureMeasurement->setDescriptionCZ('vlhkost');
-            $initMoistureMeasurement->setDescriptionEN('moisture');
-            $initMoistureMeasurement_record = new Record();
-            $initMoistureMeasurement_record->setRecordType($this->recordTypeRepository->find(5));
-            $initMoistureMeasurement_record->setUnit($this->unitRepository->find(6));
-            foreach ($initMoistureData as $data) {
-                $initMoistureMeasurement_record->addData($data);
-            }
-            $initMoistureMeasurement->addRecord($initMoistureMeasurement_record);
-            $run->setInitMoistureMeasurement($initMoistureMeasurement);
-            $run->addMeasurement($initMoistureMeasurement);
-        }
-
-        $rainIntensityData = $formRun->get('rainIntensityData')->getData();
-        if (sizeof($rainIntensityData)) {
-            $rainIntensityMeasurement = new Measurement();
-            $rainIntensityMeasurement->setRun($run);
-            $rainIntensityMeasurement->setDescriptionCZ('intenzita srážky');
-            $rainIntensityMeasurement->setDescriptionEN('rain intensity');
-            $rainIntensityMeasurement_record = new Record();
-            $rainIntensityMeasurement_record->setRecordType($this->recordTypeRepository->find(5));
-            $rainIntensityMeasurement_record->setUnit($this->unitRepository->find(6));
-
-            foreach ($rainIntensityData as $data) {
-                $rainIntensityMeasurement_record->addData($data);
-            }
-            $rainIntensityMeasurement->addRecord($rainIntensityMeasurement_record);
-            $run->setRainIntensityMeasurement($rainIntensityMeasurement);
-            $run->addMeasurement($rainIntensityMeasurement);
-
-        }
-
-        $this->entityManager->persist($run);
         $this->entityManager->flush();
     }
 

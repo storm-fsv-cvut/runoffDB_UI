@@ -12,8 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\Matcher\Matcher;
 use Knp\Menu\Matcher\Voter\UriVoter;
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\Translation\Translator;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MenuBuilder
@@ -33,9 +32,12 @@ class MenuBuilder
      */
     private $translator;
 
+
     /**
+     * MenuBuilder constructor.
      * @param FactoryInterface $factory
-     * @param Container $container
+     * @param EntityManagerInterface $em
+     * @param TranslatorInterface $translator
      */
     public function __construct(FactoryInterface $factory, EntityManagerInterface $em, TranslatorInterface $translator)
     {
@@ -52,7 +54,7 @@ class MenuBuilder
      * @param array $options
      * @return \Knp\Menu\ItemInterface
      */
-    public function createMainMenu(array $options)
+    public function createAdminMenu(array $options)
     {
         $this->matcher = new Matcher(new UriVoter($_SERVER['REQUEST_URI']));
         $menu = $this->factory->createItem('root');
@@ -73,6 +75,50 @@ class MenuBuilder
                 $item->setCurrent(true);
             }
         }
+        $menu->addChild($this->translator->trans('users'), ['route' => 'users']);
+        return $menu;
+    }
+
+    /**
+     * @param array $options
+     * @return \Knp\Menu\ItemInterface
+     */
+    public function createEditorMenu(array $options)
+    {
+        $this->matcher = new Matcher(new UriVoter($_SERVER['REQUEST_URI']));
+        $menu = $this->factory->createItem('root');
+        $menu->setChildrenAttribute('class','sidebar-menu tree');
+        $menu->setChildrenAttribute('data-widget','tree');
+        $menu->addChild($this->translator->trans('Home'), ['route' => 'homepage']);
+        $measurement = $menu->addChild($this->translator->trans('sequences'), ['uri' => '#']);
+        $measurement->setAttribute('class','treeview');
+        $measurement->setChildrenAttribute('class','treeview-menu');
+        $measurement->addChild($this->translator->trans('add'), ['route' => 'sequence']);
+        $measurement->addChild($this->translator->trans('list'), ['route' => 'sequences']);
+        $setup = $menu->addChild($this->translator->trans('Setup'), ['uri' => '#']);
+        $setup->setAttribute('class','treeview');
+        $setup->setChildrenAttribute('class','treeview-menu');
+        foreach ($this->definitionEntities as $entity) {
+            $item = $setup->addChild($entity->name, ['route' => 'definition_entities','routeParameters' => ['class'=>$entity->name]]);
+            if($this->matcher->isCurrent($item)) {
+                $item->setCurrent(true);
+            }
+        }
+        return $menu;
+    }
+
+    /**
+     * @param array $options
+     * @return \Knp\Menu\ItemInterface
+     */
+    public function createGuestMenu(array $options)
+    {
+        $this->matcher = new Matcher(new UriVoter($_SERVER['REQUEST_URI']));
+        $menu = $this->factory->createItem('root');
+        $menu->setChildrenAttribute('class','sidebar-menu tree');
+        $menu->setChildrenAttribute('data-widget','tree');
+        $menu->addChild($this->translator->trans('Home'), ['route' => 'homepage']);
+        $menu->addChild($this->translator->trans('sequences'), ['route' => 'sequences']);
         return $menu;
     }
 }

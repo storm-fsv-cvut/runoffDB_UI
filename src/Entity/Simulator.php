@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SimulatorRepository")
  */
-class Simulator implements DefinitionEntityInterface
+class Simulator extends BaseEntity implements DefinitionEntityInterface
 {
     /**
      * @ORM\Id()
@@ -49,7 +49,14 @@ class Simulator implements DefinitionEntityInterface
     private $sequences;
 
     public function __toString() {
-        return $this->getNameCZ().' ('.$this->getOrganization()->getName().')';
+        return $this->getName().' ('.$this->getOrganization()->getName().')';
+    }
+    public function getName():string {
+        return $this->getLocale() == 'en' ? $this->getNameEN() : $this->getNameCZ();
+    }
+
+    public function getDescription():string {
+        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
     public function __construct()

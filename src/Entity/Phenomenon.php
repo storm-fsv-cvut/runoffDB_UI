@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PhenomenonRepository")
  */
-class Phenomenon
+class Phenomenon extends BaseEntity
 {
     /**
      * @ORM\Id()
@@ -40,6 +40,18 @@ class Phenomenon
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $modelParameterSet;
+
+    public function __toString(): string {
+        return $this->getName();
+    }
+
+    public function getName():string {
+        return $this->getLocale() == 'en' ? $this->getNameEN() : $this->getNameCZ();
+    }
+
+    public function getDescription():string {
+        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
+    }
 
     public function getId(): ?int
     {

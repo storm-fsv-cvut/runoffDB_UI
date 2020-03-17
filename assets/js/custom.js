@@ -30,6 +30,14 @@ $(document).ready(function (e) {
         })
     });
 
+    $("[data-confirm]").on('click', function (e) {
+        if(window.confirm($(this).data('confirm'))) {
+            return true;
+        } else {
+            return false;
+        }
+    })
+
     $('[data-parent]').click(function (e) {
         let modal = $($(this).data('target'));
         $(modal).find('[name="' + $(modal).attr('id') + '[parent_id]"]').val($(this).data('parent'));
@@ -72,18 +80,22 @@ $(document).ready(function (e) {
 
     $("input:file[data-validate]").change(function () {
         var form = $(this).parents("form");
+        var modal = $(this).parents(".modal");
+        var name = this.name;
         let data = new FormData(form[0]);
+        let data2 = new FormData();
+        data2.append('file',data.get(name));
         $.ajax({
             url: $(this).data('validate'),
             type: 'POST',
-            data: data,
+            data: data2,
             processData: false,
             contentType: false,
             success: function (data) {
                 if (data.error != undefined) {
                     alert(data.error);
                 } else {
-                    let table = $(form).find('table');
+                    let table = $(modal).find('table');
                     $(table).find("tr").each((i, e) => {
                         if (i > 0) {
                             $(e).remove();

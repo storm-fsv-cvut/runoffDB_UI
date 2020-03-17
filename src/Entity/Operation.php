@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OperationRepository")
  */
-class Operation implements DefinitionEntityInterface
+class Operation extends BaseEntity implements DefinitionEntityInterface
 {
     /**
      * @ORM\Id()
@@ -63,8 +63,20 @@ class Operation implements DefinitionEntityInterface
      */
     private $machineryTypeEN;
 
-    public function __toString() {
-        return $this->getNameCZ();
+    public function __toString(): string {
+        return $this->getName();
+    }
+
+    public function getName():string {
+        return $this->getLocale() == 'en' ? $this->getNameEN() : $this->getNameCZ();
+    }
+
+    public function getDescription():string {
+        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
+    }
+
+    public function getMachineryType():string {
+        return $this->getLocale() == 'en' ? $this->getMachineryTypeCZ() : $this->getMachineryTypeEN();
     }
 
     public function getId(): ?int

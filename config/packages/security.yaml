@@ -21,7 +21,6 @@ security:
             form_login: true
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/, roles: ROLE_ADMIN }
     encoders:
         App\Entity\User:
             algorithm: bcrypt

@@ -3,11 +3,12 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Query\Expr\Base;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AssigmentTypeRepository")
  */
-class AssignmentType implements DefinitionEntityInterface
+class AssignmentType extends BaseEntity implements DefinitionEntityInterface
 {
     /**
      * @ORM\Id()
@@ -26,8 +27,13 @@ class AssignmentType implements DefinitionEntityInterface
      */
     private $descriptionEN;
 
-    public function __toString() {
-        return $this->getDescriptionCZ();
+
+    public function __toString(): string {
+        return $this->getDescription();
+    }
+
+    public function getDescription():string {
+        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
     public function getId(): ?int

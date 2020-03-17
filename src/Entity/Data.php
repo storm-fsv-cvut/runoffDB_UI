@@ -32,7 +32,7 @@ class Data
     private $relatedValue;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Record", inversedBy="data")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Record", inversedBy="datas")
      * @ORM\JoinColumn(nullable=false)
      */
     private $record;
@@ -56,7 +56,7 @@ class Data
 
     public function getValue(): ?string
     {
-        return $this->value;
+        return number_format( $this->value, 3, ".", "" );
     }
 
     public function setValue(string $value): self

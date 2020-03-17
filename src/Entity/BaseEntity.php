@@ -4,25 +4,25 @@
 namespace App\Entity;
 
 
-class BaseEntity {
+use Symfony\Component\HttpFoundation\RequestStack;
+
+class BaseEntity implements LocalisableInterface {
     /**
      * @var string
      */
-    private $descriptionCZ;
+    protected $locale;
 
     /**
-     * @var string
+     * @param string $locale
      */
-    private $nameCZ;
+    public function setLocale(string $locale): void {
+        $this->locale = $locale;
+    }
 
     /**
-     * @var string
+     * @return string
      */
-    private $descriptionEN;
-
-    /**
-     * @var string
-     */
-    private $nameEN;
-
+    public function getLocale():string {
+        return $this->locale ? $this->locale : 'cs';
+    }
 }

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CroperTypeRepository")
  */
-class CropErType implements DefinitionEntityInterface
+class CropErType extends BaseEntity implements DefinitionEntityInterface
 {
     /**
      * @ORM\Id()
@@ -26,8 +26,16 @@ class CropErType implements DefinitionEntityInterface
      */
     private $nameEN;
 
-    public function __toString() {
-        return $this->getNameCZ();
+    public function __toString(): string {
+        return $this->getName();
+    }
+
+    public function getName():string {
+        return $this->getLocale() == 'en' ? $this->getNameEN() : $this->getNameCZ();
+    }
+
+    public function getDescription():string {
+        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
     public function getId(): ?int

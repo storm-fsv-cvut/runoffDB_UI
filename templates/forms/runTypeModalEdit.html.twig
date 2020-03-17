@@ -82,43 +82,6 @@
                         {{ form_row(runForm.corqAssignmentType) }}
                     </div>
                 </div>
-                
-                <div class="row">
-                    <div class="col-md-6">
-                        {{ form_label(runForm.rainIntensityData) }}
-                        <table class="table table-bordered">
-                            <tr>
-                                <td data-prototype='{{ form_widget(runForm.rainIntensityData.vars.prototype.time) }}'>
-                                    <i class="fa fa-clock-o"></i></td>
-                                <td data-prototype='{{ form_widget(runForm.rainIntensityData.vars.prototype.value) }}'>
-                                    mm.h-1
-                                </td>
-                                <td>
-                                    <a class="text-danger removeRow" style="display: none;"><i class="fa fa-minus"></i></a>
-                                    <a class="text-success addFormRow"><i class="fa fa-plus"></i></a>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="col-md-6">
-                        {{ form_label(runForm.initMoistureData) }}
-                        <table class="table table-bordered">
-                            <tr>
-                                <td data-prototype='{{ form_widget(runForm.initMoistureData.vars.prototype.time) }}'>
-                                    <i class="fa fa-clock-o"></i></td>
-                                <td data-prototype='{{ form_widget(runForm.initMoistureData.vars.prototype.value) }}'>
-                                    mm.h-1
-                                </td>
-                                <td>
-                                    <a class="text-danger removeRow" style="display: none;"><i class="fa fa-minus"></i></a>
-                                    <a class="text-success addFormRow"><i class="fa fa-plus"></i></a>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-
-                </div>
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-warning pull-left" data-dismiss="modal">

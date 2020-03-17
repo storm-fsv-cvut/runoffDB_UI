@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RecordRepository")
  */
-class Record {
+class Record extends BaseEntity {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -18,7 +18,7 @@ class Record {
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Measurement", inversedBy="value")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Measurement", inversedBy="records")
      * @ORM\JoinColumn(nullable=false)
      */
     private $measurement;
@@ -46,14 +46,9 @@ class Record {
     private $unit;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Record", inversedBy="relatedRecords")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Record", inversedBy="sourceRecords")
      */
     private $sourceRecords;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Record", mappedBy="sourceRecords")
-     */
-    private $relatedRecords;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Unit")
@@ -66,7 +61,7 @@ class Record {
     private $isTimeline;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Data", mappedBy="record", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Data", mappedBy="record", cascade={"persist","remove"}, orphanRemoval=true)
      */
     private $datas;
 
@@ -74,9 +69,12 @@ class Record {
         return $this->getId()."";
     }
 
+    public function getNote():string {
+        return $this->getLocale() == 'en' ? $this->getNoteEN() : $this->getNoteCZ();
+    }
+
     public function __construct() {
         $this->sourceRecords = new ArrayCollection();
-        $this->relatedRecords = new ArrayCollection();
         $this->datas = new ArrayCollection();
     }
 
@@ -186,31 +184,6 @@ class Record {
     public function removeSourceRecord(self $sourceRecord): self {
         if ($this->sourceRecords->contains($sourceRecord)) {
             $this->sourceRecords->removeElement($sourceRecord);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|self[]
-     */
-    public function getRelatedRecords(): Collection {
-        return $this->relatedRecords;
-    }
-
-    public function addRelatedRecord(self $relatedRecord): self {
-        if (!$this->relatedRecords->contains($relatedRecord)) {
-            $this->relatedRecords[] = $relatedRecord;
-            $relatedRecord->addSourceRecord($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRelatedRecord(self $relatedRecord): self {
-        if ($this->relatedRecords->contains($relatedRecord)) {
-            $this->relatedRecords->removeElement($relatedRecord);
-            $relatedRecord->removeSourceRecord($this);
         }
 
         return $this;

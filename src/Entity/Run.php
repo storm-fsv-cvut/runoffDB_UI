@@ -11,7 +11,7 @@ use Symfony\Component\Finder\Finder;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RunRepository")
  */
-class Run {
+class Run extends BaseEntity {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -20,7 +20,7 @@ class Run {
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Sequence", inversedBy="sequence")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Sequence", inversedBy="runs")
      * @ORM\JoinColumn(nullable=false)
      */
     private $sequence;
@@ -32,7 +32,7 @@ class Run {
     private $runType;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\SoilSample", nullable=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\SoilSample")
      */
     private $soilSampleBulk;
 
@@ -42,7 +42,7 @@ class Run {
     private $bulkAssignmentType;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\SoilSample", nullable=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\SoilSample")
      */
     private $soilSampleTexture;
 
@@ -52,7 +52,7 @@ class Run {
     private $textureAssignmentType;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\SoilSample", nullable=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\SoilSample")
      */
     private $soilSampleCorq;
 
@@ -67,7 +67,8 @@ class Run {
     private $datetime;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Measurement", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Measurement", cascade={"persist","remove"})
+     * @ORM\JoinColumn(name="rain_intensity_mesurement_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $rainIntensityMeasurement;
 
@@ -113,11 +114,12 @@ class Run {
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Measurement", cascade={"persist","remove"})
+     * @ORM\JoinColumn(name="init_moisture_mesurement_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $initMoistureMeasurement;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Measurement", mappedBy="run", cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Measurement", mappedBy="run", cascade={"persist","remove"}, orphanRemoval=true)
      */
     private $measurements;
 
@@ -129,6 +131,10 @@ class Run {
 
     public function __toString() {
         return $this->sequence . " - #" . $this->getId();
+    }
+
+    public function getNote():string {
+        return $this->getLocale() == 'en' ? $this->getNoteEN() : $this->getNoteCZ();
     }
 
     public function __construct() {
@@ -409,5 +415,9 @@ class Run {
         if ($filesystem->exists($dir.'/'.$filename)) {
             $filesystem->remove($dir.'/'.$filename);
         }
+    }
+
+    public function validateSoilSamples():bool {
+        return $this->getSoilSampleCorq() && $this->getSoilSampleBulk() && $this->getSoilSampleTexture();
     }
 }
