@@ -98,7 +98,7 @@ class SoilSample extends BaseEntity implements DefinitionEntityInterface
         return "#".$this->getId()." - ".$this->getLocality();
     }
 
-    public function getDescription():string {
+    public function getDescription():?string {
         return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 

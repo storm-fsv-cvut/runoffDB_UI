@@ -47,9 +47,9 @@
                         <tr {% if loop.index is odd %}class="color"{% endif %}>
                             <td>{{ sequence.getId() }}</td>
                             <td>{{ sequence.getDate().format('d.m.Y') }}</td>
-                            <td>{{ sequence.getPlot().getLocality() }}</td>
+                            <td>{{ sequence.getPlot().getLocality()}}</td>
                             <td>{{ sequence.getPlot()}}</td>
-                            <td>{{ sequence.getPlot().getCrop() }}</td>
+                            <td>{{ sequence.getPlot().getCrop()}}</td>
                             <td>
                                 {% for valid in sequence.validateSoilSamples()%}
                                     {% if valid %}

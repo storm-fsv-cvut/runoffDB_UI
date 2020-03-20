@@ -69,7 +69,7 @@ class Record extends BaseEntity {
         return $this->getId()."";
     }
 
-    public function getNote():string {
+    public function getNote():?string {
         return $this->getLocale() == 'en' ? $this->getNoteEN() : $this->getNoteCZ();
     }
 

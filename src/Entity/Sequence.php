@@ -60,7 +60,7 @@ class Sequence extends BaseEntity {
     private $runs;
 
     public function __toString(): string {
-        return $this->getDate()->format("d.m.Y") . " - " . $this->getPlot()->getLocality()->getName() . " - " . $this->getPlot()->getCrop();
+        return $this->getDate()->format("d.m.Y") . " - " . $this->getPlot()->getLocality() . " - " . $this->getPlot()->getCrop();
     }
 
     public function __construct() {

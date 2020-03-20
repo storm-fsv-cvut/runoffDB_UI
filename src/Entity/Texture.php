@@ -42,7 +42,7 @@ class Texture extends BaseEntity implements DefinitionEntityInterface
         return "#".$this->getId()." ".$this->getDescriptionCZ()."";
     }
 
-    public function getDescription():string {
+    public function getDescription():?string {
         return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 

@@ -17,6 +17,11 @@ class Unit extends BaseEntity implements DefinitionEntityInterface
     private $id;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $decimals;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $nameCZ;
@@ -45,11 +50,11 @@ class Unit extends BaseEntity implements DefinitionEntityInterface
         return $this->getName()." [".$this->getUnit()."]";
     }
 
-    public function getName():string {
+    public function getName():?string {
         return $this->getLocale() == 'en' ? $this->getNameEN() : $this->getNameCZ();
     }
 
-    public function getDescription():string {
+    public function getDescription():?string {
         return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
@@ -116,5 +121,19 @@ class Unit extends BaseEntity implements DefinitionEntityInterface
         $this->descriptionEN = $descriptionEN;
 
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDecimals():int {
+        return $this->decimals ? $this->decimals : 3;
+    }
+
+    /**
+     * @param mixed $decimals
+     */
+    public function setDecimals(int $decimals): void {
+        $this->decimals = $decimals;
     }
 }

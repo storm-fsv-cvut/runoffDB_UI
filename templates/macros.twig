@@ -1,7 +1,7 @@
 {% macro soilsample(key, soilsample, assignment) %}
     <dt>{{ key|trans }}</dt>
     {% if soilsample!=null %}
-        <dd><a href="javascript:;" data-toggle="modal" data-target="#soilSample-{{ key }}-{{ soilsample.getId() }}">{{ soilsample.getId() }}</a> <i>({{ assignment.getDescriptionCZ() }})</i></dd>
+        <dd><a href="javascript:;" data-toggle="modal" data-target="#soilSample-{{ key }}-{{ soilsample.getId() }}">{{ soilsample.getId() }}</a> <i>({{ assignment.getDescription() }})</i></dd>
         {% include 'definitionEntity/viewModal.html.twig' with {'dataClass': soilsample, 'id':('soilSample-' ~ key ~ '-' ~ soilsample.getId())} %}
     {% else %}
         <dd>{% trans %}na{% endtrans %}</dd>

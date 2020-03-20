@@ -10,7 +10,7 @@ use Symfony\Component\Form\Form;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OrganizationRepository")
  */
-class Organization implements DefinitionEntityInterface
+class Organization extends BaseEntity implements DefinitionEntityInterface
 {
     /**
      * @ORM\Id()

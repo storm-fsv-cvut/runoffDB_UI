@@ -1,7 +1,7 @@
 <?php
 namespace App\EventSubscriber;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Doctrine\ORM\Events;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -11,15 +11,10 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class LocaleSubscriber implements EventSubscriberInterface
 {
     private $defaultLocale;
-    /**
-     * @var ContainerInterface
-     */
-    public $container;
 
-    public function __construct(ContainerInterface $container, string $defaultLocale = 'cs')
+    public function __construct(string $defaultLocale = 'cs')
     {
         $this->defaultLocale = $defaultLocale;
-        $this->container = $container;
     }
 
     public function onKernelRequest(GetResponseEvent $event)
@@ -28,11 +23,8 @@ class LocaleSubscriber implements EventSubscriberInterface
         if (!$request->hasPreviousSession()) {
             return;
         }
-        if ($request->get("_locale")) {
-            $request->setLocale($request->get("_locale"));
-        }
-        if ($request->getLocale()!=null) {
-            $request->getSession()->set('_locale', $request->attributes->get('_locale'));
+        if ($locale = $request->attributes->get('_locale')) {
+            $request->getSession()->set('_locale', $locale);
         } else {
             $request->setLocale($request->getSession()->get('_locale', $this->defaultLocale));
         }

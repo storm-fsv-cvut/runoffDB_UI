@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MeasurementRepository")
  */
-class Measurement
+class Measurement extends BaseEntity
 {
     /**
      * @ORM\Id()
@@ -57,11 +57,11 @@ class Measurement
         return $this->getDescription();
     }
 
-    public function getNote():string {
+    public function getNote(): ?string {
         return $this->getLocale() == 'en' ? $this->getNoteEN() : $this->getNoteCZ();
     }
 
-    public function getDescription():string {
+    public function getDescription():?string {
         return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 

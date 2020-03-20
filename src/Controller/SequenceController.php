@@ -38,7 +38,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class SequenceController extends AbstractController {
 
     /**
-     * @Route("/chart-data", name="chartData")
+     * @Route("/{_locale}/chart-data", name="chartData")
      */
     public function getChartData(RecordsService $recordsService, Request $request) {
         $data = $request->get('ids');
@@ -113,7 +113,7 @@ class SequenceController extends AbstractController {
     }
 
     /**
-     * @Route("/sequence/{id}", name="sequence")
+     * @Route("/{_locale}/sequence/{id}", name="sequence")
      */
     public function edit(EntityManagerInterface $entityManager,
                          Request $request,
@@ -302,7 +302,7 @@ class SequenceController extends AbstractController {
 
 
     /**
-     * @Route("/sequences", name="sequences")
+     * @Route("/{_locale}/sequences", name="sequences")
      */
     public function list(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request, SequenceRepository $sequenceRepository) {
         $filter = $this->createForm(SequenceFilterType::class);

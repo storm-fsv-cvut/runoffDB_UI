@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DataRepository")
  */
-class Data
+class Data extends BaseEntity
 {
     /**
      * @ORM\Id()

@@ -11,8 +11,8 @@ security:
             security: false
         main:
             logout:
-                path:   /logout
-                target: /login
+                path:   app_logout
+                target: homepage
             anonymous: true
             provider: db_provider
             guard:

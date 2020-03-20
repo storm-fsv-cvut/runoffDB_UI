@@ -8,6 +8,7 @@
 
 namespace App\Controller;
 
+use App\Repository\CmsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,9 +16,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class DefaultController extends AbstractController {
 
     /**
-     * @Route("/", name="homepage")
+     * @Route("/{_locale}", name="homepage")
      */
-    public function index(EntityManagerInterface $entityManager) {
+    public function index(EntityManagerInterface $entityManager, CmsRepository $cmsRepository,$_locale='cs') {
         $user = $this->getUser();
         return $this->render('default/index.html.twig',['user'=>$user]);
     }

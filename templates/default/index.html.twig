@@ -4,13 +4,17 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            <small></small>
+            {{ title('home') }}
         </h1>
     </section>
 
     <!-- Main content -->
     <section class="content container-fluid">
-
+        <div class="row">
+            <div class="col-lg-12">
+                {{ content('home') }}
+            </div>
+        </div>
     </section>
     <!-- /.content -->
 {% endblock %}

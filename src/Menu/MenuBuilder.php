@@ -11,7 +11,9 @@ namespace App\Menu;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\Matcher\Matcher;
+use Knp\Menu\Matcher\Voter\RouteVoter;
 use Knp\Menu\Matcher\Voter\UriVoter;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -31,6 +33,10 @@ class MenuBuilder
      * @var TranslatorInterface
      */
     private $translator;
+    /**
+     * @var RequestStack
+     */
+    private $requestStack;
 
 
     /**
@@ -39,7 +45,7 @@ class MenuBuilder
      * @param EntityManagerInterface $em
      * @param TranslatorInterface $translator
      */
-    public function __construct(FactoryInterface $factory, EntityManagerInterface $em, TranslatorInterface $translator)
+    public function __construct(FactoryInterface $factory, EntityManagerInterface $em, TranslatorInterface $translator, RequestStack $requestStack)
     {
         foreach ($em->getMetadataFactory()->getAllMetadata() as $entity) {
             if(in_array('App\Entity\DefinitionEntityInterface',$entity->getReflectionClass()->getInterfaceNames())) {
@@ -48,6 +54,7 @@ class MenuBuilder
         }
         $this->factory = $factory;
         $this->translator = $translator;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -56,7 +63,7 @@ class MenuBuilder
      */
     public function createAdminMenu(array $options)
     {
-        $this->matcher = new Matcher(new UriVoter($_SERVER['REQUEST_URI']));
+        $this->matcher = new Matcher(new RouteVoter($this->requestStack));
         $menu = $this->factory->createItem('root');
         $menu->setChildrenAttribute('class','sidebar-menu tree');
         $menu->setChildrenAttribute('data-widget','tree');

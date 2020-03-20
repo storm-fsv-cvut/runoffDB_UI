@@ -51,7 +51,10 @@ class DefinitionEntityType extends AbstractType {
             }
         }
 
-        $builder->add('save', SubmitType::class);
+        $builder->add('save', SubmitType::class, [
+            'attr' => ['class' => 'btn btn-success'],
+            'label' => 'save'
+        ]);
     }
 
 }

@@ -24,7 +24,7 @@
                         {% for entity in pagination %}
                             <tr {% if loop.index is odd %}class="color"{% endif %}>
                                 <td>{{ entity.getId() }}</td>
-                                <td>{{ entity|localize}}</td>
+                                <td>{{ entity}}</td>
                                 <td>
                                     <a class="btn btn-sm btn-primary"  href="javascript:;" data-toggle="modal" data-target="#{{ entity.getId() }}"><i class="fa fa-eye"></i></a>
                                     {% include 'definitionEntity/viewModal.html.twig' with {'dataClass': entity, 'id':(entity.getId())} %}

@@ -30,7 +30,7 @@ class OperationType extends BaseEntity implements DefinitionEntityInterface
         return $this->getDescription();
     }
 
-    public function getDescription():string {
+    public function getDescription():?string {
         return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 

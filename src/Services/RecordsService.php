@@ -27,7 +27,7 @@ class RecordsService {
         $counter = 0;
         foreach ($records as $record) {
             $counter++;
-            $columns[] = ['number', $record->getUnit()->getNameCZ() . " [" . $record->getUnit()->getUnit() . "]"];
+            $columns[] = ['number', $record->getUnit()->getName() . " [" . $record->getUnit()->getUnit() . "]"];
             foreach ($record->getData() as $data) {
                 $datarow = [
                     0 => [(int)$data->getTime()->format('H'), (int)$data->getTime()->format('i'), (int)$data->getTime()->format('s')]

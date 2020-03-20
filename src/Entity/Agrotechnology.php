@@ -58,11 +58,11 @@ class Agrotechnology extends BaseEntity implements DefinitionEntityInterface
         return $this->getName();
     }
 
-    public function getName():string {
+    public function getName():?string {
         return $this->getLocale() == 'en' ? $this->getNameEN() : $this->getNameCZ();
     }
 
-    public function getDescription():string {
+    public function getDescription():?string {
         return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 

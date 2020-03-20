@@ -90,11 +90,11 @@ days from last agrooperation: Počet dnů od poslední agro-operace
 canopy cover: Stupeň zakrytí listy
 
 name: Název
-established: Zasloženo
+established: Založeno
 plotWidth: Šířka plochy
 plotLength: Délka plochy
 plotSlope: Sklon
-Soil origin locality: Lokalita vzorku půdy
+Soil origin locality: Zdrojová lokalita půdy
 Crop: Plodina
 Agrotechnology: Agrotechnologie
 
@@ -105,7 +105,7 @@ corg: CORQ
 moistureVperc: moistureVperc
 sampleDepthM: Hloubka odběru (m)
 texture: Textura
-locality: Lokalita
+locality: Umístění
 
 managTyp: Způsob obdělávání
 operationType: Typ operace
@@ -113,15 +113,19 @@ operationIntensity: Intenzita operace
 operationDepthM: Hloubka(m)
 machineryTypeCZ: Typ stroje (cz)
 machineryTypeEN: Typ stroje (en)
-
 contactPerson: Kontaktní osoba
 contactNumber: Telefon
 contactEmail: Email
 name_code: Zkratka
-
 files: Soubory
 delete?: Opravdu smazat?
 users: Uživatelé
 new user: Nový uživatel
 sign out: Odhlásit
 sign in: Přihlásit
+cancel: Zrušit
+W r bsoil class: WRB soil class
+lat: Lat
+lng: Lng
+
+

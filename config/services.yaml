@@ -36,6 +36,10 @@ services:
     App\Grid\ActionGridColumn:
         decorates: Dtc\GridBundle\Grid\Column\ActionGridColumn
 
+    App\EventSubscriber\EntitySubscriber:
+        tags:
+            - { name: doctrine.event_listener, event: postLoad, lazy: true }
+
     app.menu_builder:
         class: App\Menu\MenuBuilder
         arguments: ["@knp_menu.factory"]

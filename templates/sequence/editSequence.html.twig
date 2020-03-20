@@ -165,9 +165,9 @@
                                             <div class="box-header">
                                                 <h4 class="box-title">
                                                     <a data-toggle="collapse" data-parent="#accordion" href="#record-{{ record.getId() }}" class="collapsed" aria-expanded="false">
-                                                        {{ record.getUnit().getNameCZ() }}
+                                                        {{ record.getUnit().getName() }}
                                                     </a>
-                                                    <small>{{ record.getRecordType().getNameCZ() }}</small>
+                                                    <small>{{ record.getRecordType().getName() }}</small>
                                                     <span class="badge bg-primary">#{{ record.getId() }}</span>
                                                     {% for sourceRecord in record.getSourceRecords() %}
                                                         <span class="badge bg-primary">{% trans %}derived from{% endtrans %} #{{ sourceRecord.getId() }}</span>
@@ -202,11 +202,11 @@
                                                         <tr>
                                                             <th>{% trans %}time{% endtrans %}</th>
                                                             {% if record.getRelatedValueUnit() is not same as(null) %}
-                                                                <th>{{ record.getRelatedValueUnit().getNameCZ() }}
+                                                                <th>{{ record.getRelatedValueUnit().getName() }}
                                                                     [{{ record.getRelatedValueUnit().getUnit() }}]
                                                                 </th>
                                                             {% endif %}
-                                                            <th>{{ record.getUnit().getNameCZ() }}
+                                                            <th>{{ record.getUnit().getName() }}
                                                                 [{{ record.getUnit().getUnit() }}]
                                                             </th>
                                                         </tr>

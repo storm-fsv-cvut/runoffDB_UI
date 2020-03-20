@@ -83,7 +83,7 @@ class Plot extends BaseEntity implements DefinitionEntityInterface
         return $this->getLocality()->getName()." - #".$this->getId()." ".$this->getName();
     }
 
-    public function getNote():string {
+    public function getNote():?string {
         return $this->getLocale() == 'en' ? $this->getNoteEN() : $this->getNoteCZ();
     }
 

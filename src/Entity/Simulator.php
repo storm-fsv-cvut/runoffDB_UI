@@ -51,11 +51,11 @@ class Simulator extends BaseEntity implements DefinitionEntityInterface
     public function __toString() {
         return $this->getName().' ('.$this->getOrganization()->getName().')';
     }
-    public function getName():string {
+    public function getName():?string {
         return $this->getLocale() == 'en' ? $this->getNameEN() : $this->getNameCZ();
     }
 
-    public function getDescription():string {
+    public function getDescription():?string {
         return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 

@@ -18,7 +18,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class SecurityController extends AbstractController
 {
     /**
-     * @Route("/login", name="app_login")
+     * @Route("/{_locale}/login", name="app_login")
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -31,7 +31,20 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/user/{id}", name="user")
+     * @Route("/{_locale}/logout", name="app_logout")
+     */
+    public function logout(AuthenticationUtils $authenticationUtils): Response
+    {
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+    }
+
+    /**
+     * @Route("/{_locale}/user/{id}", name="user")
      */
     public function user(UserRepository $userRepository, Request $request, UserPasswordEncoderInterface $encoder, ?int $id = null) {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -51,7 +64,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/delete-user/{id}", name="delete_user")
+     * @Route("/{_locale}/delete-user/{id}", name="delete_user")
      */
     public function deleteUser(UserRepository $userRepository, EntityManagerInterface $entityManager, ?int $id = null) {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -62,7 +75,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/users", name="users")
+     * @Route("/{_locale}/users", name="users")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception

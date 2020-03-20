@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class DefinitionEntityControler extends AbstractController {
 
     /**
-     * @Route("/settings", name="definition_entities")
+     * @Route("/{_locale}/settings", name="definition_entities")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
@@ -42,7 +42,7 @@ class DefinitionEntityControler extends AbstractController {
     }
 
     /**
-     * @Route("/setting/{id}", name="definition_entity")
+     * @Route("/{_locale}/setting/{id}", name="definition_entity")
      */
     function edit(Request $request, EntityManagerInterface $entityManager, TranslatorInterface $translator, ?int $id = null) {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
