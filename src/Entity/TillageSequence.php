@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TillageSequenceRepository")
  */
-class TillageSequence
+class TillageSequence extends BaseEntity
 {
     /**
      * @ORM\Id()

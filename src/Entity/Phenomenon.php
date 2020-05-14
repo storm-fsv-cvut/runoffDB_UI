@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PhenomenonRepository")
  */
-class Phenomenon extends BaseEntity
+class Phenomenon extends BaseEntity implements DefinitionEntityInterface
 {
     /**
      * @ORM\Id()

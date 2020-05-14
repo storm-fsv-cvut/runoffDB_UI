@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TextureDataRepository")
  */
-class TextureData
+class TextureData extends BaseEntity
 {
     /**
      * @ORM\Id()
