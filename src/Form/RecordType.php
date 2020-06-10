@@ -27,11 +27,14 @@ class RecordType extends AbstractType
             ->add('recordType')
             ->add('parent_id', HiddenType::class, ['mapped' => false])
             ->add('unit', EntityType::class, ['class'=>Unit::class,'label'=>'unit','attr'=>['data-change-label'=>true]])
-            ->add('relatedValueUnit', EntityType::class, ['required'=>false,'class'=>Unit::class, 'placeholder' => "",'label'=>'relatedValueUnit','attr'=>['data-change-label'=>true]])
+            ->add('relatedValueXUnit', EntityType::class, ['required'=>false,'class'=>Unit::class, 'placeholder' => "",'label'=>'relatedValueXUnit','attr'=>['data-change-label'=>true]])
+            ->add('relatedValueYUnit', EntityType::class, ['required'=>false,'class'=>Unit::class, 'placeholder' => "",'label'=>'relatedValueYUnit','attr'=>['data-change-label'=>true]])
+            ->add('relatedValueZUnit', EntityType::class, ['required'=>false,'class'=>Unit::class, 'placeholder' => "",'label'=>'relatedValueZUnit','attr'=>['data-change-label'=>true]])
             ->add('sourceRecords', EntityType::class, ['required'=>false,'class'=>Record::class,'label'=>'sourceRecords', 'multiple'=>true])
             ->add('datafile', FileType::class, [
                 'label'=>'loadDataFile',
                 'mapped'=>false,
+                'required'=>false,
                 'attr'=>['data-validate'=>"/validate-file"]
             ])
             ->add('save', SubmitType::class,[

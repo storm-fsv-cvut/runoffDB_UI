@@ -31,8 +31,10 @@ class DefinitionEntityControler extends AbstractController {
         $params['class'] = $class;
         $params['class_name'] = $translator->trans($class);
         $repo = $em->getRepository($class);
+        $builder = $repo->createQueryBuilder('e');
+
         $pagination = $paginator->paginate(
-            $repo->createQueryBuilder('e'),
+            $builder,
             $request->query->getInt('page', 1),
             20
         );

@@ -32,6 +32,7 @@ class CmsExtension extends AbstractExtension {
         return [
             new TwigFunction('title', [$this, 'title']),
             new TwigFunction('content', [$this, 'content']),
+            new TwigFunction('tooltips', [$this, 'tooltips']),
         ];
     }
 
@@ -45,5 +46,11 @@ class CmsExtension extends AbstractExtension {
         $locale = $this->requestStack->getCurrentRequest()->getLocale();
         $post = $this->cmsRepository->findBySlug($slug, $locale);
         return $post ? $post->getTitle() : "";
+    }
+
+    public function tooltips() {
+        $locale = $this->requestStack->getCurrentRequest()->getLocale();
+        $tips = $this->cmsRepository->findAllByType('tooltip',$locale);
+        return json_encode($tips);
     }
 }

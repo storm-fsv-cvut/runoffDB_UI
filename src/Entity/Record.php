@@ -51,11 +51,6 @@ class Record extends BaseEntity {
     private $sourceRecords;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Unit")
-     */
-    private $relatedValueUnit;
-
-    /**
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $isTimeline;
@@ -65,8 +60,27 @@ class Record extends BaseEntity {
      */
     private $datas;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Unit")
+     */
+    private $relatedValueXUnit;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Unit")
+     */
+    private $relatedValueYUnit;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Unit")
+     */
+    private $relatedValueZUnit;
+
     public function __toString() {
-        return $this->getId()."";
+        if ($this->getData()->get(0) != null) {
+            return number_format($this->getData()->get(0)->getValue(), 0) . " " . $this->getUnit()->getUnit();
+        } else {
+            return $this->getId() . "";
+        }
     }
 
     public function getNote():?string {
@@ -189,22 +203,48 @@ class Record extends BaseEntity {
         return $this;
     }
 
-    public function getRelatedValueUnit(): ?Unit {
-        return $this->relatedValueUnit;
-    }
-
-    public function setRelatedValueUnit(?Unit $relatedValueUnit): self {
-        $this->relatedValueUnit = $relatedValueUnit;
-
-        return $this;
-    }
-
     public function getIsTimeline(): ?bool {
         return $this->isTimeline;
     }
 
     public function setIsTimeline(bool $isTimeline): self {
         $this->isTimeline = $isTimeline;
+
+        return $this;
+    }
+
+    public function getRelatedValueXUnit(): ?Unit
+    {
+        return $this->relatedValueXUnit;
+    }
+
+    public function setRelatedValueXUnit(?Unit $relatedValueXUnit): self
+    {
+        $this->relatedValueXUnit = $relatedValueXUnit;
+
+        return $this;
+    }
+
+    public function getRelatedValueYUnit(): ?Unit
+    {
+        return $this->relatedValueYUnit;
+    }
+
+    public function setRelatedValueYUnit(?Unit $relatedValueYUnit): self
+    {
+        $this->relatedValueYUnit = $relatedValueYUnit;
+
+        return $this;
+    }
+
+    public function getRelatedValueZUnit(): ?Unit
+    {
+        return $this->relatedValueZUnit;
+    }
+
+    public function setRelatedValueZUnit(?Unit $relatedValueZUnit): self
+    {
+        $this->relatedValueZUnit = $relatedValueZUnit;
 
         return $this;
     }

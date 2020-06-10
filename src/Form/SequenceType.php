@@ -4,11 +4,15 @@
 namespace App\Form;
 
 
+use App\Entity\Record;
 use App\Entity\Run;
 use App\Entity\Sequence;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -22,8 +26,19 @@ class SequenceType extends AbstractType {
             ->add('plot')
             ->add('date')
             ->add('cropBBCH')
-            ->add('canopyCover')
-            ->add('cropCondition')
+            ->add('canopyCover', EntityType::class, [
+                'class'=>Record::class,
+                'label' => 'canopyCover',
+                'required'=>false
+            ])
+            ->add('cropConditionCZ', TextareaType::class, [
+                'label' => 'cropConditionCZ',
+                'required'=>false
+            ])
+            ->add('cropConditionEN', TextareaType::class, [
+                'label' => 'cropConditionEN',
+                'required'=>false
+            ])
             ->add('save', SubmitType::class,[
                 'attr'=>['class'=>'btn btn-success']
             ]);

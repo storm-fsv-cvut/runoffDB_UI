@@ -98,12 +98,12 @@ class Run extends BaseEntity {
     private $rawDataPath;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=512, nullable=true)
      */
     private $noteCZ;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=512, nullable=true)
      */
     private $noteEN;
 
@@ -127,6 +127,18 @@ class Run extends BaseEntity {
      * @ORM\Column(type="time", nullable=true)
      */
     private $pondingStart;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Record", cascade={"persist","remove"})
+     * @ORM\JoinColumn(name="init_moisture_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    private $initMoisture;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Record", cascade={"persist","remove"})
+     * @ORM\JoinColumn(name="rain_intensity_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    private $rainIntensity;
 
 
     public function __toString() {
@@ -419,5 +431,29 @@ class Run extends BaseEntity {
 
     public function validateSoilSamples():bool {
         return $this->getSoilSampleCorq() && $this->getSoilSampleBulk() && $this->getSoilSampleTexture();
+    }
+
+    public function getInitMoisture(): ?Record
+    {
+        return $this->initMoisture;
+    }
+
+    public function setInitMoisture(?Record $initMoisture): self
+    {
+        $this->initMoisture = $initMoisture;
+
+        return $this;
+    }
+
+    public function getRainIntensity(): ?Record
+    {
+        return $this->rainIntensity;
+    }
+
+    public function setRainIntensity(?Record $rainIntensity): self
+    {
+        $this->rainIntensity = $rainIntensity;
+
+        return $this;
     }
 }

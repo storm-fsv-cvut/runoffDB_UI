@@ -47,21 +47,19 @@ class SequenceService {
         $runs = $sequence->getRuns();
         foreach ($runs as $run) {
             if (
-                $run->getRainIntensityMeasurement() != null &&
-                $run->getRainIntensityMeasurement()->getRecords()->get(0) != null &&
-                $run->getRainIntensityMeasurement()->getRecords()->get(0)->getData()->get(0) != null
+                $run->getRainIntensity() != null &&
+                $run->getRainIntensity()->getData()->get(0) != null
             ) {
-                $rain_intensity = number_format($run->getRainIntensityMeasurement()->getRecords()->get(0)->getData()->get(0)->getValue(), 0) . " " . $run->getRainIntensityMeasurement()->getRecords()->get(0)->getUnit()->getUnit();
+                $rain_intensity = number_format($run->getRainIntensity()->getData()->get(0)->getValue(), 0) . " " . $run->getRainIntensity()->getUnit()->getUnit();
             } else {
                 $rain_intensity = "";
             }
 
             if (
-                $run->getInitMoistureMeasurement() != null &&
-                $run->getInitMoistureMeasurement()->getRecords()->get(0) != null &&
-                $run->getInitMoistureMeasurement()->getRecords()->get(0)->getData()->get(0) != null
+                $run->getInitMoisture() != null &&
+                $run->getInitMoisture()->getData()->get(0) != null
             ) {
-                $init_moisture = number_format($run->getInitMoistureMeasurement()->getRecords()->get(0)->getData()->get(0)->getValue(), 0) . " " . $run->getInitMoistureMeasurement()->getRecords()->get(0)->getUnit()->getUnit();
+                $init_moisture = number_format($run->getInitMoisture()->getData()->get(0)->getValue(), 0) . " " . $run->getInitMoisture()->getUnit()->getUnit();
             } else {
                 $init_moisture = "";
             }
@@ -124,7 +122,8 @@ class SequenceService {
             'agrotechnology' => $agrotechnology ? $agrotechnology->getName() : null,
             'last_agrooperation_days' => $daysFromLastAgro ?? null,
             'canopy_cover' => $sequence->getCanopyCover(),
-            'crop_bbch' => $sequence->getCropBBCH()
+            'crop_bbch' => $sequence->getCropBBCH(),
+            'crop_condition' => $sequence->getCropCondition()
         ];
     }
 

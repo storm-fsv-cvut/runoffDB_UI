@@ -21,6 +21,7 @@ use App\Form\SequenceBasicType;
 use App\Form\SequenceFilterType;
 use App\Form\SequenceType;
 use App\Repository\MeasurementRepository;
+use App\Repository\RecordRepository;
 use App\Repository\RecordTypeRepository;
 use App\Repository\RunRepository;
 use App\Repository\SequenceRepository;
@@ -50,7 +51,7 @@ class SequenceController extends AbstractController {
     }
 
     /**
-     * @Route("/validate-file", name="validateFile")
+     * @Route("/{_locale}/validate-file", name="validateFile")
      */
     public function validateFile(RecordsService $recordsService, Request $request) {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
@@ -61,15 +62,15 @@ class SequenceController extends AbstractController {
     }
 
     /**
-     * @Route("/israinintensitym", name="israinintensitym")
+     * @Route("/{_locale}/israinintensityr", name="israinintensityr")
      */
-    public function israinintensitym(MeasurementRepository $measurementRepository, RunRepository $runRepository,EntityManagerInterface $entityManager, Request $request) {
+    public function israinintensityr(RecordRepository $recordRepository, RunRepository $runRepository, EntityManagerInterface $entityManager, Request $request) {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
-        if ($request->get('runId') && $request->get('measurementId')) {
+        if ($request->get('runId') && $request->get('recordId')) {
             $run = $runRepository->find($request->get('runId'));
             $sequence = $run->getSequence();
-            $measurement = $measurementRepository->find($request->get('measurementId'));
-            $run->setRainIntensityMeasurement($measurement);
+            $record = $recordRepository->find($request->get('recordId'));
+            $run->setRainIntensity($record);
             $entityManager->persist($run);
             $entityManager->flush();
         }
@@ -77,15 +78,15 @@ class SequenceController extends AbstractController {
     }
 
     /**
-     * @Route("/isinitmoisturem", name="isinitmoisturem")
+     * @Route("/{_locale}/isinitmoisturer", name="isinitmoisturer")
      */
-    public function isinitmoisturem(MeasurementRepository $measurementRepository, RunRepository $runRepository,EntityManagerInterface $entityManager, Request $request) {
+    public function isinitmoisturer(RecordRepository $recordRepository, RunRepository $runRepository, EntityManagerInterface $entityManager, Request $request) {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
-        if ($request->get('runId') && $request->get('measurementId')) {
+        if ($request->get('runId') && $request->get('recordId')) {
             $run = $runRepository->find($request->get('runId'));
             $sequence = $run->getSequence();
-            $measurement = $measurementRepository->find($request->get('measurementId'));
-            $run->setInitMoistureMeasurement($measurement);
+            $record = $recordRepository->find($request->get('recordId'));
+            $run->setInitMoisture($record);
             $entityManager->persist($run);
             $entityManager->flush();
         }
@@ -93,7 +94,7 @@ class SequenceController extends AbstractController {
     }
 
     /**
-     * @Route("/download-file", name="downloadFile")
+     * @Route("/{_locale}/download-file", name="downloadFile")
      */
     public function downloadFile(RunRepository $runRepository, Request $request) {
         $run = $runRepository->find($request->get('runId'));
@@ -102,7 +103,7 @@ class SequenceController extends AbstractController {
     }
 
     /**
-     * @Route("/delete-file", name="deleteFile")
+     * @Route("/{_locale}/delete-file", name="deleteFile")
      */
     public function deleteFile(RunRepository $runRepository, Request $request) {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
@@ -156,7 +157,7 @@ class SequenceController extends AbstractController {
                     $record = $newRecordForm->getData();
                     $measurement = $measurementRepository->find($newRecordForm->get('parent_id')->getData());
                     $record->setMeasurement($measurement);
-                    if ($record->getRelatedValueUnit() === null) {
+                    if ($record->getRelatedValueXUnit() === null && $record->getRelatedValueYUnit() === null && $record->getRelatedValueZUnit() === null ) {
                         $record->setIsTimeline(true);
                     } else {
                         $record->setIsTimeline(false);

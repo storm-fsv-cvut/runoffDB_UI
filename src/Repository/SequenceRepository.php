@@ -16,22 +16,36 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class SequenceRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    /**
+     * @var PlotRepository
+     */
+    private $plotRepository;
+
+    public function __construct(RegistryInterface $registry, PlotRepository $plotRepository)
     {
         parent::__construct($registry, Sequence::class);
+        $this->plotRepository = $plotRepository;
     }
 
     public function getPaginatorQuery(?array $filter, string $order, string $direction):QueryBuilder {
+        //dump($filter);
         $queryBuilder = $this->createQueryBuilder('sequence');
-      /*  $expr = $queryBuilder->expr();
+
+        if (isset($filter['crop']) && $filter['crop']) {
+            $plots = $this->plotRepository->findBy(['crop'=>$filter['crop']]);
+            $plotsIds = [];
+            foreach ($plots as $plot) {
+                $plotsIds[]=$plot->getId();
+            }
+            $queryBuilder->andWhere($queryBuilder->expr()->in('sequence.plot',$plotsIds));
+        }
         if (isset($filter['plot']) && $filter['plot']) {
-            $queryBuilder->andWhere()->add('where',$queryBuilder->expr()->eq('sequence.plot',$filter['plot']->getId()));
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('sequence.plot',$filter['plot']->getId()));
         }
         if (isset($filter['date']) && $filter['date']) {
-            $queryBuilder->andWhere()->add('where',$queryBuilder->expr()->eq('sequence.date',"'".$filter['date']->format("Y-m-d")."'"));
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('sequence.date',"'".$filter['date']->format("Y-m-d")."'"));
         }
 
-        echo $queryBuilder;*/
         return $queryBuilder;
     }
 

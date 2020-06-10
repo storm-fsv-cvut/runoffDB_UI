@@ -30,24 +30,9 @@ class SoilSample extends BaseEntity implements DefinitionEntityInterface
     private $processedAt;
 
     /**
-     * @ORM\Column(type="float", nullable=true)
-     */
-    private $corg;
-
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
-    private $bulkDensity;
-
-    /**
      * @ORM\Column(type="string", length=500, nullable=true)
      */
     private $sampleLocation;
-
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
-    private $moistureVperc;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Texture")
@@ -94,6 +79,22 @@ class SoilSample extends BaseEntity implements DefinitionEntityInterface
      */
     private $dateProcessed;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Record")
+     */
+    private $corg;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Record")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $bulkDensity;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Record")
+     */
+    private $moisture;
+
     public function __toString() {
         return "#".$this->getId()." - ".$this->getLocality();
     }
@@ -136,30 +137,6 @@ class SoilSample extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-    public function getCorg(): ?float
-    {
-        return $this->corg;
-    }
-
-    public function setCorg(?float $corg): self
-    {
-        $this->corg = $corg;
-
-        return $this;
-    }
-
-    public function getBulkDensity(): ?float
-    {
-        return $this->bulkDensity;
-    }
-
-    public function setBulkDensity(?float $bulkDensity): self
-    {
-        $this->bulkDensity = $bulkDensity;
-
-        return $this;
-    }
-
     public function getSampleLocation(): ?string
     {
         return $this->sampleLocation;
@@ -168,18 +145,6 @@ class SoilSample extends BaseEntity implements DefinitionEntityInterface
     public function setSampleLocation(?string $sampleLocation): self
     {
         $this->sampleLocation = $sampleLocation;
-
-        return $this;
-    }
-
-    public function getMoistureVperc(): ?float
-    {
-        return $this->moistureVperc;
-    }
-
-    public function setMoistureVperc(?float $moistureVperc): self
-    {
-        $this->moistureVperc = $moistureVperc;
 
         return $this;
     }
@@ -292,6 +257,42 @@ class SoilSample extends BaseEntity implements DefinitionEntityInterface
     public function setDateProcessed(?\DateTimeInterface $dateProcessed): self
     {
         $this->dateProcessed = $dateProcessed;
+
+        return $this;
+    }
+
+    public function getCorg(): ?Record
+    {
+        return $this->corg;
+    }
+
+    public function setCorg(?Record $corg): self
+    {
+        $this->corg = $corg;
+
+        return $this;
+    }
+
+    public function getBulkDensity(): ?Record
+    {
+        return $this->bulkDensity;
+    }
+
+    public function setBulkDensity(?Record $bulkDensity): self
+    {
+        $this->bulkDensity = $bulkDensity;
+
+        return $this;
+    }
+
+    public function getMoisture(): ?Record
+    {
+        return $this->moisture;
+    }
+
+    public function setMoisture(?Record $moisture): self
+    {
+        $this->moisture = $moisture;
 
         return $this;
     }

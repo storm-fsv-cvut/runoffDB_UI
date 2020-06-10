@@ -142,6 +142,9 @@ $(document).ready(function (e) {
 
         drawChart($($(this).data('target')), ids);
     })
+
+    $('[data-toggle="tooltip"]').tooltip()
+
 })
 
 $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
@@ -179,3 +182,4 @@ function drawChart(element, ids) {
         }
     );
 }
+

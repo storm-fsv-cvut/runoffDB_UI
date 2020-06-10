@@ -82,6 +82,9 @@
     </footer>
 </div>
 {% block javascripts %}
+    <script type="text/javascript">
+    var tooltips = '{{ tooltips()|raw }}';
+    </script>
     {{ encore_entry_script_tags('app') }}
 {% endblock %}
 </body>

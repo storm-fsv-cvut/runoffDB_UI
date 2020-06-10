@@ -40,16 +40,6 @@ class Sequence extends BaseEntity {
     private $cropBBCH;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $canopyCover;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $cropCondition;
-
-    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Project", mappedBy="sequences")
      */
     private $projects;
@@ -58,6 +48,21 @@ class Sequence extends BaseEntity {
      * @ORM\OneToMany(targetEntity="App\Entity\Run", mappedBy="sequence")
      */
     private $runs;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Record")
+     */
+    private $canopyCover;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $cropConditionCZ;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $cropConditionEN;
 
     public function __toString(): string {
         return $this->getDate()->format("d.m.Y") . " - " . $this->getPlot()->getLocality() . " - " . $this->getPlot()->getCrop();
@@ -143,26 +148,6 @@ class Sequence extends BaseEntity {
         return $this;
     }
 
-    public function getCanopyCover(): ?int {
-        return $this->canopyCover;
-    }
-
-    public function setCanopyCover(?int $canopyCover): self {
-        $this->canopyCover = $canopyCover;
-
-        return $this;
-    }
-
-    public function getCropCondition(): ?string {
-        return $this->cropCondition;
-    }
-
-    public function setCropCondition(?string $cropCondition): self {
-        $this->cropCondition = $cropCondition;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Project[]
      */
@@ -194,5 +179,45 @@ class Sequence extends BaseEntity {
             $res[]=$run->validateSoilSamples();
         }
         return $res;
+    }
+
+    public function getCanopyCover(): ?Record
+    {
+        return $this->canopyCover;
+    }
+
+    public function setCanopyCover(?Record $canopyCover): self
+    {
+        $this->canopyCover = $canopyCover;
+
+        return $this;
+    }
+
+    public function getCropCondition():?string {
+        return $this->getLocale() == 'en' ? $this->getCropConditionEN() : $this->getCropConditionCZ();
+    }
+
+    public function getCropConditionCZ(): ?string
+    {
+        return $this->cropConditionCZ;
+    }
+
+    public function setCropConditionCZ(?string $cropConditionCZ): self
+    {
+        $this->cropConditionCZ = $cropConditionCZ;
+
+        return $this;
+    }
+
+    public function getCropConditionEN(): ?string
+    {
+        return $this->cropConditionEN;
+    }
+
+    public function setCropConditionEN(?string $cropConditionEN): self
+    {
+        $this->cropConditionEN = $cropConditionEN;
+
+        return $this;
     }
 }

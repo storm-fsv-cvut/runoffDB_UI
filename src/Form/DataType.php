@@ -22,11 +22,21 @@ class DataType extends AbstractType {
                   'label'=>'time',
                   'attr'=>['class'=>'form-control value']
               ])
-              ->add('related_value', TextType::class, [
-                  'label'=>'related_value',
+              ->add('related_value_X', TextType::class, [
+                  'label'=>'related_value_X',
                   'required'=>false,
                   'attr'=>['class'=>'form-control related_value']
-              ]);
+              ])
+          ->add('related_value_Y', TextType::class, [
+              'label'=>'related_value_Y',
+              'required'=>false,
+              'attr'=>['class'=>'form-control related_value']
+          ])
+          ->add('related_value_Z', TextType::class, [
+              'label'=>'related_value_Z',
+              'required'=>false,
+              'attr'=>['class'=>'form-control related_value']
+          ]);
       }
 
       public function configureOptions(OptionsResolver $resolver) {

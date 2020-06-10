@@ -34,6 +34,8 @@
                     <dd>{{ header['canopy_cover'] }}</dd>
                     <dt>{% trans %}Crop b b c h{% endtrans %}:</dt>
                     <dd>{{ header['crop_bbch'] }}</dd>
+                    <dt>{% trans %}crop condition{% endtrans %}:</dt>
+                    <dd>{{ header['crop_condition'] }}</dd>
                 </dl>
             </div>
             {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
@@ -135,12 +137,6 @@
                                                 <li role="presentation">
                                                     <a role="menuitem" data-toggle="modal" data-target="#measurement{{ formMeasurement.vars.value.getId() }}" tabindex="-1" href="#">{% trans %}edit{% endtrans %}</a>
                                                 </li>
-                                                <li role="presentation">
-                                                    <a role="menuitem" href="{{ path('isinitmoisturem', {runId:runArray.id,measurementId:formMeasurement.vars.value.getId()}) }}">{% trans %}set as init moisture{% endtrans %}</a>
-                                                </li>
-                                                <li role="presentation">
-                                                    <a role="menuitem" href="{{ path('israinintensitym', {runId:runArray.id,measurementId:formMeasurement.vars.value.getId()}) }}">{% trans %}set as rain intensity{% endtrans %}</a>
-                                                </li>
                                                 <li role="presentation" class="divider"></li>
                                                 <li role="presentation">
                                                     <a role="menuitem" tabindex="-1" data-confirm="{% trans %}delete?{% endtrans %}" href="{{ path('sequence', {id:header['id'],delete_measurement:formMeasurement.vars.value.getId()}) }}">{% trans %}delete{% endtrans %}</a>
@@ -182,6 +178,12 @@
                                                             </a>
                                                             <ul class="dropdown-menu">
                                                                 <li role="presentation">
+                                                                    <a role="menuitem" href="{{ path('isinitmoisturer', {runId:runArray.id,recordId:record.getId()}) }}">{% trans %}set as init moisture{% endtrans %}</a>
+                                                                </li>
+                                                                <li role="presentation">
+                                                                    <a role="menuitem" href="{{ path('israinintensityr', {runId:runArray.id,recordId:record.getId()}) }}">{% trans %}set as rain intensity{% endtrans %}</a>
+                                                                </li>
+                                                                <li role="presentation">
                                                                     <a role="menuitem" data-confirm="{% trans %}delete?{% endtrans %}" tabindex="-1" href="{{ path('sequence', {id:header['id'],delete_record:record.getId()}) }}">{% trans %}delete{% endtrans %}</a>
                                                                 </li>
                                                                 <li role="presentation">
@@ -201,9 +203,19 @@
                                                     <table class="table table-bordered">
                                                         <tr>
                                                             <th>{% trans %}time{% endtrans %}</th>
-                                                            {% if record.getRelatedValueUnit() is not same as(null) %}
-                                                                <th>{{ record.getRelatedValueUnit().getName() }}
-                                                                    [{{ record.getRelatedValueUnit().getUnit() }}]
+                                                            {% if record.getRelatedValueXUnit() is not same as(null) %}
+                                                                <th>{{ record.getRelatedValueXUnit().getName() }}
+                                                                    [{{ record.getRelatedValueXUnit().getUnit() }}]
+                                                                </th>
+                                                            {% endif %}
+                                                            {% if record.getRelatedValueYUnit() is not same as(null) %}
+                                                                <th>{{ record.getRelatedValueYUnit().getName() }}
+                                                                    [{{ record.getRelatedValueYUnit().getUnit() }}]
+                                                                </th>
+                                                            {% endif %}
+                                                            {% if record.getRelatedValueZUnit() is not same as(null) %}
+                                                                <th>{{ record.getRelatedValueZUnit().getName() }}
+                                                                    [{{ record.getRelatedValueZUnit().getUnit() }}]
                                                                 </th>
                                                             {% endif %}
                                                             <th>{{ record.getUnit().getName() }}
@@ -213,9 +225,23 @@
                                                         {% for data in record.getData() %}
                                                             <tr>
                                                                 <td>{{ data.getTime().format("H:i:s") }}</td>
-                                                                {% if  record.getRelatedValueUnit() is not same as(null) %}
-                                                                    {% if data.getRelatedValue() is not same as(null) %}
-                                                                        <td>{{ data.getRelatedValue() }} {{ record.getRelatedValueUnit().getUnit() }}</td>
+                                                                {% if  record.getRelatedValueXUnit() is not same as(null) %}
+                                                                    {% if data.getRelatedValueX() is not same as(null) %}
+                                                                        <td>{{ data.getRelatedValueX() }} {{ record.getRelatedValueXUnit().getUnit() }}</td>
+                                                                    {% else %}
+                                                                        <td></td>
+                                                                    {% endif %}
+                                                                {% endif %}
+                                                                {% if  record.getRelatedValueYUnit() is not same as(null) %}
+                                                                    {% if data.getRelatedValueY() is not same as(null) %}
+                                                                        <td>{{ data.getRelatedValueY() }} {{ record.getRelatedValueYUnit().getUnit() }}</td>
+                                                                    {% else %}
+                                                                        <td></td>
+                                                                    {% endif %}
+                                                                {% endif %}
+                                                                {% if  record.getRelatedValueZUnit() is not same as(null) %}
+                                                                    {% if data.getRelatedValueZ() is not same as(null) %}
+                                                                        <td>{{ data.getRelatedValueZ() }} {{ record.getRelatedValueZUnit().getUnit() }}</td>
                                                                     {% else %}
                                                                         <td></td>
                                                                     {% endif %}

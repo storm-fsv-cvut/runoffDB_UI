@@ -73,6 +73,12 @@ class MenuBuilder
         $measurement->setChildrenAttribute('class','treeview-menu');
         $measurement->addChild($this->translator->trans('add'), ['route' => 'sequence']);
         $measurement->addChild($this->translator->trans('list'), ['route' => 'sequences']);
+        $cms = $menu->addChild($this->translator->trans('CMS'), ['uri' => '#']);
+        $cms->setAttribute('class','treeview');
+        $cms->setChildrenAttribute('class','treeview-menu');
+        $cms->addChild($this->translator->trans('Tooltips'), ['route' => 'tooltips']);
+        $cms->addChild($this->translator->trans('Content'), ['route' => 'contents']);
+
         $setup = $menu->addChild($this->translator->trans('Setup'), ['uri' => '#']);
         $setup->setAttribute('class','treeview');
         $setup->setChildrenAttribute('class','treeview-menu');

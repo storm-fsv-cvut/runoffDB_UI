@@ -27,15 +27,25 @@ class Data extends BaseEntity
     private $value;
 
     /**
-     * @ORM\Column(type="float", nullable=true)
-     */
-    private $relatedValue;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Record", inversedBy="datas")
      * @ORM\JoinColumn(nullable=false)
      */
     private $record;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $relatedValueX;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $relatedValueY;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $relatedValueZ;
 
     public function getId(): ?int
     {
@@ -56,25 +66,12 @@ class Data extends BaseEntity
 
     public function getValue(): ?string
     {
-        return number_format( $this->value, 3, ".", "" );
+        return number_format( $this->value, $this->getRecord()->getUnit()->getDecimals(), ".", "" );
     }
 
     public function setValue(string $value): self
     {
         $this->value = $value;
-
-        return $this;
-    }
-
-    public function getRelatedValue(): ?float
-    {
-        return $this->relatedValue;
-    }
-
-    public function setRelatedValue(?float $relatedValue): self
-    {
-        $this->relatedValue = $relatedValue;
-
         return $this;
     }
 
@@ -86,6 +83,41 @@ class Data extends BaseEntity
     public function setRecord(?Record $record): self
     {
         $this->record = $record;
+        return $this;
+    }
+
+    public function getRelatedValueX(): ?float
+    {
+        return number_format( $this->relatedValueX, $this->getRecord()->getRelatedValueXUnit()->getDecimals(), ".", "" );
+    }
+
+    public function setRelatedValueX(?float $relatedValueX): self
+    {
+        $this->relatedValueX = $relatedValueX;
+
+        return $this;
+    }
+
+    public function getRelatedValueY(): ?float
+    {
+        return number_format( $this->relatedValueY, $this->getRecord()->getRelatedValueXUnit()->getDecimals(), ".", "" );
+    }
+
+    public function setRelatedValueY(?float $relatedValueY): self
+    {
+        $this->relatedValueY = $relatedValueY;
+
+        return $this;
+    }
+
+    public function getRelatedValueZ(): ?float
+    {
+        return number_format( $this->relatedValueZ, $this->getRecord()->getRelatedValueXUnit()->getDecimals(), ".", "" );
+    }
+
+    public function setRelatedValueZ(?float $relatedValueZ): self
+    {
+        $this->relatedValueZ = $relatedValueZ;
 
         return $this;
     }

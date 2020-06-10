@@ -31,4 +31,13 @@ class CmsRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findAllByType(string $type = 'tooltip', string $locale = 'cz') {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.type = :type')
+            ->setParameter('type', $type)
+            ->andWhere('c.locale = :locale')
+            ->setParameter('locale', $locale)
+            ->getQuery()
+            ->getArrayResult();
+    }
 }

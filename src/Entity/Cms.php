@@ -36,6 +36,15 @@ class Cms
      */
     private $title;
 
+    /**
+     * @ORM\Column(type="string", length=255, options={"default" : "content"}, columnDefinition="ENUM('content', 'tooltip')")
+     */
+    private $type;
+
+    public function __toString() {
+        return $this->getSlug();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -88,4 +97,17 @@ class Cms
 
         return $this;
     }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
 }
