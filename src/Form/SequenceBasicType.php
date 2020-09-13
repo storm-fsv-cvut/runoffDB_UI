@@ -4,9 +4,13 @@ namespace App\Form;
 
 use App\Entity\Locality;
 use App\Entity\Organization;
+use App\Entity\Record;
 use App\Entity\Sequence;
 use App\Entity\Simulator;
 use App\Repository\OrganizationRepository;
+use App\Repository\PhenomenonRepository;
+use App\Repository\RecordRepository;
+use App\Services\RecordsService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -27,10 +31,16 @@ class SequenceBasicType extends AbstractType
      * @var OrganizationRepository
      */
     private $organizationRepository;
+    /**
+     * @var RecordsService
+     */
+    private $recordsService;
 
-    public function __construct(TranslatorInterface $translator, OrganizationRepository $organizationRepository) {
+
+    public function __construct(TranslatorInterface $translator, OrganizationRepository $organizationRepository, RecordsService $recordsService) {
         $this->translator = $translator;
         $this->organizationRepository = $organizationRepository;
+        $this->recordsService = $recordsService;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -40,7 +50,12 @@ class SequenceBasicType extends AbstractType
             ->add('plot')
             ->add('date')
             ->add('cropBBCH')
-            ->add('canopyCover')
+            ->add('surfaceCover', EntityType::class, [
+                'class'=>Record::class,
+                'choices'=>$this->recordsService->getRecordsByPhenomenonKey("surcov"),
+                'label' => 'surfaceCover',
+                'required'=>false
+            ])
             ->add('cropCondition')
             ->add('save', SubmitType::class,[
                 'attr'=>['class'=>'btn btn-success']

@@ -14,6 +14,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -25,7 +26,7 @@ class DefinitionEntityControler extends AbstractController {
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    function list(EntityManagerInterface $em, Request $request, TranslatorInterface $translator, PaginatorInterface $paginator) {
+    function list(EntityManagerInterface $em, Request $request, TranslatorInterface $translator, PaginatorInterface $paginator): Response {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
         $class = $request->get('class');
         $params['class'] = $class;
@@ -46,7 +47,7 @@ class DefinitionEntityControler extends AbstractController {
     /**
      * @Route("/{_locale}/setting/{id}", name="definition_entity")
      */
-    function edit(Request $request, EntityManagerInterface $entityManager, TranslatorInterface $translator, ?int $id = null) {
+    function edit(Request $request, EntityManagerInterface $entityManager, TranslatorInterface $translator, ?int $id = null):Response {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
         $class = $request->get('class');
         $dataClass = $id ? $entityManager->find($class, $id) : null;

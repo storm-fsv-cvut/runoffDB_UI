@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+{% block title %}Rainsimulator - {% trans %}add soil sample{% endtrans %}{% endblock %}
+{% block body %}
+
+<section class="content-header">
+    <h1>
+        {% trans %}add soil sample{% endtrans %}
+    </h1>
+</section>
+
+<section class="content">
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Hlavička</h3>
+        </div>
+        {{form_start(form)}}
+        <div class="box-body">
+            <div class="row">
+                <div class="form-group col-md-12">
+                    {{ form_row(form.dateSampled) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    {{ form_row(form.sampleLocation) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    {{ form_row(form.sampleDepthM) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    {{ form_row(form.dateProcessed) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    {{ form_row(form.processedAt) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    {{ form_row(form.plot) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <div class="nav-tabs-custom">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#descriptionCZ" data-toggle="tab" aria-expanded="true">{{ form_label(form.descriptionCZ) }}</a>
+                            </li>
+                            <li class="">
+                                <a href="#descriptionEN" data-toggle="tab" aria-expanded="false">{{ form_label(form.descriptionEN) }}</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="descriptionCZ">
+                                {{ form_widget(form.descriptionCZ) }}
+                            </div>
+                            <div class="tab-pane" id="descriptionEN">
+                                {{ form_widget(form.descriptionEN) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            {{ form_row(form.save) }}
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}

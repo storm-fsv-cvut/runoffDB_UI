@@ -38,7 +38,6 @@
                         <th>{% trans %}Locality{% endtrans %}</th>
                         <th>{% trans %}Plot{% endtrans %}</th>
                         <th>{% trans %}Crop{% endtrans %}</th>
-                        <th>{% trans %}Soil Samples{% endtrans %}</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -50,15 +49,6 @@
                             <td>{{ sequence.getPlot().getLocality()}}</td>
                             <td>{{ sequence.getPlot()}}</td>
                             <td>{{ sequence.getPlot().getCrop()}}</td>
-                            <td>
-                                {% for valid in sequence.validateSoilSamples()%}
-                                    {% if valid %}
-                                        <i class="fa fa-check text-success"></i>
-                                    {% else %}
-                                        <i class="fa fa-warning text-warning"></i>
-                                    {% endif %}
-                                {% endfor %}
-                            </td>
                             <td><a class="btn btn-sm btn-primary" href="{{ path('sequence',{id:sequence.getId()}) }}"><i class="fa fa-edit"></i></a></td>
                         </tr>
                     {% endfor %}

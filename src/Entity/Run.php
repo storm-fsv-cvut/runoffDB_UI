@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\String_;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
@@ -54,23 +55,17 @@ class Run extends BaseEntity {
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\SoilSample")
      */
-    private $soilSampleCorq;
+    private $soilSampleCorg;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\AssignmentType")
      */
-    private $corqAssignmentType;
+    private $corgAssignmentType;
 
     /**
      * @ORM\Column(type="datetime")
      */
     private $datetime;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Measurement", cascade={"persist","remove"})
-     * @ORM\JoinColumn(name="rain_intensity_mesurement_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    private $rainIntensityMeasurement;
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -111,12 +106,6 @@ class Run extends BaseEntity {
      * @ORM\OneToMany(targetEntity="App\Entity\SoilSample", mappedBy="Run")
      */
     private $soilSamples;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Measurement", cascade={"persist","remove"})
-     * @ORM\JoinColumn(name="init_moisture_mesurement_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    private $initMoistureMeasurement;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Measurement", mappedBy="run", cascade={"persist","remove"}, orphanRemoval=true)
@@ -247,22 +236,22 @@ class Run extends BaseEntity {
         return $this;
     }
 
-    public function getSoilSampleCorq(): ?SoilSample {
-        return $this->soilSampleCorq;
+    public function getSoilSampleCorg(): ?SoilSample {
+        return $this->soilSampleCorg;
     }
 
-    public function setSoilSampleCorq(?SoilSample $soilSampleCorq): self {
-        $this->soilSampleCorq = $soilSampleCorq;
+    public function setSoilSampleCorg(?SoilSample $soilSampleCorg): self {
+        $this->soilSampleCorg = $soilSampleCorg;
 
         return $this;
     }
 
-    public function getCorqAssignmentType(): ?AssignmentType {
-        return $this->corqAssignmentType;
+    public function getCorgAssignmentType(): ?AssignmentType {
+        return $this->corgAssignmentType;
     }
 
-    public function setCorqAssignmentType(?AssignmentType $corqAssignmentType): self {
-        $this->corqAssignmentType = $corqAssignmentType;
+    public function setCorgAssignmentType(?AssignmentType $corgAssignmentType): self {
+        $this->corgAssignmentType = $corgAssignmentType;
 
         return $this;
     }
@@ -271,18 +260,12 @@ class Run extends BaseEntity {
         return $this->datetime;
     }
 
+    public function getFormatedDatetime(): string {
+        return $this->getDatetime() ? $this->getDatetime()->format('G:i') : " - ";
+    }
+
     public function setDatetime(?\DateTimeInterface $datetime): self {
         $this->datetime = $datetime;
-
-        return $this;
-    }
-
-    public function getRainIntensityMeasurement(): ?Measurement {
-        return $this->rainIntensityMeasurement;
-    }
-
-    public function setRainIntensityMeasurement(?Measurement $rainIntensityMeasurement): self {
-        $this->rainIntensityMeasurement = $rainIntensityMeasurement;
 
         return $this;
     }
@@ -299,6 +282,10 @@ class Run extends BaseEntity {
 
     public function getRunoffStart(): ?\DateTimeInterface {
         return $this->runoffStart;
+    }
+
+    public function getFormatedRunoffStart(): string {
+        return $this->getRunoffStart() ? $this->getRunoffStart()->format("G:i:s") : ' - ';
     }
 
     public function setRunoffStart(?\DateTimeInterface $runoffStart): self {
@@ -430,7 +417,7 @@ class Run extends BaseEntity {
     }
 
     public function validateSoilSamples():bool {
-        return $this->getSoilSampleCorq() && $this->getSoilSampleBulk() && $this->getSoilSampleTexture();
+        return $this->getSoilSampleCorg() && $this->getSoilSampleBulk() && $this->getSoilSampleTexture();
     }
 
     public function getInitMoisture(): ?Record
@@ -456,4 +443,5 @@ class Run extends BaseEntity {
 
         return $this;
     }
+
 }

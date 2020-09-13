@@ -68,11 +68,20 @@ class MenuBuilder
         $menu->setChildrenAttribute('class','sidebar-menu tree');
         $menu->setChildrenAttribute('data-widget','tree');
         $menu->addChild($this->translator->trans('Home'), ['route' => 'homepage']);
-        $measurement = $menu->addChild($this->translator->trans('sequences'), ['uri' => '#']);
-        $measurement->setAttribute('class','treeview');
-        $measurement->setChildrenAttribute('class','treeview-menu');
-        $measurement->addChild($this->translator->trans('add'), ['route' => 'sequence']);
-        $measurement->addChild($this->translator->trans('list'), ['route' => 'sequences']);
+        $sequences = $menu->addChild($this->translator->trans('sequences'), ['uri' => '#']);
+        $sequences->setAttribute('class','treeview');
+        $sequences->setChildrenAttribute('class','treeview-menu');
+        $sequences->addChild($this->translator->trans('add'), ['route' => 'sequence']);
+        $sequences->addChild($this->translator->trans('list'), ['route' => 'sequences']);
+        $sequences->addChild($this->translator->trans('overview table'), ['route' => 'sequencesOverview']);
+
+        $soilSample = $menu->addChild($this->translator->trans('soilSamples'), ['uri' => '#']);
+        $soilSample->setAttribute('class','treeview');
+        $soilSample->setChildrenAttribute('class','treeview-menu');
+        $soilSample->addChild($this->translator->trans('add'), ['route' => 'soilSample']);
+        $soilSample->addChild($this->translator->trans('list'), ['route' => 'soilSamples']);
+        $soilSample->addChild($this->translator->trans('overview table'), ['route' => 'soilSamplesOverview']);
+
         $cms = $menu->addChild($this->translator->trans('CMS'), ['uri' => '#']);
         $cms->setAttribute('class','treeview');
         $cms->setChildrenAttribute('class','treeview-menu');

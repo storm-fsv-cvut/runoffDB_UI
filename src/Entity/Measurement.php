@@ -53,6 +53,21 @@ class Measurement extends BaseEntity
      */
     private $runs;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\SoilSample", inversedBy="measurements")
+     */
+    private $soilSample;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Phenomenon", inversedBy="measurements")
+     */
+    private $phenomenon;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isTimeline;
+
     public function __toString(): string {
         return $this->getDescription();
     }
@@ -190,11 +205,43 @@ class Measurement extends BaseEntity
     {
         if ($this->runs->contains($run)) {
             $this->runs->removeElement($run);
-            // set the owning side to null (unless already changed)
-            if ($run->getInitMoistureMeasurement() === $this) {
-                $run->setInitMoistureMeasurement(null);
-            }
         }
+
+        return $this;
+    }
+
+    public function getSoilSample(): ?SoilSample
+    {
+        return $this->soilSample;
+    }
+
+    public function setSoilSample(?SoilSample $soilSample): self
+    {
+        $this->soilSample = $soilSample;
+
+        return $this;
+    }
+
+    public function getPhenomenon(): ?Phenomenon
+    {
+        return $this->phenomenon;
+    }
+
+    public function setPhenomenon(?Phenomenon $phenomenon): self
+    {
+        $this->phenomenon = $phenomenon;
+
+        return $this;
+    }
+
+    public function getIsTimeline(): ?bool
+    {
+        return $this->isTimeline;
+    }
+
+    public function setIsTimeline(?bool $isTimeline): self
+    {
+        $this->isTimeline = $isTimeline;
 
         return $this;
     }

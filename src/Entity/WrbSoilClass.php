@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SoilTypeRepository")
  */
-class WRBsoilClass extends BaseEntity implements DefinitionEntityInterface
+class WrbSoilClass extends BaseEntity implements DefinitionEntityInterface
 {
     /**
      * @ORM\Id()

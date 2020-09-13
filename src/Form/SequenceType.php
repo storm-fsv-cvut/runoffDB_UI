@@ -7,6 +7,7 @@ namespace App\Form;
 use App\Entity\Record;
 use App\Entity\Run;
 use App\Entity\Sequence;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -26,9 +27,10 @@ class SequenceType extends AbstractType {
             ->add('plot')
             ->add('date')
             ->add('cropBBCH')
-            ->add('canopyCover', EntityType::class, [
+            ->add('surfaceCover', EntityType::class, [
                 'class'=>Record::class,
-                'label' => 'canopyCover',
+                'choices'=>$options['data']->getRecords(),
+                'label' => 'surfaceCover',
                 'required'=>false
             ])
             ->add('cropConditionCZ', TextareaType::class, [

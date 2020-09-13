@@ -59,13 +59,13 @@ class RunType extends AbstractType {
                 'class' => AssignmentType::class,
                 'label' => "assignmentType"
             ])
-            ->add('soilSampleCorq', EntityType::class, [
+            ->add('soilSampleCorg', EntityType::class, [
                 'class' => SoilSample::class,
                 'label' => "soilSampleBulk",
                 'required'=>false,
                 'placeholder' => $this->translator->trans("not set")
             ])
-            ->add('corqAssignmentType', EntityType::class, [
+            ->add('corgAssignmentType', EntityType::class, [
                 'class' => AssignmentType::class,
                 'label' => "assignmentType"
             ])

@@ -7,10 +7,12 @@ use App\Entity\Record;
 use App\Entity\RecordType;
 use App\Entity\Run;
 use App\Entity\Sequence;
+use App\Repository\PhenomenonRepository;
 use App\Repository\RecordTypeRepository;
 use App\Repository\RunRepository;
 use App\Repository\UnitRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use PhpParser\Node\Scalar\String_;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -43,14 +45,19 @@ class RunService {
      * @var Filesystem
      */
     private $filesystem;
+    /**
+     * @var PhenomenonRepository
+     */
+    private $phenomenonRepository;
 
-    public function __construct(EntityManagerInterface $entityManager, RecordTypeRepository $recordTypeRepository, UnitRepository $unitRepository, RunRepository $runRepository, ParameterBagInterface $parameterBag, Filesystem $filesystem) {
+    public function __construct(EntityManagerInterface $entityManager, RecordTypeRepository $recordTypeRepository, UnitRepository $unitRepository, RunRepository $runRepository, ParameterBagInterface $parameterBag, Filesystem $filesystem, PhenomenonRepository $phenomenonRepository) {
         $this->entityManager = $entityManager;
         $this->recordTypeRepository = $recordTypeRepository;
         $this->unitRepository = $unitRepository;
         $this->runRepository = $runRepository;
         $this->parameterBag = $parameterBag;
         $this->filesystem = $filesystem;
+        $this->phenomenonRepository = $phenomenonRepository;
     }
 
     public function addRun(FormInterface $formRun, Sequence $sequence) {
@@ -61,10 +68,21 @@ class RunService {
     }
 
     public function uploadFile(UploadedFile $file, Run $run) {
-        $dir = $this->parameterBag->get('kernel.project_dir')."/public/data/".$run->getSequence()->getId()."/".$run->getId();
+        $dir = $this->parameterBag->get('kernel.project_dir')."/public/data/sequence/".$run->getSequence()->getId()."/".$run->getId();
         if (!$this->filesystem->exists($dir)) {
             $this->filesystem->mkdir($dir);
         }
         $file->move($dir, $file->getClientOriginalName());
+    }
+
+    public function getRecordsByPhenomenon(Run $run, string $phenomenonKey):array {
+        $measurements = $run->getMeasurements();
+        $res = [];
+        foreach ($measurements as $measurement) {
+            if ($measurement->getPhenomenon()->getPhenomenonKey() == $phenomenonKey) {
+                $res =array_merge($res,$measurement->getRecords()->toArray());
+            }
+        }
+        return $res;
     }
 }

@@ -19,32 +19,18 @@ class PhenomenonRepository extends ServiceEntityRepository
         parent::__construct($registry, Phenomenon::class);
     }
 
-    // /**
-    //  * @return Phenomenon[] Returns an array of Phenomenon objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findByKey(string $key): ?Phenomenon
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
+        $res =  $this->createQueryBuilder('p')
+            ->andWhere('p.phenomenonKey = :val')
+            ->setParameter('val', $key)
             ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
+            ->setMaxResults(1)
             ->getQuery()
             ->getResult()
         ;
-    }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Phenomenon
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $res[0] ?? NULL;
     }
-    */
+
 }

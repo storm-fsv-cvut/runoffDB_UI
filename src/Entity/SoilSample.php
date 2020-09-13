@@ -35,19 +35,14 @@ class SoilSample extends BaseEntity implements DefinitionEntityInterface
     private $sampleLocation;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Texture")
-     */
-    private $texture;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Plot", inversedBy="soilSamples")
      */
     private $plot;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\WRBsoilClass")
+     * @ORM\ManyToOne(targetEntity="App\Entity\WrbSoilClass")
      */
-    private $wRBsoilClass;
+    private $wrbSoilClass;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Locality", inversedBy="soilSamples")
@@ -95,6 +90,21 @@ class SoilSample extends BaseEntity implements DefinitionEntityInterface
      */
     private $moisture;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Record")
+     */
+    private $textureRecord;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Measurement", mappedBy="soilSample")
+     */
+    private $measurements;
+
+    /**
+     * @ORM\Column(type="string", length=512, nullable=true)
+     */
+    private $rawDataPath;
+
     public function __toString() {
         return "#".$this->getId()." - ".$this->getLocality();
     }
@@ -105,7 +115,7 @@ class SoilSample extends BaseEntity implements DefinitionEntityInterface
 
     public function __construct()
     {
-
+        $this->measurements = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -130,7 +140,7 @@ class SoilSample extends BaseEntity implements DefinitionEntityInterface
         return $this->processedAt;
     }
 
-    public function setProcessedAt(?string $processedAt): self
+    public function setProcessedAt(?Organization $processedAt): self
     {
         $this->processedAt = $processedAt;
 
@@ -149,18 +159,6 @@ class SoilSample extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-    public function getTexture(): ?Texture
-    {
-        return $this->texture;
-    }
-
-    public function setTexture(?Texture $texture): self
-    {
-        $this->texture = $texture;
-
-        return $this;
-    }
-
     public function getPlot(): ?Plot
     {
         return $this->plot;
@@ -173,14 +171,14 @@ class SoilSample extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-    public function getWRBsoilClass(): ?WRBsoilClass
+    public function getWrbSoilClass(): ?WrbSoilClass
     {
-        return $this->wRBsoilClass;
+        return $this->wrbSoilClass;
     }
 
-    public function setWRBsoilClass(?WRBsoilClass $wRBsoilClass): self
+    public function setWrbSoilClass(?WrbSoilClass $wrbSoilClass): self
     {
-        $this->wRBsoilClass = $wRBsoilClass;
+        $this->wrbSoilClass = $wrbSoilClass;
 
         return $this;
     }
@@ -293,6 +291,61 @@ class SoilSample extends BaseEntity implements DefinitionEntityInterface
     public function setMoisture(?Record $moisture): self
     {
         $this->moisture = $moisture;
+
+        return $this;
+    }
+
+    public function getTextureRecord(): ?Record
+    {
+        return $this->textureRecord;
+    }
+
+    public function setTextureRecord(?Record $textureRecord): self
+    {
+        $this->textureRecord = $textureRecord;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Measurement[]
+     */
+    public function getMeasurements(): Collection
+    {
+        return $this->measurements;
+    }
+
+    public function addMeasurement(Measurement $measurement): self
+    {
+        if (!$this->measurements->contains($measurement)) {
+            $this->measurements[] = $measurement;
+            $measurement->setSoilSample($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMeasurement(Measurement $measurement): self
+    {
+        if ($this->measurements->contains($measurement)) {
+            $this->measurements->removeElement($measurement);
+            // set the owning side to null (unless already changed)
+            if ($measurement->getSoilSample() === $this) {
+                $measurement->setSoilSample(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getRawDataPath(): ?string
+    {
+        return $this->rawDataPath;
+    }
+
+    public function setRawDataPath(?string $rawDataPath): self
+    {
+        $this->rawDataPath = $rawDataPath;
 
         return $this;
     }

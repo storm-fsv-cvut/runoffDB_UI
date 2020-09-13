@@ -159,7 +159,17 @@ function drawChart(element, ids) {
     var options = {
         bar: {groupWidth: "100%"},
         curveType: 'function',
+        seriesType: 'line',
+        series: {},
         legend: {position: 'bottom'},
+        vAxes: {
+            0: {
+                direction: 1
+            },
+            1: {
+                direction: -1
+            }
+        }
     };
 
     $.ajax($(element).data('datalink'), {
@@ -171,6 +181,20 @@ function drawChart(element, ids) {
                     let json = xhr.responseJSON;
                     for (i in json[0]) {
                         data.addColumn(json[0][i][0], json[0][i][1]);
+                        if (i!=0) {
+                            if (options.series[i-1] == undefined) {
+                                options.series[i-1] = {};
+                            }
+                            if (json[0][i][3] != undefined && json[0][i][3] == 'precip') {
+                                options.series[i-1].targetAxisIndex = 1;
+                                options.series[i-1].backgroundColor = '#66bc40';
+                            } else {
+                                options.series[i-1].targetAxisIndex = 0;
+                            }
+                            if (json[0][i][2] != undefined) {
+                                options.series[i-1].type = json[0][i][2];
+                            }
+                        }
                     }
                     data.addRows(json[1]);
                     chart.draw(data, options);

@@ -1,0 +1,5 @@
+includes:
+
+parameters:
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false

@@ -21,6 +21,7 @@ use App\Form\SequenceBasicType;
 use App\Form\SequenceFilterType;
 use App\Form\SequenceType;
 use App\Repository\MeasurementRepository;
+use App\Repository\PhenomenonRepository;
 use App\Repository\RecordRepository;
 use App\Repository\RecordTypeRepository;
 use App\Repository\RunRepository;
@@ -157,11 +158,7 @@ class SequenceController extends AbstractController {
                     $record = $newRecordForm->getData();
                     $measurement = $measurementRepository->find($newRecordForm->get('parent_id')->getData());
                     $record->setMeasurement($measurement);
-                    if ($record->getRelatedValueXUnit() === null && $record->getRelatedValueYUnit() === null && $record->getRelatedValueZUnit() === null ) {
-                        $record->setIsTimeline(true);
-                    } else {
-                        $record->setIsTimeline(false);
-                    }
+
                     $entityManager->persist($record);
                     foreach ($record->getData() as $data) {
                         $data->setRecord($record);
@@ -186,20 +183,6 @@ class SequenceController extends AbstractController {
                         }
                     }
 
-                    if ($partialData instanceof Measurement) {
-                        $run = $partialData->getRun();
-                        if ($partialForm->has('isRainIntensityMeasurement')) {
-                            if ($partialForm->get('isRainIntensityMeasurement')->getData()) {
-                                $run->setRainIntensityMeasurement($partialData);
-                            };
-                        }
-                        if ($partialForm->has('isInitMoistureMeasurement')) {
-                            if ($partialForm->get('isInitMoistureMeasurement')->getData()) {
-                                $run->setInitMoistureMeasurement($partialData);
-                            };
-                        }
-                        $entityManager->persist($run);
-                    }
                     $entityManager->persist($partialData);
                     $entityManager->flush();
                 }
@@ -265,6 +248,7 @@ class SequenceController extends AbstractController {
                 'form' => $sequenceForm->createView(),
                 'measurementForm' => $newMesurementForm->createView(),
                 'runForm' => $newRunForm->createView(),
+                'runSevice'=>$runService,
                 'recordForm' => $newRecordForm->createView(),
             ]);
 
@@ -272,7 +256,6 @@ class SequenceController extends AbstractController {
             $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
             $formPlot = $this->createForm(DefinitionEntityType::class, new Plot(), ['data_class' => Plot::class]);
             $form = $this->createForm(SequenceBasicType::class, new Sequence());
-
 
             if ($request->isMethod('POST')) {
                 $formPlot->handleRequest($request);
@@ -301,7 +284,6 @@ class SequenceController extends AbstractController {
         }
     }
 
-
     /**
      * @Route("/{_locale}/sequences", name="sequences")
      */
@@ -318,4 +300,17 @@ class SequenceController extends AbstractController {
         );
         return $this->render('sequence/list.html.twig', ['pagination' => $pagination, 'filter' => $filter->createView()]);
     }
+
+    /**
+     * @Route("/{_locale}/sequences-overview", name="sequencesOverview")
+     */
+    public function overview(EntityManagerInterface $em, Request $request, SequenceRepository $sequenceRepository, RunService $runService, PhenomenonRepository $phenomenonRepository) {
+        $sequences = $sequenceRepository->findBy([],['date'=>'ASC']);
+        return $this->render('sequence/overview.html.twig',[
+            'sequences'=>$sequences,
+            'runSevice'=>$runService,
+            'phenomenonRepository'=>$phenomenonRepository,
+        ]);
+    }
+
 }

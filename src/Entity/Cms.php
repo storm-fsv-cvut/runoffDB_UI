@@ -37,7 +37,7 @@ class Cms
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=255, options={"default" : "content"}, columnDefinition="ENUM('content', 'tooltip')")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $type;
 

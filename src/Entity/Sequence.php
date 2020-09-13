@@ -52,7 +52,7 @@ class Sequence extends BaseEntity {
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Record")
      */
-    private $canopyCover;
+    private $surfaceCover;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -76,13 +76,11 @@ class Sequence extends BaseEntity {
     /**
      * @return Collection|Run[]
      */
-    public function getRuns(): Collection
-    {
+    public function getRuns(): Collection {
         return $this->runs;
     }
 
-    public function addRun(Run $run): self
-    {
+    public function addRun(Run $run): self {
         if (!$this->runs->contains($run)) {
             $this->runs[] = $run;
             $run->setSequence($this);
@@ -91,8 +89,7 @@ class Sequence extends BaseEntity {
         return $this;
     }
 
-    public function removeRun(Run $run): self
-    {
+    public function removeRun(Run $run): self {
         if ($this->runs->contains($run)) {
             $this->runs->removeElement($run);
             // set the owning side to null (unless already changed)
@@ -110,6 +107,10 @@ class Sequence extends BaseEntity {
 
     public function getDate(): ?\DateTimeInterface {
         return $this->date;
+    }
+
+    public function getFormatedDate(): string {
+        return $this->date ? $this->getDate()->format("d. m. Y H:i"): ' - ';
     }
 
     public function setDate(?\DateTimeInterface $date): self {
@@ -173,51 +174,67 @@ class Sequence extends BaseEntity {
         return $this;
     }
 
-    public function validateSoilSamples():array {
+    public function validateSoilSamples(): array {
         $res = [];
         foreach ($this->getRuns() as $run) {
-            $res[]=$run->validateSoilSamples();
+            $res[] = $run->validateSoilSamples();
         }
         return $res;
     }
 
-    public function getCanopyCover(): ?Record
-    {
-        return $this->canopyCover;
+    public function getSurfaceCover(): ?Record {
+        return $this->surfaceCover;
     }
 
-    public function setCanopyCover(?Record $canopyCover): self
-    {
-        $this->canopyCover = $canopyCover;
+    public function setSurfaceCover(?Record $surfaceCover): self {
+        $this->surfaceCover = $surfaceCover;
 
         return $this;
     }
 
-    public function getCropCondition():?string {
+    public function getCropCondition(): ?string {
         return $this->getLocale() == 'en' ? $this->getCropConditionEN() : $this->getCropConditionCZ();
     }
 
-    public function getCropConditionCZ(): ?string
-    {
+    public function getCropConditionCZ(): ?string {
         return $this->cropConditionCZ;
     }
 
-    public function setCropConditionCZ(?string $cropConditionCZ): self
-    {
+    public function setCropConditionCZ(?string $cropConditionCZ): self {
         $this->cropConditionCZ = $cropConditionCZ;
 
         return $this;
     }
 
-    public function getCropConditionEN(): ?string
-    {
+    public function getCropConditionEN(): ?string {
         return $this->cropConditionEN;
     }
 
-    public function setCropConditionEN(?string $cropConditionEN): self
-    {
+    public function setCropConditionEN(?string $cropConditionEN): self {
         $this->cropConditionEN = $cropConditionEN;
 
         return $this;
+    }
+
+    public function getRecords(): array {
+        $records = [];
+        if ($this->getRuns()) {
+            foreach ($this->getRuns() as $run) {
+                if ($run->getMeasurements()) {
+                    foreach ($run->getMeasurements() as $measurement) {
+                        if ($measurement->getRecords()) {
+                            foreach ($measurement->getRecords() as $record) {
+                                $records[] = $record;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return $records;
+    }
+
+    public function getLocality(): ?Locality{
+        return $this->getPlot()->getLocality() ?? NULL;
     }
 }

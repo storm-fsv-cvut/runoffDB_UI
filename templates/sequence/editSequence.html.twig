@@ -25,18 +25,24 @@
                 {% endif %}
             </div>
             <div class="box-body">
-                <dl class="dl-horizontal">
-                    <dt>{% trans %}agrotechnology{% endtrans %}:</dt>
-                    <dd>{{ header['agrotechnology'] }}</dd>
-                    <dt>{% trans %}days from last agrooperation{% endtrans %}:</dt>
-                    <dd>{{ header['last_agrooperation_days'] }}</dd>
-                    <dt>{% trans %}canopy cover{% endtrans %}:</dt>
-                    <dd>{{ header['canopy_cover'] }}</dd>
-                    <dt>{% trans %}Crop b b c h{% endtrans %}:</dt>
-                    <dd>{{ header['crop_bbch'] }}</dd>
-                    <dt>{% trans %}crop condition{% endtrans %}:</dt>
-                    <dd>{{ header['crop_condition'] }}</dd>
-                </dl>
+                <div class="row">
+                    <dl class="dl-horizontal col-md-6">
+                        <dt>{% trans %}plot{% endtrans %}:</dt>
+                        <dd>{{ header['plot'] }}</dd>
+                        <dt>{% trans %}agrotechnology{% endtrans %}:</dt>
+                        <dd>{{ header['agrotechnology'] }}</dd>
+                        <dt>{% trans %}days from last agrooperation{% endtrans %}:</dt>
+                        <dd>{{ header['last_agrooperation_days'] }}</dd>
+                    </dl>
+                    <dl class="dl-horizontal col-md-6">
+                        <dt>{% trans %}canopy cover{% endtrans %}:</dt>
+                        <dd>{{ header['canopy_cover'] }}</dd>
+                        <dt>{% trans %}Crop b b c h{% endtrans %}:</dt>
+                        <dd>{{ header['crop_bbch'] }}</dd>
+                        <dt>{% trans %}crop condition{% endtrans %}:</dt>
+                        <dd>{{ header['crop_condition'] }}</dd>
+                    </dl>
+                </div>
             </div>
             {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
                 <div class="box-footer">
@@ -92,7 +98,7 @@
                                         <dd>{{ runArray['rain_intensity'] }}</dd>
                                         <dt>{% trans %}init_moisture{% endtrans %}:</dt>
                                         <dd>{{ runArray['init_moisture'] }}</dd>
-                                        {{ macros.soilsample('soil_sample_corq', runArray['soil_sample_corq'], runArray['soil_sample_corq_assignment']) }}
+                                        {{ macros.soilsample('soil_sample_corg', runArray['soil_sample_corg'], runArray['soil_sample_corg_assignment']) }}
                                         {{ macros.soilsample('soil_sample_bulk', runArray['soil_sample_bulk'], runArray['soil_sample_bulk_assignment']) }}
                                         {{ macros.soilsample('soil_sample_texture', runArray['soil_sample_texture'], runArray['soil_sample_texture_assignment']) }}
 
@@ -127,7 +133,7 @@
                                     <h4>
                                         <div class="dropdown">
                                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                                Data <span class="caret"></span>
+                                                {{formMeasurement.vars.value.getPhenomenon()}} <span class="caret"></span>
                                             </a>
                                             <ul class="dropdown-menu">
                                                 <li role="presentation">
@@ -144,7 +150,7 @@
                                             </ul>
                                         </div>
                                     </h4>
-                                    {% include "forms/measurementTypeModalEdit.html.twig" %}
+                                    {% include "forms/measurementTypeModalEdit.html.twig"  with {'parentId':runArray['id']} %}
                                 {% endif %}
                                 <p>
                                     {% if measurementArray['description'] %}
@@ -224,7 +230,7 @@
                                                         </tr>
                                                         {% for data in record.getData() %}
                                                             <tr>
-                                                                <td>{{ data.getTime().format("H:i:s") }}</td>
+                                                                <td>{{ data.getFormatedTime() }}</td>
                                                                 {% if  record.getRelatedValueXUnit() is not same as(null) %}
                                                                     {% if data.getRelatedValueX() is not same as(null) %}
                                                                         <td>{{ data.getRelatedValueX() }} {{ record.getRelatedValueXUnit().getUnit() }}</td>

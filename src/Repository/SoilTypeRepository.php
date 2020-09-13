@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\WRBsoilClass;
+use App\Entity\WrbSoilClass;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * @method WRBsoilClass|null find($id, $lockMode = null, $lockVersion = null)
- * @method WRBsoilClass|null findOneBy(array $criteria, array $orderBy = null)
- * @method WRBsoilClass[]    findAll()
- * @method WRBsoilClass[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method WrbSoilClass|null find($id, $lockMode = null, $lockVersion = null)
+ * @method WrbSoilClass|null findOneBy(array $criteria, array $orderBy = null)
+ * @method WrbSoilClass[]    findAll()
+ * @method WrbSoilClass[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class SoilTypeRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, WRBsoilClass::class);
+        parent::__construct($registry, WrbSoilClass::class);
     }
 
     // /**
-    //  * @return WRBsoilClass[] Returns an array of WRBsoilClass objects
+    //  * @return WrbSoilClass[] Returns an array of WrbSoilClass objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class SoilTypeRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?WRBsoilClass
+    public function findOneBySomeField($value): ?WrbSoilClass
     {
         return $this->createQueryBuilder('s')
             ->andWhere('s.exampleField = :val')

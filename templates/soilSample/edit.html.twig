@@ -1,0 +1,225 @@
+{% extends 'base.html.twig' %}
+{% block title %}Rainsimulator{% endblock %}
+{% import 'macros.twig' as macros %}
+
+{% block body %}
+
+    <section class="content-header">
+        <h1>
+            {{ soilSample }}
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-list"></i> Seznam</a></li>
+        </ol>
+    </section>
+
+
+    <section class="content">
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="box box-solid">
+                    <div class="box-header">
+                            {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+                                {% include "forms/soilSampleTypeModalEdit.html.twig" %}
+                            {% endif %}
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <dl class="dl-horizontal">
+                                    <dt>{% trans %}locality{% endtrans %}:</dt>
+                                    <dd>{{ soilSample.getLocality() }}</dd>
+                                    <dt>{% trans %}Plot{% endtrans %}:</dt>
+                                    <dd>{{ soilSample.getPlot() }}</dd>
+                                    <dt>{% trans %}Sample date{% endtrans %}:</dt>
+                                    <dd>{{ soilSample.getDateSampled().format('d.m.Y') }}</dd>
+                                    <dt>{% trans %}Processed at{% endtrans %}:</dt>
+                                    <dd>{{ soilSample.getProcessedAt() }}</dd>
+                                    <dt>{% trans %}Process date{% endtrans %}:</dt>
+                                    <dd>{{ soilSample.getDateProcessed().format('d.m.Y') }}</dd>
+                                    <dt>{% trans %}WRB soil class{% endtrans %}:</dt>
+                                    <dd>{{ soilSample.getWRBsoilClass() }}</dd>
+                                    <dt>{% trans %}Description{% endtrans %}:</dt>
+                                    <dd>{{ soilSample.getDescription() }}</dd>
+                                </dl>
+                            </div>
+                            <div class="col-md-6">
+                                <dl class="dl-horizontal">
+                                    <dt>{% trans %}texture{% endtrans %}:</dt>
+                                    <dd>{{ soilSample.getTextureRecord() }}</dd>
+                                    <dt>{% trans %}corg{% endtrans %}:</dt>
+                                    <dd>{{ soilSample.getCorg() }}</dd>
+                                    <dt>{% trans %}moisture{% endtrans %}:</dt>
+                                    <dd>{{ soilSample.getMoisture() }}</dd>
+                                    <dt>{% trans %}bulkDensity{% endtrans %}:</dt>
+                                    <dd>{{ soilSample.getBulkDensity() }}</dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                    {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+                        <div class="box-footer">
+                            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-parent="{{ soilSample.getId() }}" data-target="#measurement">
+                                {% trans %}add measurement{% endtrans %}
+                            </button>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 records">
+                {% for formMeasurement in form.measurements %}
+                    {% set measurementArray = measurements[formMeasurement.vars.value.getId()] %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+                                <h4>
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                            Data <span class="caret"></span>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li role="presentation">
+                                                <a role="menuitem" tabindex="-1" href="javascript:;" data-toggle="modal" data-parent="{{ measurementArray['id'] }}" data-target="#record">{% trans %}add record{% endtrans %}</a>
+                                            </li>
+                                            <li role="presentation" class="divider"></li>
+                                            <li role="presentation">
+                                                <a role="menuitem" data-toggle="modal" data-target="#measurement{{ formMeasurement.vars.value.getId() }}" tabindex="-1" href="#">{% trans %}edit{% endtrans %}</a>
+                                            </li>
+                                            <li role="presentation" class="divider"></li>
+                                            <li role="presentation">
+                                                <a role="menuitem" tabindex="-1" data-confirm="{% trans %}delete?{% endtrans %}" href="{{ path('soilSample', {id:soilSample.getId(),delete_measurement:formMeasurement.vars.value.getId()}) }}">{% trans %}delete{% endtrans %}</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </h4>
+                                {% include "forms/measurementTypeModalEdit.html.twig" with {'parentId':soilSample.getId()} %}
+                            {% endif %}
+                            <p>
+                                {% if measurementArray['description'] %}
+                                    {{ measurementArray['description'] }}
+                                {% endif %}
+                            </p>
+                            {% if measurementArray['note'] %}
+                                <i>* {{ measurementArray['note'] }}</i>
+                            {% endif %}
+                            <div class="box-group" id="accordion">
+                                {% for formRecord in formMeasurement.records %}
+                                    {% set record = formRecord.vars.value %}
+                                    <div class="panel box box-solid">
+                                        <div class="box-header">
+                                            <h4 class="box-title">
+                                                <a data-toggle="collapse" data-parent="#accordion" href="#record-{{ record.getId() }}" class="collapsed" aria-expanded="false">
+                                                    {{ record.getUnit().getName() }}
+                                                </a>
+                                                <small>{{ record.getRecordType().getName() }}</small>
+                                                <span class="badge bg-primary">#{{ record.getId() }}</span>
+                                                {% for sourceRecord in record.getSourceRecords() %}
+                                                    <span class="badge bg-primary">{% trans %}derived from{% endtrans %} #{{ sourceRecord.getId() }}</span>
+                                                {% endfor %}
+                                            </h4>
+                                            <div class="box-tools pull-right">
+                                                <div class="dropdown inline">
+                                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                                        <span class="caret"></span>
+                                                    </a>
+                                                    <ul class="dropdown-menu">
+                                                        <li role="presentation">
+                                                            <a role="menuitem" href="{{ path('ismoisture', {soilSampleId:soilSample.getId(),recordId:record.getId()}) }}">{% trans %}set as moisture{% endtrans %}</a>
+                                                        </li>
+                                                        <li role="presentation">
+                                                            <a role="menuitem" href="{{ path('istexture', {soilSampleId:soilSample.getId(),recordId:record.getId()}) }}">{% trans %}set as texture{% endtrans %}</a>
+                                                        </li>
+                                                        <li role="presentation">
+                                                            <a role="menuitem" href="{{ path('iscorg', {soilSampleId:soilSample.getId(),recordId:record.getId()}) }}">{% trans %}set as corg{% endtrans %}</a>
+                                                        </li>
+                                                        <li role="presentation">
+                                                            <a role="menuitem" href="{{ path('isbulkDensity', {soilSampleId:soilSample.getId(),recordId:record.getId()}) }}">{% trans %}set as bulkDensity{% endtrans %}</a>
+                                                        </li>
+                                                        <li role="presentation">
+                                                            <a role="menuitem" data-confirm="{% trans %}delete?{% endtrans %}" tabindex="-1" href="{{ path('soilSample', {id:soilSample.getId(),delete_record:record.getId()}) }}">{% trans %}delete{% endtrans %}</a>
+                                                        </li>
+                                                        <li role="presentation">
+                                                            <a role="menuitem" tabindex="-1" href="#" data-toggle="modal" data-target="#record{{ record.getId() }}">{% trans %}edit{% endtrans %}</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% include "forms/recordTypeModalEdit.html.twig" %}
+                                        <div id="record-{{ record.getId() }}" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                            <div class="box-body">
+                                                <p><i>{{ record.getNoteCZ() }}</i></p>
+                                                <table class="table table-bordered">
+                                                    <tr>
+                                                        <th>{% trans %}time{% endtrans %}</th>
+                                                        {% if record.getRelatedValueXUnit() is not same as(null) %}
+                                                            <th>{{ record.getRelatedValueXUnit().getName() }}
+                                                                [{{ record.getRelatedValueXUnit().getUnit() }}]
+                                                            </th>
+                                                        {% endif %}
+                                                        {% if record.getRelatedValueYUnit() is not same as(null) %}
+                                                            <th>{{ record.getRelatedValueYUnit().getName() }}
+                                                                [{{ record.getRelatedValueYUnit().getUnit() }}]
+                                                            </th>
+                                                        {% endif %}
+                                                        {% if record.getRelatedValueZUnit() is not same as(null) %}
+                                                            <th>{{ record.getRelatedValueZUnit().getName() }}
+                                                                [{{ record.getRelatedValueZUnit().getUnit() }}]
+                                                            </th>
+                                                        {% endif %}
+                                                        <th>{{ record.getUnit().getName() }}
+                                                            [{{ record.getUnit().getUnit() }}]
+                                                        </th>
+                                                    </tr>
+                                                    {% for data in record.getData() %}
+                                                        <tr>
+                                                            <td>{{ data.getFormatedTime() ?? 0 }}</td>
+                                                            {% if  record.getRelatedValueXUnit() is not same as(null) %}
+                                                                {% if data.getRelatedValueX() is not same as(null) %}
+                                                                    <td>{{ data.getRelatedValueX() }} {{ record.getRelatedValueXUnit().getUnit() }}</td>
+                                                                {% else %}
+                                                                    <td></td>
+                                                                {% endif %}
+                                                            {% endif %}
+                                                            {% if  record.getRelatedValueYUnit() is not same as(null) %}
+                                                                {% if data.getRelatedValueY() is not same as(null) %}
+                                                                    <td>{{ data.getRelatedValueY() }} {{ record.getRelatedValueYUnit().getUnit() }}</td>
+                                                                {% else %}
+                                                                    <td></td>
+                                                                {% endif %}
+                                                            {% endif %}
+                                                            {% if  record.getRelatedValueZUnit() is not same as(null) %}
+                                                                {% if data.getRelatedValueZ() is not same as(null) %}
+                                                                    <td>{{ data.getRelatedValueZ() }} {{ record.getRelatedValueZUnit().getUnit() }}</td>
+                                                                {% else %}
+                                                                    <td></td>
+                                                                {% endif %}
+                                                            {% endif %}
+                                                            <td>{{ data.getValue() }} {{ record.getUnit().getUnit() }}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {{ form_end(form,{'render_rest': false}) }}
+    </section>
+    {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+        {% include "forms/measurementTypeModalNew.html.twig" %}
+        {% include "forms/recordTypeModalNew.html.twig" %}
+    {% endif %}
+{% endblock %}
+
+

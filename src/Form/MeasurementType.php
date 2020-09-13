@@ -23,6 +23,7 @@ class MeasurementType extends AbstractType {
             ->add('descriptionEN', TextareaType::class, ['label' => 'descriptionEN','required'=>false])
             ->add('noteCZ', TextareaType::class, ['label' => 'noteCZ','required'=>false])
             ->add('noteEN', TextareaType::class, ['label' => 'noteEN','required'=>false])
+            ->add('phenomenon')
             ->add('save', SubmitType::class, [
                 'attr' => ['class' => 'btn btn-success'],
                 'label' => 'save'

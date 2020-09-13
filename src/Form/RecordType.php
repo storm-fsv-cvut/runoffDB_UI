@@ -23,7 +23,6 @@ class RecordType extends AbstractType
         $builder
             ->add('noteCZ',TextareaType::class,['label'=>'noteCZ','required'=>false])
             ->add('noteEN',TextareaType::class,['label'=>'noteEN','required'=>false])
-            ->add('isTimeline',CheckboxType::class,['label'=>'isTimeline','data'=>true,'required'=>false])
             ->add('recordType')
             ->add('parent_id', HiddenType::class, ['mapped' => false])
             ->add('unit', EntityType::class, ['class'=>Unit::class,'label'=>'unit','attr'=>['data-change-label'=>true]])

@@ -25,7 +25,7 @@ class Record extends BaseEntity {
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\RecordType")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $recordType;
 
@@ -49,11 +49,6 @@ class Record extends BaseEntity {
      * @ORM\ManyToMany(targetEntity="App\Entity\Record", inversedBy="sourceRecords")
      */
     private $sourceRecords;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $isTimeline;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Data", mappedBy="record", cascade={"persist","remove"}, orphanRemoval=true)
@@ -199,16 +194,6 @@ class Record extends BaseEntity {
         if ($this->sourceRecords->contains($sourceRecord)) {
             $this->sourceRecords->removeElement($sourceRecord);
         }
-
-        return $this;
-    }
-
-    public function getIsTimeline(): ?bool {
-        return $this->isTimeline;
-    }
-
-    public function setIsTimeline(bool $isTimeline): self {
-        $this->isTimeline = $isTimeline;
 
         return $this;
     }

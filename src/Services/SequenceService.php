@@ -73,10 +73,10 @@ class SequenceService {
                 'soil_sample_texture_assignment' => $run->getTextureAssignmentType(),
                 'soil_sample_bulk' => $run->getSoilSampleBulk(),
                 'soil_sample_bulk_assignment' => $run->getBulkAssignmentType(),
-                'soil_sample_corq' => $run->getSoilSampleCorq(),
+                'soil_sample_corg' => $run->getSoilSampleCorg(),
                 'rain_intensity' => $rain_intensity,
                 'init_moisture' => $init_moisture,
-                'soil_sample_corq_assignment' => $run->getCorqAssignmentType(),
+                'soil_sample_corg_assignment' => $run->getCorgAssignmentType(),
                 'files' => $run->getFiles()
             ];
 
@@ -118,10 +118,11 @@ class SequenceService {
             'id' => $sequence->getId(),
             'date' => $sequence->getDate()->format("d.m.Y"),
             'locality' => $locality->getName(),
+            'plot' => $plot,
             'crop' => $plot->getCrop() ? $plot->getCrop()->getName() : null,
             'agrotechnology' => $agrotechnology ? $agrotechnology->getName() : null,
             'last_agrooperation_days' => $daysFromLastAgro ?? null,
-            'canopy_cover' => $sequence->getCanopyCover(),
+            'canopy_cover' => $sequence->getSurfaceCover(),
             'crop_bbch' => $sequence->getCropBBCH(),
             'crop_condition' => $sequence->getCropCondition()
         ];

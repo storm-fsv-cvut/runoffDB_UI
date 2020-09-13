@@ -46,7 +46,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/{_locale}/user/{id}", name="user")
      */
-    public function user(UserRepository $userRepository, Request $request, UserPasswordEncoderInterface $encoder, ?int $id = null) {
+    public function user(UserRepository $userRepository, Request $request, UserPasswordEncoderInterface $encoder, ?int $id = null): Response {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $form = $this->createForm(UserType::class,$id ? $userRepository->find($id) : NULL);
         $form->handleRequest($request);
@@ -66,7 +66,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/{_locale}/delete-user/{id}", name="delete_user")
      */
-    public function deleteUser(UserRepository $userRepository, EntityManagerInterface $entityManager, ?int $id = null) {
+    public function deleteUser(UserRepository $userRepository, EntityManagerInterface $entityManager, ?int $id = null): Response {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $user = $userRepository->find($id);
         $entityManager->remove($user);
@@ -80,7 +80,7 @@ class SecurityController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    function list(EntityManagerInterface $em, Request $request, TranslatorInterface $translator, PaginatorInterface $paginator) {
+    function list(EntityManagerInterface $em, Request $request, TranslatorInterface $translator, PaginatorInterface $paginator): Response {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $repo = $em->getRepository(User::class);
         $pagination = $paginator->paginate(
@@ -93,7 +93,7 @@ class SecurityController extends AbstractController
         return $this->render('security/list.html.twig', $params);
     }
 
-    public function userMenu() {
+    public function userMenu(): Response {
         $user = $this->getUser();
         return $this->render('security/usermenu.html.twig', ['user' => $user]);
     }

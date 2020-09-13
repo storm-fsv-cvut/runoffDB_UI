@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Measurement;
+use App\Entity\Phenomenon;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -19,32 +20,17 @@ class MeasurementRepository extends ServiceEntityRepository
         parent::__construct($registry, Measurement::class);
     }
 
-    // /**
-    //  * @return Measurement[] Returns an array of Measurement objects
-    //  */
-    /*
-    public function findByExampleField($value)
+     /**
+      * @return Measurement[] Returns an array of Measurement objects
+      */
+    public function findByPhenomenon(Phenomenon $phenomenon)
     {
         return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('m.phenomenon = :val')
+            ->setParameter('val', $phenomenon)
             ->orderBy('m.id', 'ASC')
-            ->setMaxResults(10)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Measurement
-    {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

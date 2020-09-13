@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\SoilSample;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -19,32 +20,8 @@ class SoilSampleRepository extends ServiceEntityRepository
         parent::__construct($registry, SoilSample::class);
     }
 
-    // /**
-    //  * @return SoilSample[] Returns an array of SoilSample objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+    public function getPaginatorQuery():QueryBuilder {
+        $queryBuilder = $this->createQueryBuilder('soilSample');
+        return $queryBuilder;
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?SoilSample
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

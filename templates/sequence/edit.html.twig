@@ -55,7 +55,7 @@
                                         <dd>{{ run['rain_intensity'] }}</dd>
                                         <dt>{% trans %}init_moisture{% endtrans %}:</dt>
                                         <dd>{{ run['init_moisture'] }}</dd>
-                                        {{ macros.soilsample('soil_sample_corq', run['soil_sample_corq'], run['soil_sample_corq_assignment']) }}
+                                        {{ macros.soilsample('soil_sample_corg', run['soil_sample_corg'], run['soil_sample_corg_assignment']) }}
                                         {{ macros.soilsample('soil_sample_bulk', run['soil_sample_bulk'], run['soil_sample_bulk_assignment']) }}
                                         {{ macros.soilsample('soil_sample_texture', run['soil_sample_texture'], run['soil_sample_texture_assignment']) }}
                                         <dt>raw data:</dt>
@@ -136,7 +136,7 @@
 
                                                         {% for data in record.getData() %}
                                                             <tr>
-                                                                <td>{{ data.getTime().format("H:i:s") }}</td>
+                                                                <td>{{ data.getFormatedTime() }}</td>
                                                                 {% if record.getRelatedValueUnit() is not same as(null) %}
                                                                     <td>{{ data.getRelatedValue() }} {{ record.getUnit().getRelatedValueUnit() }}</td>
                                                                 {% endif %}

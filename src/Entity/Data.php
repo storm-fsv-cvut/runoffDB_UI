@@ -57,6 +57,11 @@ class Data extends BaseEntity
         return $this->time;
     }
 
+    public function getFormatedTime(): string
+    {
+        return $this->time ? $this->getTime()->format("H:i:s") : " - ";
+    }
+
     public function setTime(?\DateTimeInterface $time): self
     {
         $this->time = $time;
@@ -66,7 +71,7 @@ class Data extends BaseEntity
 
     public function getValue(): ?string
     {
-        return number_format( $this->value, $this->getRecord()->getUnit()->getDecimals(), ".", "" );
+        return number_format( $this->value,  2, ".", "" );
     }
 
     public function setValue(string $value): self
@@ -88,7 +93,7 @@ class Data extends BaseEntity
 
     public function getRelatedValueX(): ?float
     {
-        return number_format( $this->relatedValueX, $this->getRecord()->getRelatedValueXUnit()->getDecimals(), ".", "" );
+        return number_format( $this->relatedValueX, 2, ".", "" );
     }
 
     public function setRelatedValueX(?float $relatedValueX): self
@@ -100,7 +105,7 @@ class Data extends BaseEntity
 
     public function getRelatedValueY(): ?float
     {
-        return number_format( $this->relatedValueY, $this->getRecord()->getRelatedValueXUnit()->getDecimals(), ".", "" );
+        return number_format( $this->relatedValueY, 2, ".", "" );
     }
 
     public function setRelatedValueY(?float $relatedValueY): self
@@ -112,7 +117,7 @@ class Data extends BaseEntity
 
     public function getRelatedValueZ(): ?float
     {
-        return number_format( $this->relatedValueZ, $this->getRecord()->getRelatedValueXUnit()->getDecimals(), ".", "" );
+        return number_format( $this->relatedValueZ, 2, ".", "" );
     }
 
     public function setRelatedValueZ(?float $relatedValueZ): self

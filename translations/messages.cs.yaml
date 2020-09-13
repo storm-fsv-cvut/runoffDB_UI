@@ -35,13 +35,14 @@ App\Entity\Unit: Unit
 App\Entity\Phenomenon: Phenomenon
 sequence: Sekvence
 sequences: Sekvence
+soilSamples: Vzorky půdy
 na: Nezadáno
 soil_sample_bulk: Půdní vzorek pro objemovou hmotnost
 soilSampleBulk: Půdní vzorek pro objemovou hmotnost
 soil_sample_texture: Půdní vzorek pro zrnitost
 soilSampleTexture: Půdní vzorek pro zrnitos
-soil_sample_corq: Půdní vzorek pro organický uhlík
-soilSampleCorq: Půdní vzorek pro organický uhlík
+soil_sample_corg: Půdní vzorek pro organický uhlík
+soilSampleCorg: Půdní vzorek pro organický uhlík
 assignmentType: Typ přiřazení
 rain_intensity: intenzita srážky
 init_moisture: počáteční vlhkost
@@ -89,6 +90,13 @@ Users: Uživatelé
 agrotechnology: Agrotechnologie
 days from last agrooperation: Počet dnů od poslední agro-operace
 canopy cover: Stupeň zakrytí listy
+overview table: Přehled
+add soil sample: Přidat vzorek půdy
+Date sampled: Datum sběru
+Sample location: Místo sběru
+Sample depth m: Hloubka sběru (m)
+Date processed: Datum zpracování
+Processed at: Místo zpracování
 
 name: Název
 established: Založeno
@@ -102,7 +110,7 @@ Agrotechnology: Agrotechnologie
 dateSampled: Datum odebrání
 dateProcessed: Datum zpracování
 processedAt: Místo zpracování
-corg: CORQ
+corg: CORG
 moistureVperc: moistureVperc
 sampleDepthM: Hloubka odběru (m)
 texture: Textura

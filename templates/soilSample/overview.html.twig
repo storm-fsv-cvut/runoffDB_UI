@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+{% block title %}Rainsimulator - {% trans %}overview table{% endtrans %}{% endblock %}
+{% block body %}
+    <section class="content-header">
+        <h1>
+            {% trans %}overview table{% endtrans %}
+        </h1>
+    </section>
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+        <div class="box box-solid">
+            <div class="panel box box-solid">
+                <div class="box-body no-padding">
+                <table class="table table-sm overview">
+                    {% for soilSample in soilSamples %}
+                        <tr>
+                            <td>{{ soilSample.getId() }}</td>
+                            <td>{{ soilSample.getDateSampled().format("d.m.Y") }}</td>
+                            <td>{{ soilSample.getLocality().getName() }}</td>
+
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

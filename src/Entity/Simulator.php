@@ -48,6 +48,11 @@ class Simulator extends BaseEntity implements DefinitionEntityInterface
      */
     private $sequences;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $reference;
+
     public function __toString() {
         return $this->getName().' ('.$this->getOrganization()->getName().')';
     }
@@ -162,5 +167,17 @@ class Simulator extends BaseEntity implements DefinitionEntityInterface
 
     public function getLabel(): string {
         return $this->getNameCZ();
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(?string $reference): self
+    {
+        $this->reference = $reference;
+
+        return $this;
     }
 }

@@ -2,18 +2,65 @@
 body {
     background-color: lightgray;
 }
+
 .tip {
     border-bottom: 1px dashed grey;
     cursor: pointer;
 }
+
+table.overview td.hasrecords-0 {
+    background-color: #ffeaea;
+    color: #aaa;
+}
+
+table.overview td.hasrecords-1, table.overview td.hasrecords-2, table.overview td.hasrecords-3, table.overview td.hasrecords-4, table.overview td.hasrecords-5 {
+    background-color: #b4dd42;
+}
+
+table.overview td.assignmenttype-0 {
+    background-color: #ffeaea;
+    color: #aaa;
+}
+
+table.overview td.assignmenttype-1 {
+    background-color: #b4dd42;
+}
+
+table.overview td.assignmenttype-2 {
+    background-color: #fff885;
+}
+
+table.overview td.assignmenttype-3 {
+    background-color: #ffc14f;
+}
+
+table.overview td.assignmenttype-3 {
+    background-color: #e6c1ff;
+}
+
+table.overview td.dry {
+    background-color: #e8e8c4;
+}
+
+table.overview td.moist {
+    background-color: #d5e6ff
+}
+
+table.overview td.wet {
+    background-color: #668dc8;
+    color: white;
+}
+
 @media (min-width: 768px) {
     .modal-dialog {
         width: 700px;
         margin: 30px auto;
     }
+
     .dl-horizontal dd {
         margin-left: 280px;
     }
+
     .dl-horizontal dt {
         float: left;
         width: 260px;

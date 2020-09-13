@@ -40,11 +40,6 @@ class Agrotechnology extends BaseEntity implements DefinitionEntityInterface
     private $descriptionEN;
 
     /**
-     * @ORM\Column(type="string", length=500, nullable=true)
-     */
-    private $note;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\TillageSequence", mappedBy="agrotechnology")
      */
     private $tillageSequences;
@@ -53,6 +48,16 @@ class Agrotechnology extends BaseEntity implements DefinitionEntityInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $managTyp;
+
+    /**
+     * @ORM\Column(type="string", length=500, nullable=true)
+     */
+    private $noteCZ;
+
+    /**
+     * @ORM\Column(type="string", length=500, nullable=true)
+     */
+    private $noteEN;
 
     public function __toString(): string {
         return $this->getName();
@@ -144,14 +149,7 @@ class Agrotechnology extends BaseEntity implements DefinitionEntityInterface
 
     public function getNote(): ?string
     {
-        return $this->note;
-    }
-
-    public function setNote(?string $note): self
-    {
-        $this->note = $note;
-
-        return $this;
+        return $this->getLocale() == 'en' ? $this->getNoteEN() : $this->getNoteCZ();
     }
 
     public function getNameCZ(): ?string
@@ -186,6 +184,30 @@ class Agrotechnology extends BaseEntity implements DefinitionEntityInterface
     public function setManagTyp(?string $managTyp): self
     {
         $this->managTyp = $managTyp;
+
+        return $this;
+    }
+
+    public function getNoteCZ(): ?string
+    {
+        return $this->noteCZ;
+    }
+
+    public function setNoteCZ(?string $noteCZ): self
+    {
+        $this->noteCZ = $noteCZ;
+
+        return $this;
+    }
+
+    public function getNoteEN(): ?string
+    {
+        return $this->noteEN;
+    }
+
+    public function setNoteEN(?string $noteEN): self
+    {
+        $this->noteEN = $noteEN;
 
         return $this;
     }

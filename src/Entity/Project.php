@@ -33,6 +33,26 @@ class Project extends BaseEntity implements DefinitionEntityInterface
      */
     private $organisations;
 
+    /**
+     * @ORM\Column(type="string", length=512, nullable=true)
+     */
+    private $descriptionCZ;
+
+    /**
+     * @ORM\Column(type="string", length=512, nullable=true)
+     */
+    private $descriptionEN;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $fundingAgency;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $projectCode;
+
     public function __toString() {
         return $this->getProjectName();
     }
@@ -112,6 +132,54 @@ class Project extends BaseEntity implements DefinitionEntityInterface
         if ($this->organisations->contains($organisation)) {
             $this->organisations->removeElement($organisation);
         }
+
+        return $this;
+    }
+
+    public function getDescriptionCZ(): ?string
+    {
+        return $this->descriptionCZ;
+    }
+
+    public function setDescriptionCZ(?string $descriptionCZ): self
+    {
+        $this->descriptionCZ = $descriptionCZ;
+
+        return $this;
+    }
+
+    public function getDescriptionEN(): ?string
+    {
+        return $this->descriptionEN;
+    }
+
+    public function setDescriptionEN(?string $descriptionEN): self
+    {
+        $this->descriptionEN = $descriptionEN;
+
+        return $this;
+    }
+
+    public function getFundingAgency(): ?string
+    {
+        return $this->fundingAgency;
+    }
+
+    public function setFundingAgency(?string $fundingAgency): self
+    {
+        $this->fundingAgency = $fundingAgency;
+
+        return $this;
+    }
+
+    public function getProjectCode(): ?string
+    {
+        return $this->projectCode;
+    }
+
+    public function setProjectCode(?string $projectCode): self
+    {
+        $this->projectCode = $projectCode;
 
         return $this;
     }

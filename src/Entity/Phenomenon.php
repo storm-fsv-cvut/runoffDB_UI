@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -40,6 +42,21 @@ class Phenomenon extends BaseEntity implements DefinitionEntityInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $modelParameterSet;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $phenomenonKey;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Measurement", mappedBy="phenomenon")
+     */
+    private $measurements;
+
+    public function __construct()
+    {
+        $this->measurements = new ArrayCollection();
+    }
 
     public function __toString(): string {
         return $this->getName();
@@ -114,6 +131,49 @@ class Phenomenon extends BaseEntity implements DefinitionEntityInterface
     public function setModelParameterSet(?string $modelParameterSet): self
     {
         $this->modelParameterSet = $modelParameterSet;
+
+        return $this;
+    }
+
+    public function getPhenomenonKey(): ?string
+    {
+        return $this->phenomenonKey;
+    }
+
+    public function setPhenomenonKey(string $phenomenonKey): self
+    {
+        $this->phenomenonKey = $phenomenonKey;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Measurement[]
+     */
+    public function getMeasurements(): Collection
+    {
+        return $this->measurements;
+    }
+
+    public function addMeasurement(Measurement $measurement): self
+    {
+        if (!$this->measurements->contains($measurement)) {
+            $this->measurements[] = $measurement;
+            $measurement->setPhenomenon($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMeasurement(Measurement $measurement): self
+    {
+        if ($this->measurements->contains($measurement)) {
+            $this->measurements->removeElement($measurement);
+            // set the owning side to null (unless already changed)
+            if ($measurement->getPhenomenon() === $this) {
+                $measurement->setPhenomenon(null);
+            }
+        }
 
         return $this;
     }

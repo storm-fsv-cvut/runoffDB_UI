@@ -15,7 +15,6 @@ require('../plugins/iCheck/all.css');
 require('../dist/css/AdminLTE.min.css');
 require('../dist/css/skins/skin-blue.css');
 require('../css/app.css');
-
 require('../bower_components/bootstrap/dist/js/bootstrap.min.js');
 require('../bower_components/Flot/jquery.flot.js');
 require('../bower_components/Flot/jquery.flot.time.js');

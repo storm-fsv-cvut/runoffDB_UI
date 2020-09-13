@@ -1,0 +1,114 @@
+{% extends 'base.html.twig' %}
+{% block title %}Rainsimulator - {% trans %}overview table{% endtrans %}{% endblock %}
+{% block body %}
+    <section class="content-header">
+        <h1>
+            {% trans %}overview table{% endtrans %}
+        </h1>
+    </section>
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+        <div class="box box-solid">
+            <div class="panel box box-solid">
+                <div class="box-body no-padding">
+                <table class="table table-sm overview">
+                    {% for sequence in sequences %}
+                        {% set runs =  sequence.getRuns() %}
+                        {% for run in runs %}
+                            <tr class="border-primary">
+                                {% if loop.index == 1 %}
+                                    <td rowspan="{{ runs.count() }}"><a class="text-bold" href="{{ path('sequence',{id:sequence.getId()}) }}">{{ sequence.getFormatedDate() }}</a></td>
+                                    <td rowspan="{{ runs.count() }}">{{ sequence.getLocality() }}</td>
+                                    <td rowspan="{{ runs.count() }}">
+                                        {% if sequence.getCropCondition() %}
+                                            <span data-toggle="tooltip" class="tip" data-placement="top" title="{{ sequence.getCropCondition() }}">{{ sequence.getID() }}</span>
+                                        {% else %}
+                                            {{ sequence.getID() }}
+                                        {% endif %}
+                                    </td>
+                                {% endif %}
+                                <td>{{ sequence.getPlot().getCrop() }}</td>
+                                <td class="{% if run.getRunType().getId()==1 %}dry{% elseif run.getRunType().getId()==2 %}moist{% elseif run.getRunType().getId()==3 %}wet{% endif %}">
+                                    {% if run.getNote() %}
+                                        <span data-toggle="tooltip" class="tip" data-placement="top" title="{{ run.getNote() }}">{{ run.getID() }}</span>
+                                    {% else %}
+                                        {{ run.getID() }}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {{ run.getFormatedDateTime() }}
+                                    {% if run.getRunoffStart() %}
+                                        ({{ run.getFormatedRunoffStart() }})
+                                    {% endif %}
+                                </td>
+
+                                {% for key in ['precip','soilmoist'] %}
+                                    {% set phenomenon =  phenomenonRepository.findByKey(key) %}
+                                    {% set records =  runSevice.getRecordsByPhenomenon(run, key) %}
+                                    <td class="hasrecords-{{ records|length }}">
+                                        <span data-toggle="tooltip" title="{{ phenomenon.getName() }}" data-placement="top">{{ records|length }}</span>
+                                    </td>
+                                {% endfor %}
+
+                                {% for key in ['surrunoff','soilchem','srovel'] %}
+                                    {% set phenomenon =  phenomenonRepository.findByKey(key) %}
+                                    {% set records =  runSevice.getRecordsByPhenomenon(run, key) %}
+                                    <td class="hasrecords-{{ records|length }}">
+                                        <span data-toggle="tooltip" title="{{ phenomenon.getName() }}" data-placement="top">{{ records|length }}</span>
+                                    </td>
+                                {% endfor %}
+
+
+                                   {% if sequence.getSurfaceCover()!=null %}
+                                    <td class="hasrecords-1">
+                                        <span class="d-block w-100" data-toggle="tooltip" title="{% trans %}surfaceCover{% endtrans %}" data-placement="top">1</span>
+                                    </td>
+                                {% else %}
+                                    <td class="hasrecords-0">
+                                        <span class="d-block w-100" data-toggle="tooltip" title="{% trans %}surfaceCover{% endtrans %}" data-placement="top">0</span>
+                                    </td>
+                                {% endif %}
+
+
+                                {% set soilsample = run.getSoilSampleBulk() %}
+                                {% if soilsample %}
+                                    <td class="assignmenttype-{{ run.getBulkAssignmentType().getID() }}">
+                                        <span data-toggle="tooltip" title="{% trans %}soilSampleBulk{% endtrans %}" data-placement="top">1</span>
+                                    </td>
+                                {% else %}
+                                    <td class="assignmenttype-0">
+                                        <span data-toggle="tooltip" title="{% trans %}soilSampleBulk{% endtrans %}" data-placement="top">0</span>
+                                    </td>
+                                {% endif %}
+                                {% set soilsample = run.getSoilSampleCorg() %}
+                                {% if soilsample %}
+                                    <td class="assignmenttype-{{ run.getCorgAssignmentType().getID() }}">
+                                        <span data-toggle="tooltip" title="{% trans %}soilSampleCorg{% endtrans %}" data-placement="top">1</span>
+                                    </td>
+                                {% else %}
+                                    <td class="assignmenttype-0">
+                                        <span data-toggle="tooltip" title="{% trans %}soilSampleCorg{% endtrans %}" data-placement="top">0</span>
+                                    </td>
+                                {% endif %}
+                                {% set soilsample = run.getSoilSampleTexture() %}
+                                {% if soilsample %}
+                                    <td class="assignmenttype-{{ run.getTextureAssignmentType().getID() }}">
+                                        <span data-toggle="tooltip" title="{% trans %}soilSampleTexture{% endtrans %}" data-placement="top">1</span>
+                                    </td>
+                                {% else %}
+                                    <td class="assignmenttype-0">
+                                        <span data-toggle="tooltip" title="{% trans %}soilSampleTexture{% endtrans %}" data-placement="top">0</span>
+                                    </td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
