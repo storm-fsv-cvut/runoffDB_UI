@@ -7,6 +7,7 @@ namespace App\Form;
 use App\Entity\Record;
 use App\Entity\Run;
 use App\Entity\Sequence;
+use App\Services\RecordsService;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -18,7 +19,13 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SequenceType extends AbstractType {
-    public function __construct() {
+    /**
+     * @var RecordsService
+     */
+    private $recordsService;
+
+    public function __construct(RecordsService $recordsService) {
+        $this->recordsService = $recordsService;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
@@ -29,7 +36,7 @@ class SequenceType extends AbstractType {
             ->add('cropBBCH')
             ->add('surfaceCover', EntityType::class, [
                 'class'=>Record::class,
-                'choices'=>$options['data']->getRecords(),
+                'choices'=>$this->recordsService->getRecordsByPhenomenonKey("surcov"),
                 'label' => 'surfaceCover',
                 'required'=>false
             ])

@@ -3,6 +3,7 @@
 namespace App\Twig;
 
 use App\Entity\DefinitionEntityInterface;
+use App\Entity\LocalisableInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use http\Client\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -34,7 +35,7 @@ class LocaliseEntityExtension extends AbstractExtension {
         ];
     }
 
-    public function localizeEntity($entity) {
+    public function localizeEntity(LocalisableInterface $entity) {
         $locale = $this->request->getLocale() ? $this->request->getLocale() : $this->request->getDefaultLocale();
         $entity->setLocale($locale);
         return $entity->__toString();

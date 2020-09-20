@@ -49,9 +49,11 @@ class RecordsService {
             $phenomenon = $record->getMeasurement()->getPhenomenon()->getPhenomenonKey();
             $columns[] = ['number', $record->getUnit()->getName() . " [" . $record->getUnit()->getUnit() . "]", $typeMapper[$phenomenon] ?? 'line', $phenomenon];
             foreach ($record->getData() as $data) {
-                $datarow = [
-                    0 => [(int)$data->getTime()->format('H'), (int)$data->getTime()->format('i'), (int)$data->getTime()->format('s')]
-                ];
+                if ($data->getTime()!=null) {
+                    $datarow = [
+                        0 => [(int)$data->getTime()->format('H'), (int)$data->getTime()->format('i'), (int)$data->getTime()->format('s')]
+                    ];
+                }
                 for ($i = 1; $i <= sizeof($records); $i++) {
                     if ($i == $counter) {
                         $datarow[$i] = $data->getValue()+0;

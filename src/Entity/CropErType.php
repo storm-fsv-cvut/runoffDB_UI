@@ -34,10 +34,6 @@ class CropErType extends BaseEntity implements DefinitionEntityInterface
         return $this->getLocale() == 'en' ? $this->getNameEN() : $this->getNameCZ();
     }
 
-    public function getDescription():?string {
-        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
-    }
-
     public function getId(): ?int
     {
         return $this->id;

@@ -104,18 +104,6 @@ class Agrotechnology extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-    public function getOperationSequence(): ?string
-    {
-        return $this->operationSequence;
-    }
-
-    public function setOperationSequence(?string $operationSequence): self
-    {
-        $this->operationSequence = $operationSequence;
-
-        return $this;
-    }
-
     /**
      * @return Collection|TillageSequence[]
      */

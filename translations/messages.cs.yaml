@@ -55,7 +55,10 @@ Date: Datum
 Locality: Lokalita
 Plot: Plocha
 Canopy cover: Zakrytí povrchu listovou plochou
-Crop condition: stav plodiny
+Crop condition: Stav plodiny
+crop condition: Stav plodiny
+cropConditionCZ: Stav plodiny (cs)
+cropConditionEN: Stav plodiny (en)
 Crop b b c h: BBCH plodiny
 runType: Typ simulace
 runoffStart: Počátek povrchového odtoku

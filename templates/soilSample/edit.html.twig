@@ -3,7 +3,9 @@
 {% import 'macros.twig' as macros %}
 
 {% block body %}
-
+    <script type="text/javascript">
+        google.charts.load('current', {'packages': ['corechart']});
+    </script>
     <section class="content-header">
         <h1>
             {{ soilSample }}
@@ -122,6 +124,8 @@
                                                 {% endfor %}
                                             </h4>
                                             <div class="box-tools pull-right">
+                                                <input type="checkbox" class="icheckbox_flat-green" data-toggle="chart" data-target="#chart-soil-sample" data-sample="{{ soilSample.getId() }}" data-record="{{ record.getId() }}">
+
                                                 <div class="dropdown inline">
                                                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                                         <span class="caret"></span>
@@ -212,6 +216,16 @@
                         </div>
                     </div>
                 {% endfor %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary chart-box">
+                    <div class="box-body collapse">
+                        <div id="chart-soil-sample" style="height: 300px;" data-datalink="{{ path('chartDataSoilSample') }}"></div>
+                    </div>
+                    <!-- /.box-body-->
+                </div>
             </div>
         </div>
         {{ form_end(form,{'render_rest': false}) }}

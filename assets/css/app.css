@@ -11,31 +11,49 @@ body {
 table.overview td.hasrecords-0 {
     background-color: #ffeaea;
     color: #aaa;
+    text-align: center;
+    width: 40px;
 }
 
-table.overview td.hasrecords-1, table.overview td.hasrecords-2, table.overview td.hasrecords-3, table.overview td.hasrecords-4, table.overview td.hasrecords-5 {
+table.overview td.hasrecords-1 ,
+table.overview td.hasrecords-2 ,
+table.overview td.hasrecords-3 ,
+table.overview td.hasrecords-4 ,
+table.overview td.hasrecords-5 {
     background-color: #b4dd42;
+    text-align: center;
+    width: 40px;
 }
 
 table.overview td.assignmenttype-0 {
     background-color: #ffeaea;
     color: #aaa;
+    text-align: center;
+    width: 40px;
 }
 
 table.overview td.assignmenttype-1 {
     background-color: #b4dd42;
+    text-align: center;
+    width: 40px;
 }
 
 table.overview td.assignmenttype-2 {
     background-color: #fff885;
+    text-align: center;
+    width: 40px;
 }
 
 table.overview td.assignmenttype-3 {
     background-color: #ffc14f;
+    text-align: center;
+    width: 40px;
 }
 
-table.overview td.assignmenttype-3 {
+table.overview td.assignmenttype-4 {
     background-color: #e6c1ff;
+    text-align: center;
+    width: 40px;
 }
 
 table.overview td.dry {

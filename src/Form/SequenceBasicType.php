@@ -14,6 +14,7 @@ use App\Services\RecordsService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -56,7 +57,14 @@ class SequenceBasicType extends AbstractType
                 'label' => 'surfaceCover',
                 'required'=>false
             ])
-            ->add('cropCondition')
+            ->add('cropConditionCZ', TextareaType::class, [
+                'label' => 'cropConditionCZ',
+                'required'=>false
+            ])
+            ->add('cropConditionEN', TextareaType::class, [
+                'label' => 'cropConditionEN',
+                'required'=>false
+            ])
             ->add('save', SubmitType::class,[
                 'attr'=>['class'=>'btn btn-success']
             ]);

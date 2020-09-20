@@ -20,6 +20,7 @@ class RecordType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
         $builder
             ->add('noteCZ',TextareaType::class,['label'=>'noteCZ','required'=>false])
             ->add('noteEN',TextareaType::class,['label'=>'noteEN','required'=>false])

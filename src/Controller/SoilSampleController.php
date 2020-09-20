@@ -18,9 +18,11 @@ use App\Form\SequenceBasicType;
 use App\Form\SoilSampleBasicType;
 use App\Form\SoilSampleType;
 use App\Repository\MeasurementRepository;
+use App\Repository\PhenomenonRepository;
 use App\Repository\RecordRepository;
 use App\Repository\RunRepository;
 use App\Repository\SoilSampleRepository;
+use App\Services\RecordsService;
 use App\Services\SoilSampleService;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,6 +33,18 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class SoilSampleController extends AbstractController {
+
+    /**
+     * @Route("/{_locale}/sample-chart-data", name="chartDataSoilSample")
+     */
+    public function getChartData(RecordsService $recordsService, Request $request) {
+        $data = $request->get('ids');
+        if ($data) {
+            return $this->json($recordsService->getChartData($data));
+        } else {
+            return $this->json(0);
+        }
+    }
 
     /**
      * @Route("/{_locale}/soil-sample/{id}", name="soilSample")
@@ -219,10 +233,12 @@ class SoilSampleController extends AbstractController {
     /**
      * @Route("/{_locale}/soil-samples-overview", name="soilSamplesOverview")
      */
-    public function overview(EntityManagerInterface $em, Request $request, SoilSampleRepository $soilSampleRepository):Response {
+    public function overview(EntityManagerInterface $em, Request $request, SoilSampleService $soilSampleService, SoilSampleRepository $soilSampleRepository, PhenomenonRepository $phenomenonRepository):Response {
         $soilSamples = $soilSampleRepository->findBy([],['dateSampled'=>'ASC']);
         return $this->render('soilSample/overview.html.twig',[
-            'soilSamples'=>$soilSamples
+            'soilSamples'=>$soilSamples,
+            'phenomenonRepository'=>$phenomenonRepository,
+            'soilSampleService' => $soilSampleService
         ]);
     }
 

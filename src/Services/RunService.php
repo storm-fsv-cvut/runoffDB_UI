@@ -80,7 +80,7 @@ class RunService {
         $res = [];
         foreach ($measurements as $measurement) {
             if ($measurement->getPhenomenon()->getPhenomenonKey() == $phenomenonKey) {
-                $res =array_merge($res,$measurement->getRecords()->toArray());
+                $res+=$measurement->getRecords()->toArray();
             }
         }
         return $res;

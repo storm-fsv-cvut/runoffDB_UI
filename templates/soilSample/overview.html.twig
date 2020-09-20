@@ -15,10 +15,16 @@
                 <table class="table table-sm overview">
                     {% for soilSample in soilSamples %}
                         <tr>
-                            <td>{{ soilSample.getId() }}</td>
+                            <td><a href="{{ path('soilSample',{id:soilSample.getId()}) }}">{{ soilSample.getId() }}</a></td>
                             <td>{{ soilSample.getDateSampled().format("d.m.Y") }}</td>
                             <td>{{ soilSample.getLocality().getName() }}</td>
-
+                            {% for key in ['soilphys','soiltext','soilchem'] %}
+                                {% set phenomenon =  phenomenonRepository.findByKey(key) %}
+                                {% set records =  soilSampleService.getRecordsByPhenomenon(soilSample, key) %}
+                                <td class="hasrecords-{{ records|length }}">
+                                    <span data-toggle="tooltip" title="{{ phenomenon.getName() }}" data-placement="top">{{ records|length }}</span>
+                                </td>
+                            {% endfor %}
                         </tr>
                     {% endfor %}
                 </table>

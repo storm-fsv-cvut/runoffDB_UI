@@ -10,7 +10,7 @@ use phpDocumentor\Reflection\Types\Integer;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SoilSampleRepository")
  */
-class SoilSample extends BaseEntity implements DefinitionEntityInterface
+class SoilSample extends BaseEntity
 {
     /**
      * @ORM\Id()

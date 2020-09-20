@@ -372,16 +372,6 @@ class Run extends BaseEntity {
         return $this;
     }
 
-    public function getInitMoistureMeasurement(): ?Measurement {
-        return $this->initMoistureMeasurement;
-    }
-
-    public function setInitMoistureMeasurement(?Measurement $initMoistureMeasurement): self {
-        $this->initMoistureMeasurement = $initMoistureMeasurement;
-
-        return $this;
-    }
-
     public function getPondingStart(): ?\DateTimeInterface {
         return $this->pondingStart;
     }
