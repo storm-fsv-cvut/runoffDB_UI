@@ -1,14 +1,13 @@
 <?php
+
 namespace App\Services;
 
-use App\Entity\Phenomenon;
 use App\Repository\MeasurementRepository;
 use App\Repository\PhenomenonRepository;
 use App\Repository\RecordRepository;
 use Doctrine\ORM\NoResultException;
 use ParseCsv\Csv;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Serializer\Encoder\CsvEncoder;
 
 class RecordsService {
     /**
@@ -30,10 +29,10 @@ class RecordsService {
         $this->phenomenonRepository = $phenomenonRepository;
     }
 
-    public function getChartData(array $ids):array {
+    public function getChartData(array $ids): array {
 
         $typeMapper = [
-            'precip'=>'steppedArea'
+            'precip' => 'steppedArea'
         ];
 
         $columns = [];
@@ -44,39 +43,63 @@ class RecordsService {
 
         $columns[] = ['timeofday', ''];
         $counter = 0;
+        $datasets = [];
         foreach ($records as $record) {
             $counter++;
             $phenomenon = $record->getMeasurement()->getPhenomenon()->getPhenomenonKey();
+            if (!isset($datasets[$phenomenon])) {
+                $datasets[$phenomenon] = [];
+            }
             $columns[] = ['number', $record->getUnit()->getName() . " [" . $record->getUnit()->getUnit() . "]", $typeMapper[$phenomenon] ?? 'line', $phenomenon];
+
             foreach ($record->getData() as $data) {
-                if ($data->getTime()!=null) {
+                if ($data->getTime() != null) {
                     $datarow = [
                         0 => [(int)$data->getTime()->format('H'), (int)$data->getTime()->format('i'), (int)$data->getTime()->format('s')]
                     ];
                 }
                 for ($i = 1; $i <= sizeof($records); $i++) {
                     if ($i == $counter) {
-                        $datarow[$i] = $data->getValue()+0;
+                        $datarow[$i] = $data->getValue() + 0;
                     } else {
                         $datarow[$i] = null;
                     }
                 }
-                $dataSet[] = $datarow;
+                $datasets[$phenomenon][] = $datarow;
             }
-            if ($phenomenon=="precip") {
-                end($dataSet);
-                $lastIndex=key($dataSet);
-                $dataSet[$lastIndex][1] = $dataSet[$lastIndex-1][1];
-            }
+
         }
-        return [$columns, $dataSet];
+
+        if (isset($datasets['precip'])) {
+            $newDataSet = [];
+            foreach ($datasets['precip'] as $key => $data) {
+                if ($key == 0) {
+                    $newDataSet[$key] = $data;
+                }
+                if (isset($datasets['precip'][$key + 1])) {
+                    $addArray = [$datasets['precip'][$key + 1][0]];
+                    for ($i = 1; $i <= sizeof($records); $i++) {
+                        $addArray[$i] = $data[$i] ?? NULL;
+                    }
+                    $newDataSet[$key + 1] = $addArray;
+                }
+            }
+            $datasets['precip'] = $newDataSet;
+        }
+
+        $modifiedDataset = [];
+        foreach ($datasets as $dataset) {
+            $modifiedDataset += $dataset;
+        }
+
+        return [$columns, $modifiedDataset];
     }
 
-    public function validateDataFile(UploadedFile $file):array {
+    public function validateDataFile(UploadedFile $file): array {
         $res = [];
         if ($file->isValid()) {
-            if ($file->getClientOriginalExtension()!='csv') {
-                $res['error']="Invalid file extension";
+            if ($file->getClientOriginalExtension() != 'csv') {
+                $res['error'] = "Invalid file extension";
             } else {
                 $parser = new Csv();
                 $parser->fields = ['time', 'value', 'dimension'];
@@ -84,7 +107,7 @@ class RecordsService {
                 $res['data'] = $parser->data;
             }
         } else {
-                $res['error']=$file->getErrorMessage();
+            $res['error'] = $file->getErrorMessage();
         }
 
         return $res;

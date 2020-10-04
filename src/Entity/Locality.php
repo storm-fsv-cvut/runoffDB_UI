@@ -63,6 +63,11 @@ class Locality extends BaseEntity implements DefinitionEntityInterface
      */
     private $descriptionEN;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Measurement", mappedBy="locality")
+     */
+    private $measurements;
+
     public function __toString() {
         return $this->getName();
     }
@@ -75,6 +80,7 @@ class Locality extends BaseEntity implements DefinitionEntityInterface
     {
         $this->plots = new ArrayCollection();
         $this->soilSamples = new ArrayCollection();
+        $this->measurements = new ArrayCollection();
     }
 
 
@@ -229,6 +235,37 @@ class Locality extends BaseEntity implements DefinitionEntityInterface
     public function setDescriptionEN(?string $descriptionEN): self
     {
         $this->descriptionEN = $descriptionEN;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Measurement[]
+     */
+    public function getMeasurements(): Collection
+    {
+        return $this->measurements;
+    }
+
+    public function addMeasurement(Measurement $measurement): self
+    {
+        if (!$this->measurements->contains($measurement)) {
+            $this->measurements[] = $measurement;
+            $measurement->setLocality($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMeasurement(Measurement $measurement): self
+    {
+        if ($this->measurements->contains($measurement)) {
+            $this->measurements->removeElement($measurement);
+            // set the owning side to null (unless already changed)
+            if ($measurement->getLocality() === $this) {
+                $measurement->setLocality(null);
+            }
+        }
 
         return $this;
     }

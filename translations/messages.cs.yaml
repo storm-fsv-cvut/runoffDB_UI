@@ -11,7 +11,8 @@ list: Seznam
 add: Přidat
 add record: Přidat data
 continue: Pokračovat
-setup: Nastavení
+Setup: Nastavení
+Home: Úvod
 App\Entity\Plot: Plot
 App\Entity\Locality: Locality
 App\Entity\Organization: Organization
@@ -43,6 +44,7 @@ soil_sample_texture: Půdní vzorek pro zrnitost
 soilSampleTexture: Půdní vzorek pro zrnitos
 soil_sample_corg: Půdní vzorek pro organický uhlík
 soilSampleCorg: Půdní vzorek pro organický uhlík
+surfaceCover: Stupeň zakrytí listy
 assignmentType: Typ přiřazení
 rain_intensity: intenzita srážky
 init_moisture: počáteční vlhkost
@@ -54,6 +56,7 @@ Simulator: Simulátor
 Date: Datum
 Locality: Lokalita
 Plot: Plocha
+plot: Plocha
 Canopy cover: Zakrytí povrchu listovou plochou
 Crop condition: Stav plodiny
 crop condition: Stav plodiny

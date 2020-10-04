@@ -79,6 +79,11 @@ class Plot extends BaseEntity implements DefinitionEntityInterface
      */
     private $noteEN;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Measurement", mappedBy="plot")
+     */
+    private $measurements;
+
     public function __toString() {
         return $this->getLocality()->getName()." - #".$this->getId()." ".$this->getName();
     }
@@ -90,6 +95,7 @@ class Plot extends BaseEntity implements DefinitionEntityInterface
     public function __construct()
     {
         $this->soilSamples = new ArrayCollection();
+        $this->measurements = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -262,6 +268,37 @@ class Plot extends BaseEntity implements DefinitionEntityInterface
     public function setNoteEN(?string $noteEN): self
     {
         $this->noteEN = $noteEN;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Measurement[]
+     */
+    public function getMeasurements(): Collection
+    {
+        return $this->measurements;
+    }
+
+    public function addMeasurement(Measurement $measurement): self
+    {
+        if (!$this->measurements->contains($measurement)) {
+            $this->measurements[] = $measurement;
+            $measurement->setPlot($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMeasurement(Measurement $measurement): self
+    {
+        if ($this->measurements->contains($measurement)) {
+            $this->measurements->removeElement($measurement);
+            // set the owning side to null (unless already changed)
+            if ($measurement->getPlot() === $this) {
+                $measurement->setPlot(null);
+            }
+        }
 
         return $this;
     }

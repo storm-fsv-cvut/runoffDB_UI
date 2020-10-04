@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Record;
 use App\Entity\Unit;
+use App\Services\RecordsService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -18,9 +19,18 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RecordType extends AbstractType
 {
+
+    /**
+     * @var RecordsService
+     */
+    private $recordsService;
+
+    public function __construct(RecordsService $recordsService) {
+        $this->recordsService = $recordsService;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $builder
             ->add('noteCZ',TextareaType::class,['label'=>'noteCZ','required'=>false])
             ->add('noteEN',TextareaType::class,['label'=>'noteEN','required'=>false])
@@ -30,7 +40,12 @@ class RecordType extends AbstractType
             ->add('relatedValueXUnit', EntityType::class, ['required'=>false,'class'=>Unit::class, 'placeholder' => "",'label'=>'relatedValueXUnit','attr'=>['data-change-label'=>true]])
             ->add('relatedValueYUnit', EntityType::class, ['required'=>false,'class'=>Unit::class, 'placeholder' => "",'label'=>'relatedValueYUnit','attr'=>['data-change-label'=>true]])
             ->add('relatedValueZUnit', EntityType::class, ['required'=>false,'class'=>Unit::class, 'placeholder' => "",'label'=>'relatedValueZUnit','attr'=>['data-change-label'=>true]])
-            ->add('sourceRecords', EntityType::class, ['required'=>false,'class'=>Record::class,'label'=>'sourceRecords', 'multiple'=>true])
+            ->add('sourceRecords', EntityType::class, [
+                'required'=>false,
+                'class'=>Record::class,
+                'label'=>'sourceRecords',
+                'multiple'=>true
+            ])
             ->add('datafile', FileType::class, [
                 'label'=>'loadDataFile',
                 'mapped'=>false,

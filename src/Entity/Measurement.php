@@ -68,6 +68,21 @@ class Measurement extends BaseEntity
      */
     private $isTimeline;
 
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $date;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Plot", inversedBy="measurements")
+     */
+    private $plot;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Locality", inversedBy="measurements")
+     */
+    private $locality;
+
     public function __toString(): string {
         return $this->getDescription();
     }
@@ -242,6 +257,42 @@ class Measurement extends BaseEntity
     public function setIsTimeline(?bool $isTimeline): self
     {
         $this->isTimeline = $isTimeline;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(?\DateTimeInterface $date): self
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    public function getPlot(): ?Plot
+    {
+        return $this->plot;
+    }
+
+    public function setPlot(?Plot $plot): self
+    {
+        $this->plot = $plot;
+
+        return $this;
+    }
+
+    public function getLocality(): ?Locality
+    {
+        return $this->locality;
+    }
+
+    public function setLocality(?Locality $locality): self
+    {
+        $this->locality = $locality;
 
         return $this;
     }

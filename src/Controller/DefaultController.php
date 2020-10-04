@@ -20,7 +20,7 @@ class DefaultController extends AbstractController {
      * @Route("/{_locale}", name="homepage")
      * @return Response
      */
-    public function index():Response {
+    public function index(string $_locale = 'cs'):Response {
         $user = $this->getUser();
         return $this->render('default/index.html.twig',['user'=>$user]);
     }
