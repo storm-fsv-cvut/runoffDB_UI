@@ -76,22 +76,25 @@ class SoilSample extends BaseEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Record")
+     * @ORM\JoinColumn(name="corg_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
      */
     private $corg;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Record")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(name="bulk_density_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
      */
     private $bulkDensity;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Record")
+     * @ORM\JoinColumn(name="moisture_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
      */
     private $moisture;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Record")
+     * @ORM\JoinColumn(name="texture_record_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
      */
     private $textureRecord;
 

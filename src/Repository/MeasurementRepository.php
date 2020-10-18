@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Measurement;
 use App\Entity\Phenomenon;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -31,6 +32,12 @@ class MeasurementRepository extends ServiceEntityRepository
             ->orderBy('m.id', 'ASC')
             ->getQuery()
             ->getResult();
+    }
+
+
+    public function getPaginatorQuery():QueryBuilder {
+        $queryBuilder = $this->createQueryBuilder('measurement')->orderBy('measurement.id', 'DESC');
+        return $queryBuilder;
     }
 
 }

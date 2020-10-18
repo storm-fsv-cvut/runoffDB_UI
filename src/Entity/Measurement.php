@@ -163,7 +163,9 @@ class Measurement extends BaseEntity
     public function setRun(?Run $run): self
     {
         $this->run = $run;
-
+        $this->setDate($this->getRun()->getDatetime());
+        $this->setLocality($this->getRun()->getSequence()->getLocality());
+        $this->setPlot($this->getRun()->getSequence()->getPlot());
         return $this;
     }
 
@@ -233,7 +235,9 @@ class Measurement extends BaseEntity
     public function setSoilSample(?SoilSample $soilSample): self
     {
         $this->soilSample = $soilSample;
-
+        $this->setDate($this->getSoilSample()->getDateSampled());
+        $this->setLocality($this->getSoilSample()->getLocality());
+        $this->setPlot($this->getSoilSample()->getPlot());
         return $this;
     }
 
@@ -264,6 +268,11 @@ class Measurement extends BaseEntity
     public function getDate(): ?\DateTimeInterface
     {
         return $this->date;
+    }
+
+    public function getFormatedDate(string $format = "d.m.Y"): string
+    {
+        return $this->date ? $this->getDate()->format($format) : '';
     }
 
     public function setDate(?\DateTimeInterface $date): self
