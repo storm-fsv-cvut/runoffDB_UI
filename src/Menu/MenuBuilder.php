@@ -82,6 +82,12 @@ class MenuBuilder
         $soilSample->addChild($this->translator->trans('list'), ['route' => 'soilSamples']);
         $soilSample->addChild($this->translator->trans('overview table'), ['route' => 'soilSamplesOverview']);
 
+        $measurement = $menu->addChild($this->translator->trans('measurements'), ['uri' => '#']);
+        $measurement->setAttribute('class','treeview');
+        $measurement->setChildrenAttribute('class','treeview-menu');
+        $measurement->addChild($this->translator->trans('add'), ['route' => 'measurement']);
+        $measurement->addChild($this->translator->trans('list'), ['route' => 'measurements']);
+
         $cms = $menu->addChild($this->translator->trans('CMS'), ['uri' => '#']);
         $cms->setAttribute('class','treeview');
         $cms->setChildrenAttribute('class','treeview-menu');

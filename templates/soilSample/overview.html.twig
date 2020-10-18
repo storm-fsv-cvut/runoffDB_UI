@@ -17,7 +17,11 @@
                         <tr>
                             <td><a href="{{ path('soilSample',{id:soilSample.getId()}) }}">{{ soilSample.getId() }}</a></td>
                             <td>{{ soilSample.getDateSampled().format("d.m.Y") }}</td>
-                            <td>{{ soilSample.getLocality().getName() }}</td>
+                            <td>
+                                {% if soilSample.getLocality() %}
+                                {{ soilSample.getLocality().getName() }}
+                                {% endif %}
+                            </td>
                             {% for key in ['soilphys','soiltext','soilchem'] %}
                                 {% set phenomenon =  phenomenonRepository.findByKey(key) %}
                                 {% set records =  soilSampleService.getRecordsByPhenomenon(soilSample, key) %}

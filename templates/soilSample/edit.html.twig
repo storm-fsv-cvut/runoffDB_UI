@@ -81,7 +81,7 @@
                                 <h4>
                                     <div class="dropdown">
                                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                            Data <span class="caret"></span>
+                                            {{formMeasurement.vars.value.getPhenomenon()}}  <span class="caret"></span>
                                         </a>
                                         <ul class="dropdown-menu">
                                             <li role="presentation">
@@ -124,8 +124,9 @@
                                                 {% endfor %}
                                             </h4>
                                             <div class="box-tools pull-right">
+                                                {% if formMeasurement.vars.value.getIsTimeline() %}
                                                 <input type="checkbox" class="icheckbox_flat-green" data-toggle="chart" data-target="#chart-soil-sample" data-sample="{{ soilSample.getId() }}" data-record="{{ record.getId() }}">
-
+                                                {% endif %}
                                                 <div class="dropdown inline">
                                                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                                         <span class="caret"></span>

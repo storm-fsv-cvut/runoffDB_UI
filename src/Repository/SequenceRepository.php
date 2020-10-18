@@ -49,5 +49,10 @@ class SequenceRepository extends ServiceEntityRepository
         return $queryBuilder;
     }
 
+    public function findBySetRecord(int $record_id) {
+        $queryBuilder = $this->createQueryBuilder('sequence');
+        $queryBuilder->andWhere($queryBuilder->expr()->in('sequence.surfaceCover',$record_id));
+        return $queryBuilder->getQuery()->getResult();
+    }
 
 }

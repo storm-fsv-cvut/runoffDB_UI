@@ -28,28 +28,6 @@ class DefinitionEntityType extends AbstractType {
                 $builder->add($field, null, ['label' => $field]);
             }
         }
-        foreach ($metadata->getAssociationNames() as $associationName) {
-            $targetClass = ($metadata->getAssociationTargetClass($associationName));
-            $targetClassArray = explode("\\",$targetClass);
-            if (strpos($metadata->getReflectionClass()->getProperty($associationName)->getDocComment(), "mappedBy")) {
-                if (class_exists("App\Form\\".end($targetClassArray)."Type")) {
-                    $builder->add($associationName, CollectionType::class, [
-                        'entry_type' => "App\Form\\".end($targetClassArray)."Type",
-                        'label' => $associationName,
-                        'mapped' => true,
-                        'prototype' => true,
-                        'allow_add' => true,
-                        'allow_delete' => true,
-                        'required' => false,
-                        'by_reference' => false
-                    ]);
-                }
-            } else {
-                $metadata->getAssociationMappedByTargetField($associationName);
-                $targetClass = ($metadata->getAssociationTargetClass($associationName));
-                $builder->add($associationName, EntityType::class, ['class' => $targetClass]);
-            }
-        }
 
         $builder->add('save', SubmitType::class, [
             'attr' => ['class' => 'btn btn-success'],

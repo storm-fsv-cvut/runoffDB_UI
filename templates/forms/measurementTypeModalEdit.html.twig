@@ -8,6 +8,26 @@
                 <h4 class="modal-title">{% trans %}edit measurement{% endtrans %}</h4>
             </div>
             <div class="modal-body">
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        {{ form_row(formMeasurement.phenomenon) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        {{ form_row(formMeasurement.locality) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        {{ form_row(formMeasurement.plot) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        {{ form_row(formMeasurement.date) }}
+                    </div>
+                </div>
                 <div class="form-group">
                     <div class="nav-tabs-custom">
                         <ul class="nav nav-tabs">
@@ -47,9 +67,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    {{ form_row(formMeasurement.phenomenon) }}
                 </div>
             </div>
             <div class="modal-footer">

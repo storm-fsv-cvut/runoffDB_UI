@@ -2,9 +2,12 @@
 
 namespace App\Services;
 
+use App\Entity\Record;
 use App\Repository\MeasurementRepository;
 use App\Repository\PhenomenonRepository;
 use App\Repository\RecordRepository;
+use App\Repository\SequenceRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NoResultException;
 use ParseCsv\Csv;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -22,11 +25,21 @@ class RecordsService {
      * @var PhenomenonRepository
      */
     private $phenomenonRepository;
+    /**
+     * @var SequenceRepository
+     */
+    private $sequenceRepository;
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
 
-    public function __construct(RecordRepository $recordRepository, MeasurementRepository $measurementRepository, PhenomenonRepository $phenomenonRepository) {
+    public function __construct(RecordRepository $recordRepository, MeasurementRepository $measurementRepository, PhenomenonRepository $phenomenonRepository, SequenceRepository $sequenceRepository, EntityManagerInterface $entityManager) {
         $this->recordRepository = $recordRepository;
         $this->measurementRepository = $measurementRepository;
         $this->phenomenonRepository = $phenomenonRepository;
+        $this->sequenceRepository = $sequenceRepository;
+        $this->entityManager = $entityManager;
     }
 
     public function getChartData(array $ids): array {
@@ -123,5 +136,14 @@ class RecordsService {
             $records = array_merge($records, $measurement->getRecords()->toArray());
         }
         return $records;
+    }
+
+    public function deleteRecord(int $record_id) {
+        $record = $this->entityManager->find(Record::class, $record_id);
+        foreach ($record->getData() as $data) {
+            $this->entityManager->remove($data);
+        }
+        $this->entityManager->remove($record);
+        $this->entityManager->flush();
     }
 }

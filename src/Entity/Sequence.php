@@ -51,6 +51,7 @@ class Sequence extends BaseEntity {
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Record")
+     * @ORM\JoinColumn(name="surface_cover_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $surfaceCover;
 

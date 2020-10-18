@@ -176,7 +176,9 @@
                                                     {% endfor %}
                                                 </h4>
                                                 <div class="box-tools pull-right">
+                                                    {% if formMeasurement.vars.value.getIsTimeline() %}
                                                     <input type="checkbox" class="icheckbox_flat-green" data-toggle="chart" data-target="#chart-run-{{ runArray['id'] }}" data-run="{{ runArray['id'] }}" data-record="{{ record.getId() }}">
+                                                    {% endif %}
                                                     {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
                                                         <div class="dropdown inline">
                                                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">

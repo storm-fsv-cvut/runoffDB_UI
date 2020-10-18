@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
-{% block title %}Rainsimulator - {% trans %}soilSamples{% endtrans %}{% endblock %}
+{% block title %}Rainsimulator - {% trans %}measurements{% endtrans %}{% endblock %}
 {% block body %}
     <section class="content-header">
         <h1>
-            {% trans %}soilSamples{% endtrans %}
+            {% trans %}measurements{% endtrans %}
         </h1>
     </section>
     <section class="content container-fluid">
@@ -16,18 +16,20 @@
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th></th>
-                        <th></th>
+                        <th>{% trans %}Phenomenon{% endtrans %}</th>
+                        <th>{% trans %}Locality{% endtrans %}</th>
+                        <th>{% trans %}Date{% endtrans %}</th>
                         <th></th>
                     </tr>
                     </thead>
                     {# table body #}
-                    {% for soilSample in pagination %}
+                    {% for measurement in pagination %}
                         <tr {% if loop.index is odd %}class="color"{% endif %}>
-                            <td>{{ soilSample.getId() }}</td>
-                            <td>{{ soilSample.getLocality() }}</td>
-                            <td>{{ soilSample.getDateSampled().format('d.m.Y') }}</td>
-                            <td><a class="btn btn-sm btn-primary" href="{{ path('soilSample',{id:soilSample.getId()}) }}"><i class="fa fa-edit"></i></a></td>
+                            <td>{{ measurement.getId() }}</td>
+                            <td>{{ measurement.getPhenomenon() }}</td>
+                            <td>{% if measurement.getLocality()!=null %}{{ measurement.getLocality() }}{% endif %}</td>
+                            <td>{% if measurement.getDate()!=null %}{{ measurement.getDate().format('d.m.Y') }}{% endif %}</td>
+                            <td><a class="btn btn-sm btn-primary" href="{{ path('measurement',{id:measurement.getId()}) }}"><i class="fa fa-edit"></i></a></td>
                         </tr>
                     {% endfor %}
                 </table>

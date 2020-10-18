@@ -72,9 +72,13 @@ class Record extends BaseEntity {
 
     public function __toString() {
         if ($this->getData()->get(0) != null) {
-            return number_format($this->getData()->get(0)->getValue(), 0) . " " . $this->getUnit()->getUnit();
+            if($this->getMeasurement()!=null && $this->getMeasurement()->getLocality()!=null) {
+                return "#".$this->getId()." (".$this->getMeasurement()->getLocality()." ".$this->getMeasurement()->getFormatedDate().") ".number_format($this->getData()->get(0)->getValue(), 0) . " " . $this->getUnit()->getUnit();
+            } else {
+                return "#".$this->getId()." ".number_format($this->getData()->get(0)->getValue(), 0) . " " . $this->getUnit()->getUnit();
+            }
         } else {
-            return $this->getId() . "";
+            return "#".$this->getId();
         }
     }
 
