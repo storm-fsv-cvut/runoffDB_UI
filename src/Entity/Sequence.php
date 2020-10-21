@@ -65,6 +65,11 @@ class Sequence extends BaseEntity {
      */
     private $cropConditionEN;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\RunGroup", mappedBy="sequence", orphanRemoval=true)
+     */
+    private $runGroups;
+
     public function __toString(): string {
         return $this->getDate()->format("d.m.Y") . " - " . $this->getPlot()->getLocality() . " - " . $this->getPlot()->getCrop();
     }
@@ -72,6 +77,7 @@ class Sequence extends BaseEntity {
     public function __construct() {
         $this->projects = new ArrayCollection();
         $this->runs = new ArrayCollection();
+        $this->runGroups = new ArrayCollection();
     }
 
     /**
@@ -237,5 +243,36 @@ class Sequence extends BaseEntity {
 
     public function getLocality(): ?Locality{
         return $this->getPlot()->getLocality() ?? NULL;
+    }
+
+    /**
+     * @return Collection|RunGroup[]
+     */
+    public function getRunGroups(): Collection
+    {
+        return $this->runGroups;
+    }
+
+    public function addRunGroup(RunGroup $runGroup): self
+    {
+        if (!$this->runGroups->contains($runGroup)) {
+            $this->runGroups[] = $runGroup;
+            $runGroup->setSequence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRunGroup(RunGroup $runGroup): self
+    {
+        if ($this->runGroups->contains($runGroup)) {
+            $this->runGroups->removeElement($runGroup);
+            // set the owning side to null (unless already changed)
+            if ($runGroup->getSequence() === $this) {
+                $runGroup->setSequence(null);
+            }
+        }
+
+        return $this;
     }
 }

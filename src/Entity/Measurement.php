@@ -39,7 +39,7 @@ class Measurement extends BaseEntity
     private $noteEN;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Run", inversedBy="measurements")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Run", inversedBy="measurements")
      */
     private $run;
 
@@ -54,7 +54,7 @@ class Measurement extends BaseEntity
     private $runs;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\SoilSample", inversedBy="measurements")
+     * @ORM\ManyToMany(targetEntity="App\Entity\SoilSample", inversedBy="measurements")
      */
     private $soilSample;
 
