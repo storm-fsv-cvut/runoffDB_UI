@@ -103,6 +103,12 @@ class Run extends BaseEntity {
     private $noteEN;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Plot")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $plot;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\SoilSample", mappedBy="Run")
      */
     private $soilSamples;
@@ -141,7 +147,6 @@ class Run extends BaseEntity {
     public function __construct() {
         $this->soilSamples = new ArrayCollection();
         $this->measurements = new ArrayCollection();
-        return $this;
     }
 
     /**
@@ -222,6 +227,16 @@ class Run extends BaseEntity {
 
     public function setSoilSampleTexture(?SoilSample $soilSampleTexture): self {
         $this->soilSampleTexture = $soilSampleTexture;
+
+        return $this;
+    }
+
+    public function getPlot(): ?Plot {
+        return $this->plot;
+    }
+
+    public function setPlot(?Plot $plot): self {
+        $this->plot = $plot;
 
         return $this;
     }
