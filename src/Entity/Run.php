@@ -21,18 +21,6 @@ class Run extends BaseEntity {
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Sequence", inversedBy="runs")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $sequence;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\RunType")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $runType;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\SoilSample")
      */
     private $soilSampleBulk;
@@ -66,11 +54,6 @@ class Run extends BaseEntity {
      * @ORM\Column(type="datetime")
      */
     private $datetime;
-
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
-    private $precedingPrecipitation;
 
     /**
      * @ORM\Column(type="time", nullable=true)
@@ -135,9 +118,14 @@ class Run extends BaseEntity {
      */
     private $rainIntensity;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\RunGroup", inversedBy="runs")
+     */
+    private $runGroup;
+
 
     public function __toString() {
-        return $this->sequence . " - #" . $this->getId();
+        return "#" . $this->getId();
     }
 
     public function getNote():?string {
@@ -181,33 +169,12 @@ class Run extends BaseEntity {
         return $this->id;
     }
 
-    public function getSequence(): ?Sequence {
-        return $this->sequence;
-    }
-
-    public function setSequence(?Sequence $sequence): self {
-        $this->sequence = $sequence;
-
-        return $this;
-    }
-
-    public function getRunType(): ?RunType {
-        return $this->runType;
-    }
-
-    public function setRunType(?RunType $runType): self {
-        $this->runType = $runType;
-
-        return $this;
-    }
-
     public function getSoilSampleBulk(): ?SoilSample {
         return $this->soilSampleBulk;
     }
 
     public function setSoilSampleBulk(?SoilSample $soilSampleBulk): self {
         $this->soilSampleBulk = $soilSampleBulk;
-
         return $this;
     }
 
@@ -281,16 +248,6 @@ class Run extends BaseEntity {
 
     public function setDatetime(?\DateTimeInterface $datetime): self {
         $this->datetime = $datetime;
-
-        return $this;
-    }
-
-    public function getPrecedingPrecipitation(): ?float {
-        return $this->precedingPrecipitation;
-    }
-
-    public function setPrecedingPrecipitation(float $precedingPrecipitation): self {
-        $this->precedingPrecipitation = $precedingPrecipitation;
 
         return $this;
     }
@@ -400,7 +357,7 @@ class Run extends BaseEntity {
     public function getFiles(): array {
         $files = [];
         $filesystem = new Filesystem();
-        $dir = "data/" . $this->getSequence()->getId() . "/" . $this->getId();
+        $dir = "data/" . $this->getId();
         if ($filesystem->exists($dir)) {
             $finder = new Finder();
             $finder->files()->in($dir);
@@ -415,7 +372,7 @@ class Run extends BaseEntity {
 
     public function removeFile(string $filename) {
         $filesystem = new Filesystem();
-        $dir = "data/" . $this->getSequence()->getId() . "/" . $this->getId();
+        $dir = "data/" . $this->getId();
         if ($filesystem->exists($dir.'/'.$filename)) {
             $filesystem->remove($dir.'/'.$filename);
         }
@@ -445,6 +402,18 @@ class Run extends BaseEntity {
     public function setRainIntensity(?Record $rainIntensity): self
     {
         $this->rainIntensity = $rainIntensity;
+
+        return $this;
+    }
+
+    public function getRunGroup(): ?RunGroup
+    {
+        return $this->runGroup;
+    }
+
+    public function setRunGroup(?RunGroup $runGroup): self
+    {
+        $this->runGroup = $runGroup;
 
         return $this;
     }

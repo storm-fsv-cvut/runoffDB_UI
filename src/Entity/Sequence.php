@@ -44,9 +44,6 @@ class Sequence extends BaseEntity {
      */
     private $projects;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Run", mappedBy="sequence")
-     */
     private $runs;
 
     /**
@@ -88,23 +85,10 @@ class Sequence extends BaseEntity {
     }
 
     public function addRun(Run $run): self {
-        if (!$this->runs->contains($run)) {
-            $this->runs[] = $run;
-            $run->setSequence($this);
-        }
-
         return $this;
     }
 
     public function removeRun(Run $run): self {
-        if ($this->runs->contains($run)) {
-            $this->runs->removeElement($run);
-            // set the owning side to null (unless already changed)
-            if ($run->getSequence() === $this) {
-                $run->setSequence(null);
-            }
-        }
-
         return $this;
     }
 

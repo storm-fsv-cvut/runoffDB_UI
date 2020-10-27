@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -47,6 +49,16 @@ class RunGroup
      * @ORM\Column(type="text", nullable=true)
      */
     private $noteEN;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Run", mappedBy="runGroup")
+     */
+    private $runs;
+
+    public function __construct()
+    {
+        $this->runs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -121,6 +133,37 @@ class RunGroup
     public function setNoteEN(?string $noteEN): self
     {
         $this->noteEN = $noteEN;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Run[]
+     */
+    public function getRuns(): Collection
+    {
+        return $this->runs;
+    }
+
+    public function addRun(Run $run): self
+    {
+        if (!$this->runs->contains($run)) {
+            $this->runs[] = $run;
+            $run->setRunGroup($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRun(Run $run): self
+    {
+        if ($this->runs->contains($run)) {
+            $this->runs->removeElement($run);
+            // set the owning side to null (unless already changed)
+            if ($run->getRunGroup() === $this) {
+                $run->setRunGroup(null);
+            }
+        }
 
         return $this;
     }
