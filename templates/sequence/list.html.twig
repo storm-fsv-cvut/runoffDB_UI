@@ -36,7 +36,6 @@
                             {{ knp_pagination_sortable(pagination, 'Date', ['sequence.date']) }}
                         </th>
                         <th>{% trans %}Locality{% endtrans %}</th>
-                        <th>{% trans %}Plot{% endtrans %}</th>
                         <th>{% trans %}Crop{% endtrans %}</th>
                         <th></th>
                     </tr>
@@ -46,9 +45,7 @@
                         <tr {% if loop.index is odd %}class="color"{% endif %}>
                             <td>{{ sequence.getId() }}</td>
                             <td>{{ sequence.getDate().format('d.m.Y') }}</td>
-                            <td>{{ sequence.getPlot().getLocality()}}</td>
-                            <td>{{ sequence.getPlot()}}</td>
-                            <td>{{ sequence.getPlot().getCrop()}}</td>
+                            <td>{{ sequence.getLocality()}}</td>
                             <td><a class="btn btn-sm btn-primary" href="{{ path('sequence',{id:sequence.getId()}) }}"><i class="fa fa-edit"></i></a></td>
                         </tr>
                     {% endfor %}

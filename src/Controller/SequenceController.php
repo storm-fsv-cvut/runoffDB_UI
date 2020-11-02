@@ -12,10 +12,12 @@ use App\Entity\Measurement;
 use App\Entity\Plot;
 use App\Entity\Record;
 use App\Entity\Run;
+use App\Entity\RunGroup;
 use App\Entity\Sequence;
 use App\Form\DefinitionEntityType;
 use App\Form\MeasurementType;
 use App\Form\RecordType;
+use App\Form\RunGroupType;
 use App\Form\RunType;
 use App\Form\SequenceBasicType;
 use App\Form\SequenceFilterType;
@@ -131,6 +133,7 @@ class SequenceController extends AbstractController {
             $sequence = $sequenceService->getSequenceById($id);
             $sequenceForm = $this->createForm(SequenceType::class, $sequence);
             $newRunForm = $this->createForm(RunType::class, new Run());
+            $newRunGroupForm = $this->createForm(RunGroupType::class, new RunGroup());
             $newMesurementForm = $this->createForm(MeasurementType::class, new Measurement());
             $newRecordForm = $this->createForm(RecordType::class, new Record());
 
@@ -242,33 +245,22 @@ class SequenceController extends AbstractController {
             }
 
 
-            return $this->render('sequence/editSequence.html.twig', [
+            return $this->render('sequence/edit.html.twig', [
                 'header' => $sequenceService->getSequenceHeader($sequence),
                 'runs' => $sequenceService->getRunsArray($sequence),
                 'form' => $sequenceForm->createView(),
                 'measurementForm' => $newMesurementForm->createView(),
                 'runForm' => $newRunForm->createView(),
+                'runGroupForm' => $newRunGroupForm->createView(),
                 'runSevice'=>$runService,
                 'recordForm' => $newRecordForm->createView(),
             ]);
 
         } else {
             $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
-            $formPlot = $this->createForm(DefinitionEntityType::class, new Plot(), ['data_class' => Plot::class]);
             $form = $this->createForm(SequenceBasicType::class, new Sequence());
 
             if ($request->isMethod('POST')) {
-                $formPlot->handleRequest($request);
-                if ($formPlot->isSubmitted() && $formPlot->isValid()) {
-                    $plot = $formPlot->getData();
-                    $entityManager = $this->getDoctrine()->getManager();
-                    $entityManager->persist($plot);
-                    $entityManager->flush();
-                    if ($request->isXmlHttpRequest()) {
-                        return $this->json(['id'=>$plot->getId(),'label'=>$plot.""]);
-                    }
-                }
-
                 $form->handleRequest($request);
                 if ($form->isSubmitted()) {
                     $sequence = $form->getData();
@@ -278,8 +270,7 @@ class SequenceController extends AbstractController {
                 }
             }
             return $this->render('sequence/add.html.twig', [
-                'form' => $form->createView(),
-                'formPlot' => $formPlot->createView(),
+                'form' => $form->createView()
             ]);
         }
     }

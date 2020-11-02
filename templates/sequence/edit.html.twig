@@ -1,185 +1,30 @@
 {% extends 'base.html.twig' %}
+{% block title %}Rainsimulator - {{ header['date'] }} - {{ header['locality'] }}{% endblock %}
 {% import 'macros.twig' as macros %}
-
 {% block body %}
+    <script type="text/javascript">
+        google.charts.load('current', {'packages': ['corechart']});
+    </script>
+
     <section class="content-header">
         <h1>
-            {{ header['date'] }} - {{ header['locality'] }} - {{ header['crop'] }}
+            {{ header['date'] }} - {{ header['locality'] }}
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-list"></i> {% trans %}list{% endtrans %}</a></li>
-            <li class="active">{{ header['date'] }} - {{ header['locality'] }} - {{ header['crop'] }}</li>
+            <li><a href="#"><i class="fa fa-list"></i> Seznam</a></li>
+            <li class="active">{{ header['date'] }} - {{ header['locality'] }}</li>
         </ol>
     </section>
 
     <section class="content">
-        <div class="box box-solid">
-            <div class="panel box box-solid">
-                <div class="box-body">
-                    <dl class="dl-horizontal">
-                        <dt>agrotechnologie:</dt>
-                        <dd>{{ header['agrotechnology'] }}</dd>
-                        <dt>počet dnů od poslední agro-operace:</dt>
-                        <dd>{{ header['last_agrooperation_days'] }}</dd>
-                        <dt>canopy cover:</dt>
-                        <dd>{{ header['canopy_cover'] }}</dd>
-                        <dt>BBCH plodiny:</dt>
-                        <dd>{{ header['crop_bbch'] }}</dd>
-                    </dl>
-                    {% set fr = formsRun[0].createView() %}
-                    {% include "forms/runTypeModal.html.twig" with fr%}
-                </div>
-            </div>
-        </div>
+        {{ form_start(form) }}
 
-        {% for run in runs %}
-            <div class="row">
-                <div class="col-xs-12">
-                    <h2 class="page-header">
-                        {{ run['run_type'] }}
-                    </h2>
-                    {% set fr = formsRun[run.id].createView() %}
-                    {% include "forms/runTypeModal.html.twig" with fr%}
-                </div>
-                <div class="col-md-4">
-                    <div class="panel box box-solid">
-                        <div class="box-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <dl class="dl-horizontal">
-                                        <dt>{% trans %}rain_start{% endtrans %}:</dt>
-                                        <dd>{{ run['rain_start'] }}</dd>
-                                        <dt>{% trans %}runoff_start{% endtrans %}:</dt>
-                                        <dd>{{ run['runoff_start'] }}</dd>
-                                        <dt>{% trans %}rain_intensity{% endtrans %}:</dt>
-                                        <dd>{{ run['rain_intensity'] }}</dd>
-                                        <dt>{% trans %}init_moisture{% endtrans %}:</dt>
-                                        <dd>{{ run['init_moisture'] }}</dd>
-                                        {{ macros.soilsample('soil_sample_corg', run['soil_sample_corg'], run['soil_sample_corg_assignment']) }}
-                                        {{ macros.soilsample('soil_sample_bulk', run['soil_sample_bulk'], run['soil_sample_bulk_assignment']) }}
-                                        {{ macros.soilsample('soil_sample_texture', run['soil_sample_texture'], run['soil_sample_texture_assignment']) }}
-                                        <dt>raw data:</dt>
-                                        <dd><a>file.zip <i class="fa fa-download"></i></a>, <a>file2.zip
-                                                <i class="fa fa-download"></i></a></dd>
-                                    </dl>
-                                    <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#measurement-1">
-                                        {% trans %}add measurement{% endtrans %}
-                                    </button>
-                                    <button class="btn btn-primary btn-sm">{% trans %}save csv{% endtrans %}</button>
-                                    <div class="modal fade" id="measurement-1">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                {% include "forms/measurementType.html.twig" %}
-                                            </div>
-                                            <!-- /.modal-content -->
-                                        </div>
-                                        <!-- /.modal-dialog -->
-                                    </div>
-                                    <!-- /.modal -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-8">
-                    {% for measurement in run['measurements'] %}
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h4>Data
-                                    <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#add-1">
-                                        Přidat
-                                    </button>
-                                </h4>
-                                <div class="modal fade" id="add-1">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            {% include "forms/recordType.html.twig" %}
-                                        </div>
-                                        <!-- /.modal-content -->
-                                    </div>
-                                    <!-- /.modal-dialog -->
-                                </div>
-                                <div class="box-group" id="accordion">
-                                    {% for record in measurement['records'] %}
-                                        <div class="panel box box-solid">
-                                            <div class="box-header">
-                                                <h4 class="box-title">
-                                                    <a data-toggle="collapse" data-parent="#accordion" href="#record-{{ record.getId() }}" class="collapsed" aria-expanded="false">
-                                                        {{ record.getUnit().getDescription() }}
-                                                    </a>
-                                                    <small>{{ record.getRecordType().getName() }}</small>
-                                                    <span class="badge bg-primary">#{{ record.getId() }}</span>
-                                                    {% for sourceRecord in record.getSourceRecords() %}
-                                                        <span class="badge bg-primary">{% trans %}derived from{% endtrans %} #{{ sourceRecord.getId()}}</span>
-                                                    {% endfor %}
-                                                </h4>
-                                                <div class="box-tools pull-right">
-                                                    <input type="checkbox" class="icheckbox_flat-green">
-                                                </div>
-                                            </div>
-                                            <div id="record-{{ record.getId() }}" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                                                <div class="box-body">
-                                                    <p><i>{{ record.getNoteCZ() }}</i></p>
-                                                    <table class="table table-bordered">
-                                                        <tr>
-                                                            <th>{% trans %}time{% endtrans %}</th>
-                                                            {% if record.getRelatedValueUnit() is not same as(null) %}
-                                                                <th>{{ record.getRelatedValueUnit().getName() }}
-                                                                    [{{ record.getRelatedValueUnit().getUnit() }}]
-                                                                </th>
-                                                            {% endif %}
-                                                            <th>{{ record.getUnit().getName() }}
-                                                                [{{ record.getUnit().getUnit() }}]
-                                                            </th>
-                                                        </tr>
-                                                        {% for data in record.getData() %}
-                                                            <tr>
-                                                                <td>{{ data.getFormatedTime() }}</td>
-                                                                {% if record.getRelatedValueUnit() is not same as(null) %}
-                                                                    <td>{{ data.getRelatedValue() }} {{ record.getUnit().getRelatedValueUnit() }}</td>
-                                                                {% endif %}
-                                                                <td>{{ data.getValue() }} {{ record.getUnit().getUnit() }}</td>
-                                                            </tr>
-                                                        {% endfor %}
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <i class="fa fa-bar-chart-o"></i>
-                            <h3 class="box-title">{{ run['run_type'] }}</h3>
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                                    <i class="fa fa-minus"></i>
-                                </button>
-                                <button type="button" class="btn btn-box-tool" data-widget="remove">
-                                    <i class="fa fa-times"></i></button>
-                            </div>
-                        </div>
-                        <div class="box-body">
-                            <div id="chart-run-{{ run['id'] }}" style="height: 300px;" data-datalink="{{ path('chartData') }}"></div>
-                            <script type="text/javascript">
-                                google.charts.load('current', {'packages': ['corechart']});
-                                google.charts.setOnLoadCallback(drawChart);
-                                drawChart("chart-run-{{ run['id'] }}", [5, 210, 330]);
-                            </script>
-                        </div>
-                        <!-- /.box-body-->
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-        <hr class="divider"/>
+        {{ form_end(form,{'render_rest': false}) }}
     </section>
-
+{#    {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}#}
+{#        {% include "forms/measurementTypeModalNew.html.twig" %}#}
+{#        {% include "forms/recordTypeModalNew.html.twig" %}#}
+{#        {% include "forms/runTypeModalNew.html.twig" %}#}
+{#        {% include "forms/runGroupTypeModalNew.html.twig" %}#}
+{#    {% endif %}#}
 {% endblock %}

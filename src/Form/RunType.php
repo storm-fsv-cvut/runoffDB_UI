@@ -5,6 +5,7 @@ namespace App\Form;
 
 
 use App\Entity\AssignmentType;
+use App\Entity\Plot;
 use App\Entity\Run;
 use App\Entity\RunType as RunTypeEntity;
 use App\Entity\SoilSample;
@@ -35,9 +36,11 @@ class RunType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-            ->add('runType', EntityType::class, [
-                'class' => RunTypeEntity::class,
-                'label' => "runType"
+            ->add('plot', EntityType::class, [
+                'class' => Plot::class,
+                'label' => "plot",
+                'required'=>false,
+                'placeholder' => $this->translator->trans("not set")
             ])
             ->add('soilSampleBulk', EntityType::class, [
                 'class' => SoilSample::class,
@@ -77,11 +80,6 @@ class RunType extends AbstractType {
             ->add('pondingStart', TimeType::class, [
                 'label' => 'pondingStart',
                 'widget'=>'single_text',
-                'required'=>false
-            ])
-            ->add('precedingPrecipitation', NumberType::class, [
-                'label' => 'precedingPrecipitation',
-                'required'=>false,
                 'required'=>false
             ])
             ->add('noteCZ', TextareaType::class, [

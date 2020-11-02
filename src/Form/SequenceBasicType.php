@@ -48,7 +48,6 @@ class SequenceBasicType extends AbstractType
     {
         $builder
             ->add('simulator')
-            ->add('plot')
             ->add('date')
             ->add('cropBBCH')
             ->add('surfaceCover', EntityType::class, [

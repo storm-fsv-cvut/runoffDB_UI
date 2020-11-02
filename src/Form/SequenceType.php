@@ -31,7 +31,6 @@ class SequenceType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
             ->add('simulator')
-            ->add('plot')
             ->add('date')
             ->add('cropBBCH')
             ->add('surfaceCover', EntityType::class, [
@@ -52,9 +51,9 @@ class SequenceType extends AbstractType {
                 'attr'=>['class'=>'btn btn-success']
             ]);
 
-        $builder->add('runs', CollectionType::class, [
-            'entry_type' => RunType::class,
-            'label'=>'rain_intensity',
+        $builder->add('runGroups', CollectionType::class, [
+            'entry_type' => RunGroupType::class,
+            'label'=>'run_group',
             'mapped' => true,
             'prototype' => true,
             'allow_add' => true,

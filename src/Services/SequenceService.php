@@ -103,25 +103,11 @@ class SequenceService {
     }
 
     public function getSequenceHeader(Sequence $sequence): array {
-        $plot = $sequence->getPlot();
-        $locality = $plot->getLocality();
-        $agrotechnology = $plot->getAgrotechnology();
-        if ($agrotechnology) {
-            $tillageSequences = $agrotechnology->getTillageSequences();
-            $daysFromLastAgro = 100000000;
-            foreach ($tillageSequences as $tillageSequence) {
-                $days = $sequence->getDate()->diff($tillageSequence->getDate())->days;
-                $daysFromLastAgro = $daysFromLastAgro > $days ? $days : $daysFromLastAgro;
-            }
-        }
+        $locality = $sequence->getLocality();
         return [
             'id' => $sequence->getId(),
             'date' => $sequence->getDate()->format("d.m.Y"),
-            'locality' => $locality->getName(),
-            'plot' => $plot,
-            'crop' => $plot->getCrop() ? $plot->getCrop()->getName() : null,
-            'agrotechnology' => $agrotechnology ? $agrotechnology->getName() : null,
-            'last_agrooperation_days' => $daysFromLastAgro ?? null,
+            'locality' => $locality ? $locality->getName() : " n/a ",
             'canopy_cover' => $sequence->getSurfaceCover(),
             'crop_bbch' => $sequence->getCropBBCH(),
             'crop_condition' => $sequence->getCropCondition()

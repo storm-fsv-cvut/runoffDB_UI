@@ -97,7 +97,7 @@ class Run extends BaseEntity {
     private $soilSamples;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Measurement", mappedBy="run", cascade={"persist","remove"}, orphanRemoval=true)
+     * @ORM\ManyToMany(targetEntity="App\Entity\Measurement", mappedBy="runs", cascade={"persist","remove"}, orphanRemoval=true)
      */
     private $measurements;
 
@@ -147,7 +147,7 @@ class Run extends BaseEntity {
     public function addMeasurement(Measurement $measurement): self {
         if (!$this->measurements->contains($measurement)) {
             $this->measurements[] = $measurement;
-            $measurement->setRun($this);
+            $measurement->addRun($this);
         }
 
         return $this;
@@ -156,12 +156,8 @@ class Run extends BaseEntity {
     public function removeMeasurement(Measurement $measurement): self {
         if ($this->measurements->contains($measurement)) {
             $this->measurements->removeElement($measurement);
-            // set the owning side to null (unless already changed)
-            if ($measurement->getRun() === $this) {
-                $measurement->setRun(null);
-            }
+            $measurement->removeRun($this);
         }
-
         return $this;
     }
 

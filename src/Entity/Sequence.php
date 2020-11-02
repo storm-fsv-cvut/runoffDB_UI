@@ -29,12 +29,6 @@ class Sequence extends BaseEntity {
     private $simulator;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Plot")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $plot;
-
-    /**
      * @ORM\Column(type="integer", nullable=true)
      */
     private $cropBBCH;
@@ -43,8 +37,6 @@ class Sequence extends BaseEntity {
      * @ORM\ManyToMany(targetEntity="App\Entity\Project", mappedBy="sequences")
      */
     private $projects;
-
-    private $runs;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Record")
@@ -68,20 +60,26 @@ class Sequence extends BaseEntity {
     private $runGroups;
 
     public function __toString(): string {
-        return $this->getDate()->format("d.m.Y") . " - " . $this->getPlot()->getLocality() . " - " . $this->getPlot()->getCrop();
+        return $this->getDate()->format("d.m.Y") . " - " . $this->getLocality();
     }
 
     public function __construct() {
         $this->projects = new ArrayCollection();
-        $this->runs = new ArrayCollection();
         $this->runGroups = new ArrayCollection();
     }
 
     /**
      * @return Collection|Run[]
      */
-    public function getRuns(): Collection {
-        return $this->runs;
+    public function getRuns(): ?Collection {
+        $runs = new ArrayCollection();
+        $groups = $this->getRunGroups();
+        foreach ($groups as $group) {
+            foreach ($group->getRuns() as $run) {
+                $runs->add($run);
+            }
+        }
+        return $runs;
     }
 
     public function addRun(Run $run): self {
@@ -101,7 +99,7 @@ class Sequence extends BaseEntity {
     }
 
     public function getFormatedDate(): string {
-        return $this->date ? $this->getDate()->format("d. m. Y H:i"): ' - ';
+        return $this->date ? $this->getDate()->format("d. m. Y H:i") : ' - ';
     }
 
     public function setDate(?\DateTimeInterface $date): self {
@@ -116,16 +114,6 @@ class Sequence extends BaseEntity {
 
     public function setSimulator(?Simulator $simulator): self {
         $this->simulator = $simulator;
-
-        return $this;
-    }
-
-    public function getPlot(): ?Plot {
-        return $this->plot;
-    }
-
-    public function setPlot(?Plot $plot): self {
-        $this->plot = $plot;
 
         return $this;
     }
@@ -225,20 +213,21 @@ class Sequence extends BaseEntity {
         return $records;
     }
 
-    public function getLocality(): ?Locality{
-        return $this->getPlot()->getLocality() ?? NULL;
+    public function getLocality(): ?Locality {
+        if ($this->getRuns()->count() > 0) {
+            return $this->getRuns()->get(0)->getPlot()->getLocality();
+        }
+        return null;
     }
 
     /**
      * @return Collection|RunGroup[]
      */
-    public function getRunGroups(): Collection
-    {
+    public function getRunGroups(): Collection {
         return $this->runGroups;
     }
 
-    public function addRunGroup(RunGroup $runGroup): self
-    {
+    public function addRunGroup(RunGroup $runGroup): self {
         if (!$this->runGroups->contains($runGroup)) {
             $this->runGroups[] = $runGroup;
             $runGroup->setSequence($this);
@@ -247,8 +236,7 @@ class Sequence extends BaseEntity {
         return $this;
     }
 
-    public function removeRunGroup(RunGroup $runGroup): self
-    {
+    public function removeRunGroup(RunGroup $runGroup): self {
         if ($this->runGroups->contains($runGroup)) {
             $this->runGroups->removeElement($runGroup);
             // set the owning side to null (unless already changed)
@@ -259,4 +247,5 @@ class Sequence extends BaseEntity {
 
         return $this;
     }
+
 }

@@ -41,7 +41,7 @@ class Measurement extends BaseEntity
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Run", inversedBy="measurements")
      */
-    private $run;
+    private $runs;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Record", mappedBy="measurement", cascade={"persist","remove"}, orphanRemoval=true)
@@ -49,14 +49,9 @@ class Measurement extends BaseEntity
     private $records;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Run", mappedBy="initMoistureMeasurement")
-     */
-    private $runs;
-
-    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\SoilSample", inversedBy="measurements")
      */
-    private $soilSample;
+    private $soilSamples;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Phenomenon", inversedBy="measurements")
@@ -99,6 +94,7 @@ class Measurement extends BaseEntity
     {
         $this->records = new ArrayCollection();
         $this->runs = new ArrayCollection();
+        $this->soilSamples = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -155,20 +151,6 @@ class Measurement extends BaseEntity
         return $this;
     }
 
-    public function getRun(): ?Run
-    {
-        return $this->run;
-    }
-
-    public function setRun(?Run $run): self
-    {
-        $this->run = $run;
-        $this->setDate($this->getRun()->getDatetime());
-        $this->setLocality($this->getRun()->getSequence()->getLocality());
-        $this->setPlot($this->getRun()->getSequence()->getPlot());
-        return $this;
-    }
-
     /**
      * @return Collection|Record[]
      */
@@ -213,6 +195,9 @@ class Measurement extends BaseEntity
         if (!$this->runs->contains($run)) {
             $this->runs[] = $run;
             $run->setInitMoistureMeasurement($this);
+            $this->setDate($run->getDatetime());
+            $this->setLocality($run->getSequence()->getLocality());
+            $this->setPlot($run->getSequence()->getPlot());
         }
 
         return $this;
@@ -227,17 +212,33 @@ class Measurement extends BaseEntity
         return $this;
     }
 
-    public function getSoilSample(): ?SoilSample
+    /**
+     * @return Collection|SoilSample[]
+     */
+    public function getSoilSamples(): Collection
     {
-        return $this->soilSample;
+        return $this->soilSamples;
     }
 
-    public function setSoilSample(?SoilSample $soilSample): self
+    public function addSoilSample(SoilSample $soilSample): self
     {
-        $this->soilSample = $soilSample;
-        $this->setDate($this->getSoilSample()->getDateSampled());
-        $this->setLocality($this->getSoilSample()->getLocality());
-        $this->setPlot($this->getSoilSample()->getPlot());
+        if (!$this->soilSamples->contains($soilSample)) {
+            $this->soilSamples[] = $soilSample;
+            $soilSample->setInitMoistureMeasurement($this);
+            $this->setDate($soilSample->getDatetime());
+            $this->setLocality($soilSample->getSequence()->getLocality());
+            $this->setPlot($soilSample->getSequence()->getPlot());
+        }
+
+        return $this;
+    }
+
+    public function removeSoilSample(SoilSample $soilSample): self
+    {
+        if ($this->soilSamples->contains($soilSample)) {
+            $this->soilSamples->removeElement($soilSample);
+        }
+
         return $this;
     }
 

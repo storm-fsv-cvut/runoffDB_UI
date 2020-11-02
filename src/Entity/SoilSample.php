@@ -99,7 +99,7 @@ class SoilSample extends BaseEntity
     private $textureRecord;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Measurement", mappedBy="soilSample")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Measurement", mappedBy="soilSamples")
      */
     private $measurements;
 
@@ -322,7 +322,7 @@ class SoilSample extends BaseEntity
     {
         if (!$this->measurements->contains($measurement)) {
             $this->measurements[] = $measurement;
-            $measurement->setSoilSample($this);
+            $measurement->addSoilSample($this);
         }
 
         return $this;
@@ -333,9 +333,7 @@ class SoilSample extends BaseEntity
         if ($this->measurements->contains($measurement)) {
             $this->measurements->removeElement($measurement);
             // set the owning side to null (unless already changed)
-            if ($measurement->getSoilSample() === $this) {
-                $measurement->setSoilSample(null);
-            }
+            $measurement->removeSoilSample($this);
         }
 
         return $this;

@@ -1,0 +1,20 @@
+<div class="modal fade appendToCollection" id="runType">
+    {{ form_start(runGroupForm) }}
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">
+                {% trans %}close{% endtrans %}
+            </button>
+            {{ form_widget(runForm.save) }}
+        </div>
+    </div>
+    <!-- /.modal-content -->
+</div>
+{{ form_end(runForm,{'render_rest': false}) }}
+<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+

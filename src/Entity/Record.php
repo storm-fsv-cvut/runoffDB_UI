@@ -46,7 +46,7 @@ class Record extends BaseEntity {
     private $unit;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Record", inversedBy="sourceRecords")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Record")
      */
     private $sourceRecords;
 
