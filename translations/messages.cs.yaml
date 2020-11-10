@@ -66,7 +66,6 @@ cropConditionEN: Stav plodiny (en)
 Crop b b c h: BBCH plodiny
 runType: Typ simulace
 runoffStart: Počátek povrchového odtoku
-pondingStart: Začátek zavlažování
 precedingPrecipitation: Předchozí srážky
 note: Poznámka
 descriptionCZ: Popis (cs)
@@ -105,7 +104,9 @@ Sample depth m: Hloubka odběru (m)
 Date processed: Datum zpracování
 Processed at: Místo zpracování
 measurements: Měření
-
+set as init moisture: Nastavit jako počáteční vlhkost
+set as rain intensity: Nastavit jako intenzitu deště
+edit sequence: Upravit sekvenci
 name: Název
 established: Založeno
 plotWidth: Šířka plochy
@@ -114,7 +115,6 @@ plotSlope: Sklon
 Soil origin locality: Zdrojová lokalita půdy
 Crop: Plodina
 Agrotechnology: Agrotechnologie
-
 dateSampled: Datum odebrání
 dateProcessed: Datum zpracování
 processedAt: Místo zpracování
@@ -123,7 +123,6 @@ moistureVperc: moistureVperc
 sampleDepthM: Hloubka odběru (m)
 texture: Textura
 locality: Umístění
-
 managTyp: Způsob obdělávání
 operationType: Typ operace
 operationIntensity: Intenzita operace

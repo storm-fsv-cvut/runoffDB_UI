@@ -5,6 +5,7 @@ namespace App\Services;
 
 
 use App\Entity\Measurement;
+use App\Entity\Run;
 use App\Repository\MeasurementRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -67,5 +68,16 @@ class MeasurementService {
                 $this->entityManager->flush();
             }
         }
+    }
+
+    public function switchBelongsToRun(Measurement $measurement, Run $run): bool {
+        if ($measurement->belongsToRun($run->getId())) {
+            $measurement->removeRun($run);
+        } else {
+            $measurement->addRun($run);
+        }
+        $this->entityManager->persist($measurement);
+        $this->entityManager->flush();
+        return $measurement->belongsToRun($run->getId());
     }
 }

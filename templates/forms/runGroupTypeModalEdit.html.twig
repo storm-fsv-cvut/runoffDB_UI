@@ -1,5 +1,4 @@
-<div class="modal fade appendToCollection" id="runGroupType">
-    {{ form_start(runGroupForm) }}
+<div class="modal fade appendToCollection" id="runGroupType{{ runGroup.getId() }}">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -52,9 +51,7 @@
             </div>
         </div>
     </div>
-    <!-- /.modal-content -->
-    {{ form_end(runGroupForm,{'render_rest': false}) }}
-    <!-- /.modal-dialog -->
+
 </div>
 <!-- /.modal -->
 

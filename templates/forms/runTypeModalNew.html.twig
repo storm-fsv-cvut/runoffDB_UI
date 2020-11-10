@@ -1,5 +1,6 @@
-<div class="modal fade appendToCollection" id="runType">
+<div class="modal fade appendToCollection" id="run">
     {{ form_start(runForm) }}
+    {{ form_widget(runForm.parent_id) }}
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -9,16 +10,8 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="form-group col-md-6">
-                        {{ form_row(runForm.runType) }}
-                    </div>
-                    <div class="form-group col-md-6">
-                        {{ form_row(runForm.precedingPrecipitation) }}
-                    </div>
-                </div>
-                <div class="row">
                     <div class="form-group col-md-12">
-                        {{ form_row(runForm.datetime) }}
+                        {{ form_row(runForm.plot) }}
                     </div>
                 </div>
                 <div class="row">

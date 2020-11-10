@@ -66,14 +66,13 @@ class SequenceService {
 
             $runArray = [
                 'id' => $run->getId(),
-                'run_type' => $run->getRunType()->getName(),
-                'rain_start' => $run->getDatetime() ? $run->getDatetime()->format("H:i") : "",
                 'runoff_start' => $run->getRunoffStart() ? $run->getRunoffStart()->format("H:i") : "",
                 'soil_sample_texture' => $run->getSoilSampleTexture(),
                 'soil_sample_texture_assignment' => $run->getTextureAssignmentType(),
                 'soil_sample_bulk' => $run->getSoilSampleBulk(),
                 'soil_sample_bulk_assignment' => $run->getBulkAssignmentType(),
                 'soil_sample_corg' => $run->getSoilSampleCorg(),
+                'note' => $run->getNote(),
                 'rain_intensity' => $rain_intensity,
                 'init_moisture' => $init_moisture,
                 'soil_sample_corg_assignment' => $run->getCorgAssignmentType(),
@@ -107,6 +106,7 @@ class SequenceService {
         return [
             'id' => $sequence->getId(),
             'date' => $sequence->getDate()->format("d.m.Y"),
+            'simulator' => $sequence->getSimulator(),
             'locality' => $locality ? $locality->getName() : " n/a ",
             'canopy_cover' => $sequence->getSurfaceCover(),
             'crop_bbch' => $sequence->getCropBBCH(),

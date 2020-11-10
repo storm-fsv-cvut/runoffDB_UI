@@ -1,5 +1,5 @@
 $(document).ready(function (e) {
-    $("li.current_ancestor ul").css({display:"block"});
+    $("li.current_ancestor ul").css({display: "block"});
     $("li.current_ancestor").addClass("menu-open");
 
     $(".addFormRow").on('click', function (e) {
@@ -34,7 +34,7 @@ $(document).ready(function (e) {
     });
 
     $("[data-confirm]").on('click', function (e) {
-        if(window.confirm($(this).data('confirm'))) {
+        if (window.confirm($(this).data('confirm'))) {
             return true;
         } else {
             return false;
@@ -55,7 +55,7 @@ $(document).ready(function (e) {
         })
     });
 
-    $('form.ajax').on('submit',function (e) {
+    $('form.ajax').on('submit', function (e) {
         e.preventDefault();
         let data = new FormData(this);
         var form = this;
@@ -69,11 +69,11 @@ $(document).ready(function (e) {
                 if (data.error != undefined) {
                     alert(data.error);
                 } else {
-                    if (data.id!='undefined') {
+                    if (data.id != 'undefined') {
                         let modal = $(form).parents('.modal');
-                        let select = $('[data-target="#'+$(modal).attr("id")+'"]').parents('.form-group').find('select');
+                        let select = $('[data-target="#' + $(modal).attr("id") + '"]').parents('.form-group').find('select');
                         $(select).find('option:selected').prop("selected", false)
-                        $('<option value="'+data.id+'">'+data.label+'</option>').appendTo(select).prop("selected", true);
+                        $('<option value="' + data.id + '">' + data.label + '</option>').appendTo(select).prop("selected", true);
                         $(modal).find('[data-dismiss]').click();
                     }
                 }
@@ -87,7 +87,7 @@ $(document).ready(function (e) {
         var name = this.name;
         let data = new FormData(form[0]);
         let data2 = new FormData();
-        data2.append('file',data.get(name));
+        data2.append('file', data.get(name));
         $.ajax({
             url: $(this).data('validate'),
             type: 'POST',
@@ -152,6 +152,15 @@ $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
     radioClass: 'iradio_minimal-blue'
 })
 
+$('input[type="checkbox"].append-run').on('change', function (e) {
+    $.ajax($(this).data('link'), {
+        method: 'GET',
+        data: {'run_id': $(this).val()},
+        complete: function (xhr, status) {
+        }
+    })
+});
+
 function drawChart(element, ids) {
     var data = new google.visualization.DataTable();
     var chart = new google.visualization.ComboChart(document.getElementById($(element).attr('id')));
@@ -174,25 +183,25 @@ function drawChart(element, ids) {
 
     $.ajax($(element).data('datalink'), {
             method: 'GET',
-            data: {'ids':ids},
+            data: {'ids': ids},
             complete: function (xhr, status) {
-                if (xhr.responseText!='0') {
+                if (xhr.responseText != '0') {
                     $(element).parents('.chart-box').find('.box-body').collapse('show');
                     let json = xhr.responseJSON;
                     for (i in json[0]) {
                         data.addColumn(json[0][i][0], json[0][i][1]);
-                        if (i!=0) {
-                            if (options.series[i-1] == undefined) {
-                                options.series[i-1] = {};
+                        if (i != 0) {
+                            if (options.series[i - 1] == undefined) {
+                                options.series[i - 1] = {};
                             }
                             if (json[0][i][3] != undefined && json[0][i][3] == 'precip') {
-                                options.series[i-1].targetAxisIndex = 1;
-                                options.series[i-1].backgroundColor = '#66bc40';
+                                options.series[i - 1].targetAxisIndex = 1;
+                                options.series[i - 1].backgroundColor = '#66bc40';
                             } else {
-                                options.series[i-1].targetAxisIndex = 0;
+                                options.series[i - 1].targetAxisIndex = 0;
                             }
                             if (json[0][i][2] != undefined) {
-                                options.series[i-1].type = json[0][i][2];
+                                options.series[i - 1].type = json[0][i][2];
                             }
                         }
                     }

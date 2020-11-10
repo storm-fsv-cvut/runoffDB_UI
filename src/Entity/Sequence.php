@@ -82,14 +82,6 @@ class Sequence extends BaseEntity {
         return $runs;
     }
 
-    public function addRun(Run $run): self {
-        return $this;
-    }
-
-    public function removeRun(Run $run): self {
-        return $this;
-    }
-
     public function getId(): ?int {
         return $this->id;
     }

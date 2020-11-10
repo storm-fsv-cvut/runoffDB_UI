@@ -28,7 +28,6 @@
                                         {% endif %}
                                     </td>
                                 {% endif %}
-                                <td>{{ sequence.getPlot().getCrop() }}</td>
                                 <td class="{% if run.getRunType().getId()==1 %}dry{% elseif run.getRunType().getId()==2 %}moist{% elseif run.getRunType().getId()==3 %}wet{% endif %}">
                                     {% if run.getNote() %}
                                         <span data-toggle="tooltip" class="tip" data-placement="top" title="{{ run.getNote() }}">{{ run.getID() }}</span>

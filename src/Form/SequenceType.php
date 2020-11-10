@@ -57,7 +57,7 @@ class SequenceType extends AbstractType {
             'mapped' => true,
             'prototype' => true,
             'allow_add' => true,
-            'allow_delete' => true,
+            'allow_delete' => true
         ]);
     }
     public function configureOptions(OptionsResolver $resolver) {

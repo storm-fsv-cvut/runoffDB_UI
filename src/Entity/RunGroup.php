@@ -29,7 +29,7 @@ class RunGroup extends BaseEntity
     private $precedingPrecipitation;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $noteCZ;
 
@@ -94,11 +94,15 @@ class RunGroup extends BaseEntity
         return $this->noteCZ;
     }
 
-    public function setNoteCZ(string $noteCZ): self
+    public function setNoteCZ(?string $noteCZ): self
     {
         $this->noteCZ = $noteCZ;
 
         return $this;
+    }
+
+    public function getNote():?string {
+        return $this->getLocale() == 'en' ? $this->getNoteEN() : $this->getNoteCZ();
     }
 
     public function getRunType(): ?RunType
@@ -166,5 +170,14 @@ class RunGroup extends BaseEntity
         }
 
         return $this;
+    }
+
+    public function getMeasurements() {
+        $measurements = [];
+        foreach ($this->getRuns() as $run) {
+            $measurements[$run->getId()] = $run;
+        }
+
+        return $measurements;
     }
 }

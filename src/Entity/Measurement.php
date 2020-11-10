@@ -182,6 +182,15 @@ class Measurement extends BaseEntity
         return $this;
     }
 
+    public function belongsToRun(int $run_id): bool {
+        foreach ($this->getRuns() as $run) {
+            if ($run_id == $run->getId()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * @return Collection|Run[]
      */
@@ -194,12 +203,10 @@ class Measurement extends BaseEntity
     {
         if (!$this->runs->contains($run)) {
             $this->runs[] = $run;
-            $run->setInitMoistureMeasurement($this);
             $this->setDate($run->getDatetime());
             $this->setLocality($run->getSequence()->getLocality());
-            $this->setPlot($run->getSequence()->getPlot());
+            $this->setPlot($run->getPlot());
         }
-
         return $this;
     }
 
@@ -224,10 +231,9 @@ class Measurement extends BaseEntity
     {
         if (!$this->soilSamples->contains($soilSample)) {
             $this->soilSamples[] = $soilSample;
-            $soilSample->setInitMoistureMeasurement($this);
-            $this->setDate($soilSample->getDatetime());
-            $this->setLocality($soilSample->getSequence()->getLocality());
-            $this->setPlot($soilSample->getSequence()->getPlot());
+            $this->setDate($soilSample->getDateSampled());
+            $this->setLocality($soilSample->getLocality());
+            $this->setPlot($soilSample->getPlot());
         }
 
         return $this;

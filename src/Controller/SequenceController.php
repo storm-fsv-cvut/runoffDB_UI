@@ -9,12 +9,10 @@
 namespace App\Controller;
 
 use App\Entity\Measurement;
-use App\Entity\Plot;
 use App\Entity\Record;
 use App\Entity\Run;
 use App\Entity\RunGroup;
 use App\Entity\Sequence;
-use App\Form\DefinitionEntityType;
 use App\Form\MeasurementType;
 use App\Form\RecordType;
 use App\Form\RunGroupType;
@@ -26,10 +24,13 @@ use App\Repository\MeasurementRepository;
 use App\Repository\PhenomenonRepository;
 use App\Repository\RecordRepository;
 use App\Repository\RecordTypeRepository;
+use App\Repository\RunGroupRepository;
 use App\Repository\RunRepository;
 use App\Repository\SequenceRepository;
 use App\Repository\UnitRepository;
+use App\Services\MeasurementService;
 use App\Services\RecordsService;
+use App\Services\RunGroupService;
 use App\Services\RunService;
 use App\Services\SequenceService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -38,6 +39,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+
 
 class SequenceController extends AbstractController {
 
@@ -54,6 +56,16 @@ class SequenceController extends AbstractController {
     }
 
     /**
+     * @Route("/{_locale}/add-run-measurement", name="addRunMeasurement")
+     */
+    public function addRunMeasurement(MeasurementRepository $measurementRepository, RunRepository $runRepository, MeasurementService $measurementService, Request $request) {
+        $measurement = $measurementRepository->find($request->get('measurement_id'));
+        $run = $runRepository->find($request->get('run_id'));
+        $res = $measurementService->switchBelongsToRun($measurement, $run);
+        return $this->json($res);
+    }
+
+    /**
      * @Route("/{_locale}/validate-file", name="validateFile")
      */
     public function validateFile(RecordsService $recordsService, Request $request) {
@@ -67,15 +79,16 @@ class SequenceController extends AbstractController {
     /**
      * @Route("/{_locale}/israinintensityr", name="israinintensityr")
      */
-    public function israinintensityr(RecordRepository $recordRepository, RunRepository $runRepository, EntityManagerInterface $entityManager, Request $request) {
+    public function israinintensityr(RecordRepository $recordRepository, EntityManagerInterface $entityManager, Request $request) {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
-        if ($request->get('runId') && $request->get('recordId')) {
-            $run = $runRepository->find($request->get('runId'));
-            $sequence = $run->getSequence();
+        if ($request->get('recordId')) {
             $record = $recordRepository->find($request->get('recordId'));
-            $run->setRainIntensity($record);
-            $entityManager->persist($run);
-            $entityManager->flush();
+            foreach ($record->getMeasurement()->getRuns() as $run) {
+                $sequence = $run->getSequence();
+                $run->setRainIntensity($record);
+                $entityManager->persist($run);
+                $entityManager->flush();
+            }
         }
         return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
     }
@@ -83,15 +96,16 @@ class SequenceController extends AbstractController {
     /**
      * @Route("/{_locale}/isinitmoisturer", name="isinitmoisturer")
      */
-    public function isinitmoisturer(RecordRepository $recordRepository, RunRepository $runRepository, EntityManagerInterface $entityManager, Request $request) {
+    public function isinitmoisturer(RecordRepository $recordRepository, EntityManagerInterface $entityManager, Request $request) {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
-        if ($request->get('runId') && $request->get('recordId')) {
-            $run = $runRepository->find($request->get('runId'));
-            $sequence = $run->getSequence();
+        if ($request->get('recordId')) {
             $record = $recordRepository->find($request->get('recordId'));
-            $run->setInitMoisture($record);
-            $entityManager->persist($run);
-            $entityManager->flush();
+            foreach ($record->getMeasurement()->getRuns() as $run) {
+                $sequence = $run->getSequence();
+                $run->setInitMoisture($record);
+                $entityManager->persist($run);
+                $entityManager->flush();
+            }
         }
         return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
     }
@@ -124,10 +138,12 @@ class SequenceController extends AbstractController {
                          SequenceService $sequenceService,
                          RunService $runService,
                          RunRepository $runRepository,
+                         RunGroupRepository $runGroupRepository,
                          MeasurementRepository $measurementRepository,
                          ParameterBagInterface $parameterBag,
                          RecordTypeRepository $recordTypeRepository,
                          UnitRepository $unitRepository,
+                         RunGroupService $runGroupService,
                          int $id = null) {
         if ($id) {
             $sequence = $sequenceService->getSequenceById($id);
@@ -143,15 +159,24 @@ class SequenceController extends AbstractController {
                 $newRunForm->handleRequest($request);
                 $newMesurementForm->handleRequest($request);
                 $newRecordForm->handleRequest($request);
+                $newRunGroupForm->handleRequest($request);
+
+                if ($newRunGroupForm->isSubmitted()) {
+                    $runGroupService->addRunGroup($newRunGroupForm, $sequence);
+                    return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
+                }
 
                 if ($newRunForm->isSubmitted()) {
-                    $runService->addRun($newRunForm, $sequence);
+                    $newRunFormData = $newRunForm->getData();
+                    $newRunFormData->setRunGroup($runGroupRepository->find($newRunForm->get('parent_id')->getData()));
+                    $entityManager->persist($newRunFormData);
+                    $entityManager->flush();
                     return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
                 }
 
                 if ($newMesurementForm->isSubmitted()) {
                     $formMeasurementData = $newMesurementForm->getData();
-                    $formMeasurementData->setRun($runRepository->find($newMesurementForm->get('parent_id')->getData()));
+                    $formMeasurementData->addRun($runRepository->find($newMesurementForm->get('parent_id')->getData()));
                     $entityManager->persist($newMesurementForm->getData());
                     $entityManager->flush();
                     return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);

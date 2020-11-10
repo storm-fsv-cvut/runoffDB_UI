@@ -36,6 +36,7 @@ class RunType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
+            ->add('parent_id', HiddenType::class, ['mapped' => false])
             ->add('plot', EntityType::class, [
                 'class' => Plot::class,
                 'label' => "plot",
@@ -89,11 +90,6 @@ class RunType extends AbstractType {
             ->add('noteEN', TextareaType::class, [
                 'label' => 'noteEN',
                 'required'=>false
-            ])
-            ->add('datetime', DateTimeType::class, [
-                'label' => 'datetime',
-                'widget'=>'single_text',
-                'required'=>true
             ])
             ->add('rawData', FileType::class, [
                 'label' => 'rawData',

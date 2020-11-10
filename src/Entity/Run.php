@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use _HumbugBox01d8f9a04075\Nette\Utils\DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -49,11 +50,6 @@ class Run extends BaseEntity {
      * @ORM\ManyToOne(targetEntity="App\Entity\AssignmentType")
      */
     private $corgAssignmentType;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $datetime;
 
     /**
      * @ORM\Column(type="time", nullable=true)
@@ -234,20 +230,6 @@ class Run extends BaseEntity {
         return $this;
     }
 
-    public function getDatetime(): ?\DateTimeInterface {
-        return $this->datetime;
-    }
-
-    public function getFormatedDatetime(): string {
-        return $this->getDatetime() ? $this->getDatetime()->format('G:i') : " - ";
-    }
-
-    public function setDatetime(?\DateTimeInterface $datetime): self {
-        $this->datetime = $datetime;
-
-        return $this;
-    }
-
     public function getRunoffStart(): ?\DateTimeInterface {
         return $this->runoffStart;
     }
@@ -412,6 +394,22 @@ class Run extends BaseEntity {
         $this->runGroup = $runGroup;
 
         return $this;
+    }
+
+    public function getSequence(): Sequence {
+        return $this->getRunGroup()->getSequence();
+    }
+
+    public function getDatetime(): \DateTimeInterface {
+        return $this->getRunGroup()->getDatetime();
+    }
+
+    public function getFormatedDatetime(): string {
+        return $this->getRunGroup()->getDatetime()->format("d.m.Y H:i");
+    }
+
+    public function getRunType(): RunType {
+        return $this->getRunGroup()->getRunType();
     }
 
 }

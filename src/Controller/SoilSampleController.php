@@ -73,7 +73,7 @@ class SoilSampleController extends AbstractController {
 
                 if ($newMesurementForm->isSubmitted()) {
                     $measurement = $newMesurementForm->getData();
-                    $measurement->setSoilSample($soilSample);
+                    $measurement->addSoilSample($soilSample);
                     $entityManager->persist($measurement);
                     $entityManager->flush();
                     return $this->redirectToRoute('soilSample', ['id' => $soilSample->getId()]);
