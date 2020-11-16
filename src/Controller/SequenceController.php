@@ -37,6 +37,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -113,10 +114,10 @@ class SequenceController extends AbstractController {
     /**
      * @Route("/{_locale}/download-file", name="downloadFile")
      */
-    public function downloadFile(RunRepository $runRepository, Request $request) {
+    public function downloadFile(RunRepository $runRepository, Request $request, ParameterBagInterface $parameterBag) {
         $run = $runRepository->find($request->get('runId'));
         $filename = $request->get('filename');
-        return $this->file('data/'.$run->getSequence()->getId().'/'.$run->getId().'/'.$filename);
+        return BinaryFileResponse::create($parameterBag->get('kernel.project_dir')."/public/".$run->getFilesPath().'/'.$filename);
     }
 
     /**

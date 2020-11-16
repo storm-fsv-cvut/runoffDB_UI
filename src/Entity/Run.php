@@ -335,7 +335,7 @@ class Run extends BaseEntity {
     public function getFiles(): array {
         $files = [];
         $filesystem = new Filesystem();
-        $dir = "data/" . $this->getId();
+        $dir = $this->getFilesPath();
         if ($filesystem->exists($dir)) {
             $finder = new Finder();
             $finder->files()->in($dir);
@@ -348,9 +348,13 @@ class Run extends BaseEntity {
         return $files;
     }
 
+    public function getFilesPath() {
+        return  "data/sequence/". $this->getSequence()->getId(). "/" . $this->getId();
+    }
+
     public function removeFile(string $filename) {
         $filesystem = new Filesystem();
-        $dir = "data/" . $this->getId();
+        $dir = $this->getFilesPath();
         if ($filesystem->exists($dir.'/'.$filename)) {
             $filesystem->remove($dir.'/'.$filename);
         }

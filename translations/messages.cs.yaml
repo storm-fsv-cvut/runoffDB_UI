@@ -31,7 +31,7 @@ App\Entity\Project: Project
 App\Entity\RecordType: Record Type
 App\Entity\RunType: Run Type
 App\Entity\Simulator: Simulator
-App\Entity\WRBsoilClass: WRB Soil Class
+App\Entity\WrbSoilClass: WRB Soil Class
 App\Entity\Unit: Unit
 App\Entity\Phenomenon: Měřený jev
 Phenomenon: Měřený jev
@@ -90,6 +90,7 @@ label_next: Další
 label_previous: Předchozí
 Search: Hledat
 add plot: Přidat plochu
+add plotrun: Přidat simulaci na ploše
 not set: Nenastaveno
 Soil Samples: Vzorky půdy
 Users: Uživatelé
@@ -144,5 +145,4 @@ W r bsoil class: WRB soil class
 lat: Lat
 lng: Lng
 Header: Hlavička
-
-
+pondingStart: ponding start

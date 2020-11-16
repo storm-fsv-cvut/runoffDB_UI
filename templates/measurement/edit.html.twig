@@ -44,7 +44,9 @@
                                             <a data-toggle="collapse" data-parent="#accordion" href="#record-{{ record.getId() }}" class="collapsed" aria-expanded="false">
                                                 {{ record.getUnit().getName() }}
                                             </a>
+                                            {% if record.getRecordType() %}
                                             <small>{{ record.getRecordType().getName() }}</small>
+                                            {% endif %}
                                             <span class="badge bg-primary">#{{ record.getId() }}</span>
                                             {% for sourceRecord in record.getSourceRecords() %}
                                                 <span class="badge bg-primary">{% trans %}derived from{% endtrans %} #{{ sourceRecord.getId() }}</span>

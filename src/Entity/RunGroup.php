@@ -19,7 +19,7 @@ class RunGroup extends BaseEntity
     private $id;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      */
     private $datetime;
 

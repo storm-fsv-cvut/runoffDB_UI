@@ -49,9 +49,10 @@ class MenuBuilder
     {
         foreach ($em->getMetadataFactory()->getAllMetadata() as $entity) {
             if(in_array('App\Entity\DefinitionEntityInterface',$entity->getReflectionClass()->getInterfaceNames())) {
-                $this->definitionEntities[]=$entity;
+                $this->definitionEntities[$entity->name]=$translator->trans($entity->name);
             }
         }
+        asort($this->definitionEntities);
         $this->factory = $factory;
         $this->translator = $translator;
         $this->requestStack = $requestStack;
@@ -97,8 +98,8 @@ class MenuBuilder
         $setup = $menu->addChild($this->translator->trans('Setup'), ['uri' => '#']);
         $setup->setAttribute('class','treeview');
         $setup->setChildrenAttribute('class','treeview-menu');
-        foreach ($this->definitionEntities as $entity) {
-            $item = $setup->addChild($entity->name, ['route' => 'definition_entities','routeParameters' => ['class'=>$entity->name]]);
+        foreach ($this->definitionEntities as $entity=>$entity_name) {
+            $item = $setup->addChild($entity_name, ['route' => 'definition_entities','routeParameters' => ['class'=>$entity]]);
             if($this->matcher->isCurrent($item)) {
                 $item->setCurrent(true);
             }
@@ -126,8 +127,8 @@ class MenuBuilder
         $setup = $menu->addChild($this->translator->trans('Setup'), ['uri' => '#']);
         $setup->setAttribute('class','treeview');
         $setup->setChildrenAttribute('class','treeview-menu');
-        foreach ($this->definitionEntities as $entity) {
-            $item = $setup->addChild($entity->name, ['route' => 'definition_entities','routeParameters' => ['class'=>$entity->name]]);
+        foreach ($this->definitionEntities as $entity=>$entity_name) {
+            $item = $setup->addChild($entity_name, ['route' => 'definition_entities','routeParameters' => ['class'=>$entity]]);
             if($this->matcher->isCurrent($item)) {
                 $item->setCurrent(true);
             }

@@ -57,7 +57,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <h2 class="page-header">
-                        {{ runGroup.getRunType() }}
+                        {{ runGroup.getRunType()|capitalize }}
                     </h2>
                 </div>
             </div>
@@ -75,9 +75,6 @@
                                                     <span class="caret"></span>
                                                 </a>
                                                 <ul class="dropdown-menu">
-                                                    <li role="presentation">
-                                                        <a role="menuitem" data-toggle="modal" data-target="#run" data-parent="{{ runGroup.getId() }}" tabindex="-1" href="javascript:;">{% trans %}add plotrun{% endtrans %}</a>
-                                                    </li>
                                                     <li role="presentation">
                                                         <a role="menuitem" data-toggle="modal" data-target="#runGroupType{{ runGroup.getId() }}" tabindex="-1" href="javascript:;">{% trans %}edit{% endtrans %}</a>
                                                     </li>
@@ -101,6 +98,13 @@
                                         </div>
                                     </div>
                                 </div>
+                                {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+                                    <div class="box-footer">
+                                        <button type="button" class="btn btn-warning btn-sm"  data-toggle="modal" data-target="#run" data-parent="{{ runGroup.getId() }}" tabindex="-1" href="javascript:;">
+                                            {% trans %}add plotrun{% endtrans %}
+                                        </button>
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -140,6 +144,8 @@
                                                     <dd>{{ runArray['note'] }}</dd>
                                                     <dt>{% trans %}runoff_start{% endtrans %}:</dt>
                                                     <dd>{{ runArray['runoff_start'] }}</dd>
+                                                    <dt>{% trans %}ponding_start{% endtrans %}:</dt>
+                                                    <dd>{{ runArray['ponding_start'] }}</dd>
                                                     <dt>{% trans %}rain_intensity{% endtrans %}:</dt>
                                                     <dd>{{ runArray['rain_intensity'] }}</dd>
                                                     <dt>{% trans %}init_moisture{% endtrans %}:</dt>
@@ -189,7 +195,7 @@
                                                     <h4>
                                                         <div class="dropdown">
                                                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                                                {{ formMeasurement.vars.value.getPhenomenon() }}
+                                                                {{ formMeasurement.vars.value.getPhenomenon()|capitalize }}
                                                                 <span class="caret"></span>
                                                             </a>
                                                             <ul class="dropdown-menu">
@@ -230,7 +236,7 @@
                                                             <div class="box-header">
                                                                 <h4 class="box-title">
                                                                     <a data-toggle="collapse" data-parent="#accordion" href="#record-{{ record.getId() }}" class="collapsed" aria-expanded="false">
-                                                                        {{ record.getUnit().getName() }}
+                                                                        {{ record.getUnit().getName()|capitalize }}
                                                                     </a>
                                                                     <small>{{ record.getRecordType().getName() }}</small>
                                                                     <span class="badge bg-primary">#{{ record.getId() }}</span>
@@ -344,7 +350,7 @@
                     <div class="box box-primary chart-box">
                         <div class="box-header with-border">
                             <i class="fa fa-bar-chart-o"></i>
-                            <h3 class="box-title">{{ runGroup.getRunType() }}</h3>
+                            <h3 class="box-title">{{ runGroup.getRunType()|capitalize }}</h3>
                         </div>
                         <div class="box-body collapse">
                             <div id="chart-run-{{ runGroup.getId() }}" style="height: 300px;" data-datalink="{{ path('chartData') }}"></div>
