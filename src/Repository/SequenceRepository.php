@@ -30,6 +30,9 @@ class SequenceRepository extends ServiceEntityRepository
     public function getPaginatorQuery(?array $filter, string $order, string $direction):QueryBuilder {
         //dump($filter);
         $queryBuilder = $this->createQueryBuilder('sequence');
+        $queryBuilder->select('sequence');
+        $queryBuilder->innerJoin('sequence.runGroups', 'rg', 'WITH', 'rg.sequence = sequence.id');
+        $queryBuilder->innerJoin('rg.runs', 'r', 'WITH', 'r.runGroup = rg.id');
 
         if (isset($filter['crop']) && $filter['crop']) {
             $plots = $this->plotRepository->findBy(['crop'=>$filter['crop']]);
@@ -37,10 +40,10 @@ class SequenceRepository extends ServiceEntityRepository
             foreach ($plots as $plot) {
                 $plotsIds[]=$plot->getId();
             }
-            $queryBuilder->andWhere($queryBuilder->expr()->in('sequence.plot',$plotsIds));
+            $queryBuilder->andWhere($queryBuilder->expr()->in('r.plot',$plotsIds));
         }
         if (isset($filter['plot']) && $filter['plot']) {
-            $queryBuilder->andWhere($queryBuilder->expr()->eq('sequence.plot',$filter['plot']->getId()));
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('r.plot',$filter['plot']->getId()));
         }
         if (isset($filter['date']) && $filter['date']) {
             $queryBuilder->andWhere($queryBuilder->expr()->eq('sequence.date',"'".$filter['date']->format("Y-m-d")."'"));

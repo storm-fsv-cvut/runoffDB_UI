@@ -25,7 +25,7 @@ class Record extends BaseEntity {
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\RecordType")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=false)
      */
     private $recordType;
 

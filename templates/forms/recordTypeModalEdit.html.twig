@@ -87,16 +87,16 @@
                                     <td>
                                         {{ form_widget(formData.time)}}
                                     <td>
-                                        {{ form_widget(formData.value) }}
+                                        {{ form_widget(formData.value, {'type':'number'}) }}
                                     </td>
                                     <td>
-                                        {{ form_widget(formData.related_value_X) }}
+                                        {{ form_widget(formData.related_value_X, {'type':'number'}) }}
                                     </td>
                                     <td>
-                                        {{ form_widget(formData.related_value_Y) }}
+                                        {{ form_widget(formData.related_value_Y, {'type':'number'}) }}
                                     </td>
                                     <td>
-                                        {{ form_widget(formData.related_value_Z) }}
+                                        {{ form_widget(formData.related_value_Z, {'type':'number'}) }}
                                     </td>
                                     <td>
                                         <a class="text-danger removeRow" ><i class="fa fa-minus"></i></a>

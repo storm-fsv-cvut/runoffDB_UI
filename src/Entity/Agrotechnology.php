@@ -30,12 +30,12 @@ class Agrotechnology extends BaseEntity implements DefinitionEntityInterface
     private $nameEN;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $descriptionCZ;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $descriptionEN;
 

@@ -39,7 +39,7 @@ class Phenomenon extends BaseEntity implements DefinitionEntityInterface
     private $descriptionEN;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Model")
      */
     private $modelParameterSet;
 
@@ -123,12 +123,12 @@ class Phenomenon extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-    public function getModelParameterSet(): ?string
+    public function getModelParameterSet(): ?Model
     {
         return $this->modelParameterSet;
     }
 
-    public function setModelParameterSet(?string $modelParameterSet): self
+    public function setModelParameterSet(Model $modelParameterSet): self
     {
         $this->modelParameterSet = $modelParameterSet;
 

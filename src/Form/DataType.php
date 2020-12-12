@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Data;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,21 +19,21 @@ class DataType extends AbstractType {
                   'with_seconds'=>true,
                   'attr'=>['class'=>'time']
               ])
-              ->add('value', TextType::class, [
-                  'label'=>'time',
+              ->add('value', NumberType::class, [
+                  'label'=>'value',
                   'attr'=>['class'=>'form-control value']
               ])
-              ->add('related_value_X', TextType::class, [
+              ->add('related_value_X', NumberType::class, [
                   'label'=>'related_value_X',
                   'required'=>false,
                   'attr'=>['class'=>'form-control related_value']
               ])
-          ->add('related_value_Y', TextType::class, [
+          ->add('related_value_Y', NumberType::class, [
               'label'=>'related_value_Y',
               'required'=>false,
               'attr'=>['class'=>'form-control related_value']
           ])
-          ->add('related_value_Z', TextType::class, [
+          ->add('related_value_Z', NumberType::class, [
               'label'=>'related_value_Z',
               'required'=>false,
               'attr'=>['class'=>'form-control related_value']

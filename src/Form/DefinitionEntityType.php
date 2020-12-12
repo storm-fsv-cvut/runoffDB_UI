@@ -29,6 +29,17 @@ class DefinitionEntityType extends AbstractType {
             }
         }
 
+        foreach ($metadata->getAssociationNames() as $associationName) {
+            $targetClass = ($metadata->getAssociationTargetClass($associationName));
+            $targetClassArray = explode("\\",$targetClass);
+            if (strpos($metadata->getReflectionClass()->getProperty($associationName)->getDocComment(), "mappedBy")) {
+            } else {
+                $metadata->getAssociationMappedByTargetField($associationName);
+                $targetClass = ($metadata->getAssociationTargetClass($associationName));
+                $builder->add($associationName, EntityType::class, ['class' => $targetClass]);
+            }
+        }
+
         $builder->add('save', SubmitType::class, [
             'attr' => ['class' => 'btn btn-success'],
             'label' => 'save'

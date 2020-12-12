@@ -437,6 +437,8 @@ FROM
 organization_project_relations
 );
 
+
+
 /*OK*/
 SET FOREIGN_KEY_CHECKS=0;
 TRUNCATE TABLE rainsimulator.phenomenon;
