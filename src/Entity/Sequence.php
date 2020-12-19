@@ -24,7 +24,7 @@ class Sequence extends BaseEntity {
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Simulator", inversedBy="sequences")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $simulator;
 
@@ -58,6 +58,11 @@ class Sequence extends BaseEntity {
      * @ORM\OneToMany(targetEntity="App\Entity\RunGroup", mappedBy="sequence", orphanRemoval=true)
      */
     private $runGroups;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $deleted;
 
     public function __toString(): string {
         return $this->getDate()->format("d.m.Y") . " - " . $this->getLocality();
@@ -236,6 +241,18 @@ class Sequence extends BaseEntity {
                 $runGroup->setSequence(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDeleted(): ?bool
+    {
+        return $this->deleted;
+    }
+
+    public function setDeleted(?bool $deleted): self
+    {
+        $this->deleted = $deleted;
 
         return $this;
     }

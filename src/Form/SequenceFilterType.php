@@ -13,8 +13,21 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SequenceFilterType extends AbstractType {
+
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    public function __construct(TranslatorInterface $translator) {
+
+        $this->translator = $translator;
+    }
+
+
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
             ->add('plot', EntityType::class, [
@@ -23,11 +36,17 @@ class SequenceFilterType extends AbstractType {
                 'placeholder' => '',
                 'label' => 'Plot'
             ])
-            ->add('date', DateType::class, [
+            ->add('dateFrom', DateType::class, [
+                'placeholder' =>'',
+                'required' => false,
+                'widget'=>'single_text',
+                'label' =>  ucfirst($this->translator->trans("date from")),
+            ])
+            ->add('dateTo', DateType::class, [
                 'placeholder' => '',
                 'required' => false,
                 'widget'=>'single_text',
-                'label' => 'Date'
+                'label' => ucfirst($this->translator->trans("date to")),
             ])
             ->add('crop', EntityType::class, [
                 'class' => Crop::class,

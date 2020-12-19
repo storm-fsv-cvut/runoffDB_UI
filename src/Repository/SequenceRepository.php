@@ -33,7 +33,7 @@ class SequenceRepository extends ServiceEntityRepository
         $queryBuilder->select('sequence');
         $queryBuilder->innerJoin('sequence.runGroups', 'rg', 'WITH', 'rg.sequence = sequence.id');
         $queryBuilder->innerJoin('rg.runs', 'r', 'WITH', 'r.runGroup = rg.id');
-
+        $queryBuilder->andWhere($queryBuilder->expr()->isNull('sequence.deleted'));
         if (isset($filter['crop']) && $filter['crop']) {
             $plots = $this->plotRepository->findBy(['crop'=>$filter['crop']]);
             $plotsIds = [];
@@ -45,8 +45,11 @@ class SequenceRepository extends ServiceEntityRepository
         if (isset($filter['plot']) && $filter['plot']) {
             $queryBuilder->andWhere($queryBuilder->expr()->eq('r.plot',$filter['plot']->getId()));
         }
-        if (isset($filter['date']) && $filter['date']) {
-            $queryBuilder->andWhere($queryBuilder->expr()->eq('sequence.date',"'".$filter['date']->format("Y-m-d")."'"));
+        if (isset($filter['dateFrom']) && $filter['dateFrom']) {
+            $queryBuilder->andWhere($queryBuilder->expr()->gte('sequence.date',"'".$filter['dateFrom']->format("Y-m-d")."'"));
+        }
+        if (isset($filter['dateTo']) && $filter['dateTo']) {
+            $queryBuilder->andWhere($queryBuilder->expr()->lte('sequence.date',"'".$filter['dateTo']->format("Y-m-d")."'"));
         }
 
         return $queryBuilder;
@@ -58,4 +61,10 @@ class SequenceRepository extends ServiceEntityRepository
         return $queryBuilder->getQuery()->getResult();
     }
 
+    public function setDeleted(int $id) {
+        $sequence = $this->find($id);
+        $sequence->setDeleted(true);
+        $this->getEntityManager()->persist($sequence);
+        $this->getEntityManager()->flush();
+    }
 }

@@ -141,6 +141,7 @@ class SequenceController extends AbstractController {
                          RunRepository $runRepository,
                          RunGroupRepository $runGroupRepository,
                          MeasurementRepository $measurementRepository,
+                         MeasurementService $measurementService,
                          ParameterBagInterface $parameterBag,
                          RecordTypeRepository $recordTypeRepository,
                          UnitRepository $unitRepository,
@@ -242,18 +243,7 @@ class SequenceController extends AbstractController {
 
 
             if ($request->get('delete_measurement')) {
-                $measurement = $entityManager->find(Measurement::class, $request->get('delete_measurement'));
-
-                foreach ($measurement->getRecords() as $record) {
-                    foreach ($record->getData() as $data) {
-                        $entityManager->remove($data);
-                    }
-                    $entityManager->flush();
-                    $entityManager->remove($record);
-                }
-                $entityManager->remove($measurement);
-                $entityManager->flush();
-
+                $measurementService->deleteMeasurement($request->get('delete_measurement'));
                 return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
             }
 
@@ -302,6 +292,14 @@ class SequenceController extends AbstractController {
     }
 
     /**
+     * @Route("/{_locale}/remove-sequence", name="remove_sequence")
+     */
+    public function removeSequence(Request $request,SequenceRepository $sequenceRepository) {
+        $sequenceRepository->setDeleted($request->get('id'));
+        return $this->redirectToRoute('sequences');
+    }
+
+    /**
      * @Route("/{_locale}/sequences", name="sequences")
      */
     public function list(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request, SequenceRepository $sequenceRepository) {
@@ -322,7 +320,7 @@ class SequenceController extends AbstractController {
      * @Route("/{_locale}/sequences-overview", name="sequencesOverview")
      */
     public function overview(EntityManagerInterface $em, Request $request, SequenceRepository $sequenceRepository, RunService $runService, PhenomenonRepository $phenomenonRepository) {
-        $sequences = $sequenceRepository->findBy([],['date'=>'ASC']);
+        $sequences = $sequenceRepository->findBy(['deleted'=>null],['date'=>'ASC']);
         return $this->render('sequence/overview.html.twig',[
             'sequences'=>$sequences,
             'runSevice'=>$runService,

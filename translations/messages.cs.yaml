@@ -146,3 +146,6 @@ lat: Lat
 lng: Lng
 Header: Hlavička
 pondingStart: ponding start
+date from: datum od
+date to: datum do
+delete prompt: opravdu smazat

@@ -35,13 +35,13 @@ class RunGroup extends BaseEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\RunType")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $runType;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Sequence", inversedBy="runGroups")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $sequence;
 

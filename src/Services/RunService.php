@@ -69,7 +69,6 @@ class RunService {
 
     public function uploadFile(UploadedFile $file, Run $run) {
         $dir = $this->parameterBag->get('kernel.project_dir')."/public/data/sequence/".$run->getSequence()->getId()."/".$run->getId();
-
         if (!$this->filesystem->exists($dir)) {
             $this->filesystem->mkdir($dir);
         }
@@ -80,7 +79,7 @@ class RunService {
         $measurements = $run->getMeasurements();
         $res = [];
         foreach ($measurements as $measurement) {
-            if ($measurement->getPhenomenon()->getPhenomenonKey() == $phenomenonKey) {
+            if ($measurement->getPhenomenon()!=null AND $measurement->getPhenomenon()->getPhenomenonKey() == $phenomenonKey) {
                 $res+=$measurement->getRecords()->toArray();
             }
         }

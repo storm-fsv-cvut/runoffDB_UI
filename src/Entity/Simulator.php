@@ -30,6 +30,7 @@ class Simulator extends BaseEntity implements DefinitionEntityInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Organization", inversedBy="simulators")
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $organization;
 
@@ -45,6 +46,7 @@ class Simulator extends BaseEntity implements DefinitionEntityInterface
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Sequence", mappedBy="simulator")
+     *
      */
     private $sequences;
 
@@ -54,7 +56,7 @@ class Simulator extends BaseEntity implements DefinitionEntityInterface
     private $reference;
 
     public function __toString() {
-        return $this->getName().' ('.$this->getOrganization()->getName().')';
+        return $this->getName().' ('.($this->getOrganization() ? $this->getOrganization()->getName() : "").')';
     }
     public function getName():?string {
         return $this->getLocale() == 'en' ? $this->getNameEN() : $this->getNameCZ();

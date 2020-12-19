@@ -19,7 +19,7 @@ class TillageSequence extends BaseEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Agrotechnology", inversedBy="tillageSequences")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $agrotechnology;
 
@@ -30,7 +30,7 @@ class TillageSequence extends BaseEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Operation")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $operation;
 

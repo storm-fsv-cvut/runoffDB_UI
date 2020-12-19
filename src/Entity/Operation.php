@@ -39,7 +39,7 @@ class Operation extends BaseEntity implements DefinitionEntityInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\OperationType")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $operationType;
 

@@ -40,6 +40,7 @@ class Phenomenon extends BaseEntity implements DefinitionEntityInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Model")
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $modelParameterSet;
 

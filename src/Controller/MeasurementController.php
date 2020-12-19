@@ -114,6 +114,14 @@ class MeasurementController extends AbstractController {
     }
 
     /**
+     * @Route("/{_locale}/remove-measurement", name="remove_measurement")
+     */
+    public function removeMeasurement(Request $request,MeasurementService $measurementService) {
+        $measurementService->deleteMeasurement($request->get('id'));
+        return $this->redirectToRoute('measurements');
+    }
+
+    /**
      * @Route("/{_locale}/measurements", name="measurements")
      */
     public function list(PaginatorInterface $paginator, MeasurementRepository $measurementRepository, Request $request, MeasurementService $measurementService):Response {

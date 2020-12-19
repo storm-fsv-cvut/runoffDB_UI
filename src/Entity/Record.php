@@ -19,13 +19,13 @@ class Record extends BaseEntity {
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Measurement", inversedBy="records")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $measurement;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\RecordType")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $recordType;
 
@@ -41,7 +41,7 @@ class Record extends BaseEntity {
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Unit")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $unit;
 
@@ -57,16 +57,19 @@ class Record extends BaseEntity {
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Unit")
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $relatedValueXUnit;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Unit")
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $relatedValueYUnit;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Unit")
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $relatedValueZUnit;
 

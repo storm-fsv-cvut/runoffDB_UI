@@ -80,4 +80,17 @@ class MeasurementService {
         $this->entityManager->flush();
         return $measurement->belongsToRun($run->getId());
     }
+
+    public function deleteMeasurement(int $id) {
+        $measurement = $this->measurementRepository->find($id);
+        foreach ($measurement->getRecords() as $record) {
+            foreach ($record->getData() as $data) {
+                $this->entityManager->remove($data);
+            }
+            $this->entityManager->flush();
+            $this->entityManager->remove($record);
+        }
+        $this->entityManager->remove($measurement);
+        $this->entityManager->flush();
+    }
 }

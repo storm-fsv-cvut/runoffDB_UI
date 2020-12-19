@@ -22,6 +22,14 @@ class SoilSampleRepository extends ServiceEntityRepository
 
     public function getPaginatorQuery():QueryBuilder {
         $queryBuilder = $this->createQueryBuilder('soilSample');
+        $queryBuilder->andWhere($queryBuilder->expr()->isNull('soilSample.deleted'));
         return $queryBuilder;
+    }
+
+    public function setDeleted(int $id) {
+        $soilSample = $this->find($id);
+        $soilSample->setDeleted(true);
+        $this->getEntityManager()->persist($soilSample);
+        $this->getEntityManager()->flush();
     }
 }

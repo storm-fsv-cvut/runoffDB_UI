@@ -28,7 +28,7 @@ class Data extends BaseEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Record", inversedBy="datas")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="CASCADE")
      */
     private $record;
 

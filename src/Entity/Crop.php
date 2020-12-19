@@ -33,11 +33,13 @@ class Crop extends BaseEntity implements DefinitionEntityInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CropType")
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $cropType;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CropErType")
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $croperType;
 

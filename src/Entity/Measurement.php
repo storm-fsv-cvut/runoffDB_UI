@@ -55,6 +55,7 @@ class Measurement extends BaseEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Phenomenon", inversedBy="measurements")
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $phenomenon;
 
@@ -75,6 +76,7 @@ class Measurement extends BaseEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Locality", inversedBy="measurements")
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $locality;
 

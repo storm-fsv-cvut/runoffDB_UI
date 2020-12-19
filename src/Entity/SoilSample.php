@@ -26,6 +26,7 @@ class SoilSample extends BaseEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Organization")
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $processedAt;
 
@@ -36,16 +37,19 @@ class SoilSample extends BaseEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Plot", inversedBy="soilSamples")
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $plot;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\WrbSoilClass")
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $wrbSoilClass;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Locality", inversedBy="soilSamples")
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $locality;
 
@@ -61,6 +65,7 @@ class SoilSample extends BaseEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Run", inversedBy="soilSamples")
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $Run;
 
@@ -107,6 +112,11 @@ class SoilSample extends BaseEntity
      * @ORM\Column(type="string", length=512, nullable=true)
      */
     private $rawDataPath;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $deleted;
 
     public function __toString() {
         return "#".$this->getId()." - ".$this->getLocality();
@@ -347,6 +357,18 @@ class SoilSample extends BaseEntity
     public function setRawDataPath(?string $rawDataPath): self
     {
         $this->rawDataPath = $rawDataPath;
+
+        return $this;
+    }
+
+    public function getDeleted(): ?bool
+    {
+        return $this->deleted;
+    }
+
+    public function setDeleted(?bool $deleted): self
+    {
+        $this->deleted = $deleted;
 
         return $this;
     }

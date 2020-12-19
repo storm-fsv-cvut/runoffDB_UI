@@ -23,31 +23,37 @@ class Run extends BaseEntity {
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\SoilSample")
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $soilSampleBulk;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\AssignmentType")
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $bulkAssignmentType;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\SoilSample")
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $soilSampleTexture;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\AssignmentType")
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $textureAssignmentType;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\SoilSample")
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $soilSampleCorg;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\AssignmentType")
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $corgAssignmentType;
 
@@ -83,12 +89,12 @@ class Run extends BaseEntity {
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Plot")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $plot;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\SoilSample", mappedBy="Run")
+     * @ORM\OneToMany(targetEntity="App\Entity\SoilSample", mappedBy="Run")     *
      */
     private $soilSamples;
 

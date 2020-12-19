@@ -25,22 +25,25 @@ class Plot extends BaseEntity implements DefinitionEntityInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Locality", inversedBy="plots")
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="CASCADE")
      */
     private $locality;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Locality")
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $soilOriginLocality;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Crop")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $crop;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Agrotechnology")
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private $agrotechnology;
 
@@ -85,7 +88,7 @@ class Plot extends BaseEntity implements DefinitionEntityInterface
     private $measurements;
 
     public function __toString() {
-        return $this->getLocality()->getName()." - #".$this->getId()." ".$this->getName();
+        return ($this->getLocality() ? $this->getLocality()->getName() : "")." - #".$this->getId()." ".$this->getName();
     }
 
     public function getNote():?string {

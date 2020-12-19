@@ -62,4 +62,16 @@ class DefinitionEntityControler extends AbstractController {
         }
         return $this->render('definitionEntity/edit.html.twig', ['form' => $form->createView(), 'class_name' => $translator->trans($class), 'class' => $class]);
     }
+
+    /**
+     * @Route("/{_locale}/settings/delete/{id}", name="delete_definition_entity")
+     */
+    function delete(Request $request, EntityManagerInterface $entityManager, TranslatorInterface $translator, ?int $id = null) {
+        $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
+        $class = $request->get('class');
+        $dataClass = $id ? $entityManager->find($class, $id) : null;
+        $entityManager->remove($dataClass);
+        $entityManager->flush();
+        return $this->redirectToRoute('definition_entities',['class'=>$class]);
+    }
 }

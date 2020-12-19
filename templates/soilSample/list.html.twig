@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}Rainsimulator - {% trans %}soilSamples{% endtrans %}{% endblock %}
+{% block title %}RunoffDB - {% trans %}soilSamples{% endtrans %}{% endblock %}
 {% block body %}
     <section class="content-header">
         <h1>
@@ -27,7 +27,14 @@
                             <td>{{ soilSample.getId() }}</td>
                             <td>{{ soilSample.getLocality() }}</td>
                             <td>{{ soilSample.getDateSampled().format('d.m.Y') }}</td>
-                            <td><a class="btn btn-sm btn-primary" href="{{ path('soilSample',{id:soilSample.getId()}) }}"><i class="fa fa-edit"></i></a></td>
+                            <td>
+                            {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+                             <a class="btn btn-sm btn-primary" href="{{ path('soilSample',{id:soilSample.getId()}) }}"><i class="fa fa-edit"></i></a>
+                                <a class="btn btn-sm btn-danger"  data-confirm="{% trans %}smazat{% endtrans %}?" href="{{ path('remove_soilsample',{id:soilSample.getId()}) }}"><i class="fa fa-trash"></i></a>
+                            {% else %}
+                               <a class="btn btn-sm btn-primary" href="{{ path('soilSample',{id:soilSample.getId()}) }}"><i class="fa fa-eye"></i></a>
+                            {% endif %}
+                                </td>
                         </tr>
                     {% endfor %}
                 </table>

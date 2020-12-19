@@ -22,6 +22,7 @@ use App\Repository\PhenomenonRepository;
 use App\Repository\RecordRepository;
 use App\Repository\RunRepository;
 use App\Repository\SoilSampleRepository;
+use App\Services\MeasurementService;
 use App\Services\RecordsService;
 use App\Services\SoilSampleService;
 use Doctrine\ORM\EntityManager;
@@ -53,6 +54,7 @@ class SoilSampleController extends AbstractController {
                          Request $request,
                          EntityManagerInterface $entityManager,
                          MeasurementRepository $measurementRepository,
+                         MeasurementService $measurementService,
                          int $id = null):Response {
         if ($id) {
             $newMesurementForm = $this->createForm(MeasurementType::class, new Measurement());
@@ -99,19 +101,10 @@ class SoilSampleController extends AbstractController {
             }
 
             if ($request->get('delete_measurement')) {
-                $measurement = $entityManager->find(Measurement::class, $request->get('delete_measurement'));
-
-                foreach ($measurement->getRecords() as $record) {
-                    foreach ($record->getData() as $data) {
-                        $entityManager->remove($data);
-                    }
-                    $entityManager->flush();
-                    $entityManager->remove($record);
+                if ($request->get('delete_measurement')) {
+                    $measurementService->deleteMeasurement($request->get('delete_measurement'));
+                    return $this->redirectToRoute('soilSample', ['id' => $soilSample->getId()]);
                 }
-                $entityManager->remove($measurement);
-                $entityManager->flush();
-
-                return $this->redirectToRoute('soilSample', ['id' => $soilSample->getId()]);
             }
 
             if ($request->get('delete_record')) {
@@ -167,6 +160,14 @@ class SoilSampleController extends AbstractController {
         );
 
         return $this->render('soilSample/list.html.twig', ['pagination' => $pagination]);
+    }
+
+    /**
+     * @Route("/{_locale}/remove-soil-sample", name="remove_soilsample")
+     */
+    public function removeSoilSample(Request $request,SoilSampleRepository $soilSampleRepository) {
+        $soilSampleRepository->setDeleted($request->get('id'));
+        return $this->redirectToRoute('soilSamples');
     }
 
     /**
@@ -234,7 +235,7 @@ class SoilSampleController extends AbstractController {
      * @Route("/{_locale}/soil-samples-overview", name="soilSamplesOverview")
      */
     public function overview(EntityManagerInterface $em, Request $request, SoilSampleService $soilSampleService, SoilSampleRepository $soilSampleRepository, PhenomenonRepository $phenomenonRepository):Response {
-        $soilSamples = $soilSampleRepository->findBy([],['dateSampled'=>'ASC']);
+        $soilSamples = $soilSampleRepository->findBy(["deleted"=>null],['dateSampled'=>'ASC']);
         return $this->render('soilSample/overview.html.twig',[
             'soilSamples'=>$soilSamples,
             'phenomenonRepository'=>$phenomenonRepository,
