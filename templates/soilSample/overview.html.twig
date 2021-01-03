@@ -16,7 +16,7 @@
                     {% for soilSample in soilSamples %}
                         <tr>
                             <td><a href="{{ path('soilSample',{id:soilSample.getId()}) }}">{{ soilSample.getId() }}</a></td>
-                            <td>{{ soilSample.getDateSampled().format("d.m.Y") }}</td>
+                            <td>{{ soilSample.getFormatedDateSampled() }}</td>
                             <td>
                                 {% if soilSample.getLocality() %}
                                 {{ soilSample.getLocality().getName() }}

@@ -69,6 +69,9 @@ class SoilSampleController extends AbstractController {
 
                 if ($soilSampleForm->isSubmitted()) {
                     $soilSample = $soilSampleForm->getData();
+                    if ($soilSample->getPlot()) {
+                        $soilSample->setLocality($soilSample->getPlot()->getLocality());
+                    }
                     $entityManager->persist($soilSample);
                     $entityManager->flush();
                 }
@@ -135,7 +138,9 @@ class SoilSampleController extends AbstractController {
                 $form->handleRequest($request);
                 if ($form->isSubmitted()) {
                     $soilSample = $form->getData();
-                    $soilSample->setLocality($soilSample->getPlot()->getLocality());
+                    if ($soilSample->getPlot()) {
+                        $soilSample->setLocality($soilSample->getPlot()->getLocality());
+                    }
                     $entityManager->persist($soilSample);
                     $entityManager->flush();
                     return $this->redirectToRoute('soilSample', ['id' => $soilSample->getId()]);

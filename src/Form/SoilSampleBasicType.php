@@ -21,6 +21,7 @@ class SoilSampleBasicType extends AbstractType
             ->add('sampleDepthM')
             ->add('dateProcessed')
             ->add('processedAt')
+            ->add('wrbSoilClass')
             ->add('plot')
             ->add('save', SubmitType::class,[
                 'attr'=>['class'=>'btn btn-success']

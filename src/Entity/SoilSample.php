@@ -141,6 +141,11 @@ class SoilSample extends BaseEntity
         return $this->dateSampled;
     }
 
+    public function getFormatedDateSampled(): string
+    {
+        return $this->dateSampled ? $this->dateSampled->format('d.m.Y') : "";
+    }
+
     public function setDateSampled(?\DateTimeInterface $dateSampled): self
     {
         $this->dateSampled = $dateSampled;
@@ -263,6 +268,11 @@ class SoilSample extends BaseEntity
     public function getDateProcessed(): ?\DateTimeInterface
     {
         return $this->dateProcessed;
+    }
+
+    public function getFormatedDateProcessed(): string
+    {
+        return $this->dateProcessed ? $this->dateProcessed->format('d.m.Y') : "";
     }
 
     public function setDateProcessed(?\DateTimeInterface $dateProcessed): self

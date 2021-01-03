@@ -302,6 +302,7 @@
                                                                                 [{{ record.getUnit().getUnit() }}]
                                                                             </th>
                                                                         </tr>
+                                                                        {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
                                                                         {% for data in record.getData() %}
                                                                             <tr>
                                                                                 <td>{{ data.getFormatedTime() }}</td>
@@ -329,6 +330,7 @@
                                                                                 <td>{{ data.getValue() }} {{ record.getUnit().getUnit() }}</td>
                                                                             </tr>
                                                                         {% endfor %}
+                                                                        {% endif %}
                                                                     </table>
                                                                 </div>
                                                             </div>

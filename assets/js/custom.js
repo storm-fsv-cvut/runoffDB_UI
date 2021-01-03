@@ -27,10 +27,22 @@ $(document).ready(function (e) {
 
     $("[data-change-label]").each((i, e) => {
         let parentModal = $(e).parents('.modal');
+
+        if ($(e).find("option:selected").val()) {
+            $(parentModal).find('[data-toggle-on="' + $(e).attr('name') + '"]').show();
+        } else {
+            $(parentModal).find('[data-toggle-on="' + $(e).attr('name') + '"]').hide();
+        }
         $(parentModal).find('[data-depends="' + $(e).attr('name') + '"]').text($(e).find("option:selected").text());
         $(e).change((event) => {
+            if ($(e).find("option:selected").val()) {
+                $(parentModal).find('[data-toggle-on="' + $(e).attr('name') + '"]').show();
+            } else {
+                $(parentModal).find('[data-toggle-on="' + $(e).attr('name') + '"]').hide();
+            }
             $(parentModal).find('[data-depends="' + $(e).attr('name') + '"]').text($(e).find("option:selected").text());
         })
+
     });
 
     $("[data-confirm]").on('click', function (e) {

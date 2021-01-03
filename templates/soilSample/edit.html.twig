@@ -35,11 +35,11 @@
                                     <dt>{% trans %}Plot{% endtrans %}:</dt>
                                     <dd>{{ soilSample.getPlot() }}</dd>
                                     <dt>{% trans %}Sample date{% endtrans %}:</dt>
-                                    <dd>{{ soilSample.getDateSampled().format('d.m.Y') }}</dd>
+                                    <dd>{{ soilSample.getFormatedDateSampled() }}</dd>
                                     <dt>{% trans %}Processed at{% endtrans %}:</dt>
                                     <dd>{{ soilSample.getProcessedAt() }}</dd>
                                     <dt>{% trans %}Process date{% endtrans %}:</dt>
-                                    <dd>{{ soilSample.getDateProcessed().format('d.m.Y') }}</dd>
+                                    <dd>{{ soilSample.getFormatedDateSampled() }}</dd>
                                     <dt>{% trans %}WRB soil class{% endtrans %}:</dt>
                                     <dd>{{ soilSample.getWRBsoilClass() }}</dd>
                                     <dt>{% trans %}Description{% endtrans %}:</dt>

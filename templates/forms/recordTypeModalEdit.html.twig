@@ -65,16 +65,16 @@
                             <tr>
                                 <td data-prototype="{{ form_widget(formRecord.datas.vars.prototype.time)|e }}">
                                     <i class="fa fa-clock-o"></i></td>
-                                <td data-prototype="{{ form_widget(formRecord.datas.vars.prototype.value)|e }}">
+                                <td data-toggle-on="{{ formRecord.unit.vars.full_name }}" data-prototype="{{ form_widget(formRecord.datas.vars.prototype.value)|e }}">
                                     <span data-depends="{{ formRecord.unit.vars.full_name }}"></span>
                                 </td>
-                                <td data-prototype="{{ form_widget(formRecord.datas.vars.prototype.related_value_X)|e }}">
+                                <td data-toggle-on="{{ formRecord.relatedValueXUnit.vars.full_name }}" data-prototype="{{ form_widget(formRecord.datas.vars.prototype.related_value_X)|e }}">
                                     <span data-depends="{{ formRecord.relatedValueXUnit.vars.full_name }}"></span>
                                 </td>
-                                <td data-prototype="{{ form_widget(formRecord.datas.vars.prototype.related_value_Y)|e }}">
+                                <td  data-toggle-on="{{ formRecord.relatedValueYUnit.vars.full_name }}" data-prototype="{{ form_widget(formRecord.datas.vars.prototype.related_value_Y)|e }}">
                                     <span data-depends="{{ formRecord.relatedValueYUnit.vars.full_name }}"></span>
                                 </td>
-                                <td data-prototype="{{ form_widget(formRecord.datas.vars.prototype.related_value_Z)|e }}">
+                                <td data-toggle-on="{{ formRecord.relatedValueZUnit.vars.full_name }}" data-prototype="{{ form_widget(formRecord.datas.vars.prototype.related_value_Z)|e }}">
                                     <span data-depends="{{ formRecord.relatedValueZUnit.vars.full_name }}"></span>
                                 </td>
                                 <td>
@@ -86,16 +86,16 @@
                                 <tr>
                                     <td>
                                         {{ form_widget(formData.time)}}
-                                    <td>
+                                    <td data-toggle-on="{{ formRecord.unit.vars.full_name }}">
                                         {{ form_widget(formData.value, {'type':'number'}) }}
                                     </td>
-                                    <td>
+                                    <td data-toggle-on="{{ formRecord.relatedValueXUnit.vars.full_name }}">
                                         {{ form_widget(formData.related_value_X, {'type':'number'}) }}
                                     </td>
-                                    <td>
+                                    <td data-toggle-on="{{ formRecord.relatedValueYUnit.vars.full_name }}">
                                         {{ form_widget(formData.related_value_Y, {'type':'number'}) }}
                                     </td>
-                                    <td>
+                                    <td data-toggle-on="{{ formRecord.relatedValueZUnit.vars.full_name }}">
                                         {{ form_widget(formData.related_value_Z, {'type':'number'}) }}
                                     </td>
                                     <td>

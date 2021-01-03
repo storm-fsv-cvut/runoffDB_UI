@@ -26,7 +26,7 @@
                         <tr {% if loop.index is odd %}class="color"{% endif %}>
                             <td>{{ soilSample.getId() }}</td>
                             <td>{{ soilSample.getLocality() }}</td>
-                            <td>{{ soilSample.getDateSampled().format('d.m.Y') }}</td>
+                            <td>{{ soilSample.getFormatedDateSampled() }}</td>
                             <td>
                             {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
                              <a class="btn btn-sm btn-primary" href="{{ path('soilSample',{id:soilSample.getId()}) }}"><i class="fa fa-edit"></i></a>
