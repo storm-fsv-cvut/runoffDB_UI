@@ -11,10 +11,12 @@ namespace App\Controller;
 use App\Entity\Measurement;
 use App\Entity\Record;
 use App\Entity\Sequence;
+use App\Form\MeasurementFilterType;
 use App\Form\MeasurementType;
 use App\Form\RecordType;
 use App\Form\SequenceBasicType;
 use App\Form\MeasurementBasicType;
+use App\Form\SoilSampleFilterType;
 use App\Repository\MeasurementRepository;
 use App\Repository\PhenomenonRepository;
 use App\Repository\RecordRepository;
@@ -126,12 +128,15 @@ class MeasurementController extends AbstractController {
      */
     public function list(PaginatorInterface $paginator, MeasurementRepository $measurementRepository, Request $request, MeasurementService $measurementService):Response {
 
+        $filter = $this->createForm(MeasurementFilterType::class);
+        $filter->handleRequest($request);
+
         $pagination = $paginator->paginate(
-            $measurementRepository->getPaginatorQuery(),
+            $measurementRepository->getPaginatorQuery($filter->getData(), $request->get('order','date'), $request->get('direction','DESC')),
             $request->query->getInt('page', 1),
             20
         );
 
-        return $this->render('measurement/list.html.twig', ['pagination' => $pagination]);
+        return $this->render('measurement/list.html.twig', ['pagination' => $pagination,'filter'=>$filter->createView()]);
     }
 }

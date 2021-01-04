@@ -69,6 +69,42 @@ table.overview td.wet {
     color: white;
 }
 
+table.sort-table th .desc:before{
+    margin-right: 5px;
+    content: "\e156";
+    display: inline-block;
+    font-family: "Glyphicons Halflings";
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+table.sort-table th .asc:before{
+    margin-right: 5px;
+    content: "\e155";
+    display: inline-block;
+    font-family: "Glyphicons Halflings";
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+table.sort-table th .sortable:before{
+    margin-right: 5px;
+    content: "\e150";
+    display: inline-block;
+    font-family: "Glyphicons Halflings";
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
 @media (min-width: 768px) {
     .modal-dialog {
         width: 700px;

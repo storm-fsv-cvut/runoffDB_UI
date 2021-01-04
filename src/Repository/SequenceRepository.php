@@ -33,6 +33,8 @@ class SequenceRepository extends ServiceEntityRepository
         $queryBuilder->select('sequence');
         $queryBuilder->innerJoin('sequence.runGroups', 'rg', 'WITH', 'rg.sequence = sequence.id');
         $queryBuilder->innerJoin('rg.runs', 'r', 'WITH', 'r.runGroup = rg.id');
+        $queryBuilder->innerJoin('r.plot', 'p', 'WITH', 'r.plot = p.id');
+        $queryBuilder->innerJoin('p.locality', 'l', 'WITH', 'p.locality = l.id');
         $queryBuilder->andWhere($queryBuilder->expr()->isNull('sequence.deleted'));
         if (isset($filter['crop']) && $filter['crop']) {
             $plots = $this->plotRepository->findBy(['crop'=>$filter['crop']]);

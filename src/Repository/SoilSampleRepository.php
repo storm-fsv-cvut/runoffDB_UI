@@ -20,9 +20,19 @@ class SoilSampleRepository extends ServiceEntityRepository
         parent::__construct($registry, SoilSample::class);
     }
 
-    public function getPaginatorQuery():QueryBuilder {
+    public function getPaginatorQuery(?array $filter, string $order, string $direction):QueryBuilder {
         $queryBuilder = $this->createQueryBuilder('soilSample');
+        $queryBuilder->leftJoin('soilSample.locality', 'l', 'WITH', 'soilSample.locality = l.id');
         $queryBuilder->andWhere($queryBuilder->expr()->isNull('soilSample.deleted'));
+        if (isset($filter['dateSampledFrom']) && $filter['dateSampledFrom']) {
+            $queryBuilder->andWhere($queryBuilder->expr()->gte('soilSample.dateSampled',"'".$filter['dateSampledFrom']->format("Y-m-d")."'"));
+        }
+        if (isset($filter['dateSampledTo']) && $filter['dateSampledTo']) {
+            $queryBuilder->andWhere($queryBuilder->expr()->lte('soilSample.dateSampled',"'".$filter['dateSampledTo']->format("Y-m-d")."'"));
+        }
+        if (isset($filter['locality']) && $filter['locality']) {
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('soilSample.locality',$filter['locality']->getId()));
+        }
         return $queryBuilder;
     }
 

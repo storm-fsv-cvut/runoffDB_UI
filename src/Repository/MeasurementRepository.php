@@ -35,8 +35,22 @@ class MeasurementRepository extends ServiceEntityRepository
     }
 
 
-    public function getPaginatorQuery():QueryBuilder {
-        $queryBuilder = $this->createQueryBuilder('measurement')->orderBy('measurement.id', 'DESC');
+    public function getPaginatorQuery(?array $filter, string $order, string $direction):QueryBuilder {
+        $queryBuilder = $this->createQueryBuilder('measurement');
+        $queryBuilder->leftJoin('measurement.phenomenon', 'p', 'WITH', 'measurement.phenomenon = p.id');
+        $queryBuilder->leftJoin('measurement.locality', 'l', 'WITH', 'measurement.locality = l.id');
+        if (isset($filter['dateFrom']) && $filter['dateFrom']) {
+            $queryBuilder->andWhere($queryBuilder->expr()->gte('measurement.date',"'".$filter['dateFrom']->format("Y-m-d")."'"));
+        }
+        if (isset($filter['dateTo']) && $filter['dateTo']) {
+            $queryBuilder->andWhere($queryBuilder->expr()->lte('measurement.date',"'".$filter['dateTo']->format("Y-m-d")."'"));
+        }
+        if (isset($filter['locality']) && $filter['locality']) {
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('measurement.locality',$filter['locality']->getId()));
+        }
+        if (isset($filter['phenomenon']) && $filter['phenomenon']) {
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('measurement.phenomenon',$filter['phenomenon']->getId()));
+        }
         return $queryBuilder;
     }
 

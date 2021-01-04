@@ -34,33 +34,41 @@ class MeasurementService {
         $measurements = $this->measurementRepository->findAll();
         foreach ($measurements as $measurement) {
             $changed = false;
+            $run = null;
+            $soilSample = null;
+            foreach ($measurement->getRuns() as $run) {
+             break;
+            }
+            foreach ($measurement->getSoilSamples() as $soilSample) {
+                break;
+            }
             if ($measurement->getLocality() === NULL) {
-                if ($measurement->getRun()!=null) {
+                if ($run!=null) {
                     $changed = true;
-                    $measurement->setLocality($measurement->getRun()->getSequence()->getLocality());
-                } elseif ($measurement->getSoilSample()!=null) {
+                    $measurement->setLocality($run->getSequence()->getLocality());
+                } elseif ($soilSample!=null) {
                     $changed = true;
-                    $measurement->setLocality($measurement->getSoilSample()->getLocality());
+                    $measurement->setLocality($soilSample->getLocality());
                 }
             }
 
             if ($measurement->getPlot() === NULL) {
-                if ($measurement->getRun()!=null) {
+                if ($run!=null) {
                     $changed = true;
-                    $measurement->setPlot($measurement->getRun()->getSequence()->getPlot());
-                } elseif ($measurement->getSoilSample()!=null) {
+                    $measurement->setPlot($run->getPlot());
+                } elseif ($soilSample!=null) {
                     $changed = true;
-                    $measurement->setPlot($measurement->getSoilSample()->getPlot());
+                    $measurement->setPlot($soilSample->getPlot());
                 }
             }
 
             if ($measurement->getDate() === NULL) {
-                if ($measurement->getRun()!=null) {
+                if ($run!=null) {
                     $changed = true;
-                    $measurement->setDate($measurement->getRun()->getSequence()->getDate());
-                } elseif ($measurement->getSoilSample()!=null) {
+                    $measurement->setDate($run->getSequence()->getDate());
+                } elseif ($soilSample!=null) {
                     $changed = true;
-                    $measurement->setDate($measurement->getSoilSample()->getDateSampled());
+                    $measurement->setDate($soilSample->getDateSampled());
                 }
             }
             if ($changed) {

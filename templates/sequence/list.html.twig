@@ -29,15 +29,18 @@
         <div class="box box-primary">
             <div class="box-body">
                 {# total items count #}
-                <table class="table table-bordered table-hover table-striped">
+                <table class="table table-bordered table-hover table-striped sort-table">
                     <thead>
                     <tr>
-                        <th>#</th>
-                        <th{% if pagination.isSorted(['sequence.date']) %} class="sorted"{% endif %}>
-                            {{ knp_pagination_sortable(pagination, 'Date', ['sequence.date']) }}
+                        <th>
+                            {{ knp_pagination_sortable(pagination, '#', ['sequence.id']) }}
                         </th>
-                        <th>{% trans %}Locality{% endtrans %}</th>
-                        <th></th>
+                        <th>
+                            {{ knp_pagination_sortable(pagination, 'Date'|trans({}, 'messages'), ['sequence.date']) }}
+                        </th>
+                        <th>
+                            {{ knp_pagination_sortable(pagination, 'Locality'|trans({}, 'messages'), ['l.name']) }}
+                        </th>
                     </tr>
                     </thead>
                     {# table body #}

@@ -15,7 +15,9 @@ use App\Entity\SoilSample;
 use App\Form\MeasurementType;
 use App\Form\RecordType;
 use App\Form\SequenceBasicType;
+use App\Form\SequenceFilterType;
 use App\Form\SoilSampleBasicType;
+use App\Form\SoilSampleFilterType;
 use App\Form\SoilSampleType;
 use App\Repository\MeasurementRepository;
 use App\Repository\PhenomenonRepository;
@@ -158,13 +160,15 @@ class SoilSampleController extends AbstractController {
      */
     public function list(PaginatorInterface $paginator, SoilSampleRepository $soilSampleRepository, Request $request, SoilSampleService $soilSampleService):Response {
 
+        $filter = $this->createForm(SoilSampleFilterType::class);
+        $filter->handleRequest($request);
         $pagination = $paginator->paginate(
-            $soilSampleRepository->getPaginatorQuery(),
+            $soilSampleRepository->getPaginatorQuery($filter->getData(), $request->get('order','date'), $request->get('direction','DESC')),
             $request->query->getInt('page', 1),
             20
         );
 
-        return $this->render('soilSample/list.html.twig', ['pagination' => $pagination]);
+        return $this->render('soilSample/list.html.twig', ['pagination' => $pagination,'filter'=>$filter->createView()]);
     }
 
     /**
