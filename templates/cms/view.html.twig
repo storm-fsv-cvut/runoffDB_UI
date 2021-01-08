@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <!-- Content Header (Page header) -->
+    <section class="content-header container">
+        <h1>
+            {{ cms.getTitle() }}
+        </h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content container">
+        <div class="row">
+            <div class="col-lg-12">
+                {{cms.getContent()|raw}}
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
+{% endblock %}

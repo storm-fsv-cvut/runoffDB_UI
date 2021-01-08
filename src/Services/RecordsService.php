@@ -115,7 +115,7 @@ class RecordsService {
                 $res['error'] = "Invalid file extension";
             } else {
                 $parser = new Csv();
-                $parser->fields = ['time', 'value', 'dimension'];
+                $parser->fields = ['time', 'value', 'related_value_X','related_value_Y','related_value_Z'];
                 $parser->auto($file->getPathname());
                 $res['data'] = $parser->data;
             }

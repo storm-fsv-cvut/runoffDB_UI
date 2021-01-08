@@ -50,7 +50,7 @@ class RecordType extends AbstractType
                 'label'=>'loadDataFile',
                 'mapped'=>false,
                 'required'=>false,
-                'attr'=>['data-validate'=>"/validate-file"]
+                'attr'=>['data-validate'=>"/cs/validate-file"]
             ])
             ->add('save', SubmitType::class,[
                 'attr'=>['class'=>'btn btn-success'],

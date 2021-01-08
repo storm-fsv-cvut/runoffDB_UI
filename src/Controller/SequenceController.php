@@ -70,7 +70,6 @@ class SequenceController extends AbstractController {
      * @Route("/{_locale}/validate-file", name="validateFile")
      */
     public function validateFile(RecordsService $recordsService, Request $request) {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
         $file = $request->files;
         if ($file->get('file')) {
             return $this->json($recordsService->validateDataFile($file->get('file')));

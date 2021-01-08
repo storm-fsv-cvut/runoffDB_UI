@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Cms;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -19,25 +20,34 @@ class CmsRepository extends ServiceEntityRepository
         parent::__construct($registry, Cms::class);
     }
 
-    public function findBySlug(string $slug, string $locale): ?Cms
+    public function findBySlug(string $slug, string $language): ?Cms
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.slug = :slug')
             ->setParameter('slug', $slug)
-            ->andWhere('c.locale = :locale')
-            ->setParameter('locale', $locale)
+            ->andWhere('c.language = :language')
+            ->setParameter('language', $language)
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
 
-    public function findAllByType(string $type = 'tooltip', string $locale = 'cz') {
+    public function findAllByType(string $type = 'tooltip', string $language = 'cz') {
         return $this->createQueryBuilder('c')
             ->andWhere('c.type = :type')
             ->setParameter('type', $type)
-            ->andWhere('c.locale = :locale')
-            ->setParameter('locale', $locale)
+            ->andWhere('c.language = :language')
+            ->setParameter('language', $language)
             ->getQuery()
             ->getArrayResult();
+    }
+
+    public function getPaginatorQuery(?array $filter, string $order, string $direction):QueryBuilder {
+        $queryBuilder = $this->createQueryBuilder('cms');
+        $queryBuilder->select('cms');
+        if (isset($filter['type']) && $filter['type']) {
+            $queryBuilder->andWhere($queryBuilder->expr()->like('cms.type',"'".$filter['type']."'"));
+        }
+        return $queryBuilder;
     }
 }

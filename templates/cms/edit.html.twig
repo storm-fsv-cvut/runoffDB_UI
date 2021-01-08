@@ -3,12 +3,14 @@
 {% block body %}
     <section class="content-header">
         <h1>
-            {{ type }}
+            {{ cms.getType() | trans }}
         </h1>
     </section>
-
     <section class="content container-fluid">
         <div class="box">
+            <div class="box-header">
+                <a class="btn btn-sm btn-primary pull-right" target="_blank" href="{{ path('view_cms',{'slug':cms.getSlug()}) }}"><i class="fa fa-eye"></i></a>
+            </div>
             <div class="box-body">
                 {{ form(form) }}
             </div>

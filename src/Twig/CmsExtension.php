@@ -37,20 +37,20 @@ class CmsExtension extends AbstractExtension {
     }
 
     public function content(string $slug) {
-        $locale = $this->requestStack->getCurrentRequest()->getLocale();
-        $post = $this->cmsRepository->findBySlug($slug, $locale);
+        $language = $this->requestStack->getCurrentRequest()->getLocale();
+        $post = $this->cmsRepository->findBySlug($slug, $language);
         return $post ? $post->getContent() : "";
     }
 
     public function title(string $slug) {
-        $locale = $this->requestStack->getCurrentRequest()->getLocale();
-        $post = $this->cmsRepository->findBySlug($slug, $locale);
+        $language = $this->requestStack->getCurrentRequest()->getLocale();
+        $post = $this->cmsRepository->findBySlug($slug, $language);
         return $post ? $post->getTitle() : "";
     }
 
     public function tooltips() {
-        $locale = $this->requestStack->getCurrentRequest()->getLocale();
-        $tips = $this->cmsRepository->findAllByType('tooltip',$locale);
+        $language = $this->requestStack->getCurrentRequest()->getLocale();
+        $tips = $this->cmsRepository->findAllByType('tooltip',$language);
         return json_encode($tips);
     }
 }

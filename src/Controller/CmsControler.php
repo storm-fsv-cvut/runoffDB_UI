@@ -21,10 +21,9 @@ class CmsControler extends AbstractController {
      */
     function listContent(CmsRepository $cmsRepository, Request $request, PaginatorInterface $paginator) {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
-        $qb = $cmsRepository->createQueryBuilder('cms');
-        $qb->where("cms.type = 'content'");
+
         $pagination = $paginator->paginate(
-            $qb,
+            $cmsRepository->getPaginatorQuery(['type' => 'content'], $request->get('order','id'), $request->get('direction','DESC')),
             $request->query->getInt('page', 1),
             20
         );
@@ -56,6 +55,15 @@ class CmsControler extends AbstractController {
     }
 
     /**
+     * @Route("/{_locale}/page/{slug}", name="view_cms")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    function view(Request $request, CmsRepository $cmsRepository, string $slug) {
+        $cms = $cmsRepository->findBySlug($slug, $request->getLocale());
+        return $this->render('cms/view.html.twig', ['cms'=>$cms]);
+    }
+
+    /**
      * @Route("/{_locale}/cms/edit/{type}/{id}", name="edit_cms")
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
@@ -64,6 +72,7 @@ class CmsControler extends AbstractController {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
 
         if ($id) {
+            $entity = $cmsRepository->find($id);
             $form = $this->createForm(CmsType::class, $cmsRepository->find($id));
         } else {
             $form = $this->createForm(CmsType::class);
@@ -73,6 +82,7 @@ class CmsControler extends AbstractController {
 
         if ($form->isSubmitted() && $form->isValid()) {
             $cms = $form->getData();
+            $cms->setType($type);
             $entityManager->persist($cms);
             $entityManager->flush();
 
@@ -80,7 +90,7 @@ class CmsControler extends AbstractController {
         }
 
         $params['form'] = $form->createView();
-        $params['type'] = $type;
+        $params['cms'] = $entity;
         return $this->render('cms/edit.html.twig', $params);
     }
 

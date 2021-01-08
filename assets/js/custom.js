@@ -136,6 +136,9 @@ $(document).ready(function (e) {
                         });
 
                         $(tr).find('.value').val(data.data[i].value);
+                        $(tr).find('.related_value_X').val(data.data[i].related_value_X);
+                        $(tr).find('.related_value_Y').val(data.data[i].related_value_Y);
+                        $(tr).find('.related_value_Z').val(data.data[i].related_value_Z);
                         $(tr).find('.time').val(data.data[i].time);
 
                     }

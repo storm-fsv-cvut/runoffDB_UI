@@ -15,9 +15,9 @@ class CmsType extends AbstractType
     {
         $builder
             ->add('slug')
-            ->add('locale', ChoiceType::class, [
+            ->add('language', ChoiceType::class, [
                 'choices'=>['cs'=>'cs','en'=>'en'],
-                'label'=>'locale'
+                'label'=>'language'
             ])
             ->add('title')
             ->add('content');

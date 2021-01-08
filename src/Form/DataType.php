@@ -26,17 +26,17 @@ class DataType extends AbstractType {
               ->add('related_value_X', NumberType::class, [
                   'label'=>'related_value_X',
                   'required'=>false,
-                  'attr'=>['class'=>'form-control related_value']
+                  'attr'=>['class'=>'form-control related_value_X']
               ])
           ->add('related_value_Y', NumberType::class, [
               'label'=>'related_value_Y',
               'required'=>false,
-              'attr'=>['class'=>'form-control related_value']
+              'attr'=>['class'=>'form-control related_value_Y']
           ])
           ->add('related_value_Z', NumberType::class, [
               'label'=>'related_value_Z',
               'required'=>false,
-              'attr'=>['class'=>'form-control related_value']
+              'attr'=>['class'=>'form-control related_value_Z']
           ]);
       }
 

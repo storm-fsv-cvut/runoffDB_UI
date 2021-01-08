@@ -3,7 +3,7 @@
 {% block body %}
     <section class="content-header">
         <h1>
-            Tooltips
+            {{ type|trans }}
             <a href="{{ path('edit_cms',{'type':type}) }}" class="btn btn-primary"><i></i> {% trans %}new{% endtrans %}</a>
         </h1>
     </section>
@@ -25,9 +25,11 @@
                             <tr {% if loop.index is odd %}class="color"{% endif %}>
                                 <td>{{ entity.getId() }}</td>
                                 <td>{{ entity.getSlug()}}</td>
-                                <td>{{ entity.getLocale()}}</td>
+                                <td>{{ entity.getLanguage()}}</td>
                                 <td>
                                     <a class="btn btn-sm btn-primary" href="{{ path('edit_cms',{'type':type,'id':entity.getId()}) }}"><i class="fa fa-edit"></i></a>
+                                    <a class="btn btn-sm btn-primary" target="_blank" href="{{ path('view_cms',{'slug':entity.getSlug()}) }}"><i class="fa fa-eye"></i></a>
+
                                 </td>
                             </tr>
                         {% endfor %}
