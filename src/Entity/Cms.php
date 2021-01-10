@@ -41,6 +41,11 @@ class Cms extends BaseEntity
      */
     private $type;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $status;
+
     public function __toString() {
         return $this->getSlug() ?? "";
     }
@@ -106,6 +111,18 @@ class Cms extends BaseEntity
     public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

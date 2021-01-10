@@ -8,6 +8,7 @@
 
 namespace App\Menu;
 
+use App\Repository\CmsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\Matcher\Matcher;
@@ -37,6 +38,10 @@ class MenuBuilder
      * @var RequestStack
      */
     private $requestStack;
+    /**
+     * @var CmsRepository
+     */
+    private $cmsRepository;
 
 
     /**
@@ -45,7 +50,7 @@ class MenuBuilder
      * @param EntityManagerInterface $em
      * @param TranslatorInterface $translator
      */
-    public function __construct(FactoryInterface $factory, EntityManagerInterface $em, TranslatorInterface $translator, RequestStack $requestStack)
+    public function __construct(FactoryInterface $factory, EntityManagerInterface $em, TranslatorInterface $translator, RequestStack $requestStack, CmsRepository $cmsRepository)
     {
         foreach ($em->getMetadataFactory()->getAllMetadata() as $entity) {
             if(in_array('App\Entity\DefinitionEntityInterface',$entity->getReflectionClass()->getInterfaceNames())) {
@@ -56,6 +61,7 @@ class MenuBuilder
         $this->factory = $factory;
         $this->translator = $translator;
         $this->requestStack = $requestStack;
+        $this->cmsRepository = $cmsRepository;
     }
 
     /**
@@ -64,11 +70,15 @@ class MenuBuilder
      */
     public function createAdminMenu(array $options)
     {
+        $pages = $this->cmsRepository->findAllByType('content',$this->requestStack->getCurrentRequest()->getLocale());
         $this->matcher = new Matcher(new RouteVoter($this->requestStack));
         $menu = $this->factory->createItem('root');
         $menu->setChildrenAttribute('class','sidebar-menu tree');
         $menu->setChildrenAttribute('data-widget','tree');
         $menu->addChild($this->translator->trans('Home'), ['route' => 'homepage']);
+        foreach ($pages as $page) {
+            $menu->addChild($page['title'],['route'=>'view_cms','routeParameters'=>['slug'=>$page['slug']]]);
+        }
         $sequences = $menu->addChild($this->translator->trans('sequences'), ['uri' => '#']);
         $sequences->setAttribute('class','treeview');
         $sequences->setChildrenAttribute('class','treeview-menu');

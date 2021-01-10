@@ -8,16 +8,31 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CmsType extends AbstractType
 {
+
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    public function __construct(TranslatorInterface $translator) {
+        $this->translator = $translator;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('status', ChoiceType::class, [
+                'choices'=>['draft'=>$this->translator->trans('draft'),'publish'=>$this->translator->trans('publish')],
+                'label'=>$this->translator->trans('status')
+            ])
             ->add('slug')
             ->add('language', ChoiceType::class, [
                 'choices'=>['cs'=>'cs','en'=>'en'],
-                'label'=>'language'
+                'label'=>$this->translator->trans('language')
             ])
             ->add('title')
             ->add('content');

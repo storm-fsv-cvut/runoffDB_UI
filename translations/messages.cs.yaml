@@ -151,3 +151,10 @@ date to: datum do
 delete prompt: opravdu smazat
 Date sampled from: Datum odběru od
 Date sampled to: Datum odběru do
+Slug: Url
+status: Stav
+Title: Titulek
+Content: Obsah
+language: Jazyk
+draft: koncept
+publish: publikovat
