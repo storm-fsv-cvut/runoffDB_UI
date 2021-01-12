@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ModelRepository")
  */
-class Model
+class Model extends BaseEntity implements DefinitionEntityInterface
 {
     /**
      * @ORM\Id()
@@ -41,6 +41,10 @@ class Model
      */
     private $reference;
 
+    public function __toString(): string {
+        return $this->getName();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -70,6 +74,7 @@ class Model
         return $this;
     }
 
+
     public function getDescriptionEN(): ?string
     {
         return $this->descriptionEN;
@@ -80,6 +85,10 @@ class Model
         $this->descriptionEN = $descriptionEN;
 
         return $this;
+    }
+
+    public function getDescription():?string {
+        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
     public function getHomepage(): ?string
