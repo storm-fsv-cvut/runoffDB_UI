@@ -70,7 +70,6 @@ class MenuBuilder
      */
     public function createAdminMenu(array $options)
     {
-
         $pages = $this->cmsRepository->findAllByType('content',$this->requestStack->getCurrentRequest()->getLocale());
         $this->matcher = new Matcher(new RouteVoter($this->requestStack));
         $menu = $this->factory->createItem('root');
