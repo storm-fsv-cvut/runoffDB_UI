@@ -32,7 +32,7 @@ class CmsRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findAllByType(string $type = 'tooltip', string $language = 'cz', ?string $status = 'publish'):array {
+    public function findAllByType(string $type = 'tooltip', string $language = 'cz', ?string $status = 'published'):array {
         $qb = $this->createQueryBuilder('c')
             ->andWhere('c.type = :type')->setParameter('type', $type)
             ->andWhere('c.language = :language')->setParameter('language', $language);

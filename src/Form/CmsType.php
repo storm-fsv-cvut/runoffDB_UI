@@ -26,7 +26,7 @@ class CmsType extends AbstractType
     {
         $builder
             ->add('status', ChoiceType::class, [
-                'choices'=>['draft'=>$this->translator->trans('draft'),'publish'=>$this->translator->trans('publish')],
+                'choices'=>['draft'=>$this->translator->trans('draft'),'published'=>$this->translator->trans('publish')],
                 'label'=>$this->translator->trans('status')
             ])
             ->add('slug')
