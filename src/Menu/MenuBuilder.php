@@ -121,7 +121,7 @@ class MenuBuilder {
             $cms->addChild($this->translator->trans('Content'), ['route' => 'contents']);
         }
 
-        if ($authChecker->isGranted(EntityVoter::EDIT)) {
+        if ($authChecker->isGranted(EntityVoter::ADMIN)) {
             $setup = $menu->addChild($this->translator->trans('Setup'), ['uri' => '#']);
             $setup->setAttribute('class', 'treeview');
             $setup->setChildrenAttribute('class', 'treeview-menu');
