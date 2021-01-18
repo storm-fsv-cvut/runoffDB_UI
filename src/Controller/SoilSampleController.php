@@ -24,6 +24,7 @@ use App\Repository\PhenomenonRepository;
 use App\Repository\RecordRepository;
 use App\Repository\RunRepository;
 use App\Repository\SoilSampleRepository;
+use App\Security\EntityVoter;
 use App\Services\MeasurementService;
 use App\Services\RecordsService;
 use App\Services\SoilSampleService;
@@ -63,6 +64,7 @@ class SoilSampleController extends AbstractController {
             $newRecordForm = $this->createForm(RecordType::class, new Record());
             $soilSample = $soilSampleService->getSoilSampleById($id);
             $soilSampleForm = $this->createForm(SoilSampleType::class, $soilSample);
+            $this->denyAccessUnlessGranted(EntityVoter::VIEW,$soilSample);
 
             if ($request->isMethod('POST')) {
                 $soilSampleForm->handleRequest($request);
@@ -133,7 +135,7 @@ class SoilSampleController extends AbstractController {
                 'form' => $soilSampleForm->createView(),
             ]);
         } else {
-            $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
+            $this->denyAccessUnlessGranted(EntityVoter::VIEW);
             $form = $this->createForm(SoilSampleBasicType::class, new SoilSample());
 
             if ($request->isMethod('POST')) {
@@ -183,9 +185,9 @@ class SoilSampleController extends AbstractController {
      * @Route("/{_locale}/is-moisture", name="ismoisture")
      */
     public function istmoisture(RecordRepository $recordRepository, SoilSampleRepository $soilSampleRepository, SoilSampleService $soilSampleService, EntityManagerInterface $entityManager, Request $request):Response {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
         if ($request->get('soilSampleId') && $request->get('recordId')) {
             $soilSample = $soilSampleService->getSoilSampleById($request->get('soilSampleId') );
+            $this->denyAccessUnlessGranted(EntityVoter::EDIT,$soilSample);
             $record = $recordRepository->find($request->get('recordId'));
             $soilSample->setMoisture($record);
             $entityManager->persist($soilSample);
@@ -199,9 +201,9 @@ class SoilSampleController extends AbstractController {
      * @Route("/{_locale}/is-texture", name="istexture")
      */
     public function istexture(RecordRepository $recordRepository, SoilSampleRepository $soilSampleRepository, SoilSampleService $soilSampleService, EntityManagerInterface $entityManager, Request $request):Response {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
         if ($request->get('soilSampleId') && $request->get('recordId')) {
             $soilSample = $soilSampleService->getSoilSampleById($request->get('soilSampleId') );
+            $this->denyAccessUnlessGranted(EntityVoter::EDIT,$soilSample);
             $record = $recordRepository->find($request->get('recordId'));
             $soilSample->setTextureRecord($record);
             $entityManager->persist($soilSample);
@@ -214,9 +216,9 @@ class SoilSampleController extends AbstractController {
      * @Route("/{_locale}/is-corg", name="iscorg")
      */
     public function iscorg(RecordRepository $recordRepository, SoilSampleRepository $soilSampleRepository, SoilSampleService $soilSampleService, EntityManagerInterface $entityManager, Request $request):Response {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
         if ($request->get('soilSampleId') && $request->get('recordId')) {
             $soilSample = $soilSampleService->getSoilSampleById($request->get('soilSampleId') );
+            $this->denyAccessUnlessGranted(EntityVoter::EDIT,$soilSample);
             $record = $recordRepository->find($request->get('recordId'));
             $soilSample->setCorg($record);
             $entityManager->persist($soilSample);
@@ -229,9 +231,9 @@ class SoilSampleController extends AbstractController {
      * @Route("/{_locale}/is-bulkDensity", name="isbulkDensity")
      */
     public function isbulkDensity(RecordRepository $recordRepository, SoilSampleRepository $soilSampleRepository, SoilSampleService $soilSampleService, EntityManagerInterface $entityManager, Request $request):Response {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
         if ($request->get('soilSampleId') && $request->get('recordId')) {
             $soilSample = $soilSampleService->getSoilSampleById($request->get('soilSampleId') );
+            $this->denyAccessUnlessGranted(EntityVoter::EDIT,$soilSample);
             $record = $recordRepository->find($request->get('recordId'));
             $soilSample->setBulkDensity($record);
             $entityManager->persist($soilSample);
@@ -244,6 +246,7 @@ class SoilSampleController extends AbstractController {
      * @Route("/{_locale}/soil-samples-overview", name="soilSamplesOverview")
      */
     public function overview(EntityManagerInterface $em, Request $request, SoilSampleService $soilSampleService, SoilSampleRepository $soilSampleRepository, PhenomenonRepository $phenomenonRepository):Response {
+        $this->denyAccessUnlessGranted(EntityVoter::VIEW);
         $soilSamples = $soilSampleRepository->findBy(["deleted"=>null],['dateSampled'=>'ASC']);
         return $this->render('soilSample/overview.html.twig',[
             'soilSamples'=>$soilSamples,

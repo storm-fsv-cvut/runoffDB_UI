@@ -22,6 +22,7 @@ use App\Repository\PhenomenonRepository;
 use App\Repository\RecordRepository;
 use App\Repository\RunRepository;
 use App\Repository\SequenceRepository;
+use App\Security\EntityVoter;
 use App\Services\RecordsService;
 use App\Services\MeasurementService;
 use Doctrine\ORM\EntityManager;
@@ -55,6 +56,7 @@ class MeasurementController extends AbstractController {
         if ($id) {
             $newRecordForm = $this->createForm(RecordType::class, new Record());
             $measurement = $measurementService->getMeasurementById($id);
+            $this->denyAccessUnlessGranted(EntityVoter::VIEW,$measurement);
             $measurementForm = $this->createForm(MeasurementType::class, $measurement);
 
             if ($request->isMethod('POST')) {
@@ -96,7 +98,7 @@ class MeasurementController extends AbstractController {
                 'formMeasurement' => $measurementForm->createView(),
             ]);
         } else {
-            $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
+            $this->denyAccessUnlessGranted(EntityVoter::VIEW);
             $form = $this->createForm(MeasurementType::class, new Measurement());
 
             if ($request->isMethod('POST')) {
@@ -119,6 +121,7 @@ class MeasurementController extends AbstractController {
      * @Route("/{_locale}/remove-measurement", name="remove_measurement")
      */
     public function removeMeasurement(Request $request,MeasurementService $measurementService) {
+        $this->denyAccessUnlessGranted(EntityVoter::EDIT);
         $measurementService->deleteMeasurement($request->get('id'));
         return $this->redirectToRoute('measurements');
     }

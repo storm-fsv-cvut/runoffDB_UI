@@ -28,6 +28,7 @@ use App\Repository\RunGroupRepository;
 use App\Repository\RunRepository;
 use App\Repository\SequenceRepository;
 use App\Repository\UnitRepository;
+use App\Security\EntityVoter;
 use App\Services\MeasurementService;
 use App\Services\RecordsService;
 use App\Services\RunGroupService;
@@ -80,7 +81,6 @@ class SequenceController extends AbstractController {
      * @Route("/{_locale}/israinintensityr", name="israinintensityr")
      */
     public function israinintensityr(RecordRepository $recordRepository, EntityManagerInterface $entityManager, Request $request) {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
         if ($request->get('recordId')) {
             $record = $recordRepository->find($request->get('recordId'));
             foreach ($record->getMeasurement()->getRuns() as $run) {
@@ -97,7 +97,6 @@ class SequenceController extends AbstractController {
      * @Route("/{_locale}/isinitmoisturer", name="isinitmoisturer")
      */
     public function isinitmoisturer(RecordRepository $recordRepository, EntityManagerInterface $entityManager, Request $request) {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
         if ($request->get('recordId')) {
             $record = $recordRepository->find($request->get('recordId'));
             foreach ($record->getMeasurement()->getRuns() as $run) {
@@ -123,7 +122,6 @@ class SequenceController extends AbstractController {
      * @Route("/{_locale}/delete-file", name="deleteFile")
      */
     public function deleteFile(RunRepository $runRepository, Request $request) {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
         $run = $runRepository->find($request->get('runId'));
         $filename = $request->get('filename');
         $run->removeFile($filename);
@@ -148,6 +146,8 @@ class SequenceController extends AbstractController {
                          int $id = null) {
         if ($id) {
             $sequence = $sequenceService->getSequenceById($id);
+            $this->denyAccessUnlessGranted(EntityVoter::VIEW, $sequence);
+
             $sequenceForm = $this->createForm(SequenceType::class, $sequence);
             $newRunForm = $this->createForm(RunType::class, new Run());
             $newRunGroupForm = $this->createForm(RunGroupType::class, new RunGroup());
@@ -264,6 +264,7 @@ class SequenceController extends AbstractController {
                 'header' => $sequenceService->getSequenceHeader($sequence),
                 'runs' => $sequenceService->getRunsArray($sequence),
                 'form' => $sequenceForm->createView(),
+                'sequence' => $sequence,
                 'measurementForm' => $newMesurementForm->createView(),
                 'runForm' => $newRunForm->createView(),
                 'runGroupForm' => $newRunGroupForm->createView(),
@@ -272,7 +273,6 @@ class SequenceController extends AbstractController {
             ]);
 
         } else {
-            $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
             $form = $this->createForm(SequenceBasicType::class, new Sequence());
 
             if ($request->isMethod('POST')) {

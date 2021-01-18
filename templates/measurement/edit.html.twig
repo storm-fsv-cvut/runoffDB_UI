@@ -11,11 +11,13 @@
             <li><a href="#"><i class="fa fa-list"></i> Seznam</a></li>
         </ol>
     </section>
+    {% if (is_granted('edit',measurement)) %}
     {{form_start(formMeasurement)}}
+    {% endif %}
     <section class="content">
         <div class="row">
             <div class="col-md-12 records">
-                {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+                {% if (is_granted('edit',measurement)) %}
                 <div class="row">
                     <div class="col-md-12">
                         <a href="javascript:;" class="btn btn-primary" data-toggle="modal" data-parent="{{ measurement.getId() }}" data-target="#record">{% trans %}add record{% endtrans %}</a>
@@ -53,6 +55,7 @@
                                             {% endfor %}
                                         </h4>
                                         <div class="box-tools pull-right">
+                                            {% if (is_granted('edit',measurement)) %}
                                             <div class="dropdown inline">
                                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                                     <span class="caret"></span>
@@ -66,9 +69,12 @@
                                                     </li>
                                                 </ul>
                                             </div>
+                                            {% endif %}
                                         </div>
                                     </div>
+                                    {% if (is_granted('edit',measurement)) %}
                                     {% include "forms/recordTypeModalEdit.html.twig" %}
+                                    {% endif %}
                                     <div id="record-{{ record.getId() }}" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
                                         <div class="box-body">
                                             <p><i>{{ record.getNoteCZ() }}</i></p>
@@ -94,6 +100,7 @@
                                                         [{{ record.getUnit().getUnit() }}]
                                                     </th>
                                                 </tr>
+                                                {% if (is_granted('viewall',measurement)) %}
                                                 {% for data in record.getData() %}
                                                     <tr>
                                                         <td>{{ data.getFormatedTime() ?? 0 }}</td>
@@ -121,6 +128,7 @@
                                                         <td>{{ data.getValue() }} {{ record.getUnit().getUnit() }}</td>
                                                     </tr>
                                                 {% endfor %}
+                                                {% endif %}
                                             </table>
                                         </div>
                                     </div>
@@ -133,9 +141,10 @@
             </div>
         </div>
     </section>
+    {% if (is_granted('edit',measurement)) %}
     {{form_end(formMeasurement,{'render_rest': false})}}
-
-    {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+    {% endif %}
+    {% if (is_granted('edit',measurement)) %}
         {% include "forms/recordTypeModalNew.html.twig" %}
     {% endif %}
 {% endblock %}

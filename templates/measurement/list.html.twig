@@ -47,11 +47,11 @@
                             <td>{% if measurement.getLocality()!=null %}{{ measurement.getLocality() }}{% endif %}</td>
                             <td>{% if measurement.getDate()!=null %}{{ measurement.getDate().format('d.m.Y') }}{% endif %}</td>
                             <td>
-                                {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+                                {% if (is_granted('edit',measurement)) %}
                                     <a class="btn btn-sm btn-primary" href="{{ path('measurement',{id:measurement.getId()}) }}"><i class="fa fa-edit"></i></a>
                                     <a class="btn btn-sm btn-danger" data-confirm="{% trans %}smazat{% endtrans %}?" href="{{ path('remove_measurement',{id:measurement.getId()}) }}"><i class="fa fa-trash"></i></a>
                                 {% else %}
-                                    <a class="btn btn-sm btn-primary" href="{{ path('measurement',{id:measurement.getId()}) }}"><i class="fa fa-edit"></i></a>
+                                    <a class="btn btn-sm btn-primary" href="{{ path('measurement',{id:measurement.getId()}) }}"><i class="fa fa-eye"></i></a>
                                 {% endif %}
                             </td>
                         </tr>

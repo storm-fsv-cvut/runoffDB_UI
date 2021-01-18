@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {% if (is_granted('admin')) %}
     <section class="content-header">
         <h1>
             {{ class_name }}
@@ -18,5 +19,6 @@
             </div>
         </div>
     </section>
+    {% endif %}
     <!-- /.content -->
 {% endblock %}

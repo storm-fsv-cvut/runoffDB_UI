@@ -63,14 +63,7 @@
     <aside class="main-sidebar">
 
         <section class="sidebar">
-            {% if is_granted('ROLE_ADMIN') %}
                 {{ knp_menu_render('admin') }}
-            {% elseif is_granted('ROLE_EDITOR') %}
-                {{ knp_menu_render('editor') }}
-            {% else %}
-                {{ knp_menu_render('guest') }}
-            {% endif %}
-
         </section>
     </aside>
 

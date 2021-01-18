@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use _HumbugBox01d8f9a04075\Nette\Utils\Strings;
+use App\Security\UserRole;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -103,23 +105,30 @@ class User extends BaseEntity implements UserInterface
      * Returns the roles granted to the user.
      * @return (Role|string)[] The user roles
      */
-    public function getRoles() {
-        //return ['ROLE_ADMIN'];
+    public function getRoles():array {
         return $this->roles;
+    }
+
+    public function isInRole(array $roles):bool {
+        foreach ($this->getRoles() as $role) {
+            if (in_array($role,$roles)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
      * @return string|null The salt
      */
-    public function getSalt() {
+    public function getSalt():?string {
         return null;
     }
 
     /**
      * Removes sensitive data from the user.
      */
-    public function eraseCredentials() {
-        // TODO: Implement eraseCredentials() method.
+    public function eraseCredentials():void {
     }
 
     public function setRoles($roles): self

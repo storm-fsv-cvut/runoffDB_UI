@@ -53,7 +53,7 @@
                                 {{ soilSample.getFormatedDateSampled() }}
                             </td>
                             <td>
-                            {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+                                {% if (is_granted('edit',soilSample)) %}
                              <a class="btn btn-sm btn-primary" href="{{ path('soilSample',{id:soilSample.getId()}) }}"><i class="fa fa-edit"></i></a>
                                 <a class="btn btn-sm btn-danger"  data-confirm="{% trans %}smazat{% endtrans %}?" href="{{ path('remove_soilsample',{id:soilSample.getId()}) }}"><i class="fa fa-trash"></i></a>
                             {% else %}

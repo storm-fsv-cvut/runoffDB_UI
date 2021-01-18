@@ -47,8 +47,9 @@ class SecurityController extends AbstractController
      * @Route("/{_locale}/user/{id}", name="user")
      */
     public function user(UserRepository $userRepository, Request $request, UserPasswordEncoderInterface $encoder, ?int $id = null): Response {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        $form = $this->createForm(UserType::class,$id ? $userRepository->find($id) : NULL);
+        $user = $id ? $userRepository->find($id) : NULL;
+        $this->denyAccessUnlessGranted('edituser',$user);
+        $form = $this->createForm(UserType::class,$user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
@@ -67,7 +68,7 @@ class SecurityController extends AbstractController
      * @Route("/{_locale}/delete-user/{id}", name="delete_user")
      */
     public function deleteUser(UserRepository $userRepository, EntityManagerInterface $entityManager, ?int $id = null): Response {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('admin');
         $user = $userRepository->find($id);
         $entityManager->remove($user);
         $entityManager->flush();
@@ -81,7 +82,7 @@ class SecurityController extends AbstractController
      * @throws \Exception
      */
     function list(EntityManagerInterface $em, Request $request, TranslatorInterface $translator, PaginatorInterface $paginator): Response {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('admin');
         $repo = $em->getRepository(User::class);
         $pagination = $paginator->paginate(
             $repo->createQueryBuilder('e'),

@@ -8,6 +8,7 @@
     </h1>
 </section>
 
+    {% if (is_granted('edit',measurement)) %}
 <section class="content">
     <div class="box box-primary">
         {{form_start(form)}}
@@ -82,6 +83,6 @@
         </div>
     </div>
 </section>
-
+{% endif %}
 
 {% endblock %}

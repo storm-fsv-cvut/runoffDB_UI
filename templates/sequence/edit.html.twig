@@ -17,10 +17,12 @@
     </section>
 
     <section class="content">
+        {% if (is_granted('edit',sequence)) %}
         {{ form_start(form) }}
+        {% endif %}
         <div class="box box-solid">
             <div class="box-header">
-                {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+                {% if (is_granted('edit',sequence)) %}
                     {% include "forms/sequenceTypeModalEdit.html.twig" %}
                 {% endif %}
             </div>
@@ -44,7 +46,7 @@
                     </dl>
                 </div>
             </div>
-            {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+            {% if (is_granted('edit',sequence)) %}
                 <div class="box-footer">
                     <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#runGroupType">
                         {% trans %}add run{% endtrans %}
@@ -67,7 +69,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel box box-solid">
-                                {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+                                {% if (is_granted('edit',sequence)) %}
                                     <div class="box-header">
                                         <div class="box-tools pull-right">
                                             <div class="dropdown">
@@ -80,7 +82,9 @@
                                                     </li>
                                                 </ul>
                                             </div>
+                                            {% if (is_granted('edit',sequence)) %}
                                             {% include "forms/runGroupTypeModalEdit.html.twig" %}
+                                            {% endif %}
                                         </div>
                                     </div>
                                 {% endif %}
@@ -98,7 +102,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+                                {% if (is_granted('edit',sequence)) %}
                                     <div class="box-footer">
                                         <button type="button" class="btn btn-warning btn-sm"  data-toggle="modal" data-target="#run" data-parent="{{ runGroup.getId() }}" tabindex="-1" href="javascript:;">
                                             {% trans %}add plotrun{% endtrans %}
@@ -114,7 +118,7 @@
                                 {% set run =  runForm.vars.value %}
                                 {% set runArray = runs[run.getId() ] %}
                                 <div class="panel box box-solid">
-                                    {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+                                    {% if (is_granted('edit',sequence)) %}
                                         <div class="box-header">
                                             #{{ run.getId() }} - {{ run.getPlot() }}
                                             <div class="box-tools pull-right">
@@ -132,7 +136,9 @@
                                                         </li>
                                                     </ul>
                                                 </div>
+                                                {% if (is_granted('edit',sequence)) %}
                                                 {% include "forms/runTypeModalEdit.html.twig" %}
+                                                {% endif %}
                                             </div>
                                         </div>
                                     {% endif %}
@@ -165,7 +171,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+                                    {% if (is_granted('edit',sequence)) %}
                                         <div class="box-footer">
                                             <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-parent="{{ runArray['id'] }}" data-target="#measurement">
                                                 {% trans %}add measurement{% endtrans %}
@@ -191,7 +197,7 @@
                                         {% set measurementArray = runArray.measurements[formMeasurement.vars.value.getId()] %}
                                         <div class="row">
                                             <div class="col-md-12">
-                                                {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+                                                {% if (is_granted('edit',sequence)) %}
                                                     <h4>
                                                         <div class="dropdown">
                                                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -218,8 +224,9 @@
                                                             <input type="checkbox" {% if measurement.belongsToRun(runFormCheckboxes.vars.value.getId()) %}checked="checked"{% endif %} class="icheckbox_flat-green append-run" data-link="{{ path('addRunMeasurement',{'measurement_id':measurement.getId()}) }}" value="{{ runFormCheckboxes.vars.value.getId() }}">
                                                         {% endfor %}
                                                     </h4>
-
+                                                    {% if (is_granted('edit',sequence)) %}
                                                     {% include "forms/measurementTypeModalEdit.html.twig"  with {'parentId':runArray['id']} %}
+                                                        {% endif %}
                                                 {% endif %}
                                                 <p>
                                                     {% if measurementArray['description'] %}
@@ -248,7 +255,7 @@
                                                                     {% if formMeasurement.vars.value.getIsTimeline() %}
                                                                         <input type="checkbox" class="icheckbox_flat-green" data-toggle="chart" data-target="#chart-run-{{ runGroup.getId() }}" data-run="{{ runArray['id'] }}" data-record="{{ record.getId() }}">
                                                                     {% endif %}
-                                                                    {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+                                                                    {% if (is_granted('edit',sequence)) %}
                                                                         <div class="dropdown inline">
                                                                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                                                                 <span class="caret"></span>
@@ -271,7 +278,7 @@
                                                                     {% endif %}
                                                                 </div>
                                                             </div>
-                                                            {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+                                                            {% if (is_granted('edit',sequence)) %}
                                                                 {% include "forms/recordTypeModalEdit.html.twig" %}
                                                             {% endif %}
                                                             <div id="record-{{ record.getId() }}" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
@@ -302,7 +309,7 @@
                                                                                 [{{ record.getUnit().getUnit() }}]
                                                                             </th>
                                                                         </tr>
-                                                                        {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+                                                                        {% if (is_granted('viewall',sequence)) %}
                                                                         {% for data in record.getData() %}
                                                                             <tr>
                                                                                 <td>{{ data.getFormatedTime() }}</td>
@@ -363,9 +370,11 @@
             </div>
 
         {% endfor %}
+        {% if (is_granted('edit',sequence)) %}
         {{ form_end(form,{'render_rest': false}) }}
+        {% endif %}
     </section>
-    {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+    {% if (is_granted('edit',sequence)) %}
         {% include "forms/measurementTypeModalNew.html.twig" %}
         {% include "forms/recordTypeModalNew.html.twig" %}
         {% include "forms/runTypeModalNew.html.twig" %}
