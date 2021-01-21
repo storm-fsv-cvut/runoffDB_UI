@@ -28,10 +28,10 @@
         <div class="box box-primary">
             <div class="box-body">
                 {# total items count #}
-                <table class="table table-bordered table-hover table-striped sort-table">
+                <table class="table table-bordered table-hover table-striped sort-table table-sm overview">
                     <thead>
                     <tr>
-                        <th>
+                        <th style="width: 100px">
                             {{ knp_pagination_sortable(pagination, '#', ['soilSample.id']) }}
                         </th>
                         <th>
@@ -40,7 +40,11 @@
                         <th>
                             {{ knp_pagination_sortable(pagination, 'Date sampled'|trans({}, 'messages'), ['soilSample.dateSampled']) }}
                         </th>
-                        <th></th>
+                        <th style="width: 40px"></th>
+                        <th style="width: 40px"></th>
+                        <th style="width: 40px"></th>
+                        <th style="width: 160px;text-align: right">
+                        </th>
                     </tr>
                     </thead>
                     {# table body #}
@@ -52,7 +56,14 @@
                             <td>
                                 {{ soilSample.getFormatedDateSampled() }}
                             </td>
-                            <td>
+                            {% for key in ['soilphys','soiltext','soilchem'] %}
+                                {% set phenomenon =  phenomenonRepository.findByKey(key) %}
+                                {% set records =  soilSampleService.getRecordsByPhenomenon(soilSample, key) %}
+                                <td class="hasrecords-{{ records|length }}">
+                                    <span data-toggle="tooltip" title="{{ phenomenon.getName() }}" data-placement="top">{{ records|length }}</span>
+                                </td>
+                            {% endfor %}
+                            <td style="width: 160px;text-align: right">
                                 {% if (is_granted('edit',soilSample)) %}
                              <a class="btn btn-sm btn-primary" href="{{ path('soilSample',{id:soilSample.getId()}) }}"><i class="fa fa-edit"></i></a>
                                 <a class="btn btn-sm btn-danger"  data-confirm="{% trans %}smazat{% endtrans %}?" href="{{ path('remove_soilsample',{id:soilSample.getId()}) }}"><i class="fa fa-trash"></i></a>

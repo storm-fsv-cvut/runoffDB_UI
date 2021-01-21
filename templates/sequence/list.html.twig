@@ -12,15 +12,16 @@
             {{ form_start(filter) }}
             <div class="box-body">
                 <div class="row">
-                    <div class="form-group col-md-3">{{ form_row(filter.dateFrom) }}</div>
-                    <div class="form-group col-md-3">{{ form_row(filter.dateTo) }}</div>
-                    <div class="form-group col-md-3">{{ form_row(filter.plot) }}</div>
-                    <div class="form-group col-md-3">{{ form_row(filter.crop) }}</div>
+                    <div class="form-group col-md-2">{{ form_row(filter.dateFrom) }}</div>
+                    <div class="form-group col-md-2">{{ form_row(filter.dateTo) }}</div>
+                    <div class="form-group col-md-2">{{ form_row(filter.locality) }}</div>
+                    <div class="form-group col-md-2">{{ form_row(filter.organization) }}</div>
+                    <div class="form-group col-md-2">{{ form_row(filter.crop) }}</div>
                 </div>
                 <div class="row">
-                <div class="col-lg-12">
-                    {{ form_row(filter.search) }}
-                </div>
+                    <div class="col-lg-12">
+                        {{ form_row(filter.search) }}
+                    </div>
                 </div>
             </div>
             {{ form_end(filter) }}
@@ -32,7 +33,7 @@
                 <table class="table table-bordered table-hover table-striped sort-table">
                     <thead>
                     <tr>
-                        <th>
+                        <th style="width: 100px">
                             {{ knp_pagination_sortable(pagination, '#', ['sequence.id']) }}
                         </th>
                         <th>
@@ -41,6 +42,14 @@
                         <th>
                             {{ knp_pagination_sortable(pagination, 'Locality'|trans({}, 'messages'), ['l.name']) }}
                         </th>
+                        <th>
+                            {% trans %}Plot{% endtrans %}
+                        </th>
+                        <th>
+                            {% trans %}Crop{% endtrans %}
+                        </th>
+                        <th style="width: 120px">
+                        </th>
                     </tr>
                     </thead>
                     {# table body #}
@@ -48,11 +57,12 @@
                         <tr {% if loop.index is odd %}class="color"{% endif %}>
                             <td>{{ sequence.getId() }}</td>
                             <td>{{ sequence.getDate().format('d.m.Y') }}</td>
-                            <td>{{ sequence.getLocality()}}</td>
-
+                            <td>{{ sequence.getLocality() }}</td>
+                            <td>{{ sequence.listPlots() }}</td>
+                            <td>{{ sequence.listCrops() }}</td>
                             <td>
                                 {% if (is_granted('edit',sequence)) %}
-                                <a class="btn btn-sm btn-primary" href="{{ path('sequence',{id:sequence.getId()}) }}"><i class="fa fa-edit"></i></a>
+                                    <a class="btn btn-sm btn-primary" href="{{ path('sequence',{id:sequence.getId()}) }}"><i class="fa fa-edit"></i></a>
                                     <a class="btn btn-sm btn-danger" data-confirm="{% trans %}smazat{% endtrans %}?" href="{{ path('remove_sequence',{id:sequence.getId()}) }}"><i class="fa fa-trash"></i></a>
                                 {% else %}
                                     <a class="btn btn-sm btn-primary" href="{{ path('sequence',{id:sequence.getId()}) }}"><i class="fa fa-eye"></i></a>

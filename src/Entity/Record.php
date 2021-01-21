@@ -73,6 +73,11 @@ class Record extends BaseEntity {
      */
     private $relatedValueZUnit;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\QualityIndex")
+     */
+    private $qualityIndex;
+
     public function __toString() {
         if ($this->getData()->get(0) != null) {
             if($this->getMeasurement()!=null && $this->getMeasurement()->getLocality()!=null) {
@@ -237,6 +242,18 @@ class Record extends BaseEntity {
     public function setRelatedValueZUnit(?Unit $relatedValueZUnit): self
     {
         $this->relatedValueZUnit = $relatedValueZUnit;
+
+        return $this;
+    }
+
+    public function getQualityIndex(): ?QualityIndex
+    {
+        return $this->qualityIndex;
+    }
+
+    public function setQualityIndex(?QualityIndex $qualityIndex): self
+    {
+        $this->qualityIndex = $qualityIndex;
 
         return $this;
     }

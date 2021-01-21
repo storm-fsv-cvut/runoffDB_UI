@@ -160,7 +160,7 @@ class SoilSampleController extends AbstractController {
     /**
      * @Route("/{_locale}/soil-samples", name="soilSamples")
      */
-    public function list(PaginatorInterface $paginator, SoilSampleRepository $soilSampleRepository, Request $request, SoilSampleService $soilSampleService):Response {
+    public function list(PaginatorInterface $paginator, SoilSampleRepository $soilSampleRepository, Request $request, SoilSampleService $soilSampleService, PhenomenonRepository $phenomenonRepository):Response {
 
         $filter = $this->createForm(SoilSampleFilterType::class);
         $filter->handleRequest($request);
@@ -170,7 +170,12 @@ class SoilSampleController extends AbstractController {
             20
         );
 
-        return $this->render('soilSample/list.html.twig', ['pagination' => $pagination,'filter'=>$filter->createView()]);
+        return $this->render('soilSample/list.html.twig', [
+            'pagination' => $pagination,
+            'filter'=>$filter->createView(),
+            'phenomenonRepository'=>$phenomenonRepository,
+            'soilSampleService' => $soilSampleService
+        ]);
     }
 
     /**

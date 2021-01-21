@@ -314,4 +314,13 @@ class Measurement extends BaseEntity
 
         return $this;
     }
+
+    public function getOrganization(): ?Organization {
+        if ($this->getRuns()) {
+            foreach ($this->getRuns() as $run) {
+                return $run->getSequence()->getSimulator()->getOrganization();
+            }
+        }
+        return null;
+    }
 }

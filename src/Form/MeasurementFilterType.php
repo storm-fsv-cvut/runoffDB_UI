@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Crop;
 use App\Entity\Locality;
+use App\Entity\Organization;
 use App\Entity\Phenomenon;
 use App\Entity\Plot;
 use App\Entity\Record;
@@ -41,6 +42,12 @@ class MeasurementFilterType extends AbstractType {
                 'required' => false,
                 'placeholder' => '',
                 'label' => 'Locality'
+            ])
+            ->add('organization', EntityType::class, [
+                'class' => Organization::class,
+                'required' => false,
+                'placeholder' => '',
+                'label' => 'Organization'
             ])
             ->add('dateFrom', DateType::class, [
                 'placeholder' =>'',

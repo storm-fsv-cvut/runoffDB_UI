@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Crop;
 use App\Entity\Locality;
+use App\Entity\Organization;
 use App\Entity\Plot;
 use App\Entity\Record;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -30,11 +31,17 @@ class SequenceFilterType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-            ->add('plot', EntityType::class, [
-                'class' => Plot::class,
+            ->add('locality', EntityType::class, [
+                'class' => Locality::class,
                 'required' => false,
                 'placeholder' => '',
-                'label' => 'Plot'
+                'label' => 'Locality'
+            ])
+            ->add('organization', EntityType::class, [
+                'class' => Organization::class,
+                'required' => false,
+                'placeholder' => '',
+                'label' => 'Organization'
             ])
             ->add('dateFrom', DateType::class, [
                 'placeholder' =>'',

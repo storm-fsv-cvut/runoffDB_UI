@@ -39,11 +39,18 @@ class MeasurementRepository extends ServiceEntityRepository
         $queryBuilder = $this->createQueryBuilder('measurement');
         $queryBuilder->leftJoin('measurement.phenomenon', 'p', 'WITH', 'measurement.phenomenon = p.id');
         $queryBuilder->leftJoin('measurement.locality', 'l', 'WITH', 'measurement.locality = l.id');
+        $queryBuilder->leftJoin('measurement.runs', 'r');
+        $queryBuilder->leftJoin('r.runGroup', 'rg');
+        $queryBuilder->leftJoin('rg.sequence', 's');
+        $queryBuilder->innerJoin('s.simulator', 'si');
         if (isset($filter['dateFrom']) && $filter['dateFrom']) {
             $queryBuilder->andWhere($queryBuilder->expr()->gte('measurement.date',"'".$filter['dateFrom']->format("Y-m-d")."'"));
         }
         if (isset($filter['dateTo']) && $filter['dateTo']) {
             $queryBuilder->andWhere($queryBuilder->expr()->lte('measurement.date',"'".$filter['dateTo']->format("Y-m-d")."'"));
+        }
+        if (isset($filter['organization']) && $filter['organization']) {
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('si.organization',$filter['organization']->getId()));
         }
         if (isset($filter['locality']) && $filter['locality']) {
             $queryBuilder->andWhere($queryBuilder->expr()->eq('measurement.locality',$filter['locality']->getId()));

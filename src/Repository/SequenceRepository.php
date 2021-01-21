@@ -28,10 +28,11 @@ class SequenceRepository extends ServiceEntityRepository
     }
 
     public function getPaginatorQuery(?array $filter, string $order, string $direction):QueryBuilder {
-        //dump($filter);
         $queryBuilder = $this->createQueryBuilder('sequence');
         $queryBuilder->select('sequence');
         $queryBuilder->innerJoin('sequence.runGroups', 'rg', 'WITH', 'rg.sequence = sequence.id');
+        $queryBuilder->innerJoin('sequence.simulator', 'si', 'WITH', 'sequence.simulator = si.id');
+        $queryBuilder->innerJoin('si.organization', 'org', 'WITH', 'si.organization = org.id');
         $queryBuilder->innerJoin('rg.runs', 'r', 'WITH', 'r.runGroup = rg.id');
         $queryBuilder->innerJoin('r.plot', 'p', 'WITH', 'r.plot = p.id');
         $queryBuilder->innerJoin('p.locality', 'l', 'WITH', 'p.locality = l.id');
@@ -47,13 +48,18 @@ class SequenceRepository extends ServiceEntityRepository
         if (isset($filter['plot']) && $filter['plot']) {
             $queryBuilder->andWhere($queryBuilder->expr()->eq('r.plot',$filter['plot']->getId()));
         }
+        if (isset($filter['locality']) && $filter['locality']) {
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('p.locality',$filter['locality']->getId()));
+        }
+        if (isset($filter['organization']) && $filter['organization']) {
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('si.organization',$filter['organization']->getId()));
+        }
         if (isset($filter['dateFrom']) && $filter['dateFrom']) {
             $queryBuilder->andWhere($queryBuilder->expr()->gte('sequence.date',"'".$filter['dateFrom']->format("Y-m-d")."'"));
         }
         if (isset($filter['dateTo']) && $filter['dateTo']) {
             $queryBuilder->andWhere($queryBuilder->expr()->lte('sequence.date',"'".$filter['dateTo']->format("Y-m-d")."'"));
         }
-
         return $queryBuilder;
     }
 

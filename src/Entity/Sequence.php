@@ -210,6 +210,39 @@ class Sequence extends BaseEntity {
         return $records;
     }
 
+    /**
+     * @return array<Plot>
+     */
+    public function getPlots(): array {
+        $plots = [];
+        if ($this->getRuns()) {
+            foreach ($this->getRuns() as $run) {
+                $plots[] = $run->getPlot();
+            }
+        }
+        return $plots;
+    }
+
+    public function listPlots(): string {
+        $names = [];
+        foreach ($this->getPlots() as $plot) {
+            if (!in_array($plot->getName(), $names)) {
+                $names[] = $plot->getName();
+            }
+        }
+        return implode(", ", $names);
+    }
+
+    public function listCrops(): string {
+        $names = [];
+        foreach ($this->getPlots() as $plot) {
+            if (!in_array($plot->getCrop()->getName(), $names)) {
+                $names[] = $plot->getCrop()->getName();
+            }
+        }
+        return implode(", ", $names);
+    }
+
     public function getLocality(): ?Locality {
         if ($this->getRuns()->count() > 0) {
             return $this->getRuns()->get(0)->getPlot()->getLocality();
@@ -245,13 +278,11 @@ class Sequence extends BaseEntity {
         return $this;
     }
 
-    public function getDeleted(): ?bool
-    {
+    public function getDeleted(): ?bool {
         return $this->deleted;
     }
 
-    public function setDeleted(?bool $deleted): self
-    {
+    public function setDeleted(?bool $deleted): self {
         $this->deleted = $deleted;
 
         return $this;

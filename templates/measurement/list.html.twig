@@ -12,10 +12,11 @@
             {{ form_start(filter) }}
             <div class="box-body">
                 <div class="row">
-                    <div class="form-group col-md-3">{{ form_row(filter.phenomenon) }}</div>
-                    <div class="form-group col-md-3">{{ form_row(filter.locality) }}</div>
-                    <div class="form-group col-md-3">{{ form_row(filter.dateFrom) }}</div>
-                    <div class="form-group col-md-3">{{ form_row(filter.dateTo) }}</div>
+                    <div class="form-group col-md-2">{{ form_row(filter.phenomenon) }}</div>
+                    <div class="form-group col-md-2">{{ form_row(filter.locality) }}</div>
+                    <div class="form-group col-md-2">{{ form_row(filter.organization) }}</div>
+                    <div class="form-group col-md-2">{{ form_row(filter.dateFrom) }}</div>
+                    <div class="form-group col-md-2">{{ form_row(filter.dateTo) }}</div>
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
@@ -32,11 +33,13 @@
                 <table class="table table-bordered table-hover table-striped sort-table">
                     <thead>
                     <tr>
-                        <th>{{ knp_pagination_sortable(pagination, '#', ['measurement.id']) }}</th>
+                        <th style="width: 100px">{{ knp_pagination_sortable(pagination, '#', ['measurement.id']) }}</th>
                         <th>{{ knp_pagination_sortable(pagination, 'Phenomenon'|trans({}, 'messages'), ['p.phenomenonKey']) }}</th>
                         <th>{{ knp_pagination_sortable(pagination, 'Locality'|trans({}, 'messages'), ['l.name']) }}</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'Organization'|trans({}, 'messages'), ['si.id']) }}</th>
                         <th>{{ knp_pagination_sortable(pagination, 'Date'|trans({}, 'messages'), ['measurement.date']) }}</th>
-                        <th></th>
+                        <th style="width: 120px">
+                        </th>
                     </tr>
                     </thead>
                     {# table body #}
@@ -45,6 +48,7 @@
                             <td>{{ measurement.getId() }}</td>
                             <td>{{ measurement.getPhenomenon() }}</td>
                             <td>{% if measurement.getLocality()!=null %}{{ measurement.getLocality() }}{% endif %}</td>
+                            <td>{% if measurement.getOrganization()!=null %}{{ measurement.getOrganization() }}{% endif %}</td>
                             <td>{% if measurement.getDate()!=null %}{{ measurement.getDate().format('d.m.Y') }}{% endif %}</td>
                             <td>
                                 {% if (is_granted('edit',measurement)) %}

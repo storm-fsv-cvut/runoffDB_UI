@@ -87,6 +87,11 @@ class Plot extends BaseEntity implements DefinitionEntityInterface
      */
     private $measurements;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\ProtectionMeasure")
+     */
+    private $protectionMeasure;
+
     public function __toString() {
         return ($this->getLocality() ? $this->getLocality()->getName() : "")." - #".$this->getId()." ".$this->getName();
     }
@@ -302,6 +307,18 @@ class Plot extends BaseEntity implements DefinitionEntityInterface
                 $measurement->setPlot(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getProtectionMeasure(): ?ProtectionMeasure
+    {
+        return $this->protectionMeasure;
+    }
+
+    public function setProtectionMeasure(?ProtectionMeasure $protectionMeasure): self
+    {
+        $this->protectionMeasure = $protectionMeasure;
 
         return $this;
     }

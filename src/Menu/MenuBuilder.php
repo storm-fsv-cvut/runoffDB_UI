@@ -103,7 +103,7 @@ class MenuBuilder {
             $soilSample->addChild($this->translator->trans('add'), ['route' => 'soilSample']);
         }
         $soilSample->addChild($this->translator->trans('list'), ['route' => 'soilSamples']);
-        $soilSample->addChild($this->translator->trans('overview table'), ['route' => 'soilSamplesOverview']);
+        //$soilSample->addChild($this->translator->trans('overview table'), ['route' => 'soilSamplesOverview']);
 
         $measurement = $menu->addChild($this->translator->trans('measurements'), ['uri' => '#']);
         $measurement->setAttribute('class', 'treeview');
@@ -139,52 +139,4 @@ class MenuBuilder {
         return $menu;
     }
 
-    /**
-     * @param array $options
-     * @return \Knp\Menu\ItemInterface
-     */
-    public function createEditorMenu(array $options) {
-        $pages = $this->cmsRepository->findAllByType('content', $this->requestStack->getCurrentRequest()->getLocale());
-        $this->matcher = new Matcher(new UriVoter($_SERVER['REQUEST_URI']));
-        $menu = $this->factory->createItem('root');
-        $menu->setChildrenAttribute('class', 'sidebar-menu tree');
-        $menu->setChildrenAttribute('data-widget', 'tree');
-        $menu->addChild($this->translator->trans('Home'), ['route' => 'homepage']);
-        foreach ($pages as $page) {
-            $menu->addChild($page['title'], ['route' => 'view_cms', 'routeParameters' => ['slug' => $page['slug']]]);
-        }
-        $measurement = $menu->addChild($this->translator->trans('sequences'), ['uri' => '#']);
-        $measurement->setAttribute('class', 'treeview');
-        $measurement->setChildrenAttribute('class', 'treeview-menu');
-        $measurement->addChild($this->translator->trans('add'), ['route' => 'sequence']);
-        $measurement->addChild($this->translator->trans('list'), ['route' => 'sequences']);
-        $setup = $menu->addChild($this->translator->trans('Setup'), ['uri' => '#']);
-        $setup->setAttribute('class', 'treeview');
-        $setup->setChildrenAttribute('class', 'treeview-menu');
-        foreach ($this->definitionEntities as $entity => $entity_name) {
-            $item = $setup->addChild($entity_name, ['route' => 'definition_entities', 'routeParameters' => ['class' => $entity]]);
-            if ($this->matcher->isCurrent($item)) {
-                $item->setCurrent(true);
-            }
-        }
-        return $menu;
-    }
-
-    /**
-     * @param array $options
-     * @return \Knp\Menu\ItemInterface
-     */
-    public function createGuestMenu(array $options) {
-        $pages = $this->cmsRepository->findAllByType('content', $this->requestStack->getCurrentRequest()->getLocale());
-        $this->matcher = new Matcher(new UriVoter($_SERVER['REQUEST_URI']));
-        $menu = $this->factory->createItem('root');
-        $menu->setChildrenAttribute('class', 'sidebar-menu tree');
-        $menu->setChildrenAttribute('data-widget', 'tree');
-        $menu->addChild($this->translator->trans('Home'), ['route' => 'homepage']);
-        foreach ($pages as $page) {
-            $menu->addChild($page['title'], ['route' => 'view_cms', 'routeParameters' => ['slug' => $page['slug']]]);
-        }
-        $menu->addChild($this->translator->trans('sequences'), ['route' => 'sequences']);
-        return $menu;
-    }
 }
