@@ -20,7 +20,7 @@ class ProtectionMeasureRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return ProtectionMeasure[] Returns an array of ProtectionMeasure objects
+    //  * @return ProtectionMeasures[] Returns an array of ProtectionMeasures objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class ProtectionMeasureRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?ProtectionMeasure
+    public function findOneBySomeField($value): ?ProtectionMeasures
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.exampleField = :val')

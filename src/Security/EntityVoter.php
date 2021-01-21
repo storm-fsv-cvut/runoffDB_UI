@@ -17,7 +17,7 @@ class EntityVoter extends Voter {
 
 
     protected function supports($attribute, $subject): bool {
-        if (!in_array($attribute, [self::VIEW, self::EDIT, self::VIEW_ALL])) {
+        if (!in_array($attribute, [self::ADMIN,self::VIEW, self::EDIT, self::VIEW_ALL, self::EDITUSER])) {
             return false;
         }
         return true;

@@ -103,6 +103,7 @@ class MenuBuilder {
             $soilSample->addChild($this->translator->trans('add'), ['route' => 'soilSample']);
         }
         $soilSample->addChild($this->translator->trans('list'), ['route' => 'soilSamples']);
+        $soilSample->addChild($this->translator->trans('overview table'), ['route' => 'soilSamplesOverview']);
         //$soilSample->addChild($this->translator->trans('overview table'), ['route' => 'soilSamplesOverview']);
 
         $measurement = $menu->addChild($this->translator->trans('measurements'), ['uri' => '#']);
@@ -138,5 +139,5 @@ class MenuBuilder {
         }
         return $menu;
     }
-
 }
+

@@ -35,6 +35,8 @@ App\Entity\WrbSoilClass: WRB Soil Class
 App\Entity\Unit: Unit
 App\Entity\Phenomenon: Měřený jev
 App\Entity\Model: Model
+App\Entity\QualityIndex: Ukazatel kvality
+App\Entity\ProtectionMeasure: Protierozní opatření
 Phenomenon: Měřený jev
 sequence: Sekvence
 sequences: Sekvence
