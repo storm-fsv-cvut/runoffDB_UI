@@ -20,7 +20,7 @@ class CmsControler extends AbstractController {
      * @throws \Exception
      */
     function listContent(CmsRepository $cmsRepository, Request $request, PaginatorInterface $paginator) {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
+        $this->denyAccessUnlessGranted('edit');
 
         $pagination = $paginator->paginate(
             $cmsRepository->getPaginatorQuery(['type' => 'content'], $request->get('order','id'), $request->get('direction','DESC')),
@@ -40,7 +40,7 @@ class CmsControler extends AbstractController {
      * @throws \Exception
      */
     function listTooltips(CmsRepository $cmsRepository, Request $request, PaginatorInterface $paginator) {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
+        $this->denyAccessUnlessGranted('edit');
         $qb = $cmsRepository->createQueryBuilder('cms');
         $qb->where("cms.type = 'tooltip'");
         $pagination = $paginator->paginate(
@@ -69,7 +69,7 @@ class CmsControler extends AbstractController {
      * @throws \Exception
      */
     function edit(CmsRepository $cmsRepository, Request $request, EntityManagerInterface $entityManager, string $type, ?int $id = null) {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN','ROLE_EDITOR']);
+        $this->denyAccessUnlessGranted('edit');
 
         if ($id) {
             $entity = $cmsRepository->find($id);
