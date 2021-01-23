@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\QualityIndex;
 use App\Entity\Record;
 use App\Entity\Unit;
 use App\Services\RecordsService;
@@ -34,7 +35,8 @@ class RecordType extends AbstractType
         $builder
             ->add('noteCZ',TextareaType::class,['label'=>'noteCZ','required'=>false])
             ->add('noteEN',TextareaType::class,['label'=>'noteEN','required'=>false])
-            ->add('recordType')
+            ->add('recordType',EntityType::class, ['class'=>\App\Entity\RecordType::class,'label'=>'record type'])
+            ->add('qualityIndex',EntityType::class, ['class'=>QualityIndex::class,'label'=>'quality index', 'placeholder' => ""])
             ->add('parent_id', HiddenType::class, ['mapped' => false])
             ->add('unit', EntityType::class, ['class'=>Unit::class,'label'=>'unit','attr'=>['data-change-label'=>true]])
             ->add('relatedValueXUnit', EntityType::class, ['required'=>false,'class'=>Unit::class, 'placeholder' => "",'label'=>'relatedValueXUnit','attr'=>['data-change-label'=>true]])

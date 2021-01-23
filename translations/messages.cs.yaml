@@ -37,6 +37,9 @@ App\Entity\Phenomenon: Měřený jev
 App\Entity\Model: Model
 App\Entity\QualityIndex: Ukazatel kvality
 App\Entity\ProtectionMeasure: Protierozní opatření
+quality index: Ukazatel kvality
+protection measure: Protierozní opatření
+Protection measure: Protierozní opatření
 Phenomenon: Měřený jev
 sequence: Sekvence
 sequences: Sekvence
