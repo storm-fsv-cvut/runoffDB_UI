@@ -8,6 +8,7 @@
 
 namespace App\Controller;
 
+use App\Form\AgrotechnologyType;
 use App\Form\DefinitionEntityType;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -51,14 +52,21 @@ class DefinitionEntityControler extends AbstractController {
         $this->denyAccessUnlessGranted('admin');
         $class = $request->get('class');
         $dataClass = $id ? $entityManager->find($class, $id) : null;
-        $form = $this->createForm(DefinitionEntityType::class, $dataClass, ['data_class' => $class]);
-        $form->handleRequest($request);
+        if ($class == "App\Entity\Agrotechnology") {
+            $form = $this->createForm(AgrotechnologyType::class, $dataClass, ['data_class' => $class]);
+            $form->handleRequest($request);
+        } else {
+            $form = $this->createForm(DefinitionEntityType::class, $dataClass, ['data_class' => $class]);
+            $form->handleRequest($request);
+        }
+
+        //exit;
         if ($form->isSubmitted() && $form->isValid()) {
             $entity = $form->getData();
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($entity);
             $entityManager->flush();
-            return $this->redirectToRoute('definition_entities', ['class' => $class]);
+            return $this->redirectToRoute('definition_entity', ['id' => $id, 'class' => $class]);
         }
         return $this->render('definitionEntity/edit.html.twig', ['form' => $form->createView(), 'class_name' => $translator->trans($class), 'class' => $class]);
     }

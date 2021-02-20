@@ -144,6 +144,7 @@ class SequenceController extends AbstractController {
                          UnitRepository $unitRepository,
                          RunGroupService $runGroupService,
                          int $id = null) {
+        $user = $this->get('security.token_storage')->getToken()->getUser();
         if ($id) {
             $sequence = $sequenceService->getSequenceById($id);
             $this->denyAccessUnlessGranted(EntityVoter::VIEW, $sequence);
@@ -178,7 +179,8 @@ class SequenceController extends AbstractController {
                 if ($newMesurementForm->isSubmitted()) {
                     $formMeasurementData = $newMesurementForm->getData();
                     $formMeasurementData->addRun($runRepository->find($newMesurementForm->get('parent_id')->getData()));
-                    $entityManager->persist($newMesurementForm->getData());
+                    $formMeasurementData->setUser($user);
+                    $entityManager->persist($formMeasurementData);
                     $entityManager->flush();
                     return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
                 }
@@ -279,6 +281,7 @@ class SequenceController extends AbstractController {
                 $form->handleRequest($request);
                 if ($form->isSubmitted()) {
                     $sequence = $form->getData();
+                    $sequence->setUser($user);
                     $entityManager->persist($sequence);
                     $entityManager->flush();
                     return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);

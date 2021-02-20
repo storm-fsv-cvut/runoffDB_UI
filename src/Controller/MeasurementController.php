@@ -53,6 +53,7 @@ class MeasurementController extends AbstractController {
                          MeasurementRepository $measurementRepository,
                          RecordsService $recordsService,
                          int $id = null):Response {
+        $user = $this->get('security.token_storage')->getToken()->getUser();
         if ($id) {
             $newRecordForm = $this->createForm(RecordType::class, new Record());
             $measurement = $measurementService->getMeasurementById($id);
@@ -106,6 +107,7 @@ class MeasurementController extends AbstractController {
                 if ($form->isSubmitted()) {
                     $measurement = $form->getData();
                     $entityManager->persist($measurement);
+                    $entityManager->setUser($user);
                     $entityManager->flush();
                     return $this->redirectToRoute('measurement', ['id' => $measurement->getId()]);
                 }

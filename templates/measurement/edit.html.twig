@@ -106,26 +106,26 @@
                                                         <td>{{ data.getFormatedTime() ?? 0 }}</td>
                                                         {% if  record.getRelatedValueXUnit() is not same as(null) %}
                                                             {% if data.getRelatedValueX() is not same as(null) %}
-                                                                <td>{{ data.getRelatedValueX() }}</td>
+                                                                <td>{{ data.getRelatedValueXRounded() }}</td>
                                                             {% else %}
                                                                 <td></td>
                                                             {% endif %}
                                                         {% endif %}
                                                         {% if  record.getRelatedValueYUnit() is not same as(null) %}
                                                             {% if data.getRelatedValueY() is not same as(null) %}
-                                                                <td>{{ data.getRelatedValueY() }}</td>
+                                                                <td>{{ data.getRelatedValueYRounded() }}</td>
                                                             {% else %}
                                                                 <td></td>
                                                             {% endif %}
                                                         {% endif %}
                                                         {% if  record.getRelatedValueZUnit() is not same as(null) %}
                                                             {% if data.getRelatedValueZ() is not same as(null) %}
-                                                                <td>{{ data.getRelatedValueZ() }}</td>
+                                                                <td>{{ data.getRelatedValueZRounded() }}</td>
                                                             {% else %}
                                                                 <td></td>
                                                             {% endif %}
                                                         {% endif %}
-                                                        <td>{{ data.getValue() }}</td>
+                                                        <td>{{ data.getValueRounded() }}</td>
                                                     </tr>
                                                 {% endfor %}
                                                 {% endif %}
@@ -150,3 +150,8 @@
 {% endblock %}
 
 
+{% block footer %}
+    <div class="float-right d-none d-sm-inline-block">
+        <b>{{"author"|trans}}:</b> {{measurement.getUser().getFullname()}} - {{measurement.getUser().getOrganization()}}
+    </div>
+{% endblock %}

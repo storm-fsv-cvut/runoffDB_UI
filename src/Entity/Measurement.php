@@ -9,8 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MeasurementRepository")
  */
-class Measurement extends BaseEntity
-{
+class Measurement extends BaseEntity {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -80,6 +79,11 @@ class Measurement extends BaseEntity
      */
     private $locality;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="measurements")
+     */
+    private $user;
+
     public function __toString(): string {
         return $this->getDescription();
     }
@@ -88,66 +92,56 @@ class Measurement extends BaseEntity
         return $this->getLocale() == 'en' ? $this->getNoteEN() : $this->getNoteCZ();
     }
 
-    public function getDescription():?string {
+    public function getDescription(): ?string {
         return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->records = new ArrayCollection();
         $this->runs = new ArrayCollection();
         $this->soilSamples = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
+    public function getId(): ?int {
         return $this->id;
     }
 
 
-    public function getDescriptionCZ(): ?string
-    {
+    public function getDescriptionCZ(): ?string {
         return $this->descriptionCZ;
     }
 
-    public function setDescriptionCZ(?string $descriptionCZ): self
-    {
+    public function setDescriptionCZ(?string $descriptionCZ): self {
         $this->descriptionCZ = $descriptionCZ;
 
         return $this;
     }
 
-    public function getDescriptionEN(): ?string
-    {
+    public function getDescriptionEN(): ?string {
         return $this->descriptionEN;
     }
 
-    public function setDescriptionEN(?string $descriptionEN): self
-    {
+    public function setDescriptionEN(?string $descriptionEN): self {
         $this->descriptionEN = $descriptionEN;
 
         return $this;
     }
 
-    public function getNoteCZ(): ?string
-    {
+    public function getNoteCZ(): ?string {
         return $this->noteCZ;
     }
 
-    public function setNoteCZ(?string $noteCZ): self
-    {
+    public function setNoteCZ(?string $noteCZ): self {
         $this->noteCZ = $noteCZ;
 
         return $this;
     }
 
-    public function getNoteEN(): ?string
-    {
+    public function getNoteEN(): ?string {
         return $this->noteEN;
     }
 
-    public function setNoteEN(?string $noteEN): self
-    {
+    public function setNoteEN(?string $noteEN): self {
         $this->noteEN = $noteEN;
 
         return $this;
@@ -156,13 +150,11 @@ class Measurement extends BaseEntity
     /**
      * @return Collection|Record[]
      */
-    public function getRecords(): Collection
-    {
+    public function getRecords(): Collection {
         return $this->records;
     }
 
-    public function addRecord(Record $record): self
-    {
+    public function addRecord(Record $record): self {
         if (!$this->records->contains($record)) {
             $this->records[] = $record;
             $record->setMeasurement($this);
@@ -171,8 +163,7 @@ class Measurement extends BaseEntity
         return $this;
     }
 
-    public function removeRecord(Record $record): self
-    {
+    public function removeRecord(Record $record): self {
         if ($this->records->contains($record)) {
             $this->records->removeElement($record);
             // set the owning side to null (unless already changed)
@@ -196,13 +187,11 @@ class Measurement extends BaseEntity
     /**
      * @return Collection|Run[]
      */
-    public function getRuns(): Collection
-    {
+    public function getRuns(): Collection {
         return $this->runs;
     }
 
-    public function addRun(Run $run): self
-    {
+    public function addRun(Run $run): self {
         if (!$this->runs->contains($run)) {
             $this->runs[] = $run;
             $this->setDate($run->getDatetime());
@@ -212,8 +201,7 @@ class Measurement extends BaseEntity
         return $this;
     }
 
-    public function removeRun(Run $run): self
-    {
+    public function removeRun(Run $run): self {
         if ($this->runs->contains($run)) {
             $this->runs->removeElement($run);
         }
@@ -224,13 +212,11 @@ class Measurement extends BaseEntity
     /**
      * @return Collection|SoilSample[]
      */
-    public function getSoilSamples(): Collection
-    {
+    public function getSoilSamples(): Collection {
         return $this->soilSamples;
     }
 
-    public function addSoilSample(SoilSample $soilSample): self
-    {
+    public function addSoilSample(SoilSample $soilSample): self {
         if (!$this->soilSamples->contains($soilSample)) {
             $this->soilSamples[] = $soilSample;
             $this->setDate($soilSample->getDateSampled());
@@ -241,8 +227,7 @@ class Measurement extends BaseEntity
         return $this;
     }
 
-    public function removeSoilSample(SoilSample $soilSample): self
-    {
+    public function removeSoilSample(SoilSample $soilSample): self {
         if ($this->soilSamples->contains($soilSample)) {
             $this->soilSamples->removeElement($soilSample);
         }
@@ -250,77 +235,74 @@ class Measurement extends BaseEntity
         return $this;
     }
 
-    public function getPhenomenon(): ?Phenomenon
-    {
+    public function getPhenomenon(): ?Phenomenon {
         return $this->phenomenon;
     }
 
-    public function setPhenomenon(?Phenomenon $phenomenon): self
-    {
+    public function setPhenomenon(?Phenomenon $phenomenon): self {
         $this->phenomenon = $phenomenon;
 
         return $this;
     }
 
-    public function getIsTimeline(): ?bool
-    {
+    public function getIsTimeline(): ?bool {
         return $this->isTimeline;
     }
 
-    public function setIsTimeline(?bool $isTimeline): self
-    {
+    public function setIsTimeline(?bool $isTimeline): self {
         $this->isTimeline = $isTimeline;
 
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
-    {
+    public function getDate(): ?\DateTimeInterface {
         return $this->date;
     }
 
-    public function getFormatedDate(string $format = "d.m.Y"): string
-    {
+    public function getFormatedDate(string $format = "d.m.Y"): string {
         return $this->date ? $this->getDate()->format($format) : '';
     }
 
-    public function setDate(?\DateTimeInterface $date): self
-    {
+    public function setDate(?\DateTimeInterface $date): self {
         $this->date = $date;
 
         return $this;
     }
 
-    public function getPlot(): ?Plot
-    {
+    public function getPlot(): ?Plot {
         return $this->plot;
     }
 
-    public function setPlot(?Plot $plot): self
-    {
+    public function setPlot(?Plot $plot): self {
         $this->plot = $plot;
 
         return $this;
     }
 
-    public function getLocality(): ?Locality
-    {
+    public function getLocality(): ?Locality {
         return $this->locality;
     }
 
-    public function setLocality(?Locality $locality): self
-    {
+    public function setLocality(?Locality $locality): self {
         $this->locality = $locality;
 
         return $this;
     }
 
     public function getOrganization(): ?Organization {
-        if ($this->getRuns()) {
-            foreach ($this->getRuns() as $run) {
-                return $run->getSequence()->getSimulator()->getOrganization();
-            }
+        if ($this->getUser()) {
+            return $this->getUser()->getOrganization();
         }
         return null;
+    }
+
+    public function getUser(): ?User {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self {
+        $this->user = $user;
+
+        return $this;
     }
 }

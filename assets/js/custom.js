@@ -182,16 +182,15 @@ function drawChart(element, ids) {
 
     var options = {
         bar: {groupWidth: "100%"},
-        curveType: 'function',
         seriesType: 'line',
         series: {},
         legend: {position: 'bottom'},
         vAxes: {
             0: {
-                direction: 1
+                direction: -1
             },
             1: {
-                direction: -1
+                direction: 1
             }
         }
     };
@@ -210,10 +209,10 @@ function drawChart(element, ids) {
                                 options.series[i - 1] = {};
                             }
                             if (json[0][i][3] != undefined && json[0][i][3] == 'precip') {
-                                options.series[i - 1].targetAxisIndex = 1;
+                                options.series[i - 1].targetAxisIndex = 0;
                                 options.series[i - 1].backgroundColor = '#66bc40';
                             } else {
-                                options.series[i - 1].targetAxisIndex = 0;
+                                options.series[i - 1].targetAxisIndex = i;
                             }
                             if (json[0][i][2] != undefined) {
                                 options.series[i - 1].type = json[0][i][2];

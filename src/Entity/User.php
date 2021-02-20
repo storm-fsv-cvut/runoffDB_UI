@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use _HumbugBox01d8f9a04075\Nette\Utils\Strings;
 use App\Security\UserRole;
 use Doctrine\ORM\Mapping as ORM;
@@ -43,6 +45,33 @@ class User extends BaseEntity implements UserInterface
      * @ORM\Column(type="json_array")
      */
     private $roles;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Organization", inversedBy="users")
+     */
+    private $organization;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\SoilSample", mappedBy="user")
+     */
+    private $soilSamples;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Measurement", mappedBy="user")
+     */
+    private $measurements;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Sequence", mappedBy="user")
+     */
+    private $sequences;
+
+    public function __construct()
+    {
+        $this->soilSamples = new ArrayCollection();
+        $this->measurements = new ArrayCollection();
+        $this->sequences = new ArrayCollection();
+    }
 
     public function __toString() {
         return $this->getFullname();
@@ -105,7 +134,7 @@ class User extends BaseEntity implements UserInterface
      * Returns the roles granted to the user.
      * @return (Role|string)[] The user roles
      */
-    public function getRoles():array {
+    public function getRoles(): ?array {
         return $this->roles;
     }
 
@@ -134,6 +163,111 @@ class User extends BaseEntity implements UserInterface
     public function setRoles($roles): self
     {
         $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function getOrganization(): ?Organization
+    {
+        return $this->organization;
+    }
+
+    public function setOrganization(?Organization $organization): self
+    {
+        $this->organization = $organization;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|SoilSample[]
+     */
+    public function getSoilSamples(): Collection
+    {
+        return $this->soilSamples;
+    }
+
+    public function addSoilSample(SoilSample $soilSample): self
+    {
+        if (!$this->soilSamples->contains($soilSample)) {
+            $this->soilSamples[] = $soilSample;
+            $soilSample->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSoilSample(SoilSample $soilSample): self
+    {
+        if ($this->soilSamples->contains($soilSample)) {
+            $this->soilSamples->removeElement($soilSample);
+            // set the owning side to null (unless already changed)
+            if ($soilSample->getUser() === $this) {
+                $soilSample->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Measurement[]
+     */
+    public function getMeasurements(): Collection
+    {
+        return $this->measurements;
+    }
+
+    public function addMeasurement(Measurement $measurement): self
+    {
+        if (!$this->measurements->contains($measurement)) {
+            $this->measurements[] = $measurement;
+            $measurement->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMeasurement(Measurement $measurement): self
+    {
+        if ($this->measurements->contains($measurement)) {
+            $this->measurements->removeElement($measurement);
+            // set the owning side to null (unless already changed)
+            if ($measurement->getUser() === $this) {
+                $measurement->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sequence[]
+     */
+    public function getSequences(): Collection
+    {
+        return $this->sequences;
+    }
+
+    public function addSequence(Sequence $sequence): self
+    {
+        if (!$this->sequences->contains($sequence)) {
+            $this->sequences[] = $sequence;
+            $sequence->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSequence(Sequence $sequence): self
+    {
+        if ($this->sequences->contains($sequence)) {
+            $this->sequences->removeElement($sequence);
+            // set the owning side to null (unless already changed)
+            if ($sequence->getUser() === $this) {
+                $sequence->setUser(null);
+            }
+        }
 
         return $this;
     }

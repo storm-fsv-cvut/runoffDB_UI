@@ -118,6 +118,11 @@ class SoilSample extends BaseEntity
      */
     private $deleted;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="soilSamples")
+     */
+    private $user;
+
     public function __toString() {
         return "#".$this->getId()." - ".$this->getLocality();
     }
@@ -379,6 +384,18 @@ class SoilSample extends BaseEntity
     public function setDeleted(?bool $deleted): self
     {
         $this->deleted = $deleted;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

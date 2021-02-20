@@ -71,7 +71,12 @@ class Data extends BaseEntity
 
     public function getValue(): ?string
     {
-        return number_format( $this->value,  2, ".", "" );
+        return $this->value;
+    }
+
+    public function getValueRounded(): ?string
+    {
+        return number_format( $this->value,   $this->getRecord()->getUnit()->getDecimals(), ".", "" );
     }
 
     public function setValue(string $value): self
@@ -93,7 +98,12 @@ class Data extends BaseEntity
 
     public function getRelatedValueX(): ?float
     {
-        return number_format( $this->relatedValueX, 2, ".", "" );
+        return $this->relatedValueX;
+    }
+
+    public function getRelatedValueXRounded(): ?float
+    {
+        return number_format( $this->relatedValueX, $this->getRecord()->getRelatedValueXUnit()->getDecimals(), ".", "" );
     }
 
     public function setRelatedValueX(?float $relatedValueX): self
@@ -105,7 +115,12 @@ class Data extends BaseEntity
 
     public function getRelatedValueY(): ?float
     {
-        return number_format( $this->relatedValueY, 2, ".", "" );
+        return $this->relatedValueY;
+    }
+
+    public function getRelatedValueYRounded(): ?float
+    {
+        return number_format( $this->relatedValueY,  $this->getRecord()->getRelatedValueYUnit()->getDecimals(), ".", "" );
     }
 
     public function setRelatedValueY(?float $relatedValueY): self
@@ -117,7 +132,12 @@ class Data extends BaseEntity
 
     public function getRelatedValueZ(): ?float
     {
-        return number_format( $this->relatedValueZ, 2, ".", "" );
+        return $this->relatedValueZ;
+    }
+
+    public function getRelatedValueZRounded(): ?float
+    {
+        return number_format( $this->relatedValueZ,  $this->getRecord()->getRelatedValueZUnit()->getDecimals(), ".", "" );
     }
 
     public function setRelatedValueZ(?float $relatedValueZ): self

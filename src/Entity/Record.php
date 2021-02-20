@@ -52,6 +52,7 @@ class Record extends BaseEntity {
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Data", mappedBy="record", cascade={"persist","remove"}, orphanRemoval=true)
+     * @ORM\OrderBy({"time" = "ASC"})
      */
     private $datas;
 

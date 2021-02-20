@@ -64,6 +64,11 @@ class Sequence extends BaseEntity {
      */
     private $deleted;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="sequences")
+     */
+    private $user;
+
     public function __toString(): string {
         return $this->getDate()->format("d.m.Y") . " - " . $this->getLocality();
     }
@@ -284,6 +289,18 @@ class Sequence extends BaseEntity {
 
     public function setDeleted(?bool $deleted): self {
         $this->deleted = $deleted;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

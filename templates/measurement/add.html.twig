@@ -8,7 +8,7 @@
     </h1>
 </section>
 
-    {% if (is_granted('edit',measurement)) %}
+    {% if (is_granted('edit')) %}
 <section class="content">
     <div class="box box-primary">
         {{form_start(form)}}

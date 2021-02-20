@@ -1,0 +1,79 @@
+{{ form_start(form) }}
+
+
+<div class="row">
+    <div class="col-md-12">
+        {{ form_row(form.nameCZ) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {{ form_row(form.nameEN) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {{ form_row(form.descriptionCZ) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {{ form_row(form.descriptionEN) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {{ form_row(form.noteCZ) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {{ form_row(form.noteEN) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {{ form_row(form.managTyp) }}
+    </div>
+</div>
+<div class="row">
+<div class="col-md-6">
+    <table class="table table-bordered">
+        <tr>
+            <td data-prototype="{{ form_widget(form.children.tillageSequences.vars.prototype.date)|e }}">
+                <i class="fa fa-clock-o"></i>
+            </td>
+            <td data-prototype="{{ form_widget(form.children.tillageSequences.vars.prototype.operation)|e }}">
+                {{ form.children.tillageSequences.vars.prototype.operation.vars.label}}
+            </td>
+            <td>
+                <a class="text-danger removeRow" style="display: none;"><i class="fa fa-minus"></i></a>
+                <a class="text-success addFormRow"><i class="fa fa-plus"></i></a>
+            </td>
+        </tr>
+        {% for formData in form.children.tillageSequences%}
+            <tr>
+                <td>
+                    {{ form_widget(formData.date) }}
+                </td>
+                <td>
+                    {{ form_widget(formData.operation) }}
+                </td>
+                <td>
+                    <a class="text-danger removeRow" ><i class="fa fa-minus"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        {{ form_row(form.save) }}
+    </div>
+    <div class="col-md-6">
+        <a href="{{ path('definition_entities',{'class':class}) }}" class="btn btn-warning pull-right">{% trans %}cancel{% endtrans %}</a>
+    </div>
+</div>
+{{ form_end(form,{'render_rest': false}) }}

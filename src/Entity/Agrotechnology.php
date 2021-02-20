@@ -40,7 +40,7 @@ class Agrotechnology extends BaseEntity implements DefinitionEntityInterface
     private $descriptionEN;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\TillageSequence", mappedBy="agrotechnology")
+     * @ORM\OneToMany(targetEntity="App\Entity\TillageSequence", mappedBy="agrotechnology", cascade={"persist","remove"})
      */
     private $tillageSequences;
 

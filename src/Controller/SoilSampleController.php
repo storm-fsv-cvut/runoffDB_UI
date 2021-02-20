@@ -59,6 +59,7 @@ class SoilSampleController extends AbstractController {
                          MeasurementRepository $measurementRepository,
                          MeasurementService $measurementService,
                          int $id = null):Response {
+        $user = $this->get('security.token_storage')->getToken()->getUser();
         if ($id) {
             $newMesurementForm = $this->createForm(MeasurementType::class, new Measurement());
             $newRecordForm = $this->createForm(RecordType::class, new Record());
@@ -83,6 +84,7 @@ class SoilSampleController extends AbstractController {
                 if ($newMesurementForm->isSubmitted()) {
                     $measurement = $newMesurementForm->getData();
                     $measurement->addSoilSample($soilSample);
+                    $measurement->setUser($user);
                     $entityManager->persist($measurement);
                     $entityManager->flush();
                     return $this->redirectToRoute('soilSample', ['id' => $soilSample->getId()]);
@@ -142,6 +144,7 @@ class SoilSampleController extends AbstractController {
                 $form->handleRequest($request);
                 if ($form->isSubmitted()) {
                     $soilSample = $form->getData();
+                    $soilSample->setUser($user);
                     if ($soilSample->getPlot()) {
                         $soilSample->setLocality($soilSample->getPlot()->getLocality());
                     }

@@ -59,7 +59,12 @@ class Organization extends BaseEntity implements DefinitionEntityInterface
      */
     private $projects;
 
-    public function __toString() {
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="organization")
+     */
+    private $users;
+
+    public function __toString(): string {
         return $this->getName();
     }
 
@@ -68,6 +73,10 @@ class Organization extends BaseEntity implements DefinitionEntityInterface
         $this->localities = new ArrayCollection();
         $this->simulators = new ArrayCollection();
         $this->projects = new ArrayCollection();
+        $this->sequences = new ArrayCollection();
+        $this->measurements = new ArrayCollection();
+        $this->soilSamples = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -229,6 +238,130 @@ class Organization extends BaseEntity implements DefinitionEntityInterface
         if ($this->projects->contains($project)) {
             $this->projects->removeElement($project);
             $project->removeOrganisation($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sequence[]
+     */
+    public function getSequences(): Collection
+    {
+        return $this->sequences;
+    }
+
+    public function addSequence(Sequence $sequence): self
+    {
+        if (!$this->sequences->contains($sequence)) {
+            $this->sequences[] = $sequence;
+            $sequence->setOrganization($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSequence(Sequence $sequence): self
+    {
+        if ($this->sequences->contains($sequence)) {
+            $this->sequences->removeElement($sequence);
+            // set the owning side to null (unless already changed)
+            if ($sequence->getOrganization() === $this) {
+                $sequence->setOrganization(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Measurement[]
+     */
+    public function getMeasurements(): Collection
+    {
+        return $this->measurements;
+    }
+
+    public function addMeasurement(Measurement $measurement): self
+    {
+        if (!$this->measurements->contains($measurement)) {
+            $this->measurements[] = $measurement;
+            $measurement->setOrganization($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMeasurement(Measurement $measurement): self
+    {
+        if ($this->measurements->contains($measurement)) {
+            $this->measurements->removeElement($measurement);
+            // set the owning side to null (unless already changed)
+            if ($measurement->getOrganization() === $this) {
+                $measurement->setOrganization(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|SoilSample[]
+     */
+    public function getSoilSamples(): Collection
+    {
+        return $this->soilSamples;
+    }
+
+    public function addSoilSample(SoilSample $soilSample): self
+    {
+        if (!$this->soilSamples->contains($soilSample)) {
+            $this->soilSamples[] = $soilSample;
+            $soilSample->setOrganization($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSoilSample(SoilSample $soilSample): self
+    {
+        if ($this->soilSamples->contains($soilSample)) {
+            $this->soilSamples->removeElement($soilSample);
+            // set the owning side to null (unless already changed)
+            if ($soilSample->getOrganization() === $this) {
+                $soilSample->setOrganization(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->setOrganization($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+            // set the owning side to null (unless already changed)
+            if ($user->getOrganization() === $this) {
+                $user->setOrganization(null);
+            }
         }
 
         return $this;
