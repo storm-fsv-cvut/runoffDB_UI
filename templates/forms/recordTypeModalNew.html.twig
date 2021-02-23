@@ -60,12 +60,20 @@
                         {{ form_row(recordForm.sourceRecords) }}
                     </div>
                 </div>
-                <div class="row">
-                    <div class="form-group col-md-12">
+                <div class="row file_upload">
+                    <div class="form-group col-md-4">
                         <label>{% trans %}load data{% endtrans %}</label>
                         {{ form_row(recordForm.datafile) }}
                         <p class="help-block">Max. 32MB, *.csv</p>
                     </div>
+                    <div class="form-group col-md-4">
+                        {{ form_row(recordForm.skip_first_row) }}
+                    </div>
+                    <div class="form-group col-md-4">
+                        {{ form_row(recordForm.first_column_time) }}
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-md-12">
                         <table class="table table-bordered">
                             <tr>

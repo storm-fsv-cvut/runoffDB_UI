@@ -41,6 +41,14 @@ class EntityVoter extends Voter {
                 ])) {
                     return true;
                 }
+
+                if ($user->isInRole([
+                    UserRole::ROLE_INSTITUTION_EDITOR
+                ])) {
+                    if ($subject!=null) {
+                        return $subject->getUser()->getOrganization()->getId() == $user->getOrganization()->getId();
+                    }
+                }
             } else if ($attribute == self::VIEW_ALL) {
                 if ($user->isInRole([
                     UserRole::ROLE_EDITOR,

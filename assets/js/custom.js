@@ -96,10 +96,13 @@ $(document).ready(function (e) {
     $("input:file[data-validate]").change(function () {
         var form = $(this).parents("form");
         var modal = $(this).parents(".modal");
-        var name = this.name;
+        var inputs = $(this).parents(".file_upload").find('[data-name]');
         let data = new FormData(form[0]);
         let data2 = new FormData();
-        data2.append('file', data.get(name));
+        $(inputs).each(function (index, input) {
+            data2.append($(input).data('name'), data.get(input.name));
+        })
+
         $.ajax({
             url: $(this).data('validate'),
             type: 'POST',

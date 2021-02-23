@@ -52,7 +52,19 @@ class RecordType extends AbstractType
                 'label'=>'loadDataFile',
                 'mapped'=>false,
                 'required'=>false,
-                'attr'=>['data-validate'=>"/cs/validate-file"]
+                'attr'=>['data-validate'=>"/cs/validate-file", 'data-name'=>"datafile"]
+            ])
+            ->add('skip_first_row', CheckboxType::class, [
+                'label'=>'skip_first_row',
+                'attr'=>['data-name'=>"skip_first_row"],
+                'mapped'=>false,
+                'required'=>false
+            ])
+            ->add('first_column_time', CheckboxType::class, [
+                'label'=>'first_column_time',
+                'attr'=>['data-name'=>"first_column_time"],
+                'mapped'=>false,
+                'required'=>false
             ])
             ->add('save', SubmitType::class,[
                 'attr'=>['class'=>'btn btn-success'],

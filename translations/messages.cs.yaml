@@ -167,3 +167,7 @@ publish: publikovat
 tillageSequences: Posloupnost operací
 operation: Operace
 author: Autor
+load data: Načíst data
+loadDataFile: Data ze souboru
+skip_first_row: Vynechat první řádek
+first_column_time: První sloupec je čas

@@ -57,12 +57,22 @@
                         {{ form_row(formRecord.sourceRecords) }}
                     </div>
                 </div>
-                <div class="row">
-                    <div class="form-group col-md-12">
+                <div class="row file_upload">
+                    <div class="form-group col-md-4">
                         <label>{% trans %}load data{% endtrans %}</label>
                         {{ form_row(formRecord.datafile) }}
                         <p class="help-block">Max. 32MB, *.csv</p>
                     </div>
+                    <div class="form-group col-md-4">
+                        <label>&nbsp;</label>
+                        {{ form_row(formRecord.skip_first_row) }}
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>&nbsp;</label>
+                        {{ form_row(formRecord.first_column_time) }}
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-md-12">
                         <table class="table table-bordered">
                             <tr>
@@ -74,7 +84,7 @@
                                 <td data-toggle-on="{{ formRecord.relatedValueXUnit.vars.full_name }}" data-prototype="{{ form_widget(formRecord.datas.vars.prototype.related_value_X)|e }}">
                                     <span data-depends="{{ formRecord.relatedValueXUnit.vars.full_name }}"></span>
                                 </td>
-                                <td  data-toggle-on="{{ formRecord.relatedValueYUnit.vars.full_name }}" data-prototype="{{ form_widget(formRecord.datas.vars.prototype.related_value_Y)|e }}">
+                                <td data-toggle-on="{{ formRecord.relatedValueYUnit.vars.full_name }}" data-prototype="{{ form_widget(formRecord.datas.vars.prototype.related_value_Y)|e }}">
                                     <span data-depends="{{ formRecord.relatedValueYUnit.vars.full_name }}"></span>
                                 </td>
                                 <td data-toggle-on="{{ formRecord.relatedValueZUnit.vars.full_name }}" data-prototype="{{ form_widget(formRecord.datas.vars.prototype.related_value_Z)|e }}">
@@ -85,10 +95,10 @@
                                     <a class="text-success addFormRow"><i class="fa fa-plus"></i></a>
                                 </td>
                             </tr>
-                            {% for formData in formRecord.datas%}
+                            {% for formData in formRecord.datas %}
                                 <tr>
                                     <td>
-                                        {{ form_widget(formData.time)}}
+                                        {{ form_widget(formData.time) }}
                                     </td>
                                     <td data-toggle-on="{{ formRecord.unit.vars.full_name }}">
                                         {{ form_widget(formData.value) }}
@@ -103,7 +113,7 @@
                                         {{ form_widget(formData.related_value_Z) }}
                                     </td>
                                     <td>
-                                        <a class="text-danger removeRow" ><i class="fa fa-minus"></i></a>
+                                        <a class="text-danger removeRow"><i class="fa fa-minus"></i></a>
                                     </td>
                                 </tr>
                             {% endfor %}

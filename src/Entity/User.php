@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use _HumbugBox01d8f9a04075\Nette\Utils\Strings;
 use App\Security\UserRole;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -12,8 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User extends BaseEntity implements UserInterface
-{
+class User extends BaseEntity implements UserInterface {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -42,9 +40,9 @@ class User extends BaseEntity implements UserInterface
     private $fullname;
 
     /**
-     * @ORM\Column(type="json_array")
+     * @ORM\Column(type="string", length=255)
      */
-    private $roles;
+    private $role;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Organization", inversedBy="users")
@@ -66,8 +64,7 @@ class User extends BaseEntity implements UserInterface
      */
     private $sequences;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->soilSamples = new ArrayCollection();
         $this->measurements = new ArrayCollection();
         $this->sequences = new ArrayCollection();
@@ -77,72 +74,61 @@ class User extends BaseEntity implements UserInterface
         return $this->getFullname();
     }
 
-    public function getId(): ?int
-    {
+    public function getId(): ?int {
         return $this->id;
     }
 
-    public function getUsername(): ?string
-    {
+    public function getUsername(): ?string {
         return $this->username;
     }
 
-    public function setUsername(string $username): self
-    {
+    public function setUsername(string $username): self {
         $this->username = $username;
 
         return $this;
     }
 
-    public function getPassword(): ?string
-    {
+    public function getPassword(): ?string {
         return $this->password;
     }
 
-    public function setPassword(string $password): self
-    {
+    public function setPassword(string $password): self {
         $this->password = $password;
 
         return $this;
     }
 
-    public function getEmail(): ?string
-    {
+    public function getEmail(): ?string {
         return $this->email;
     }
 
-    public function setEmail(string $email): self
-    {
+    public function setEmail(string $email): self {
         $this->email = $email;
 
         return $this;
     }
 
-    public function getFullname(): ?string
-    {
+    public function getFullname(): ?string {
         return $this->fullname;
     }
 
-    public function setFullname(string $fullname): self
-    {
+    public function setFullname(string $fullname): self {
         $this->fullname = $fullname;
 
         return $this;
     }
 
-    /**
-     * Returns the roles granted to the user.
-     * @return (Role|string)[] The user roles
-     */
     public function getRoles(): ?array {
-        return $this->roles;
+        return [$this->getRole()];
     }
 
-    public function isInRole(array $roles):bool {
-        foreach ($this->getRoles() as $role) {
-            if (in_array($role,$roles)) {
-                return true;
-            }
+    public function getRole(): ?string {
+        return $this->role;
+    }
+
+    public function isInRole(array $roles): bool {
+        if (in_array($this->getRole(), $roles)) {
+            return true;
         }
         return false;
     }
@@ -150,30 +136,27 @@ class User extends BaseEntity implements UserInterface
     /**
      * @return string|null The salt
      */
-    public function getSalt():?string {
+    public function getSalt(): ?string {
         return null;
     }
 
     /**
      * Removes sensitive data from the user.
      */
-    public function eraseCredentials():void {
+    public function eraseCredentials(): void {
     }
 
-    public function setRoles($roles): self
-    {
+    public function setRoles($roles): self {
         $this->roles = $roles;
 
         return $this;
     }
 
-    public function getOrganization(): ?Organization
-    {
+    public function getOrganization(): ?Organization {
         return $this->organization;
     }
 
-    public function setOrganization(?Organization $organization): self
-    {
+    public function setOrganization(?Organization $organization): self {
         $this->organization = $organization;
 
         return $this;
@@ -182,13 +165,11 @@ class User extends BaseEntity implements UserInterface
     /**
      * @return Collection|SoilSample[]
      */
-    public function getSoilSamples(): Collection
-    {
+    public function getSoilSamples(): Collection {
         return $this->soilSamples;
     }
 
-    public function addSoilSample(SoilSample $soilSample): self
-    {
+    public function addSoilSample(SoilSample $soilSample): self {
         if (!$this->soilSamples->contains($soilSample)) {
             $this->soilSamples[] = $soilSample;
             $soilSample->setUser($this);
@@ -197,8 +178,7 @@ class User extends BaseEntity implements UserInterface
         return $this;
     }
 
-    public function removeSoilSample(SoilSample $soilSample): self
-    {
+    public function removeSoilSample(SoilSample $soilSample): self {
         if ($this->soilSamples->contains($soilSample)) {
             $this->soilSamples->removeElement($soilSample);
             // set the owning side to null (unless already changed)
@@ -213,13 +193,11 @@ class User extends BaseEntity implements UserInterface
     /**
      * @return Collection|Measurement[]
      */
-    public function getMeasurements(): Collection
-    {
+    public function getMeasurements(): Collection {
         return $this->measurements;
     }
 
-    public function addMeasurement(Measurement $measurement): self
-    {
+    public function addMeasurement(Measurement $measurement): self {
         if (!$this->measurements->contains($measurement)) {
             $this->measurements[] = $measurement;
             $measurement->setUser($this);
@@ -228,8 +206,7 @@ class User extends BaseEntity implements UserInterface
         return $this;
     }
 
-    public function removeMeasurement(Measurement $measurement): self
-    {
+    public function removeMeasurement(Measurement $measurement): self {
         if ($this->measurements->contains($measurement)) {
             $this->measurements->removeElement($measurement);
             // set the owning side to null (unless already changed)
@@ -244,13 +221,11 @@ class User extends BaseEntity implements UserInterface
     /**
      * @return Collection|Sequence[]
      */
-    public function getSequences(): Collection
-    {
+    public function getSequences(): Collection {
         return $this->sequences;
     }
 
-    public function addSequence(Sequence $sequence): self
-    {
+    public function addSequence(Sequence $sequence): self {
         if (!$this->sequences->contains($sequence)) {
             $this->sequences[] = $sequence;
             $sequence->setUser($this);
@@ -259,8 +234,7 @@ class User extends BaseEntity implements UserInterface
         return $this;
     }
 
-    public function removeSequence(Sequence $sequence): self
-    {
+    public function removeSequence(Sequence $sequence): self {
         if ($this->sequences->contains($sequence)) {
             $this->sequences->removeElement($sequence);
             // set the owning side to null (unless already changed)

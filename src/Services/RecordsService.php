@@ -108,15 +108,26 @@ class RecordsService {
         return [$columns, $modifiedDataset];
     }
 
-    public function validateDataFile(UploadedFile $file): array {
+    public function validateDataFile(UploadedFile $file, bool $skipFirstRow, bool $firstColumnTime): array {
         $res = [];
+
         if ($file->isValid()) {
             if ($file->getClientOriginalExtension() != 'csv') {
                 $res['error'] = "Invalid file extension";
             } else {
-                $parser = new Csv();
-                $parser->fields = ['time', 'value', 'related_value_X','related_value_Y','related_value_Z'];
-                $parser->auto($file->getPathname());
+                $parser = new Csv($file->getPathname());
+                $parser->init(0);
+                if ($firstColumnTime) {
+                   $parser->fields = ['time', 'value', 'related_value_X','related_value_Y','related_value_Z'];
+                } else {
+                   $parser->fields = ['value', 'related_value_X','related_value_Y','related_value_Z'];
+                }
+                if ($skipFirstRow) {
+                    $parser->offset = 1;
+                } else {
+                    $parser->offset = 0;
+                }
+                $parser->auto();
                 $res['data'] = $parser->data;
             }
         } else {

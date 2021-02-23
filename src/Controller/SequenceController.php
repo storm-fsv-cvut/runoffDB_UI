@@ -72,8 +72,10 @@ class SequenceController extends AbstractController {
      */
     public function validateFile(RecordsService $recordsService, Request $request) {
         $file = $request->files;
-        if ($file->get('file')) {
-            return $this->json($recordsService->validateDataFile($file->get('file')));
+        if ($file->get('datafile')) {
+            return $this->json($recordsService->validateDataFile($file->get('datafile'),
+                $request->get('skip_first_row', false) == "1",
+                $request->get('first_column_time', false) == "1"));
         }
     }
 
