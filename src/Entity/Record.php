@@ -79,6 +79,11 @@ class Record extends BaseEntity {
      */
     private $qualityIndex;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isTimeline;
+
     public function __toString() {
         if ($this->getData()->get(0) != null) {
             if($this->getMeasurement()!=null && $this->getMeasurement()->getLocality()!=null) {
@@ -255,6 +260,18 @@ class Record extends BaseEntity {
     public function setQualityIndex(?QualityIndex $qualityIndex): self
     {
         $this->qualityIndex = $qualityIndex;
+
+        return $this;
+    }
+
+    public function getIsTimeline(): ?bool
+    {
+        return $this->isTimeline;
+    }
+
+    public function setIsTimeline(?bool $isTimeline): self
+    {
+        $this->isTimeline = $isTimeline;
 
         return $this;
     }

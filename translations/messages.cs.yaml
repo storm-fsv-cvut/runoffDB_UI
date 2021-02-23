@@ -86,7 +86,7 @@ add measurement: Přidat měření
 add run: Přidat simulaci
 save csv: Uložit csv
 upload data: Uložit data
-isTimeline: Je závislé pouze na čase
+isTimeline: Časová řada
 unit: Měřená veličina
 relatedValueUnit: Veličina dalšího rozměru
 sourceRecords: Zdrojové záznamy

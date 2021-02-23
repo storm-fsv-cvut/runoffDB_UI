@@ -34,6 +34,7 @@ class RecordType extends AbstractType
     {
         $builder
             ->add('noteCZ',TextareaType::class,['label'=>'noteCZ','required'=>false])
+            ->add('isTimeline',CheckboxType::class,['label'=>'isTimeline','required'=>false])
             ->add('noteEN',TextareaType::class,['label'=>'noteEN','required'=>false])
             ->add('recordType',EntityType::class, ['class'=>\App\Entity\RecordType::class,'label'=>'record type'])
             ->add('qualityIndex',EntityType::class, ['class'=>QualityIndex::class,'label'=>'quality index', 'placeholder' => ""])
@@ -56,13 +57,13 @@ class RecordType extends AbstractType
             ])
             ->add('skip_first_row', CheckboxType::class, [
                 'label'=>'skip_first_row',
-                'attr'=>['data-name'=>"skip_first_row"],
+                'attr'=>['data-name'=>"skip_first_row","checked"=>"checked"],
                 'mapped'=>false,
                 'required'=>false
             ])
             ->add('first_column_time', CheckboxType::class, [
                 'label'=>'first_column_time',
-                'attr'=>['data-name'=>"first_column_time"],
+                'attr'=>['data-name'=>"first_column_time","checked"=>"checked"],
                 'mapped'=>false,
                 'required'=>false
             ])

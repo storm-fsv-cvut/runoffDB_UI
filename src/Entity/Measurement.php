@@ -59,11 +59,6 @@ class Measurement extends BaseEntity {
     private $phenomenon;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $isTimeline;
-
-    /**
      * @ORM\Column(type="date", nullable=true)
      */
     private $date;
@@ -241,16 +236,6 @@ class Measurement extends BaseEntity {
 
     public function setPhenomenon(?Phenomenon $phenomenon): self {
         $this->phenomenon = $phenomenon;
-
-        return $this;
-    }
-
-    public function getIsTimeline(): ?bool {
-        return $this->isTimeline;
-    }
-
-    public function setIsTimeline(?bool $isTimeline): self {
-        $this->isTimeline = $isTimeline;
 
         return $this;
     }

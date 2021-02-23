@@ -252,7 +252,7 @@
                                                                     {% endfor %}
                                                                 </h4>
                                                                 <div class="box-tools pull-right">
-                                                                    {% if formMeasurement.vars.value.getIsTimeline() %}
+                                                                    {% if record.getIsTimeline() %}
                                                                         <input type="checkbox" class="icheckbox_flat-green" data-toggle="chart" data-target="#chart-run-{{ runGroup.getId() }}" data-run="{{ runArray['id'] }}" data-record="{{ record.getId() }}">
                                                                     {% endif %}
                                                                     {% if (is_granted('edit',sequence)) %}
