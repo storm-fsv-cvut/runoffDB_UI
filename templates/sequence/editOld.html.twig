@@ -213,17 +213,17 @@
                                                             <th>{% trans %}time{% endtrans %}</th>
                                                             {% if record.getRelatedValueXUnit() is not same as(null) %}
                                                                 <th>{{ record.getRelatedValueXUnit().getName() }}
-                                                                    [{{ record.getRelatedValueXUnit().getUnit() }}]
+                                                                    [{{ record.getRelatedValueXUnit().getUnit()|raw }}]
                                                                 </th>
                                                             {% endif %}
                                                             {% if record.getRelatedValueYUnit() is not same as(null) %}
                                                                 <th>{{ record.getRelatedValueYUnit().getName() }}
-                                                                    [{{ record.getRelatedValueYUnit().getUnit() }}]
+                                                                    [{{ record.getRelatedValueYUnit().getUnit()|raw }}]
                                                                 </th>
                                                             {% endif %}
                                                             {% if record.getRelatedValueZUnit() is not same as(null) %}
                                                                 <th>{{ record.getRelatedValueZUnit().getName() }}
-                                                                    [{{ record.getRelatedValueZUnit().getUnit() }}]
+                                                                    [{{ record.getRelatedValueZUnit().getUnit()|raw }}]
                                                                 </th>
                                                             {% endif %}
                                                             <th>{{ record.getUnit().getName() }}
@@ -235,26 +235,26 @@
                                                                 <td>{{ data.getFormatedTime() }}</td>
                                                                 {% if  record.getRelatedValueXUnit() is not same as(null) %}
                                                                     {% if data.getRelatedValueX() is not same as(null) %}
-                                                                        <td>{{ data.getRelatedValueXRounded() }} {{ record.getRelatedValueXUnit().getUnit() }}</td>
+                                                                        <td>{{ data.getRelatedValueXRounded() }} {{ record.getRelatedValueXUnit().getUnit()|raw }}</td>
                                                                     {% else %}
                                                                         <td></td>
                                                                     {% endif %}
                                                                 {% endif %}
                                                                 {% if  record.getRelatedValueYUnit() is not same as(null) %}
                                                                     {% if data.getRelatedValueY() is not same as(null) %}
-                                                                        <td>{{ data.getRelatedValueYRounded() }} {{ record.getRelatedValueYUnit().getUnit() }}</td>
+                                                                        <td>{{ data.getRelatedValueYRounded() }} {{ record.getRelatedValueYUnit().getUnit()|raw }}</td>
                                                                     {% else %}
                                                                         <td></td>
                                                                     {% endif %}
                                                                 {% endif %}
                                                                 {% if  record.getRelatedValueZUnit() is not same as(null) %}
                                                                     {% if data.getRelatedValueZ() is not same as(null) %}
-                                                                        <td>{{ data.getRelatedValueZRounded() }} {{ record.getRelatedValueZUnit().getUnit() }}</td>
+                                                                        <td>{{ data.getRelatedValueZRounded() }} {{ record.getRelatedValueZUnit().getUnit()|raw }}</td>
                                                                     {% else %}
                                                                         <td></td>
                                                                     {% endif %}
                                                                 {% endif %}
-                                                                <td>{{ data.getValueRounded() }} {{ record.getUnit().getUnit() }}</td>
+                                                                <td>{{ data.getValueRounded() }} {{ record.getUnit().getUnit()|raw }}</td>
                                                             </tr>
                                                         {% endfor %}
                                                     </table>

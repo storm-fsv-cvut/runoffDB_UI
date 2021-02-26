@@ -1,21 +1,22 @@
-
 {% if user %}
-<li class="dropdown user user-menu">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-        <span class="hidden-xs">{{ user.getFullname()}}</span>
-    </a>
-    <ul class="dropdown-menu">
-        <li class="user-footer">
-            <div class="pull-right">
-                <a href="{{ path('app_logout') }}" class="btn btn-default btn-flat">{% trans %}sign out{% endtrans %}</a>
-            </div>
-        </li>
-    </ul>
-</li>
+    <li class="dropdown user user-menu">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <span class="hidden-xs">{{ user.getFullname() }}</span>
+        </a>
+        <ul class="dropdown-menu">
+            <li class="user-footer">
+                <div class="pull-left">
+                    <a href="{{ path('user',{id:user.getId()}) }}" class="btn btn-default btn-flat">{% trans %}edit{% endtrans %}</a>
+                </div>
+                <div class="pull-right">
+                    <a href="{{ path('app_logout') }}"
+                       class="btn btn-default btn-flat">{% trans %}sign out{% endtrans %}</a>
+                </div>
+            </li>
+        </ul>
+    </li>
 {% else %}
     <li class="user">
-
-                    <a href="{{ path('app_login') }}" class="btn btn-primary">{% trans %}sign in{% endtrans %}</a>
-
+        <a href="{{ path('app_login') }}" class="btn btn-primary">{% trans %}sign in{% endtrans %}</a>
     </li>
 {% endif %}

@@ -96,6 +96,10 @@ class Record extends BaseEntity {
         }
     }
 
+    public function getIdAndUnitString():string {
+        return "#".$this->getId()." (".$this->getUnit()->getName().")";
+    }
+
     public function getNote():?string {
         return $this->getLocale() == 'en' ? $this->getNoteEN() : $this->getNoteCZ();
     }

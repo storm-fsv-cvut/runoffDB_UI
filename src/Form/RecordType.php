@@ -46,6 +46,7 @@ class RecordType extends AbstractType
             ->add('sourceRecords', EntityType::class, [
                 'required'=>false,
                 'class'=>Record::class,
+                'choice_label'=>'idAndUnitString',
                 'label'=>'sourceRecords',
                 'multiple'=>true
             ])

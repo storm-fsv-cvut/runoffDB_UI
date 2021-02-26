@@ -169,21 +169,21 @@
                                                         <th>{% trans %}time{% endtrans %}</th>
                                                         {% if record.getRelatedValueXUnit() is not same as(null) %}
                                                             <th>{{ record.getRelatedValueXUnit().getName() }}
-                                                                [{{ record.getRelatedValueXUnit().getUnit() }}]
+                                                                [{{ record.getRelatedValueXUnit().getUnit()|raw }}]
                                                             </th>
                                                         {% endif %}
                                                         {% if record.getRelatedValueYUnit() is not same as(null) %}
                                                             <th>{{ record.getRelatedValueYUnit().getName() }}
-                                                                [{{ record.getRelatedValueYUnit().getUnit() }}]
+                                                                [{{ record.getRelatedValueYUnit().getUnit()|raw }}]
                                                             </th>
                                                         {% endif %}
                                                         {% if record.getRelatedValueZUnit() is not same as(null) %}
                                                             <th>{{ record.getRelatedValueZUnit().getName() }}
-                                                                [{{ record.getRelatedValueZUnit().getUnit() }}]
+                                                                [{{ record.getRelatedValueZUnit().getUnit()|raw }}]
                                                             </th>
                                                         {% endif %}
                                                         <th>{{ record.getUnit().getName() }}
-                                                            [{{ record.getUnit().getUnit() }}]
+                                                            [{{ record.getUnit().getUnit()|raw }}]
                                                         </th>
                                                     </tr>
                                                     {% if (is_granted('viewall',soilSample)) %}

@@ -7,7 +7,7 @@
             <a href="{{ path('definition_entity',{'class':class}) }}" class="btn btn-primary"><i></i> {% trans %}new{% endtrans %}</a>
         </h1>
     </section>
-    {% if (is_granted('admin')) %}
+    {% if (is_granted('edit')) %}
     <section class="content container-fluid">
         <div class="box">
             <div class="box box-primary">
@@ -29,7 +29,7 @@
                                     <a class="btn btn-sm btn-primary"  href="javascript:;" data-toggle="modal" data-target="#{{ entity.getId() }}"><i class="fa fa-eye"></i></a>
                                     {% include 'definitionEntity/viewModal.html.twig' with {'dataClass': entity, 'id':(entity.getId())} %}
                                     <a class="btn btn-sm btn-primary" href="{{ path('definition_entity',{class:class,id:entity.getId()}) }}"><i class="fa fa-edit"></i></a>
-                                    {% if (is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR')) %}
+                                    {% if (is_granted('edit')) %}
                                     <a class="btn btn-sm btn-danger" data-confirm="{% trans %}delete prompt{% endtrans %}?"  href="{{ path('delete_definition_entity',{class:class,id:entity.getId()}) }}"><i class="fa fa-trash"></i></a>
                                     {% endif %}
                                 </td>

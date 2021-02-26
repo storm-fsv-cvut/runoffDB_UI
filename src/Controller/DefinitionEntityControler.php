@@ -28,7 +28,7 @@ class DefinitionEntityControler extends AbstractController {
      * @throws \Exception
      */
     function list(EntityManagerInterface $em, Request $request, TranslatorInterface $translator, PaginatorInterface $paginator): Response {
-        $this->denyAccessUnlessGranted('admin');
+        $this->denyAccessUnlessGranted('edit');
         $class = $request->get('class');
         $params['class'] = $class;
         $params['class_name'] = $translator->trans($class);
@@ -49,7 +49,7 @@ class DefinitionEntityControler extends AbstractController {
      * @Route("/{_locale}/setting/{id}", name="definition_entity")
      */
     function edit(Request $request, EntityManagerInterface $entityManager, TranslatorInterface $translator, ?int $id = null):Response {
-        $this->denyAccessUnlessGranted('admin');
+        $this->denyAccessUnlessGranted('edit');
         $class = $request->get('class');
         $dataClass = $id ? $entityManager->find($class, $id) : null;
         if ($class == "App\Entity\Agrotechnology") {
@@ -75,7 +75,7 @@ class DefinitionEntityControler extends AbstractController {
      * @Route("/{_locale}/settings/delete/{id}", name="delete_definition_entity")
      */
     function delete(Request $request, EntityManagerInterface $entityManager, TranslatorInterface $translator, ?int $id = null) {
-        $this->denyAccessUnlessGranted('admin');
+        $this->denyAccessUnlessGranted('edit');
         $class = $request->get('class');
         $dataClass = $id ? $entityManager->find($class, $id) : null;
         $entityManager->remove($dataClass);
