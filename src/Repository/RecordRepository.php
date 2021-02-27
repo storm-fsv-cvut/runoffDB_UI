@@ -18,5 +18,4 @@ class RecordRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Record::class);
     }
-
 }

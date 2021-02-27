@@ -58,6 +58,7 @@ class SoilSampleController extends AbstractController {
                          EntityManagerInterface $entityManager,
                          MeasurementRepository $measurementRepository,
                          MeasurementService $measurementService,
+                         RecordsService $recordsService,
                          int $id = null):Response {
         $user = $this->get('security.token_storage')->getToken()->getUser();
         if ($id) {
@@ -132,6 +133,7 @@ class SoilSampleController extends AbstractController {
             return $this->render('soilSample/edit.html.twig',[
                 'measurementForm' => $newMesurementForm->createView(),
                 'recordForm' => $newRecordForm->createView(),
+                'recordsService'=>$recordsService,
                 'measurements'=>$soilSampleService->getMeasurementsArray($soilSample),
                 'soilSample'=>$soilSample,
                 'form' => $soilSampleForm->createView(),

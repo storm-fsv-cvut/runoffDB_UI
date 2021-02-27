@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CmsControler extends AbstractController {
@@ -93,5 +94,8 @@ class CmsControler extends AbstractController {
         $params['cms'] = $entity;
         return $this->render('cms/edit.html.twig', $params);
     }
-
+    public function pagesMenu(CmsRepository $cmsRepository, Request $request): Response {
+        $pages = $cmsRepository->findAllByType('content', $request->getLocale());
+        return $this->render('menu/topMenu.html.twig', ['pages' => $pages]);
+    }
 }

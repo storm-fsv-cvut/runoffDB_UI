@@ -114,7 +114,7 @@
                                 {% for formRecord in formMeasurement.records %}
                                     {% set record = formRecord.vars.value %}
                                     <div class="panel box box-solid">
-                                        <div class="box-header">
+                                        <div class="box-header{% if recordsService.isRecordSetAsInSoilSampleContext(record, soilSample)%} bg-warning{% endif %}">
                                             <h4 class="box-title">
                                                 <a data-toggle="collapse" data-parent="#accordion" href="#record-{{ record.getId() }}" class="collapsed" aria-expanded="false">
                                                     {{ record.getUnit().getName() }}

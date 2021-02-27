@@ -44,7 +44,6 @@ class RunGroupType extends AbstractType {
             ->add('precedingPrecipitation', NumberType::class, [
                 'label' => 'precedingPrecipitation',
                 'required'=>false,
-                'required'=>false
             ])
             ->add('noteCZ', TextareaType::class, [
                 'label' => 'noteCZ',

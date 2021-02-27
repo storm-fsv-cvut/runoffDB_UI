@@ -1,0 +1,10 @@
+<ul class="nav navbar-nav">
+    <li class="nav-item d-none d-sm-inline-block">
+        <a href="{{path('homepage')}}" class="nav-link">{{ 'Home'|trans }}</a>
+    </li>
+    {% for page in pages %}
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="{{path(view_cms,{'slug':page.slug})}}" class="nav-link">{{ page.title }}</a>
+        </li>
+    {% endfor %}
+</ul>

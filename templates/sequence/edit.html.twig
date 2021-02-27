@@ -153,9 +153,9 @@
                                                     <dt>{% trans %}ponding_start{% endtrans %}:</dt>
                                                     <dd>{{ runArray['ponding_start'] }}</dd>
                                                     <dt>{% trans %}rain_intensity{% endtrans %}:</dt>
-                                                    <dd>{{ runArray['rain_intensity'] }}</dd>
+                                                    <dd>{{ runArray['rain_intensity']|raw }}</dd>
                                                     <dt>{% trans %}init_moisture{% endtrans %}:</dt>
-                                                    <dd>{{ runArray['init_moisture'] }}</dd>
+                                                    <dd>{{ runArray['init_moisture']|raw }}</dd>
                                                     {{ macros.soilsample('soil_sample_corg', runArray['soil_sample_corg'], runArray['soil_sample_corg_assignment']) }}
                                                     {{ macros.soilsample('soil_sample_bulk', runArray['soil_sample_bulk'], runArray['soil_sample_bulk_assignment']) }}
                                                     {{ macros.soilsample('soil_sample_texture', runArray['soil_sample_texture'], runArray['soil_sample_texture_assignment']) }}
@@ -240,7 +240,7 @@
                                                     {% for formRecord in formMeasurement.records %}
                                                         {% set record = formRecord.vars.value %}
                                                         <div class="panel box box-solid">
-                                                            <div class="box-header">
+                                                            <div class="box-header{% if recordsService.isRecordSetAsInSequenceContext(record, sequence)%} bg-warning{% endif %}" >
                                                                 <h4 class="box-title">
                                                                     <a data-toggle="collapse" data-parent="#accordion" href="#record-{{ record.getId() }}" class="collapsed" aria-expanded="false">
                                                                         {{ record.getUnit().getName()|capitalize }}

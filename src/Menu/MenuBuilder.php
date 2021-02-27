@@ -82,10 +82,6 @@ class MenuBuilder {
         $menu = $this->factory->createItem('root');
         $menu->setChildrenAttribute('class', 'sidebar-menu tree');
         $menu->setChildrenAttribute('data-widget', 'tree');
-        $menu->addChild($this->translator->trans('Home'), ['route' => 'homepage']);
-        foreach ($pages as $page) {
-            $menu->addChild($page['title'], ['route' => 'view_cms', 'routeParameters' => ['slug' => $page['slug']]]);
-        }
 
         $sequences = $menu->addChild($this->translator->trans('sequences'), ['uri' => '#']);
         $sequences->setAttribute('class', 'treeview');
@@ -103,8 +99,6 @@ class MenuBuilder {
             $soilSample->addChild($this->translator->trans('add'), ['route' => 'soilSample']);
         }
         $soilSample->addChild($this->translator->trans('list'), ['route' => 'soilSamples']);
-        $soilSample->addChild($this->translator->trans('overview table'), ['route' => 'soilSamplesOverview']);
-        //$soilSample->addChild($this->translator->trans('overview table'), ['route' => 'soilSamplesOverview']);
 
         $measurement = $menu->addChild($this->translator->trans('measurements'), ['uri' => '#']);
         $measurement->setAttribute('class', 'treeview');

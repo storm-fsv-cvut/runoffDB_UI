@@ -101,7 +101,7 @@ class Sequence extends BaseEntity {
     }
 
     public function getFormatedDate(): string {
-        return $this->date ? $this->getDate()->format("d. m. Y H:i") : ' - ';
+        return $this->date ? $this->getDate()->format("d. m. Y") : ' - ';
     }
 
     public function setDate(?\DateTimeInterface $date): self {

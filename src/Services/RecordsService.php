@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Entity\Record;
+use App\Entity\Sequence;
+use App\Entity\SoilSample;
 use App\Repository\MeasurementRepository;
 use App\Repository\PhenomenonRepository;
 use App\Repository\RecordRepository;
@@ -10,6 +12,7 @@ use App\Repository\SequenceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NoResultException;
 use ParseCsv\Csv;
+use ReflectionClass;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class RecordsService {
@@ -156,5 +159,37 @@ class RecordsService {
         }
         $this->entityManager->remove($record);
         $this->entityManager->flush();
+    }
+
+    public function isRecordSetAsInSequenceContext(Record $record, Sequence $sequence): bool {
+        $reflect = new ReflectionClass($sequence);
+        $reflect->getProperties();
+        if ($sequence->getSurfaceCover()!=null && $sequence->getSurfaceCover()->getId() == $record->getId()) {
+            return true;
+        }
+        foreach ($sequence->getRuns() as $run) {
+            if ($run->getInitMoisture()!=null && $run->getInitMoisture()->getId() == $record->getId()) {
+                return true;
+            }
+            if ($run->getRainIntensity()!=null && $run->getRainIntensity()->getId() == $record->getId()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function isRecordSetAsInSoilSampleContext(Record $record, SoilSample $soilSample) {
+        if ($soilSample->getBulkDensity()!=null && $soilSample->getBulkDensity()->getId() == $record->getId()) {
+            return true;
+        }
+        if ($soilSample->getCorg()!=null && $soilSample->getCorg()->getId() == $record->getId()) {
+            return true;
+        }
+        if ($soilSample->getMoisture()!=null && $soilSample->getMoisture()->getId() == $record->getId()) {
+            return true;
+        }
+        if ($soilSample->getTextureRecord()!=null && $soilSample->getTextureRecord()->getId() == $record->getId()) {
+            return true;
+        }
     }
 }

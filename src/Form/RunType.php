@@ -55,7 +55,7 @@ class RunType extends AbstractType {
             ])
             ->add('soilSampleTexture', EntityType::class, [
                 'class' => SoilSample::class,
-                'label' => "soilSampleBulk",
+                'label' => "soilSampleTexture",
                 'required'=>false,
                 'placeholder' => $this->translator->trans("not set")
             ])
@@ -65,7 +65,7 @@ class RunType extends AbstractType {
             ])
             ->add('soilSampleCorg', EntityType::class, [
                 'class' => SoilSample::class,
-                'label' => "soilSampleBulk",
+                'label' => "soilSampleCorg",
                 'required'=>false,
                 'placeholder' => $this->translator->trans("not set")
             ])
