@@ -14,17 +14,23 @@ class CropErType extends BaseEntity implements DefinitionEntityInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $nameCZ;
+    private ?string $nameCZ;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $nameEN;
+    private ?string $nameEN;
+
+    public function __construct( )
+    {
+        $this->nameCZ = null;
+        $this->nameEN = null;
+    }
 
     public function __toString(): string {
         return $this->getName();

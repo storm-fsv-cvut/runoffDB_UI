@@ -14,32 +14,41 @@ class Model extends BaseEntity implements DefinitionEntityInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\Column(type="string", length=1024, nullable=true)
      */
-    private $descriptionCZ;
+    private ?string $descriptionCZ;
 
     /**
      * @ORM\Column(type="string", length=1024, nullable=true)
      */
-    private $descriptionEN;
+    private ?string $descriptionEN;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $homepage;
+    private ?string $homepage;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $reference;
+    private ?string $reference;
+
+
+    public function __construct() {
+        $this->name = null;
+        $this->descriptionCZ = null;
+        $this->descriptionEN = null;
+        $this->homepage = null;
+        $this->reference = null;
+    }
 
     public function __toString(): string {
         return $this->getName();

@@ -27,11 +27,14 @@ class DefinitionEntityControler extends AbstractController {
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    function list(EntityManagerInterface $em, Request $request, TranslatorInterface $translator, PaginatorInterface $paginator): Response {
+    public function list(EntityManagerInterface $em, Request $request, TranslatorInterface $translator, PaginatorInterface $paginator): Response {
         $this->denyAccessUnlessGranted('edit');
         $class = $request->get('class');
+
+        $params = [];
         $params['class'] = $class;
         $params['class_name'] = $translator->trans($class);
+
         $repo = $em->getRepository($class);
         $builder = $repo->createQueryBuilder('e');
 
@@ -48,10 +51,10 @@ class DefinitionEntityControler extends AbstractController {
     /**
      * @Route("/{_locale}/setting/{id}", name="definition_entity")
      */
-    function edit(Request $request, EntityManagerInterface $entityManager, TranslatorInterface $translator, ?int $id = null):Response {
+    public function edit(Request $request, EntityManagerInterface $entityManager, TranslatorInterface $translator, ?int $id = null):Response {
         $this->denyAccessUnlessGranted('edit');
         $class = $request->get('class');
-        $dataClass = $id ? $entityManager->find($class, $id) : null;
+        $dataClass = $id!==null ? $entityManager->find($class, $id) : null;
         if ($class == "App\Entity\Agrotechnology") {
             $form = $this->createForm(AgrotechnologyType::class, $dataClass, ['data_class' => $class]);
             $form->handleRequest($request);
@@ -60,7 +63,6 @@ class DefinitionEntityControler extends AbstractController {
             $form->handleRequest($request);
         }
 
-        //exit;
         if ($form->isSubmitted() && $form->isValid()) {
             $entity = $form->getData();
             $entityManager = $this->getDoctrine()->getManager();
@@ -74,10 +76,10 @@ class DefinitionEntityControler extends AbstractController {
     /**
      * @Route("/{_locale}/settings/delete/{id}", name="delete_definition_entity")
      */
-    function delete(Request $request, EntityManagerInterface $entityManager, TranslatorInterface $translator, ?int $id = null) {
+    public function delete(Request $request, EntityManagerInterface $entityManager, TranslatorInterface $translator, ?int $id = null) {
         $this->denyAccessUnlessGranted('edit');
         $class = $request->get('class');
-        $dataClass = $id ? $entityManager->find($class, $id) : null;
+        $dataClass = $id!==null ? $entityManager->find($class, $id) : null;
         $entityManager->remove($dataClass);
         $entityManager->flush();
         return $this->redirectToRoute('definition_entities',['class'=>$class]);

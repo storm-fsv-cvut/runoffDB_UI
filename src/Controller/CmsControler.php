@@ -29,6 +29,7 @@ class CmsControler extends AbstractController {
             20
         );
 
+        $params= [];
         $params['type'] = 'content';
         $params['pagination'] = $pagination;
         return $this->render('cms/list.html.twig', $params);
@@ -50,6 +51,7 @@ class CmsControler extends AbstractController {
             20
         );
 
+        $params= [];
         $params['pagination'] = $pagination;
         $params['type'] = 'tooltip';
         return $this->render('cms/list.html.twig', $params);
@@ -72,7 +74,7 @@ class CmsControler extends AbstractController {
     function edit(CmsRepository $cmsRepository, Request $request, EntityManagerInterface $entityManager, string $type, ?int $id = null) {
         $this->denyAccessUnlessGranted('edit');
 
-        if ($id) {
+        if ($id!==null) {
             $entity = $cmsRepository->find($id);
             $form = $this->createForm(CmsType::class, $cmsRepository->find($id));
         } else {
@@ -90,8 +92,9 @@ class CmsControler extends AbstractController {
             return $this->redirectToRoute($type.'s');
         }
 
+        $params= [];
         $params['form'] = $form->createView();
-        $params['cms'] = $entity;
+        $params['cms'] = $entity ?? null;
         return $this->render('cms/edit.html.twig', $params);
     }
     public function pagesMenu(CmsRepository $cmsRepository, Request $request): Response {

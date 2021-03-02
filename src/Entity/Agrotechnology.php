@@ -1,11 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AgrotechnologyRepository")
@@ -17,63 +17,74 @@ class Agrotechnology extends BaseEntity implements DefinitionEntityInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $nameCZ;
+    private ?string $nameCZ;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $nameEN;
+    private ?string $nameEN;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $descriptionCZ;
+    private ?string $descriptionCZ;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $descriptionEN;
+    private ?string $descriptionEN;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\TillageSequence", mappedBy="agrotechnology", cascade={"persist","remove"})
      */
-    private $tillageSequences;
+    private Collection $tillageSequences;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $managTyp;
+    private ?string $managTyp;
 
     /**
      * @ORM\Column(type="string", length=500, nullable=true)
      */
-    private $noteCZ;
+    private ?string $noteCZ;
 
     /**
      * @ORM\Column(type="string", length=500, nullable=true)
      */
-    private $noteEN;
-
-    public function __toString(): string {
-        return $this->getName();
-    }
-
-    public function getName():?string {
-        return $this->getLocale() == 'en' ? $this->getNameEN() : $this->getNameCZ();
-    }
-
-    public function getDescription():?string {
-        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
-    }
+    private ?string $noteEN;
 
     public function __construct()
     {
+        $this->nameCZ = null;
+        $this->nameEN = null;
+        $this->descriptionCZ = null;
+        $this->descriptionEN = null;
+        $this->managTyp = null;
+        $this->noteCZ = null;
+        $this->noteEN = null;
         $this->tillageSequences = new ArrayCollection();
+    }
+
+
+    public function __toString(): string
+    {
+        return $this->getName();
+    }
+
+    public function getName(): ?string
+    {
+        return $this->getLocale() == 'en' ? $this->getNameEN() : $this->getNameCZ();
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
     public function getId(): ?int

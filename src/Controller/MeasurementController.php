@@ -29,6 +29,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -38,7 +39,7 @@ class MeasurementController extends AbstractController {
     /**
      * @Route("/{_locale}/measurement/generate-details", name="measurementaGenerateDetails")
      */
-    public function fillDetails(MeasurementService $measurementService) {
+    public function fillDetails(MeasurementService $measurementService):void {
         $measurementService->generateDetails();
     }
 
@@ -53,8 +54,11 @@ class MeasurementController extends AbstractController {
                          MeasurementRepository $measurementRepository,
                          RecordsService $recordsService,
                          int $id = null):Response {
+        if ($this->get('security.token_storage')->getToken()===null) {
+            throw new \Exception("User token is null");
+        }
         $user = $this->get('security.token_storage')->getToken()->getUser();
-        if ($id) {
+        if ($id!==null) {
             $newRecordForm = $this->createForm(RecordType::class, new Record());
             $measurement = $measurementService->getMeasurementById($id);
             $this->denyAccessUnlessGranted(EntityVoter::VIEW,$measurement);
@@ -81,7 +85,7 @@ class MeasurementController extends AbstractController {
                     }
 
                     $file = $newRecordForm->get('datafile')->getData();
-                    if ($file) {
+                    if ($file!==null) {
                         $measurementService->uploadFile($file, $measurement);
                     }
                     $entityManager->flush();
@@ -90,7 +94,7 @@ class MeasurementController extends AbstractController {
             }
             if ($request->get('delete_record')) {
                 $recordsService->deleteRecord($request->get('delete_record'));
-                return $this->redirectToRoute('measurement', ['id' => $measurement->getId()]);
+                return $this->redirectToRoute('measurement', ['id' => $measurement ? $measurement->getId() : null]);
             }
 
             return $this->render('measurement/edit.html.twig',[
@@ -106,8 +110,8 @@ class MeasurementController extends AbstractController {
                 $form->handleRequest($request);
                 if ($form->isSubmitted()) {
                     $measurement = $form->getData();
+                    $measurement->setUser($user);
                     $entityManager->persist($measurement);
-                    $entityManager->setUser($user);
                     $entityManager->flush();
                     return $this->redirectToRoute('measurement', ['id' => $measurement->getId()]);
                 }
@@ -122,7 +126,7 @@ class MeasurementController extends AbstractController {
     /**
      * @Route("/{_locale}/remove-measurement", name="remove_measurement")
      */
-    public function removeMeasurement(Request $request,MeasurementService $measurementService) {
+    public function removeMeasurement(Request $request,MeasurementService $measurementService): RedirectResponse {
         $this->denyAccessUnlessGranted(EntityVoter::EDIT);
         $measurementService->deleteMeasurement($request->get('id'));
         return $this->redirectToRoute('measurements');

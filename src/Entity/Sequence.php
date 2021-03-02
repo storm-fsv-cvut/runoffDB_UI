@@ -15,59 +15,59 @@ class Sequence extends BaseEntity {
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int  $id;
 
     /**
      * @ORM\Column(type="date")
      */
-    private $date;
+    private \DateTimeInterface $date;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Simulator", inversedBy="sequences")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private $simulator;
+    private ?Simulator $simulator;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $cropBBCH;
+    private ?int $cropBBCH;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Project", mappedBy="sequences")
      */
-    private $projects;
+    private Collection $projects;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Record")
      * @ORM\JoinColumn(name="surface_cover_id", referencedColumnName="id", onDelete="SET NULL")
      */
-    private $surfaceCover;
+    private Record $surfaceCover;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $cropConditionCZ;
+    private ?string $cropConditionCZ;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $cropConditionEN;
+    private ?string $cropConditionEN;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\RunGroup", mappedBy="sequence", orphanRemoval=true)
      */
-    private $runGroups;
+    private Collection $runGroups;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $deleted;
+    private ?bool $deleted;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="sequences")
      */
-    private $user;
+    private User $user;
 
     public function __toString(): string {
         return $this->getDate()->format("d.m.Y") . " - " . $this->getLocality();

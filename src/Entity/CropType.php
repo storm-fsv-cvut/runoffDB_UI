@@ -14,27 +14,35 @@ class CropType extends BaseEntity implements DefinitionEntityInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=50)
      */
-    private $nameCZ;
+    private string $nameCZ;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
      */
-    private $nameEN;
+    private ?string $nameEN;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $descriptionCZ;
+    private ?string $descriptionCZ;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $descriptionEN;
+    private ?string $descriptionEN;
+
+    public function __construct()
+    {
+        $this->nameEN = null;
+        $this->descriptionCZ = null;
+        $this->descriptionEN = null;
+    }
+
 
     public function __toString(): string {
         return $this->getName();

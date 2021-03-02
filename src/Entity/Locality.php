@@ -16,74 +16,75 @@ class Locality extends BaseEntity implements DefinitionEntityInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $lat;
+    private float  $lat;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $lng;
+    private float $lng;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Organization", inversedBy="localities")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private $organization;
+    private ?Organization $organization;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\WrbSoilClass")
      */
-    private $wrbSoilClass;
+    private WrbSoilClass $wrbSoilClass;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Plot", mappedBy="locality")
      */
-    private $plots;
+    private Collection $plots;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\SoilSample", mappedBy="locality")
      */
-    private $soilSamples;
+    private Collection $soilSamples;
 
     /**
      * @ORM\Column(type="string", length=512, nullable=true)
      */
-    private $descriptionCZ;
+    private ?string $descriptionCZ;
 
     /**
      * @ORM\Column(type="string", length=512, nullable=true)
      */
-    private $descriptionEN;
+    private ?string $descriptionEN;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Measurement", mappedBy="locality")
      */
-    private $measurements;
+    private Collection $measurements;
 
-    public function __toString() {
+    public function __construct() {
+        $this->organization = null;
+        $this->descriptionCZ = null;
+        $this->descriptionEN = null;
+        $this->plots = new ArrayCollection();
+        $this->soilSamples = new ArrayCollection();
+        $this->measurements = new ArrayCollection();
+    }
+
+    public function __toString():string {
         return $this->getName();
     }
 
     public function getDescription():?string {
         return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
-
-    public function __construct()
-    {
-        $this->plots = new ArrayCollection();
-        $this->soilSamples = new ArrayCollection();
-        $this->measurements = new ArrayCollection();
-    }
-
 
     public function getId(): ?int
     {

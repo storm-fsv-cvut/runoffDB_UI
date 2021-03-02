@@ -16,44 +16,44 @@ class RunGroup extends BaseEntity
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $datetime;
+    private \DateTimeInterface $datetime;
 
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private $precedingPrecipitation;
+    private ?float $precedingPrecipitation;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $noteCZ;
+    private ?string $noteCZ;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\RunType")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private $runType;
+    private ?RunType $runType;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Sequence", inversedBy="runGroups")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private $sequence;
+    private ?Sequence $sequence;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $noteEN;
+    private ?string $noteEN;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Run", mappedBy="runGroup")
      */
-    private $runs;
+    private Collection $runs;
 
     public function __construct()
     {

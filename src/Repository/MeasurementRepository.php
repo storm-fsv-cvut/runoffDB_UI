@@ -7,6 +7,7 @@ use App\Entity\Phenomenon;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use function PHPStan\dumpType;
 
 /**
  * @method Measurement|null find($id, $lockMode = null, $lockVersion = null)
@@ -42,7 +43,7 @@ class MeasurementRepository extends ServiceEntityRepository
         $queryBuilder->leftJoin('measurement.runs', 'r');
         $queryBuilder->leftJoin('r.runGroup', 'rg');
         $queryBuilder->leftJoin('rg.sequence', 's');
-        $queryBuilder->innerJoin('s.simulator', 'si');
+        $queryBuilder->leftJoin('s.simulator', 'si');
         if (isset($filter['dateFrom']) && $filter['dateFrom']) {
             $queryBuilder->andWhere($queryBuilder->expr()->gte('measurement.date',"'".$filter['dateFrom']->format("Y-m-d")."'"));
         }

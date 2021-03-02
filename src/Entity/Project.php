@@ -16,42 +16,42 @@ class Project extends BaseEntity implements DefinitionEntityInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $projectName;
+    private string $projectName;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Sequence", inversedBy="projects")
      */
-    private $sequences;
+    private Sequence $sequences;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Organization", inversedBy="projects")
      */
-    private $organisations;
+    private Organization $organisations;
 
     /**
      * @ORM\Column(type="string", length=512, nullable=true)
      */
-    private $descriptionCZ;
+    private ?string $descriptionCZ;
 
     /**
      * @ORM\Column(type="string", length=512, nullable=true)
      */
-    private $descriptionEN;
+    private ?string $descriptionEN;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $fundingAgency;
+    private ?string $fundingAgency;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $projectCode;
+    private ?string  $projectCode;
 
     public function __toString(): string {
         return $this->getProjectName() ? $this->getProjectName() : "";

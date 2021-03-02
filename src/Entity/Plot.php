@@ -16,84 +16,84 @@ class Plot extends BaseEntity implements DefinitionEntityInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=128)
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Locality", inversedBy="plots")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="CASCADE")
      */
-    private $locality;
+    private Locality $locality;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Locality")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private $soilOriginLocality;
+    private Locality $soilOriginLocality;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Crop")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private $crop;
+    private Crop $crop;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Agrotechnology")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private $agrotechnology;
+    private Agrotechnology $agrotechnology;
 
     /**
      * @ORM\Column(type="date")
      */
-    private $established;
+    private \DateTimeInterface $established;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $plotWidth;
+    private float $plotWidth;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $plotLength;
+    private float $plotLength;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $plotSlope;
+    private float $plotSlope;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\SoilSample", mappedBy="plot")
      */
-    private $soilSamples;
+    private Collection $soilSamples;
 
     /**
      * @ORM\Column(type="string", length=512, nullable=true)
      */
-    private $noteCZ;
+    private ?string $noteCZ;
 
     /**
      * @ORM\Column(type="string", length=512, nullable=true)
      */
-    private $noteEN;
+    private ?string $noteEN;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Measurement", mappedBy="plot")
      */
-    private $measurements;
+    private Collection $measurements;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ProtectionMeasure")
      */
-    private $protectionMeasure;
+    private ProtectionMeasure $protectionMeasure;
 
     public function __toString() {
-        return ($this->getLocality() ? $this->getLocality()->getName() : "")." - #".$this->getId()." ".$this->getName();
+        return "#".$this->getId()." ".$this->getName().($this->getLocality() ? (" ".$this->getLocality()->getName()) : "").($this->getEstablished()!=null ? (" ".$this->getEstablished()->format("d.m.Y")) : "");
     }
 
     public function getNote():?string {

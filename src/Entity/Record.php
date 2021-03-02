@@ -15,74 +15,89 @@ class Record extends BaseEntity {
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Measurement", inversedBy="records")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private $measurement;
+    private ?Measurement $measurement = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\RecordType")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private $recordType;
+    private ?RecordType $recordType = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $noteCZ;
+    private ?string $noteCZ = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $noteEN;
+    private ?string $noteEN = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Unit")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private $unit;
+    private ?Unit $unit;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Record")
      */
-    private $sourceRecords;
+    private Collection $sourceRecords;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Data", mappedBy="record", cascade={"persist","remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"time" = "ASC"})
      */
-    private $datas;
+    private Collection $datas;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Unit")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private $relatedValueXUnit;
+    private ?Unit $relatedValueXUnit;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Unit")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private $relatedValueYUnit;
+    private ?Unit $relatedValueYUnit;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Unit")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private $relatedValueZUnit;
+    private ?Unit $relatedValueZUnit;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\QualityIndex")
      */
-    private $qualityIndex;
+    private ?QualityIndex $qualityIndex;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $isTimeline;
+    private ?bool $isTimeline = null;
+
+    public function __construct() {
+        $this->measurement = null;
+        $this->recordType = null;
+        $this->noteCZ = null;
+        $this->noteEN = null;
+        $this->unit = null;
+        $this->relatedValueXUnit = null;
+        $this->relatedValueYUnit = null;
+        $this->relatedValueZUnit = null;
+        $this->qualityIndex = null;
+        $this->isTimeline = null;
+        $this->sourceRecords = new ArrayCollection();
+        $this->datas = new ArrayCollection();
+    }
 
     public function __toString() {
         if ($this->getData()->get(0) != null) {
@@ -104,10 +119,7 @@ class Record extends BaseEntity {
         return $this->getLocale() == 'en' ? $this->getNoteEN() : $this->getNoteCZ();
     }
 
-    public function __construct() {
-        $this->sourceRecords = new ArrayCollection();
-        $this->datas = new ArrayCollection();
-    }
+
 
     public function getId(): ?int {
         return $this->id;

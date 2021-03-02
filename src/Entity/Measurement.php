@@ -5,7 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
+use DateTimeInterface;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MeasurementRepository")
  */
@@ -15,69 +15,82 @@ class Measurement extends BaseEntity {
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $descriptionCZ;
+    private ?string $descriptionCZ;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $descriptionEN;
+    private ?string $descriptionEN;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $noteCZ;
+    private ?string $noteCZ;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $noteEN;
+    private ?string $noteEN;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Run", inversedBy="measurements")
      */
-    private $runs;
+    private Collection $runs;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Record", mappedBy="measurement", cascade={"persist","remove"}, orphanRemoval=true)
      */
-    private $records;
+    private Collection $records;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\SoilSample", inversedBy="measurements")
      */
-    private $soilSamples;
+    private Collection $soilSamples;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Phenomenon", inversedBy="measurements")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private $phenomenon;
+    private ?Phenomenon $phenomenon;
 
     /**
      * @ORM\Column(type="date", nullable=true)
      */
-    private $date;
+    private ?DateTimeInterface $date;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Plot", inversedBy="measurements")
      */
-    private $plot;
+    private Plot $plot;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Locality", inversedBy="measurements")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private $locality;
+    private ?Locality $locality;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="measurements")
      */
-    private $user;
+    private User $user;
+
+    public function __construct() {
+        $this->descriptionCZ = null;
+        $this->descriptionEN = null;
+        $this->noteCZ = null;
+        $this->noteEN = null;
+        $this->phenomenon = null;
+        $this->date = null;
+        $this->locality = null;
+        $this->records = new ArrayCollection();
+        $this->runs = new ArrayCollection();
+        $this->soilSamples = new ArrayCollection();
+    }
 
     public function __toString(): string {
         return $this->getDescription();
@@ -89,12 +102,6 @@ class Measurement extends BaseEntity {
 
     public function getDescription(): ?string {
         return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
-    }
-
-    public function __construct() {
-        $this->records = new ArrayCollection();
-        $this->runs = new ArrayCollection();
-        $this->soilSamples = new ArrayCollection();
     }
 
     public function getId(): ?int {
@@ -240,7 +247,7 @@ class Measurement extends BaseEntity {
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface {
+    public function getDate(): ?DateTimeInterface {
         return $this->date;
     }
 
@@ -248,7 +255,7 @@ class Measurement extends BaseEntity {
         return $this->date ? $this->getDate()->format($format) : '';
     }
 
-    public function setDate(?\DateTimeInterface $date): self {
+    public function setDate(?DateTimeInterface $date): self {
         $this->date = $date;
 
         return $this;

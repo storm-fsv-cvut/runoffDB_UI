@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use DateTimeInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DataRepository")
@@ -14,38 +15,47 @@ class Data extends BaseEntity
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="time", nullable=true)
      */
-    private $time;
+    private ?DateTimeInterface $time;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $value;
+    private string $value;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Record", inversedBy="datas")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="CASCADE")
      */
-    private $record;
+    private ?Record $record;
 
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private $relatedValueX;
+    private ?float $relatedValueX;
 
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private $relatedValueY;
+    private ?float $relatedValueY;
 
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private $relatedValueZ;
+    private ?float $relatedValueZ;
+
+    public function __construct() {
+        $this->time = null;
+        $this->record = null;
+        $this->relatedValueX = null;
+        $this->relatedValueY = null;
+        $this->relatedValueZ = null;
+    }
+
 
     public function getId(): ?int
     {
@@ -62,7 +72,7 @@ class Data extends BaseEntity
         return $this->time ? $this->getTime()->format("H:i:s") : " - ";
     }
 
-    public function setTime(?\DateTimeInterface $time): self
+    public function setTime(?DateTimeInterface $time): self
     {
         $this->time = $time;
 

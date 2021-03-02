@@ -14,52 +14,62 @@ class Crop extends BaseEntity implements DefinitionEntityInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=50)
      */
-    private $nameCZ;
+    private string $nameCZ;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
      */
-    private $nameEN;
+    private ?string $nameEN;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
      */
-    private $variety;
+    private ?string $variety;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CropType")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private $cropType;
+    private ?CropType $cropType;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CropErType")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private $croperType;
+    private ?CropErType $croperType;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $isCatchCrop;
+    private ?bool $isCatchCrop;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $descriptionCZ;
+    private ?string $descriptionCZ;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $descriptionEN;
+    private ?string $descriptionEN;
+
+    public function __construct() {
+        $this->nameEN = null;
+        $this->variety = null;
+        $this->cropType = null;
+        $this->croperType = null;
+        $this->isCatchCrop = null;
+        $this->descriptionCZ = null;
+        $this->descriptionEN = null;
+    }
 
     public function __toString(): string {
-        return $this->getName();
+        return $this->getName() ?: '#' . $this->getId();
     }
 
     public function getName():?string {
@@ -107,7 +117,6 @@ class Crop extends BaseEntity implements DefinitionEntityInterface
     public function setVariety(?string $variety): self
     {
         $this->variety = $variety;
-
         return $this;
     }
 
@@ -124,7 +133,7 @@ class Crop extends BaseEntity implements DefinitionEntityInterface
     }
 
     public function getLabel(): string {
-        $this->nameCZ;
+        return $this->nameCZ;
     }
 
     public function getCroperType(): ?CropErType

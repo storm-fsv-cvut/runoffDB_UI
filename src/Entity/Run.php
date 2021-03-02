@@ -19,111 +19,111 @@ class Run extends BaseEntity {
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\SoilSample")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private $soilSampleBulk;
+    private ?SoilSample $soilSampleBulk;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\AssignmentType")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private $bulkAssignmentType;
+    private ?AssignmentType $bulkAssignmentType;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\SoilSample")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private $soilSampleTexture;
+    private ?SoilSample $soilSampleTexture;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\AssignmentType")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private $textureAssignmentType;
+    private ?AssignmentType $textureAssignmentType;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\SoilSample")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private $soilSampleCorg;
+    private ?SoilSample $soilSampleCorg;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\AssignmentType")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private $corgAssignmentType;
+    private ?AssignmentType $corgAssignmentType;
 
     /**
      * @ORM\Column(type="time", nullable=true)
      */
-    private $runoffStart;
+    private ?\DateTimeInterface $runoffStart;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $cropPictures;
+    private ?string $cropPictures;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $plotPictures;
+    private ?string $plotPictures;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $rawDataPath;
+    private ?string $rawDataPath;
 
     /**
      * @ORM\Column(type="string", length=512, nullable=true)
      */
-    private $noteCZ;
+    private ?string $noteCZ;
 
     /**
      * @ORM\Column(type="string", length=512, nullable=true)
      */
-    private $noteEN;
+    private ?string $noteEN;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Plot")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private $plot;
+    private ?Plot $plot;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\SoilSample", mappedBy="Run")     *
      */
-    private $soilSamples;
+    private Collection $soilSamples;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Measurement", mappedBy="runs", cascade={"persist","remove"}, orphanRemoval=true)
      */
-    private $measurements;
+    private Collection $measurements;
 
     /**
      * @ORM\Column(type="time", nullable=true)
      */
-    private $pondingStart;
+    private ?\DateTimeInterface $pondingStart;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Record", cascade={"persist","remove"})
      * @ORM\JoinColumn(name="init_moisture_id", referencedColumnName="id", onDelete="SET NULL")
      */
-    private $initMoisture;
+    private Record $initMoisture;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Record", cascade={"persist","remove"})
      * @ORM\JoinColumn(name="rain_intensity_id", referencedColumnName="id", onDelete="SET NULL")
      */
-    private $rainIntensity;
+    private Record $rainIntensity;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\RunGroup", inversedBy="runs")
      */
-    private $runGroup;
+    private RunGroup $runGroup;
 
 
     public function __toString() {

@@ -17,32 +17,32 @@ class User extends BaseEntity implements UserInterface {
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $username;
+    private string $username;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $password;
+    private string $password;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $email;
+    private string $email;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $fullname;
+    private string $fullname;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $role;
+    private string $role;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Organization", inversedBy="users")
@@ -52,17 +52,17 @@ class User extends BaseEntity implements UserInterface {
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\SoilSample", mappedBy="user")
      */
-    private $soilSamples;
+    private Collection $soilSamples;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Measurement", mappedBy="user")
      */
-    private $measurements;
+    private Collection $measurements;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Sequence", mappedBy="user")
      */
-    private $sequences;
+    private Collection $sequences;
 
     public function __construct() {
         $this->soilSamples = new ArrayCollection();
@@ -70,7 +70,7 @@ class User extends BaseEntity implements UserInterface {
         $this->sequences = new ArrayCollection();
     }
 
-    public function __toString() {
+    public function __toString(): string {
         return $this->getFullname();
     }
 

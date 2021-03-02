@@ -15,17 +15,24 @@ class AssignmentType extends BaseEntity implements DefinitionEntityInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $descriptionCZ;
+    private ?string $descriptionCZ;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $descriptionEN;
+    private ?string $descriptionEN;
+
+
+    public function __construct()
+    {
+        $this->descriptionCZ = null;
+        $this->descriptionEN = null;
+    }
 
 
     public function __toString(): string {

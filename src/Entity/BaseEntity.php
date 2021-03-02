@@ -10,7 +10,7 @@ class BaseEntity implements LocalisableInterface {
     /**
      * @var string
      */
-    protected $locale;
+    protected string $locale;
 
     /**
      * @param string $locale

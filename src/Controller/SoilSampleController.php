@@ -60,8 +60,11 @@ class SoilSampleController extends AbstractController {
                          MeasurementService $measurementService,
                          RecordsService $recordsService,
                          int $id = null):Response {
+        if ($this->get('security.token_storage')->getToken()===null) {
+            throw new \Exception("User token is null");
+        }
         $user = $this->get('security.token_storage')->getToken()->getUser();
-        if ($id) {
+        if ($id!==null) {
             $newMesurementForm = $this->createForm(MeasurementType::class, new Measurement());
             $newRecordForm = $this->createForm(RecordType::class, new Record());
             $soilSample = $soilSampleService->getSoilSampleById($id);

@@ -17,111 +17,111 @@ class SoilSample extends BaseEntity
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="date")
      */
-    private $dateSampled;
+    private \DateTimeInterface $dateSampled;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Organization")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private $processedAt;
+    private ?Organization $processedAt;
 
     /**
      * @ORM\Column(type="string", length=500, nullable=true)
      */
-    private $sampleLocation;
+    private ?string  $sampleLocation;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Plot", inversedBy="soilSamples")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private $plot;
+    private ?Plot $plot;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\WrbSoilClass")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private $wrbSoilClass;
+    private ?WrbSoilClass $wrbSoilClass;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Locality", inversedBy="soilSamples")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private $locality;
+    private ?Locality $locality;
 
     /**
      * @ORM\Column(type="string", length=512, nullable=true)
      */
-    private $descriptionCZ;
+    private ?string $descriptionCZ;
 
     /**
      * @ORM\Column(type="string", length=512, nullable=true)
      */
-    private $descriptionEN;
+    private ?string $descriptionEN;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Run", inversedBy="soilSamples")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private $Run;
+    private ?Run $Run;
 
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private $sampleDepthM;
+    private ?float $sampleDepthM;
 
     /**
      * @ORM\Column(type="date", nullable=true)
      */
-    private $dateProcessed;
+    private ?\DateTimeInterface $dateProcessed;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Record")
      * @ORM\JoinColumn(name="corg_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
      */
-    private $corg;
+    private ?Record $corg;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Record")
      * @ORM\JoinColumn(name="bulk_density_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
      */
-    private $bulkDensity;
+    private ?Record $bulkDensity;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Record")
      * @ORM\JoinColumn(name="moisture_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
      */
-    private $moisture;
+    private ?Record $moisture;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Record")
      * @ORM\JoinColumn(name="texture_record_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
      */
-    private $textureRecord;
+    private ?Record $textureRecord;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Measurement", mappedBy="soilSamples")
      */
-    private $measurements;
+    private Collection $measurements;
 
     /**
      * @ORM\Column(type="string", length=512, nullable=true)
      */
-    private $rawDataPath;
+    private ?string $rawDataPath;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $deleted;
+    private ?bool $deleted;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="soilSamples")
      */
-    private $user;
+    private User $user;
 
     public function __toString() {
         return "#".$this->getId()." - ".$this->getLocality();

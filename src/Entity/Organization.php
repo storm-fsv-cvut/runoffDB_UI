@@ -17,66 +17,67 @@ class Organization extends BaseEntity implements DefinitionEntityInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $contactPerson;
+    private ?string $contactPerson;
 
     /**
      * @ORM\Column(type="string", length=10, nullable=true)
      */
-    private $contactNumber;
+    private ?string $contactNumber;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
      */
-    private $contactEmail;
+    private ?string $contactEmail;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Locality", mappedBy="organization")
      */
-    private $localities;
+    private Collection $localities;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Simulator", mappedBy="organization")
      */
-    private $simulators;
+    private Collection $simulators;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $name_code;
+    private ?string $name_code;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Project", mappedBy="organisations")
      */
-    private $projects;
+    private Collection $projects;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="organization")
      */
-    private $users;
+    private Collection  $users;
 
-    public function __toString(): string {
-        return $this->getName();
-    }
-
-    public function __construct()
-    {
+    public function __construct() {
+        $this->name = null;
+        $this->contactPerson = null;
+        $this->contactNumber = null;
+        $this->contactEmail = null;
+        $this->name_code = null;
         $this->localities = new ArrayCollection();
         $this->simulators = new ArrayCollection();
         $this->projects = new ArrayCollection();
-        $this->sequences = new ArrayCollection();
-        $this->measurements = new ArrayCollection();
-        $this->soilSamples = new ArrayCollection();
         $this->users = new ArrayCollection();
+    }
+
+    public function __toString(): string {
+        return $this->getName();
     }
 
     public function getId(): ?int

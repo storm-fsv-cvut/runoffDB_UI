@@ -14,27 +14,27 @@ class ProtectionMeasure extends BaseEntity implements DefinitionEntityInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $nameCZ;
+    private ?string $nameCZ;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $nameEN;
+    private ?string $nameEN;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $descriptionCZ;
+    private ?string $descriptionCZ;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $descriptionEN;
+    private ?string $descriptionEN;
 
     public function __toString(): string {
         return $this->getName() ?? "";

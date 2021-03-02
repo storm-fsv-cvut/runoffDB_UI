@@ -16,44 +16,44 @@ class Simulator extends BaseEntity implements DefinitionEntityInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int  $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $nameCZ;
+    private ?string $nameCZ;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $nameEN;
+    private ?string  $nameEN;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Organization", inversedBy="simulators")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private $organization;
+    private ?Organization $organization;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $descriptionCZ;
+    private ?string $descriptionCZ;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $descriptionEN;
+    private ?string $descriptionEN;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Sequence", mappedBy="simulator")
      *
      */
-    private $sequences;
+    private Collection $sequences;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $reference;
+    private ?string $reference;
 
     public function __toString() {
         return $this->getName().' ('.($this->getOrganization() ? $this->getOrganization()->getName() : "").')';

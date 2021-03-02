@@ -9,21 +9,21 @@ use App\Entity\Run;
 use App\Repository\MeasurementRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class MeasurementService {
+    private MeasurementRepository $measurementRepository;
+    private EntityManagerInterface $entityManager;
+    private ParameterBagInterface $parameterBag;
+    private Filesystem $filesystem;
 
-    /**
-     * @var MeasurementRepository
-     */
-    private $measurementRepository;
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    public function __construct(MeasurementRepository $measurementRepository, EntityManagerInterface $entityManager) {
+    public function __construct(MeasurementRepository $measurementRepository, EntityManagerInterface $entityManager, ParameterBagInterface $parameterBag, Filesystem $filesystem) {
         $this->measurementRepository = $measurementRepository;
         $this->entityManager = $entityManager;
+        $this->parameterBag = $parameterBag;
+        $this->filesystem = $filesystem;
     }
 
     public function getMeasurementById(int $id):Measurement {
@@ -100,5 +100,13 @@ class MeasurementService {
         }
         $this->entityManager->remove($measurement);
         $this->entityManager->flush();
+    }
+
+    public function uploadFile(UploadedFile $file, Run $run):void {
+        $dir = $this->parameterBag->get('kernel.project_dir')."/public/data/sequence/".$run->getSequence()->getId()."/".$run->getId();
+        if (!$this->filesystem->exists($dir)) {
+            $this->filesystem->mkdir($dir);
+        }
+        $file->move($dir, $file->getClientOriginalName());
     }
 }

@@ -173,8 +173,11 @@ class SequenceController extends AbstractController
         RunGroupService $runGroupService,
         int $id = null
     ) {
+        if ($this->get('security.token_storage')->getToken()===null) {
+            throw new \Exception("User token is null");
+        }
         $user = $this->get('security.token_storage')->getToken()->getUser();
-        if ($id) {
+        if ($id!==null) {
             $sequence = $sequenceService->getSequenceById($id);
             $this->denyAccessUnlessGranted(EntityVoter::VIEW, $sequence);
 

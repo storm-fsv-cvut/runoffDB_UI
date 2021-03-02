@@ -13,17 +13,17 @@ class OperationIntensity extends BaseEntity implements DefinitionEntityInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $descriptionCZ;
+    private string $descriptionCZ;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $descriptionEN;
+    private string $descriptionEN;
 
     public function __toString(): string {
         return $this->getDescription();

@@ -14,54 +14,62 @@ class Operation extends BaseEntity implements DefinitionEntityInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=50)
      */
-    private $nameCZ;
+    private string $nameCZ;
 
     /**
      * @ORM\Column(type="string", length=50)
      */
-    private $nameEN;
+    private string $nameEN;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\OperationIntensity")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $operationIntensity;
+    private OperationIntensity $operationIntensity;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $operationDepthM;
+    private float $operationDepthM;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\OperationType")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private $operationType;
+    private ?OperationType $operationType;
 
     /**
      * @ORM\Column(type="string", length=512, nullable=true)
      */
-    private $descriptionCZ;
+    private ?string $descriptionCZ;
 
     /**
      * @ORM\Column(type="string", length=512, nullable=true)
      */
-    private $descriptionEN;
+    private ?string $descriptionEN;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $machineryTypeCZ;
+    private ?string $machineryTypeCZ;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $machineryTypeEN;
+    private ?string $machineryTypeEN;
+
+    public function __construct() {
+        $this->operationType = null;
+        $this->descriptionCZ = null;
+        $this->descriptionEN = null;
+        $this->machineryTypeCZ = null;
+        $this->machineryTypeEN = null;
+    }
 
     public function __toString(): string {
         return $this->getName();
