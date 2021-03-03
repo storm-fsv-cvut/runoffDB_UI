@@ -53,14 +53,17 @@ class Project extends BaseEntity implements DefinitionEntityInterface
      */
     private ?string  $projectCode;
 
-    public function __toString(): string {
-        return $this->getProjectName() ? $this->getProjectName() : "";
-    }
-
-    public function __construct()
-    {
+    public function __construct() {
+        $this->descriptionCZ = null;
+        $this->descriptionEN = null;
+        $this->fundingAgency = null;
+        $this->projectCode = null;
         $this->sequences = new ArrayCollection();
         $this->organisations = new ArrayCollection();
+    }
+
+    public function __toString(): string {
+        return $this->getProjectName() ? $this->getProjectName() : "";
     }
 
     public function getId(): ?int

@@ -77,6 +77,9 @@ class MeasurementController extends AbstractController {
                 if ($newRecordForm->isSubmitted()) {
                     $record = $newRecordForm->getData();
                     $measurement = $measurementRepository->find($newRecordForm->get('parent_id')->getData());
+                    if ($measurement===null) {
+                        throw new \Exception("measurement doesn't exist");
+                    }
                     $record->setMeasurement($measurement);
 
                     $entityManager->persist($record);
@@ -92,9 +95,9 @@ class MeasurementController extends AbstractController {
                     return $this->redirectToRoute('measurement', ['id' => $measurement->getId()]);
                 }
             }
-            if ($request->get('delete_record')) {
+            if ($request->get('delete_record')!==null) {
                 $recordsService->deleteRecord($request->get('delete_record'));
-                return $this->redirectToRoute('measurement', ['id' => $measurement ? $measurement->getId() : null]);
+                return $this->redirectToRoute('measurement', ['id' => $measurement!==null ? $measurement->getId() : null]);
             }
 
             return $this->render('measurement/edit.html.twig',[

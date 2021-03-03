@@ -34,6 +34,12 @@ class TillageSequence extends BaseEntity
      */
     private ?Operation $operation;
 
+    public function __construct()
+    {
+        $this->agrotechnology = null;
+        $this->operation = null;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

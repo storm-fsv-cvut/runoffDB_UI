@@ -92,18 +92,20 @@ class Plot extends BaseEntity implements DefinitionEntityInterface
      */
     private ProtectionMeasure $protectionMeasure;
 
+    public function __construct() {
+        $this->noteCZ = null;
+        $this->noteEN = null;
+        $this->soilSamples = new ArrayCollection();
+        $this->measurements = new ArrayCollection();
+    }
+
+
     public function __toString() {
         return "#".$this->getId()." ".$this->getName().($this->getLocality() ? (" ".$this->getLocality()->getName()) : "").($this->getEstablished()!=null ? (" ".$this->getEstablished()->format("d.m.Y")) : "");
     }
 
     public function getNote():?string {
         return $this->getLocale() == 'en' ? $this->getNoteEN() : $this->getNoteCZ();
-    }
-
-    public function __construct()
-    {
-        $this->soilSamples = new ArrayCollection();
-        $this->measurements = new ArrayCollection();
     }
 
     public function getId(): ?int

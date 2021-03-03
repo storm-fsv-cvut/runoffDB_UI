@@ -102,8 +102,8 @@ class MeasurementService {
         $this->entityManager->flush();
     }
 
-    public function uploadFile(UploadedFile $file, Run $run):void {
-        $dir = $this->parameterBag->get('kernel.project_dir')."/public/data/sequence/".$run->getSequence()->getId()."/".$run->getId();
+    public function uploadFile(UploadedFile $file, Measurement $measurement):void {
+        $dir = $this->parameterBag->get('kernel.project_dir')."/public/data/measurement/".$measurement->getId();
         if (!$this->filesystem->exists($dir)) {
             $this->filesystem->mkdir($dir);
         }

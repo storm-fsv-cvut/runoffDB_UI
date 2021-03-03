@@ -36,6 +36,14 @@ class RecordType extends BaseEntity implements DefinitionEntityInterface
      */
     private ?string $descriptionCZ;
 
+    public function __construct()
+    {
+        $this->nameCZ = null;
+        $this->nameEN = null;
+        $this->descriptionEN = null;
+        $this->descriptionCZ = null;
+    }
+
     public function __toString(): string {
         return $this->getName();
     }

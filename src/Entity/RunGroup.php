@@ -55,10 +55,15 @@ class RunGroup extends BaseEntity
      */
     private Collection $runs;
 
-    public function __construct()
-    {
+    public function __construct() {
+        $this->precedingPrecipitation = null;
+        $this->noteCZ = null;
+        $this->runType = null;
+        $this->sequence = null;
+        $this->noteEN = null;
         $this->runs = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {

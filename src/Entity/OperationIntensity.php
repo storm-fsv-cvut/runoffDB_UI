@@ -25,6 +25,11 @@ class OperationIntensity extends BaseEntity implements DefinitionEntityInterface
      */
     private string $descriptionEN;
 
+    public function __construct()
+    {
+    }
+
+
     public function __toString(): string {
         return $this->getDescription();
     }

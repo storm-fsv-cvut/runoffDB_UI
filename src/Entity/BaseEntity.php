@@ -23,6 +23,6 @@ class BaseEntity implements LocalisableInterface {
      * @return string
      */
     public function getLocale():string {
-        return $this->locale ? $this->locale : 'cs';
+        return $this->locale ?? 'cs';
     }
 }

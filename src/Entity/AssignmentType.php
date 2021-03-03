@@ -36,7 +36,7 @@ class AssignmentType extends BaseEntity implements DefinitionEntityInterface
 
 
     public function __toString(): string {
-        return $this->getDescription();
+        return $this->getDescription() ?? (string)$this->getId();
     }
 
     public function getDescription():?string {
@@ -73,6 +73,6 @@ class AssignmentType extends BaseEntity implements DefinitionEntityInterface
     }
 
     public function getLabel(): string {
-        return $this->getDescriptionCZ();
+        return $this->getDescription() ?? (string)$this->getId();
     }
 }

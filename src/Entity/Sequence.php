@@ -69,13 +69,18 @@ class Sequence extends BaseEntity {
      */
     private User $user;
 
-    public function __toString(): string {
-        return $this->getDate()->format("d.m.Y") . " - " . $this->getLocality();
-    }
-
     public function __construct() {
+        $this->simulator = null;
+        $this->cropBBCH = null;
+        $this->cropConditionCZ = null;
+        $this->cropConditionEN = null;
+        $this->deleted = null;
         $this->projects = new ArrayCollection();
         $this->runGroups = new ArrayCollection();
+    }
+
+    public function __toString(): string {
+        return $this->getDate()->format("d.m.Y") . " - " . $this->getLocality();
     }
 
     /**

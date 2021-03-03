@@ -26,6 +26,11 @@ class WrbSoilClass extends BaseEntity implements DefinitionEntityInterface
      */
     private ?string $code;
 
+    public function __construct()
+    {
+        $this->code = null;
+    }
+
     public function __toString(): string {
         return $this->getName();
     }

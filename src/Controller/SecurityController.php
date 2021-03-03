@@ -47,7 +47,7 @@ class SecurityController extends AbstractController
      * @Route("/{_locale}/user/{id}", name="user")
      */
     public function user(UserRepository $userRepository, Request $request, UserPasswordEncoderInterface $encoder, ?int $id = null): Response {
-        $user = $id ? $userRepository->find($id) : NULL;
+        $user = $id!=null ? $userRepository->find($id) : NULL;
         $this->denyAccessUnlessGranted('edituser',$user);
         $form = $this->createForm(UserType::class,$user);
         $form->handleRequest($request);
@@ -70,6 +70,9 @@ class SecurityController extends AbstractController
     public function deleteUser(UserRepository $userRepository, EntityManagerInterface $entityManager, ?int $id = null): Response {
         $this->denyAccessUnlessGranted('admin');
         $user = $userRepository->find($id);
+        if ($user === null) {
+            throw new \Exception("User doesn't exist");
+        }
         $entityManager->remove($user);
         $entityManager->flush();
         return $this->redirectToRoute('users');
@@ -89,7 +92,7 @@ class SecurityController extends AbstractController
             $request->query->getInt('page', 1),
             20
         );
-
+        $params = [];
         $params['pagination'] = $pagination;
         return $this->render('security/list.html.twig', $params);
     }

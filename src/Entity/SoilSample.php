@@ -123,17 +123,32 @@ class SoilSample extends BaseEntity
      */
     private User $user;
 
+    public function __construct() {
+        $this->processedAt = null;
+        $this->sampleLocation = null;
+        $this->plot = null;
+        $this->wrbSoilClass = null;
+        $this->locality = null;
+        $this->descriptionCZ = null;
+        $this->descriptionEN = null;
+        $this->Run = null;
+        $this->sampleDepthM = null;
+        $this->dateProcessed = null;
+        $this->corg = null;
+        $this->bulkDensity = null;
+        $this->moisture = null;
+        $this->textureRecord = null;
+        $this->rawDataPath = null;
+        $this->deleted = null;
+        $this->measurements = new ArrayCollection();
+    }
+
     public function __toString() {
         return "#".$this->getId()." - ".$this->getLocality();
     }
 
     public function getDescription():?string {
         return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
-    }
-
-    public function __construct()
-    {
-        $this->measurements = new ArrayCollection();
     }
 
     public function getId(): ?int

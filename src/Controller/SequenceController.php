@@ -36,10 +36,14 @@ use App\Services\RunService;
 use App\Services\SequenceService;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use mysql_xdevapi\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 
@@ -49,10 +53,10 @@ class SequenceController extends AbstractController
     /**
      * @Route("/{_locale}/chart-data", name="chartData")
      */
-    public function getChartData(RecordsService $recordsService, Request $request)
+    public function getChartData(RecordsService $recordsService, Request $request): JsonResponse
     {
         $data = $request->get('ids');
-        if ($data) {
+        if ($data!=null) {
             return $this->json($recordsService->getChartData($data));
         } else {
             return $this->json(0);
@@ -67,9 +71,15 @@ class SequenceController extends AbstractController
         RunRepository $runRepository,
         MeasurementService $measurementService,
         Request $request
-    ) {
+    ): JsonResponse {
         $measurement = $measurementRepository->find($request->get('measurement_id'));
         $run = $runRepository->find($request->get('run_id'));
+        if ($run === null) {
+            throw new \Exception("Run doesn't exist");
+        }
+        if ($measurement === null) {
+            throw new \Exception("measurement doesn't exist");
+        }
         $res = $measurementService->switchBelongsToRun($measurement, $run);
         return $this->json($res);
     }
@@ -77,10 +87,10 @@ class SequenceController extends AbstractController
     /**
      * @Route("/{_locale}/validate-file", name="validateFile")
      */
-    public function validateFile(RecordsService $recordsService, Request $request)
+    public function validateFile(RecordsService $recordsService, Request $request): ?JsonResponse
     {
         $file = $request->files;
-        if ($file->get('datafile')) {
+        if ($file->get('datafile')!==null) {
             return $this->json(
                 $recordsService->validateDataFile(
                     $file->get('datafile'),
@@ -89,6 +99,8 @@ class SequenceController extends AbstractController
                 )
             );
         }
+
+        return null;
     }
 
     /**
@@ -98,17 +110,23 @@ class SequenceController extends AbstractController
         RecordRepository $recordRepository,
         EntityManagerInterface $entityManager,
         Request $request
-    ) {
-        if ($request->get('recordId')) {
+    ): ?RedirectResponse {
+        if ($request->get('recordId')!==null) {
             $record = $recordRepository->find($request->get('recordId'));
-            foreach ($record->getMeasurement()->getRuns() as $run) {
-                $sequence = $run->getSequence();
-                $run->setRainIntensity($record);
-                $entityManager->persist($run);
-                $entityManager->flush();
+            if ($record===null) {
+                throw new \Exception("Record doesn't exist");
             }
+            if ($record->getMeasurement()!==null) {
+                foreach ($record->getMeasurement()->getRuns() as $run) {
+                    $sequence = $run->getSequence();
+                    $run->setRainIntensity($record);
+                    $entityManager->persist($run);
+                    $entityManager->flush();
+                }
+            }
+            return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
         }
-        return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
+        return null;
     }
 
     /**
@@ -118,9 +136,13 @@ class SequenceController extends AbstractController
         RecordRepository $recordRepository,
         EntityManagerInterface $entityManager,
         Request $request
-    ) {
-        if ($request->get('recordId')) {
+    ): RedirectResponse {
+        $sequence = null;
+        if ($request->get('recordId')!==null) {
             $record = $recordRepository->find($request->get('recordId'));
+            if ($record===null) {
+                throw new \Exception("Record doesn't exist");
+            }
             foreach ($record->getMeasurement()->getRuns() as $run) {
                 $sequence = $run->getSequence();
                 $run->setInitMoisture($record);
@@ -128,15 +150,18 @@ class SequenceController extends AbstractController
                 $entityManager->flush();
             }
         }
-        return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
+        return $this->redirectToRoute('sequence', ['id' => $sequence!==null ? $sequence->getId() : null]);
     }
 
     /**
      * @Route("/{_locale}/download-file", name="downloadFile")
      */
-    public function downloadFile(RunRepository $runRepository, Request $request, ParameterBagInterface $parameterBag)
+    public function downloadFile(RunRepository $runRepository, Request $request, ParameterBagInterface $parameterBag): BinaryFileResponse
     {
         $run = $runRepository->find($request->get('runId'));
+        if ($run === null) {
+            throw new \Exception("Run doesn't exist");
+        }
         $filename = $request->get('filename');
         return BinaryFileResponse::create(
             $parameterBag->get('kernel.project_dir') . "/public/" . $run->getFilesPath() . '/' . $filename
@@ -146,9 +171,12 @@ class SequenceController extends AbstractController
     /**
      * @Route("/{_locale}/delete-file", name="deleteFile")
      */
-    public function deleteFile(RunRepository $runRepository, Request $request)
+    public function deleteFile(RunRepository $runRepository, Request $request): RedirectResponse
     {
         $run = $runRepository->find($request->get('runId'));
+        if ($run === null) {
+            throw new \Exception("Run doesn't exist");
+        }
         $filename = $request->get('filename');
         $run->removeFile($filename);
         return $this->redirectToRoute('sequence', ['id' => $run->getSequence()->getId()]);
@@ -172,7 +200,7 @@ class SequenceController extends AbstractController
         RecordsService $recordsService,
         RunGroupService $runGroupService,
         int $id = null
-    ) {
+    ): Response {
         if ($this->get('security.token_storage')->getToken()===null) {
             throw new \Exception("User token is null");
         }
@@ -202,7 +230,11 @@ class SequenceController extends AbstractController
 
                 if ($newRunForm->isSubmitted()) {
                     $newRunFormData = $newRunForm->getData();
-                    $newRunFormData->setRunGroup($runGroupRepository->find($newRunForm->get('parent_id')->getData()));
+                    $runGroup = $runGroupRepository->find($newRunForm->get('parent_id')->getData());
+                    if ($runGroup===null) {
+                        throw new \Exception("runGroup doesn't exist");
+                    }
+                    $newRunFormData->setRunGroup($runGroup);
                     $entityManager->persist($newRunFormData);
                     $entityManager->flush();
                     return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
@@ -210,7 +242,11 @@ class SequenceController extends AbstractController
 
                 if ($newMesurementForm->isSubmitted()) {
                     $formMeasurementData = $newMesurementForm->getData();
-                    $formMeasurementData->addRun($runRepository->find($newMesurementForm->get('parent_id')->getData()));
+                    $run = $runRepository->find($newMesurementForm->get('parent_id')->getData());
+                    if ($run===null) {
+                        throw new \Exception("measurement doesn't exist");
+                    }
+                    $formMeasurementData->addRun($run);
                     $formMeasurementData->setUser($user);
                     $entityManager->persist($formMeasurementData);
                     $entityManager->flush();
@@ -218,18 +254,24 @@ class SequenceController extends AbstractController
                 }
 
                 if ($newRecordForm->isSubmitted()) {
+
+                    /**
+                     * @var Record
+                     */
                     $record = $newRecordForm->getData();
                     $measurement = $measurementRepository->find($newRecordForm->get('parent_id')->getData());
+                    if ($measurement===null) {
+                        throw new \Exception("Measurement doesn't exist");
+                    }
                     $record->setMeasurement($measurement);
-
                     $entityManager->persist($record);
                     foreach ($record->getData() as $data) {
                         $data->setRecord($record);
                     }
 
                     $file = $newRecordForm->get('datafile')->getData();
-                    if ($file) {
-                        $runService->uploadFile($file, $measurement->getRun());
+                    if ($file!==null) {
+                        $runService->uploadFile($file, $measurement->getRuns()->get(0));
                     }
                     $entityManager->flush();
 
@@ -240,7 +282,7 @@ class SequenceController extends AbstractController
                     $partialForm = $sequenceForm->getClickedButton()->getParent();
                     $partialData = $partialForm->getData();
 
-                    if ($partialForm->has('rawData') && $partialForm->get('rawData')) {
+                    if ($partialForm->has('rawData')!==null && $partialForm->get('rawData')!==null) {
                         foreach ($partialForm->get('rawData')->getData() as $file) {
                             $runService->uploadFile($file, $partialData);
                         }
@@ -253,8 +295,11 @@ class SequenceController extends AbstractController
                 return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
             }
 
-            if ($request->get('delete_run')) {
+            if ($request->get('delete_run')!==null) {
                 $run = $entityManager->find(Run::class, $request->get('delete_run'));
+                if ($run===null) {
+                    throw new \Exception("run doesn't exist");
+                }
                 foreach ($run->getMeasurements() as $measurement) {
                     foreach ($measurement->getRecords() as $record) {
                         foreach ($record->getData() as $data) {
@@ -274,14 +319,16 @@ class SequenceController extends AbstractController
             }
 
 
-            if ($request->get('delete_measurement')) {
+            if ($request->get('delete_measurement')!==null) {
                 $measurementService->deleteMeasurement($request->get('delete_measurement'));
                 return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
             }
 
-            if ($request->get('delete_record')) {
+            if ($request->get('delete_record')!==null) {
                 $record = $entityManager->find(Record::class, $request->get('delete_record'));
-
+                if ($record===null) {
+                    throw new \Exception("record doesn't exist");
+                }
                 foreach ($record->getData() as $data) {
                     $entityManager->remove($data);
                 }
@@ -334,7 +381,7 @@ class SequenceController extends AbstractController
     /**
      * @Route("/{_locale}/remove-sequence", name="remove_sequence")
      */
-    public function removeSequence(Request $request, SequenceRepository $sequenceRepository)
+    public function removeSequence(Request $request, SequenceRepository $sequenceRepository): RedirectResponse
     {
         $sequenceRepository->setDeleted($request->get('id'));
         return $this->redirectToRoute('sequences');
@@ -348,7 +395,7 @@ class SequenceController extends AbstractController
         PaginatorInterface $paginator,
         Request $request,
         SequenceRepository $sequenceRepository
-    ) {
+    ): Response {
         $filter = $this->createForm(SequenceFilterType::class);
         $filter->handleRequest($request);
 
@@ -379,7 +426,7 @@ class SequenceController extends AbstractController
         SequenceRepository $sequenceRepository,
         RunService $runService,
         PhenomenonRepository $phenomenonRepository
-    ) {
+    ): Response {
 
         //$sequences = $sequenceRepository->findBy(['deleted' => null], ['date' => 'ASC']);
 

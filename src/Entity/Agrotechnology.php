@@ -74,7 +74,7 @@ class Agrotechnology extends BaseEntity implements DefinitionEntityInterface
 
     public function __toString(): string
     {
-        return $this->getName();
+        return $this->getName() ?? (string)$this->getId();
     }
 
     public function getName(): ?string

@@ -55,6 +55,16 @@ class Simulator extends BaseEntity implements DefinitionEntityInterface
      */
     private ?string $reference;
 
+    public function __construct() {
+        $this->nameCZ = null;
+        $this->nameEN = null;
+        $this->organization = null;
+        $this->descriptionCZ = null;
+        $this->descriptionEN = null;
+        $this->reference = null;
+        $this->sequences = new ArrayCollection();
+    }
+
     public function __toString() {
         return $this->getName().' ('.($this->getOrganization() ? $this->getOrganization()->getName() : "").')';
     }
@@ -64,11 +74,6 @@ class Simulator extends BaseEntity implements DefinitionEntityInterface
 
     public function getDescription():?string {
         return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
-    }
-
-    public function __construct()
-    {
-        $this->sequences = new ArrayCollection();
     }
 
     public function getId(): ?int

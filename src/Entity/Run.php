@@ -125,6 +125,24 @@ class Run extends BaseEntity {
      */
     private RunGroup $runGroup;
 
+    public function __construct() {
+        $this->soilSampleBulk = null;
+        $this->bulkAssignmentType = null;
+        $this->soilSampleTexture = null;
+        $this->textureAssignmentType = null;
+        $this->soilSampleCorg = null;
+        $this->corgAssignmentType = null;
+        $this->runoffStart = null;
+        $this->cropPictures = null;
+        $this->plotPictures = null;
+        $this->rawDataPath = null;
+        $this->noteCZ = null;
+        $this->noteEN = null;
+        $this->plot = null;
+        $this->pondingStart = null;
+        $this->soilSamples = new ArrayCollection();
+        $this->measurements = new ArrayCollection();
+    }
 
     public function __toString() {
         return "#" . $this->getId();
@@ -132,11 +150,6 @@ class Run extends BaseEntity {
 
     public function getNote():?string {
         return $this->getLocale() == 'en' ? $this->getNoteEN() : $this->getNoteCZ();
-    }
-
-    public function __construct() {
-        $this->soilSamples = new ArrayCollection();
-        $this->measurements = new ArrayCollection();
     }
 
     /**

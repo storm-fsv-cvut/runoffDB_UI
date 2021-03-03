@@ -54,8 +54,11 @@ class Phenomenon extends BaseEntity implements DefinitionEntityInterface
      */
     private Collection $measurements;
 
-    public function __construct()
-    {
+    public function __construct() {
+        $this->nameEN = null;
+        $this->descriptionCZ = null;
+        $this->descriptionEN = null;
+        $this->modelParameterSet = null;
         $this->measurements = new ArrayCollection();
     }
 

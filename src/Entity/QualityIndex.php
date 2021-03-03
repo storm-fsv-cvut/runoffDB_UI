@@ -36,6 +36,15 @@ class QualityIndex extends BaseEntity implements DefinitionEntityInterface
      */
     private ?string $descriptionEN;
 
+    public function __construct()
+    {
+        $this->nameCZ = null;
+        $this->nameEN = null;
+        $this->descriptionCZ = null;
+        $this->descriptionEN = null;
+    }
+
+
     public function __toString(): string {
         return $this->getName() ?? "";
     }
