@@ -65,8 +65,9 @@ class Measurement extends BaseEntity {
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Plot", inversedBy="measurements")
+     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private Plot $plot;
+    private ?Plot $plot;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Locality", inversedBy="measurements")
@@ -197,7 +198,9 @@ class Measurement extends BaseEntity {
         if (!$this->runs->contains($run)) {
             $this->runs[] = $run;
             $this->setDate($run->getDatetime());
-            $this->setLocality($run->getSequence()->getLocality());
+            if ($run->getSequence()!==null) {
+                $this->setLocality($run->getSequence()->getLocality());
+            }
             if ($run->getPlot()!==null) {
                 $this->setPlot($run->getPlot());
             }
@@ -265,11 +268,11 @@ class Measurement extends BaseEntity {
         return $this;
     }
 
-    public function getPlot(): Plot {
+    public function getPlot(): ?Plot {
         return $this->plot;
     }
 
-    public function setPlot(Plot $plot): self {
+    public function setPlot(?Plot $plot): self {
         $this->plot = $plot;
         return $this;
     }

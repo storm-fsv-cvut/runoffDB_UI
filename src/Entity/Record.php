@@ -41,9 +41,9 @@ class Record extends BaseEntity {
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Unit")
-     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\JoinColumn(nullable=false, referencedColumnName="id", onDelete="SET NULL")
      */
-    private ?Unit $unit;
+    private Unit $unit;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Record")
@@ -166,11 +166,11 @@ class Record extends BaseEntity {
         return $this;
     }
 
-    public function getUnit(): ?Unit {
+    public function getUnit(): Unit {
         return $this->unit;
     }
 
-    public function setUnit(?Unit $unit): self {
+    public function setUnit(Unit $unit): self {
         $this->unit = $unit;
 
         return $this;
@@ -201,9 +201,6 @@ class Record extends BaseEntity {
     public function removeData(Data $data): self {
         if ($this->datas->contains($data)) {
             $this->datas->removeElement($data);
-            if ($data->getRecord() === $this) {
-                $data->setRecord(null);
-            }
         }
 
         return $this;

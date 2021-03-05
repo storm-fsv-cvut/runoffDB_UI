@@ -110,15 +110,15 @@ class Run extends BaseEntity {
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Record", cascade={"persist","remove"})
-     * @ORM\JoinColumn(name="init_moisture_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\JoinColumn(nullable="true",name="init_moisture_id", referencedColumnName="id", onDelete="SET NULL")
      */
-    private Record $initMoisture;
+    private ?Record $initMoisture;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Record", cascade={"persist","remove"})
-     * @ORM\JoinColumn(name="rain_intensity_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\JoinColumn(nullable="true",name="rain_intensity_id", referencedColumnName="id", onDelete="SET NULL")
      */
-    private Record $rainIntensity;
+    private ?Record $rainIntensity;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\RunGroup", inversedBy="runs")
@@ -254,7 +254,7 @@ class Run extends BaseEntity {
     }
 
     public function getFormatedRunoffStart(): string {
-        return $this->getRunoffStart() ? $this->getRunoffStart()->format("G:i:s") : ' - ';
+        return $this->getRunoffStart()!==null ? $this->getRunoffStart()->format("G:i:s") : ' - ';
     }
 
     public function setRunoffStart(?\DateTimeInterface $runoffStart): self {
@@ -367,11 +367,11 @@ class Run extends BaseEntity {
         return $files;
     }
 
-    public function getFilesPath() {
-        return  "data/sequence/". $this->getSequence()->getId(). "/" . $this->getId();
+    public function getFilesPath(): string {
+            return "data/run/" . $this->getId() . "/" . $this->getId();
     }
 
-    public function removeFile(string $filename) {
+    public function removeFile(string $filename):void {
         $filesystem = new Filesystem();
         $dir = $this->getFilesPath();
         if ($filesystem->exists($dir.'/'.$filename)) {
@@ -380,7 +380,7 @@ class Run extends BaseEntity {
     }
 
     public function validateSoilSamples():bool {
-        return $this->getSoilSampleCorg() && $this->getSoilSampleBulk() && $this->getSoilSampleTexture();
+        return $this->getSoilSampleCorg()!==null && $this->getSoilSampleBulk()!==null && $this->getSoilSampleTexture()!==null;
     }
 
     public function getInitMoisture(): ?Record
@@ -407,19 +407,19 @@ class Run extends BaseEntity {
         return $this;
     }
 
-    public function getRunGroup(): ?RunGroup
+    public function getRunGroup(): RunGroup
     {
         return $this->runGroup;
     }
 
-    public function setRunGroup(?RunGroup $runGroup): self
+    public function setRunGroup(RunGroup $runGroup): self
     {
         $this->runGroup = $runGroup;
 
         return $this;
     }
 
-    public function getSequence(): Sequence {
+    public function getSequence(): ?Sequence {
         return $this->getRunGroup()->getSequence();
     }
 
@@ -428,10 +428,10 @@ class Run extends BaseEntity {
     }
 
     public function getFormatedDatetime(): string {
-        return $this->getRunGroup()->getDatetime()->format("d.m.Y H:i");
+        return $this->getRunGroup()->getDatetime()!==null ? $this->getRunGroup()->getDatetime()->format("d.m.Y H:i"): " - ";
     }
 
-    public function getRunType(): RunType {
+    public function getRunType(): ?RunType {
         return $this->getRunGroup()->getRunType();
     }
 

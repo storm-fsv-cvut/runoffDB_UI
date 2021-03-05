@@ -27,25 +27,25 @@ class Plot extends BaseEntity implements DefinitionEntityInterface
      * @ORM\ManyToOne(targetEntity="App\Entity\Locality", inversedBy="plots")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="CASCADE")
      */
-    private Locality $locality;
+    private ?Locality $locality;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Locality")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private Locality $soilOriginLocality;
+    private ?Locality $soilOriginLocality;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Crop")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private Crop $crop;
+    private ?Crop $crop;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Agrotechnology")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
-    private Agrotechnology $agrotechnology;
+    private ?Agrotechnology $agrotechnology;
 
     /**
      * @ORM\Column(type="date")
@@ -90,18 +90,22 @@ class Plot extends BaseEntity implements DefinitionEntityInterface
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ProtectionMeasure")
      */
-    private ProtectionMeasure $protectionMeasure;
+    private ?ProtectionMeasure $protectionMeasure;
 
     public function __construct() {
         $this->noteCZ = null;
         $this->noteEN = null;
+        $this->locality = null;
+        $this->soilOriginLocality = null;
+        $this->crop = null;
+        $this->agrotechnology = null;
         $this->soilSamples = new ArrayCollection();
         $this->measurements = new ArrayCollection();
     }
 
 
     public function __toString() {
-        return "#".$this->getId()." ".$this->getName().($this->getLocality()!==null ? (" ".$this->getLocality()->getName()) : "").($this->getEstablished()!==null ? (" ".$this->getEstablished()->format("d.m.Y")) : "");
+        return "#".$this->getId()." ".$this->getName().($this->getLocality()!==null ? (" ".$this->getLocality()->getName()) : "").(" ".$this->getEstablished()->format("d.m.Y"));
     }
 
     public function getNote():?string {
@@ -161,48 +165,48 @@ class Plot extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-    public function getEstablished(): ?\DateTimeInterface
+    public function getEstablished(): \DateTimeInterface
     {
         return $this->established;
     }
 
-    public function setEstablished(?\DateTimeInterface $established): self
+    public function setEstablished(\DateTimeInterface $established): self
     {
         $this->established = $established;
 
         return $this;
     }
 
-    public function getPlotWidth(): ?float
+    public function getPlotWidth(): float
     {
         return $this->plotWidth;
     }
 
-    public function setPlotWidth(?float $plotWidth): self
+    public function setPlotWidth(float $plotWidth): self
     {
         $this->plotWidth = $plotWidth;
 
         return $this;
     }
 
-    public function getPlotLength(): ?float
+    public function getPlotLength(): float
     {
         return $this->plotLength;
     }
 
-    public function setPlotLength(?float $plotLength): self
+    public function setPlotLength(float $plotLength): self
     {
         $this->plotLength = $plotLength;
 
         return $this;
     }
 
-    public function getPlotSlope(): ?float
+    public function getPlotSlope():?float
     {
         return $this->plotSlope;
     }
 
-    public function setPlotSlope(?float $plotSlope): self
+    public function setPlotSlope(float $plotSlope): self
     {
         $this->plotSlope = $plotSlope;
 

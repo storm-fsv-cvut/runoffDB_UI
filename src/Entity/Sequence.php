@@ -20,7 +20,7 @@ class Sequence extends BaseEntity {
     /**
      * @ORM\Column(type="date")
      */
-    private \DateTimeInterface $date;
+    private ?\DateTimeInterface $date;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Simulator", inversedBy="sequences")
@@ -107,7 +107,7 @@ class Sequence extends BaseEntity {
     }
 
     public function getFormatedDate(): string {
-        return $this->date ? $this->getDate()->format("d. m. Y") : ' - ';
+        return $this->getDate()!==null ? $this->getDate()->format("d. m. Y") : ' - ';
     }
 
     public function setDate(?\DateTimeInterface $date): self {

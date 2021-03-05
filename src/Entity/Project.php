@@ -26,12 +26,12 @@ class Project extends BaseEntity implements DefinitionEntityInterface
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Sequence", inversedBy="projects")
      */
-    private Sequence $sequences;
+    private Collection $sequences;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Organization", inversedBy="projects")
      */
-    private Organization $organisations;
+    private Collection $organisations;
 
     /**
      * @ORM\Column(type="string", length=512, nullable=true)
@@ -63,10 +63,10 @@ class Project extends BaseEntity implements DefinitionEntityInterface
     }
 
     public function __toString(): string {
-        return $this->getProjectName()!=null ? $this->getProjectName() : "";
+        return $this->getProjectName()!==null ? $this->getProjectName() : "#".$this->getId();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -94,7 +94,7 @@ class Project extends BaseEntity implements DefinitionEntityInterface
     public function addSequence(Sequence $sequence): self
     {
         if (!$this->sequences->contains($sequence)) {
-            $this->sequences[] = $sequence;
+            $this->sequences->add($sequence);
         }
 
         return $this;
@@ -110,7 +110,7 @@ class Project extends BaseEntity implements DefinitionEntityInterface
     }
 
     public function getLabel(): string {
-        return $this->getProjectName()!=null ? $this->getProjectName() : "";
+        return $this->getProjectName()!==null ? $this->getProjectName() : "";
     }
 
     /**

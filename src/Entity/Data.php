@@ -85,7 +85,7 @@ class Data extends BaseEntity
 
     public function getValueRounded(): string
     {
-        return number_format( (float) $this->value, $this->getRecord()->getUnit()!==null ? $this->getRecord()->getUnit()->getDecimals() : 10, ".", "" );
+        return number_format( (float) $this->value, $this->getRecord()->getUnit()->getDecimals(), ".", "" );
     }
 
     public function setValue(string $value): self
