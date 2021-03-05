@@ -34,7 +34,7 @@ class OperationType extends BaseEntity implements DefinitionEntityInterface
 
 
     public function __toString(): string {
-        return $this->getDescription();
+        return $this->getDescription()!==null ? $this->getDescription() : "#".$this->getId();
     }
 
     public function getDescription():?string {
@@ -47,7 +47,7 @@ class OperationType extends BaseEntity implements DefinitionEntityInterface
     }
 
     public function getLabel(): string {
-        return $this->descriptionCZ;
+        return $this->getDescription()!==null ? $this->getDescription() : "#".$this->getId();
     }
 
     public function getDescriptionCZ(): ?string

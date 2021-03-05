@@ -45,7 +45,7 @@ class ProtectionMeasure extends BaseEntity implements DefinitionEntityInterface
     }
 
     public function __toString(): string {
-        return $this->getName() ?? "";
+        return $this->getName() ?? "#".$this->getId();
     }
 
     public function getId(): ?int

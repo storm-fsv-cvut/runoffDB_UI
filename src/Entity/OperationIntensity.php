@@ -31,32 +31,31 @@ class OperationIntensity extends BaseEntity implements DefinitionEntityInterface
 
 
     public function __toString(): string {
-        return $this->getDescription();
-    }
+        return $this->getDescription()!==null ? $this->getDescription() : "#".$this->getId();    }
 
     public function getDescription():?string {
         return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
-    public function getId(): ?int {
+    public function getId(): int {
         return $this->id;
     }
 
-    public function getDescriptionCZ(): ?string {
+    public function getDescriptionCZ(): string {
         return $this->descriptionCZ;
     }
 
-    public function setDescriptionCZ(?string $descriptionCZ): self {
+    public function setDescriptionCZ(string $descriptionCZ): self {
         $this->descriptionCZ = $descriptionCZ;
 
         return $this;
     }
 
-    public function getDescriptionEN(): ?string {
+    public function getDescriptionEN(): string {
         return $this->descriptionEN;
     }
 
-    public function setDescriptionEN(?string $descriptionEN): self {
+    public function setDescriptionEN(string $descriptionEN): self {
         $this->descriptionEN = $descriptionEN;
 
         return $this;

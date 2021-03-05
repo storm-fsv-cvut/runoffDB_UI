@@ -72,7 +72,7 @@ class Operation extends BaseEntity implements DefinitionEntityInterface
     }
 
     public function __toString(): string {
-        return $this->getName();
+        return $this->getName()!==null ? $this->getName() : "#".$this->getId();
     }
 
     public function getName():?string {
@@ -83,16 +83,16 @@ class Operation extends BaseEntity implements DefinitionEntityInterface
         return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
-    public function getMachineryType():string {
+    public function getMachineryType(): ?string {
         return $this->getLocale() == 'en' ? $this->getMachineryTypeCZ() : $this->getMachineryTypeEN();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getNameCZ(): ?string
+    public function getNameCZ(): string
     {
         return $this->nameCZ;
     }
@@ -104,36 +104,36 @@ class Operation extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-    public function getNameEN(): ?string
+    public function getNameEN(): string
     {
         return $this->nameEN;
     }
 
-    public function setNameEN(?string $nameEN): self
+    public function setNameEN(string $nameEN): self
     {
         $this->nameEN = $nameEN;
 
         return $this;
     }
 
-    public function getOperationIntensity(): ?OperationIntensity
+    public function getOperationIntensity(): OperationIntensity
     {
         return $this->operationIntensity;
     }
 
-    public function setOperationIntensity(?OperationIntensity $operationIntensity): self
+    public function setOperationIntensity(OperationIntensity $operationIntensity): self
     {
         $this->operationIntensity = $operationIntensity;
 
         return $this;
     }
 
-    public function getOperationDepthM(): ?float
+    public function getOperationDepthM(): float
     {
         return $this->operationDepthM;
     }
 
-    public function setOperationDepthM(?float $operationDepthM): self
+    public function setOperationDepthM(float $operationDepthM): self
     {
         $this->operationDepthM = $operationDepthM;
 
@@ -153,7 +153,7 @@ class Operation extends BaseEntity implements DefinitionEntityInterface
     }
 
     public function getLabel(): string {
-       return $this->getNameCZ();
+        return $this->getName()!==null ? $this->getName() : "#".$this->getId();
     }
 
     public function getDescriptionCZ(): ?string

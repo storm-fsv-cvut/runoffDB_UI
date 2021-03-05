@@ -63,7 +63,7 @@ class Phenomenon extends BaseEntity implements DefinitionEntityInterface
     }
 
     public function __toString(): string {
-        return $this->getName();
+        return $this->getName() !== null ? $this->getName() : "#" . $this->getId();
     }
 
     public function getName():?string {

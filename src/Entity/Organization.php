@@ -4,8 +4,6 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Form\Form;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OrganizationRepository")
@@ -64,7 +62,8 @@ class Organization extends BaseEntity implements DefinitionEntityInterface
      */
     private Collection  $users;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->name = null;
         $this->contactPerson = null;
         $this->contactNumber = null;
@@ -76,11 +75,12 @@ class Organization extends BaseEntity implements DefinitionEntityInterface
         $this->users = new ArrayCollection();
     }
 
-    public function __toString(): string {
-        return $this->getName();
+    public function __toString(): string
+    {
+        return $this->getName() !== null ? $this->getName() : "#" . $this->getId();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -164,8 +164,9 @@ class Organization extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-    public function getLabel(): string {
-        return $this->name;
+    public function getLabel(): string
+    {
+        return $this->getName() !== null ? $this->getName() : "#" . $this->getId();
     }
 
     /**
@@ -239,99 +240,6 @@ class Organization extends BaseEntity implements DefinitionEntityInterface
         if ($this->projects->contains($project)) {
             $this->projects->removeElement($project);
             $project->removeOrganisation($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Sequence[]
-     */
-    public function getSequences(): Collection
-    {
-        return $this->sequences;
-    }
-
-    public function addSequence(Sequence $sequence): self
-    {
-        if (!$this->sequences->contains($sequence)) {
-            $this->sequences[] = $sequence;
-            $sequence->setOrganization($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSequence(Sequence $sequence): self
-    {
-        if ($this->sequences->contains($sequence)) {
-            $this->sequences->removeElement($sequence);
-            // set the owning side to null (unless already changed)
-            if ($sequence->getOrganization() === $this) {
-                $sequence->setOrganization(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Measurement[]
-     */
-    public function getMeasurements(): Collection
-    {
-        return $this->measurements;
-    }
-
-    public function addMeasurement(Measurement $measurement): self
-    {
-        if (!$this->measurements->contains($measurement)) {
-            $this->measurements[] = $measurement;
-            $measurement->setOrganization($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMeasurement(Measurement $measurement): self
-    {
-        if ($this->measurements->contains($measurement)) {
-            $this->measurements->removeElement($measurement);
-            // set the owning side to null (unless already changed)
-            if ($measurement->getOrganization() === $this) {
-                $measurement->setOrganization(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|SoilSample[]
-     */
-    public function getSoilSamples(): Collection
-    {
-        return $this->soilSamples;
-    }
-
-    public function addSoilSample(SoilSample $soilSample): self
-    {
-        if (!$this->soilSamples->contains($soilSample)) {
-            $this->soilSamples[] = $soilSample;
-            $soilSample->setOrganization($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSoilSample(SoilSample $soilSample): self
-    {
-        if ($this->soilSamples->contains($soilSample)) {
-            $this->soilSamples->removeElement($soilSample);
-            // set the owning side to null (unless already changed)
-            if ($soilSample->getOrganization() === $this) {
-                $soilSample->setOrganization(null);
-            }
         }
 
         return $this;

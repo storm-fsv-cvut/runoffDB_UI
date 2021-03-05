@@ -51,10 +51,10 @@ class Model extends BaseEntity implements DefinitionEntityInterface
     }
 
     public function __toString(): string {
-        return $this->getName();
+        return $this->getName()!==null ? $this->getName() : "#".$this->getId();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

@@ -75,9 +75,9 @@ class Measurement extends BaseEntity {
     private ?Locality $locality;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="measurements")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="measurements", nullable="true")
      */
-    private User $user;
+    private ?User $user;
 
     public function __construct() {
         $this->descriptionCZ = null;
@@ -93,7 +93,7 @@ class Measurement extends BaseEntity {
     }
 
     public function __toString(): string {
-        return $this->getDescription();
+        return $this->getDescription()!==null ? $this->getDescription() : "#".$this->getId();
     }
 
     public function getNote(): ?string {
@@ -198,7 +198,9 @@ class Measurement extends BaseEntity {
             $this->runs[] = $run;
             $this->setDate($run->getDatetime());
             $this->setLocality($run->getSequence()->getLocality());
-            $this->setPlot($run->getPlot());
+            if ($run->getPlot()!==null) {
+                $this->setPlot($run->getPlot());
+            }
         }
         return $this;
     }
@@ -223,7 +225,9 @@ class Measurement extends BaseEntity {
             $this->soilSamples[] = $soilSample;
             $this->setDate($soilSample->getDateSampled());
             $this->setLocality($soilSample->getLocality());
-            $this->setPlot($soilSample->getPlot());
+            if ($soilSample->getPlot()!==null) {
+                $this->setPlot($soilSample->getPlot());
+            }
         }
 
         return $this;
@@ -252,7 +256,7 @@ class Measurement extends BaseEntity {
     }
 
     public function getFormatedDate(string $format = "d.m.Y"): string {
-        return $this->date ? $this->getDate()->format($format) : '';
+        return $this->getDate()!==null ? $this->getDate()->format($format) : '';
     }
 
     public function setDate(?DateTimeInterface $date): self {
@@ -261,13 +265,12 @@ class Measurement extends BaseEntity {
         return $this;
     }
 
-    public function getPlot(): ?Plot {
+    public function getPlot(): Plot {
         return $this->plot;
     }
 
-    public function setPlot(?Plot $plot): self {
+    public function setPlot(Plot $plot): self {
         $this->plot = $plot;
-
         return $this;
     }
 
@@ -282,7 +285,7 @@ class Measurement extends BaseEntity {
     }
 
     public function getOrganization(): ?Organization {
-        if ($this->getUser()) {
+        if ($this->getUser()!==null) {
             return $this->getUser()->getOrganization();
         }
         return null;

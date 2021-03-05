@@ -80,7 +80,8 @@ class Sequence extends BaseEntity {
     }
 
     public function __toString(): string {
-        return $this->getDate()->format("d.m.Y") . " - " . $this->getLocality();
+
+        return $this->getDate()!==null ? ($this->getDate()->format("d.m.Y") . " - " . $this->getLocality()) : ("#".$this->getId()." - ".$this->getLocality());
     }
 
     /**

@@ -108,7 +108,7 @@ class User extends BaseEntity implements UserInterface {
         return $this;
     }
 
-    public function getFullname(): ?string {
+    public function getFullname(): string {
         return $this->fullname;
     }
 

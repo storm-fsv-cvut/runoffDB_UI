@@ -86,41 +86,41 @@ class Locality extends BaseEntity implements DefinitionEntityInterface
         return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(?string $name): self
+    public function setName(string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function getLat(): ?float
+    public function getLat(): float
     {
         return $this->lat;
     }
 
-    public function setLat(?float $lat): self
+    public function setLat(float $lat): self
     {
         $this->lat = $lat;
 
         return $this;
     }
 
-    public function getLng(): ?float
+    public function getLng(): float
     {
         return $this->lng;
     }
 
-    public function setLng(?float $lng): self
+    public function setLng(float $lng): self
     {
         $this->lng = $lng;
 
@@ -139,12 +139,12 @@ class Locality extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-    public function getWrbSoilClass(): ?WrbSoilClass
+    public function getWrbSoilClass(): WrbSoilClass
     {
         return $this->wrbSoilClass;
     }
 
-    public function setWrbSoilClass(?WrbSoilClass $wrbSoilClass): self
+    public function setWrbSoilClass(WrbSoilClass $wrbSoilClass): self
     {
         $this->wrbSoilClass = $wrbSoilClass;
 

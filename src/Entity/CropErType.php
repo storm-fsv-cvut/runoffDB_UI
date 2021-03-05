@@ -33,14 +33,14 @@ class CropErType extends BaseEntity implements DefinitionEntityInterface
     }
 
     public function __toString(): string {
-        return $this->getName();
+        return $this->getName()!==null ? $this->getName() : '#' . $this->getId();
     }
 
     public function getName():?string {
         return $this->getLocale() == 'en' ? $this->getNameEN() : $this->getNameCZ();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

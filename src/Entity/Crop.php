@@ -69,7 +69,7 @@ class Crop extends BaseEntity implements DefinitionEntityInterface
     }
 
     public function __toString(): string {
-        return $this->getName() ?: '#' . $this->getId();
+        return $this->getName()!==null ? $this->getName() : '#' . $this->getId();
     }
 
     public function getName():?string {
@@ -80,7 +80,7 @@ class Crop extends BaseEntity implements DefinitionEntityInterface
         return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

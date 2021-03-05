@@ -151,7 +151,7 @@ class SoilSample extends BaseEntity
         return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

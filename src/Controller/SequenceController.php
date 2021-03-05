@@ -123,8 +123,8 @@ class SequenceController extends AbstractController
                     $entityManager->persist($run);
                     $entityManager->flush();
                 }
+                return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
             }
-            return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
         }
         return null;
     }
@@ -143,11 +143,13 @@ class SequenceController extends AbstractController
             if ($record===null) {
                 throw new \Exception("Record doesn't exist");
             }
-            foreach ($record->getMeasurement()->getRuns() as $run) {
-                $sequence = $run->getSequence();
-                $run->setInitMoisture($record);
-                $entityManager->persist($run);
-                $entityManager->flush();
+            if ($record->getMeasurement()!=null) {
+                foreach ($record->getMeasurement()->getRuns() as $run) {
+                    $sequence = $run->getSequence();
+                    $run->setInitMoisture($record);
+                    $entityManager->persist($run);
+                    $entityManager->flush();
+                }
             }
         }
         return $this->redirectToRoute('sequence', ['id' => $sequence!==null ? $sequence->getId() : null]);

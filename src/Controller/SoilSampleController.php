@@ -261,7 +261,7 @@ class SoilSampleController extends AbstractController {
     /**
      * @Route("/{_locale}/is-bulkDensity", name="isbulkDensity")
      */
-    public function isbulkDensity(RecordRepository $recordRepository, SoilSampleRepository $soilSampleRepository, SoilSampleService $soilSampleService, EntityManagerInterface $entityManager, Request $request):RedirectResponse {
+    public function isbulkDensity(RecordRepository $recordRepository, SoilSampleRepository $soilSampleRepository, SoilSampleService $soilSampleService, EntityManagerInterface $entityManager, Request $request):?RedirectResponse {
         if ($request->get('soilSampleId')!==null && $request->get('recordId')!==null) {
             $soilSample = $soilSampleService->getSoilSampleById($request->get('soilSampleId') );
             $this->denyAccessUnlessGranted(EntityVoter::EDIT,$soilSample);
@@ -272,8 +272,9 @@ class SoilSampleController extends AbstractController {
             $soilSample->setBulkDensity($record);
             $entityManager->persist($soilSample);
             $entityManager->flush();
+            return $this->redirectToRoute('soilSample', ['id' => $soilSample->getId()]);
         }
-        return $this->redirectToRoute('soilSample', ['id' => $soilSample->getId()]);
+        return null;
     }
 
     /**

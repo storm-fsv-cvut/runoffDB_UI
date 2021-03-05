@@ -63,7 +63,7 @@ class Project extends BaseEntity implements DefinitionEntityInterface
     }
 
     public function __toString(): string {
-        return $this->getProjectName() ? $this->getProjectName() : "";
+        return $this->getProjectName()!=null ? $this->getProjectName() : "";
     }
 
     public function getId(): ?int
@@ -110,7 +110,7 @@ class Project extends BaseEntity implements DefinitionEntityInterface
     }
 
     public function getLabel(): string {
-        return $this->getProjectName();
+        return $this->getProjectName()!=null ? $this->getProjectName() : "";
     }
 
     /**

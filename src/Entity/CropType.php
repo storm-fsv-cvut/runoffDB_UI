@@ -45,7 +45,7 @@ class CropType extends BaseEntity implements DefinitionEntityInterface
 
 
     public function __toString(): string {
-        return $this->getName();
+        return $this->getName()!==null ? $this->getName(): '#' . $this->getId();
     }
 
     public function getName():?string {
@@ -56,7 +56,7 @@ class CropType extends BaseEntity implements DefinitionEntityInterface
         return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -86,7 +86,7 @@ class CropType extends BaseEntity implements DefinitionEntityInterface
     }
 
     public function getLabel(): string {
-        return $this->getNameCZ();
+        return $this->getName()!==null ?$this->getName(): '#' . $this->getId();
     }
 
     public function getDescriptionCZ(): ?string
