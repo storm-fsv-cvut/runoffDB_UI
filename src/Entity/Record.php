@@ -89,7 +89,6 @@ class Record extends BaseEntity {
         $this->recordType = null;
         $this->noteCZ = null;
         $this->noteEN = null;
-        $this->unit = null;
         $this->relatedValueXUnit = null;
         $this->relatedValueYUnit = null;
         $this->relatedValueZUnit = null;

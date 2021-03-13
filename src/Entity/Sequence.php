@@ -42,7 +42,7 @@ class Sequence extends BaseEntity {
      * @ORM\ManyToOne(targetEntity="App\Entity\Record")
      * @ORM\JoinColumn(name="surface_cover_id", referencedColumnName="id", onDelete="SET NULL")
      */
-    private Record $surfaceCover;
+    private ?Record $surfaceCover;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -65,9 +65,9 @@ class Sequence extends BaseEntity {
     private ?bool $deleted;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="sequences")
+     * @ORM\ManyToOne(nullable=true, targetEntity="App\Entity\User", inversedBy="sequences")
      */
-    private User $user;
+    private ?User $user;
 
     public function __construct() {
         $this->simulator = null;
@@ -163,7 +163,7 @@ class Sequence extends BaseEntity {
 
     public function validateSoilSamples(): array {
         $res = [];
-        foreach ($this->getRuns() as $run) {
+        foreach ($this->getRuns()->toArray() as $run) {
             $res[] = $run->validateSoilSamples();
         }
         return $res;
@@ -205,11 +205,11 @@ class Sequence extends BaseEntity {
 
     public function getRecords(): array {
         $records = [];
-        if ($this->getRuns()) {
-            foreach ($this->getRuns() as $run) {
-                if ($run->getMeasurements()) {
+        if ($this->getRuns()!==null) {
+            foreach ($this->getRuns()->toArray() as $run) {
+                if ($run->getMeasurements()!==null) {
                     foreach ($run->getMeasurements() as $measurement) {
-                        if ($measurement->getRecords()) {
+                        if ($measurement->getRecords()!=null) {
                             foreach ($measurement->getRecords() as $record) {
                                 $records[] = $record;
                             }
@@ -226,8 +226,8 @@ class Sequence extends BaseEntity {
      */
     public function getPlots(): array {
         $plots = [];
-        if ($this->getRuns()) {
-            foreach ($this->getRuns() as $run) {
+        if ($this->getRuns()!==null) {
+            foreach ($this->getRuns()->toArray() as $run) {
                 $plots[] = $run->getPlot();
             }
         }
@@ -237,7 +237,7 @@ class Sequence extends BaseEntity {
     public function listPlots(): string {
         $names = [];
         foreach ($this->getPlots() as $plot) {
-            if (!in_array($plot->getName(), $names)) {
+            if (!in_array($plot->getName(), $names,true)) {
                 $names[] = $plot->getName();
             }
         }
@@ -247,15 +247,17 @@ class Sequence extends BaseEntity {
     public function listCrops(): string {
         $names = [];
         foreach ($this->getPlots() as $plot) {
-            if (!in_array($plot->getCrop()->getName(), $names)) {
-                $names[] = $plot->getCrop()->getName();
+            if ($plot->getCrop()!==null) {
+                if (!in_array($plot->getCrop()->getName(), $names, true)) {
+                    $names[] = $plot->getCrop()->getName();
+                }
             }
         }
         return implode(", ", $names);
     }
 
     public function getLocality(): ?Locality {
-        if ($this->getRuns()->count() > 0) {
+        if ($this->getRuns()!==null && $this->getRuns()->count() > 0) {
             return $this->getRuns()->get(0)->getPlot()->getLocality();
         }
         return null;

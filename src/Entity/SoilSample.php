@@ -119,9 +119,9 @@ class SoilSample extends BaseEntity
     private ?bool $deleted;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="soilSamples")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="soilSamples", nullable=true)
      */
-    private User $user;
+    private ?User $user;
 
     public function __construct() {
         $this->processedAt = null;
@@ -140,6 +140,7 @@ class SoilSample extends BaseEntity
         $this->textureRecord = null;
         $this->rawDataPath = null;
         $this->deleted = null;
+        $this->user = null;
         $this->measurements = new ArrayCollection();
     }
 
@@ -156,17 +157,17 @@ class SoilSample extends BaseEntity
         return $this->id;
     }
 
-    public function getDateSampled(): ?\DateTimeInterface
+    public function getDateSampled(): \DateTimeInterface
     {
         return $this->dateSampled;
     }
 
     public function getFormatedDateSampled(): string
     {
-        return $this->dateSampled ? $this->dateSampled->format('d.m.Y') : "";
+        return $this->dateSampled->format('d.m.Y');
     }
 
-    public function setDateSampled(?\DateTimeInterface $dateSampled): self
+    public function setDateSampled(\DateTimeInterface $dateSampled): self
     {
         $this->dateSampled = $dateSampled;
 
@@ -234,7 +235,7 @@ class SoilSample extends BaseEntity
     }
 
     public function getLabel(): string {
-       return $this->id;
+       return "#".$this->getId();
     }
 
     public function getDescriptionCZ(): ?string
@@ -292,7 +293,7 @@ class SoilSample extends BaseEntity
 
     public function getFormatedDateProcessed(): string
     {
-        return $this->dateProcessed ? $this->dateProcessed->format('d.m.Y') : "";
+        return $this->dateProcessed!==null ? $this->dateProcessed->format('d.m.Y') : "";
     }
 
     public function setDateProcessed(?\DateTimeInterface $dateProcessed): self

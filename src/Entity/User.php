@@ -47,7 +47,7 @@ class User extends BaseEntity implements UserInterface {
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Organization", inversedBy="users")
      */
-    private $organization;
+    private Organization $organization;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\SoilSample", mappedBy="user")
@@ -78,7 +78,7 @@ class User extends BaseEntity implements UserInterface {
         return $this->id;
     }
 
-    public function getUsername(): ?string {
+    public function getUsername(): string {
         return $this->username;
     }
 
@@ -88,7 +88,7 @@ class User extends BaseEntity implements UserInterface {
         return $this;
     }
 
-    public function getPassword(): ?string {
+    public function getPassword(): string {
         return $this->password;
     }
 
@@ -118,16 +118,16 @@ class User extends BaseEntity implements UserInterface {
         return $this;
     }
 
-    public function getRoles(): ?array {
+    public function getRoles(): array {
         return [$this->getRole()];
     }
 
-    public function getRole(): ?string {
+    public function getRole(): string {
         return $this->role;
     }
 
     public function isInRole(array $roles): bool {
-        if (in_array($this->getRole(), $roles)) {
+        if (in_array($this->getRole(), $roles, true)) {
             return true;
         }
         return false;
@@ -144,12 +144,6 @@ class User extends BaseEntity implements UserInterface {
      * Removes sensitive data from the user.
      */
     public function eraseCredentials(): void {
-    }
-
-    public function setRoles($roles): self {
-        $this->roles = $roles;
-
-        return $this;
     }
 
     public function getOrganization(): ?Organization {

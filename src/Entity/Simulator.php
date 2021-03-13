@@ -66,7 +66,11 @@ class Simulator extends BaseEntity implements DefinitionEntityInterface
     }
 
     public function __toString() {
-        return $this->getName().' ('.($this->getOrganization() ? $this->getOrganization()->getName() : "").')';
+        if ($this->getName()!==null) {
+            return $this->getName() . ' (' . ($this->getOrganization() ? $this->getOrganization()->getName() : "") . ')';
+        } else {
+            return "#".$this->getId() . ' (' . ($this->getOrganization() ? $this->getOrganization()->getName() : "") . ')';
+        }
     }
     public function getName():?string {
         return $this->getLocale() == 'en' ? $this->getNameEN() : $this->getNameCZ();
@@ -173,7 +177,11 @@ class Simulator extends BaseEntity implements DefinitionEntityInterface
     }
 
     public function getLabel(): string {
-        return $this->getNameCZ();
+        if ($this->getName()!==null) {
+            return $this->getName() . ' (' . ($this->getOrganization() ? $this->getOrganization()->getName() : "") . ')';
+        } else {
+            return "#".$this->getId() . ' (' . ($this->getOrganization() ? $this->getOrganization()->getName() : "") . ')';
+        }
     }
 
     public function getReference(): ?string

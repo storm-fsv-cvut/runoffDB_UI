@@ -121,9 +121,9 @@ class Run extends BaseEntity {
     private ?Record $rainIntensity;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\RunGroup", inversedBy="runs")
+     * @ORM\ManyToOne(nullable="true",targetEntity="App\Entity\RunGroup", inversedBy="runs")
      */
-    private RunGroup $runGroup;
+    private ?RunGroup $runGroup;
 
     public function __construct() {
         $this->soilSampleBulk = null;
@@ -407,12 +407,12 @@ class Run extends BaseEntity {
         return $this;
     }
 
-    public function getRunGroup(): RunGroup
+    public function getRunGroup(): ?RunGroup
     {
         return $this->runGroup;
     }
 
-    public function setRunGroup(RunGroup $runGroup): self
+    public function setRunGroup(?RunGroup $runGroup): self
     {
         $this->runGroup = $runGroup;
 
@@ -423,7 +423,7 @@ class Run extends BaseEntity {
         return $this->getRunGroup()->getSequence();
     }
 
-    public function getDatetime(): \DateTimeInterface {
+    public function getDatetime(): ?\DateTimeInterface {
         return $this->getRunGroup()->getDatetime();
     }
 

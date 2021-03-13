@@ -177,7 +177,7 @@ class RunGroup extends BaseEntity
         return $this;
     }
 
-    public function getMeasurements() {
+    public function getMeasurements():Collection {
         $measurements = [];
         foreach ($this->getRuns() as $run) {
             $measurements[$run->getId()] = $run;

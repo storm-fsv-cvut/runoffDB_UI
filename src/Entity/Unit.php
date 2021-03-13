@@ -134,11 +134,11 @@ class Unit extends BaseEntity implements DefinitionEntityInterface
      * @return int
      */
     public function getDecimals():int {
-        return $this->decimals ? $this->decimals : 3;
+        return $this->decimals;
     }
 
     /**
-     * @param mixed $decimals
+     * @param int $decimals
      */
     public function setDecimals(int $decimals): void {
         $this->decimals = $decimals;
