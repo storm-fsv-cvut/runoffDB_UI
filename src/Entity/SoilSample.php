@@ -22,7 +22,7 @@ class SoilSample extends BaseEntity
     /**
      * @ORM\Column(type="date")
      */
-    private \DateTimeInterface $dateSampled;
+    private ?\DateTimeInterface $dateSampled;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Organization")
@@ -119,7 +119,7 @@ class SoilSample extends BaseEntity
     private ?bool $deleted;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="soilSamples", nullable=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="soilSamples")
      */
     private ?User $user;
 
@@ -139,6 +139,7 @@ class SoilSample extends BaseEntity
         $this->moisture = null;
         $this->textureRecord = null;
         $this->rawDataPath = null;
+        $this->dateSampled = null;
         $this->deleted = null;
         $this->user = null;
         $this->measurements = new ArrayCollection();
@@ -157,17 +158,17 @@ class SoilSample extends BaseEntity
         return $this->id;
     }
 
-    public function getDateSampled(): \DateTimeInterface
+    public function getDateSampled(): ?\DateTimeInterface
     {
         return $this->dateSampled;
     }
 
     public function getFormatedDateSampled(): string
     {
-        return $this->dateSampled->format('d.m.Y');
+        return $this->dateSampled!==null ? $this->dateSampled->format('d.m.Y') : " - ";
     }
 
-    public function setDateSampled(\DateTimeInterface $dateSampled): self
+    public function setDateSampled(?\DateTimeInterface $dateSampled): self
     {
         $this->dateSampled = $dateSampled;
 

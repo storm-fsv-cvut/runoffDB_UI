@@ -2,6 +2,7 @@
 
 namespace App\Twig;
 
+use App\Entity\BaseEntity;
 use App\Entity\DefinitionEntityInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -30,13 +31,13 @@ class PrintEntityExtension extends AbstractExtension {
         ];
     }
 
-    function printEntity($entity): string {
+    function printEntity(BaseEntity $entity): string {
         $html = "<dl class='dl-vertical'>";
         $metadata = $this->em->getMetadataFactory()->getMetadataFor(get_class($entity));
 
         foreach ($metadata->getFieldNames() as $field) {
             $var = call_user_func_array([$entity, 'get' . ucfirst($field)], []);
-            if ($var) {
+            if ($var!==null) {
                 $html .= "<dt>{$this->translator->trans($field)}</dt>";
                 if ($var instanceof \DateTimeInterface) {
                     $html .= "<dd>" . $var->format("d.m.Y") . "</dd>";
@@ -49,7 +50,7 @@ class PrintEntityExtension extends AbstractExtension {
         }
 
         foreach ($metadata->getAssociationNames() as $associationName) {
-            if (strpos($metadata->getReflectionClass()->getProperty($associationName)->getDocComment(), "mappedBy")) {
+            if (strpos((string) $metadata->getReflectionClass()->getProperty($associationName)->getDocComment(), "mappedBy")!==false) {
                 $var = call_user_func_array([$entity, 'get' . ucfirst($associationName)], []);
             }
         }

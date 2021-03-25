@@ -2,26 +2,32 @@
 
 namespace App\Form;
 
+use _HumbugBoxcbe25c660cef\Nette\Neon\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class DefinitionEntityType extends AbstractType {
+class DefinitionEntityType extends AbstractType
+{
 
     /**
      * @var EntityManagerInterface
      */
     private $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager) {
+    public function __construct(EntityManagerInterface $entityManager)
+    {
 
         $this->entityManager = $entityManager;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        if ($builder->getDataClass() === null) {
+            throw new Exception("No data class set");
+        }
         $metadata = $this->entityManager->getMetadataFactory()->getMetadataFor($builder->getDataClass());
         foreach ($metadata->getFieldNames() as $field) {
             if ($field != 'id') {
@@ -31,8 +37,12 @@ class DefinitionEntityType extends AbstractType {
 
         foreach ($metadata->getAssociationNames() as $associationName) {
             $targetClass = ($metadata->getAssociationTargetClass($associationName));
-            $targetClassArray = explode("\\",$targetClass);
-            if (strpos($metadata->getReflectionClass()->getProperty($associationName)->getDocComment(), "mappedBy")) {
+            $targetClassArray = explode("\\", $targetClass);
+            if ($metadata->getReflectionClass()->getProperty($associationName)->getDocComment() !== false &&
+                strpos(
+                    $metadata->getReflectionClass()->getProperty($associationName)->getDocComment(),
+                    "mappedBy"
+                ) !== false) {
             } else {
                 $metadata->getAssociationMappedByTargetField($associationName);
                 $targetClass = ($metadata->getAssociationTargetClass($associationName));
@@ -40,10 +50,14 @@ class DefinitionEntityType extends AbstractType {
             }
         }
 
-        $builder->add('save', SubmitType::class, [
-            'attr' => ['class' => 'btn btn-success'],
-            'label' => 'save'
-        ]);
+        $builder->add(
+            'save',
+            SubmitType::class,
+            [
+                'attr' => ['class' => 'btn btn-success'],
+                'label' => 'save'
+            ]
+        );
     }
 
 }

@@ -21,7 +21,7 @@ class RunGroup extends BaseEntity
     /**
      * @ORM\Column(type="datetime")
      */
-    private \DateTimeInterface $datetime;
+    private ?\DateTimeInterface $datetime;
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -58,12 +58,17 @@ class RunGroup extends BaseEntity
     public function __construct() {
         $this->precedingPrecipitation = null;
         $this->noteCZ = null;
+        $this->datetime = null;
         $this->runType = null;
         $this->sequence = null;
         $this->noteEN = null;
         $this->runs = new ArrayCollection();
     }
 
+    public function __toString():string
+    {
+        return (string) $this->getId();
+    }
 
     public function getId(): int
     {
@@ -75,7 +80,7 @@ class RunGroup extends BaseEntity
         return $this->datetime;
     }
 
-    public function setDatetime(\DateTimeInterface $datetime): self
+    public function setDatetime(?\DateTimeInterface $datetime): self
     {
         $this->datetime = $datetime;
 
@@ -177,7 +182,7 @@ class RunGroup extends BaseEntity
         return $this;
     }
 
-    public function getMeasurements():Collection {
+    public function getMeasurements():array {
         $measurements = [];
         foreach ($this->getRuns() as $run) {
             $measurements[$run->getId()] = $run;

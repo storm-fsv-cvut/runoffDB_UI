@@ -8,6 +8,7 @@
 
 namespace App\Controller;
 
+use _HumbugBoxcbe25c660cef\Nette\Neon\Exception;
 use App\Entity\Measurement;
 use App\Entity\Record;
 use App\Entity\Sequence;
@@ -61,6 +62,9 @@ class MeasurementController extends AbstractController {
         if ($id!==null) {
             $newRecordForm = $this->createForm(RecordType::class, new Record());
             $measurement = $measurementService->getMeasurementById($id);
+            if ($measurement === null) {
+                throw new Exception("Measurement doesnt exists");
+            }
             $this->denyAccessUnlessGranted(EntityVoter::VIEW,$measurement);
             $measurementForm = $this->createForm(MeasurementType::class, $measurement);
 

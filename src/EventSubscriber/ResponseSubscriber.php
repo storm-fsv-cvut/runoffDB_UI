@@ -9,11 +9,8 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class ResponseSubscriber implements EventSubscriberInterface
 {
-    private $defaultLocale;
-    /**
-     * @var CmsRepository
-     */
-    private $cmsRepository;
+    private string $defaultLocale;
+    private CmsRepository $cmsRepository;
 
     public function __construct(CmsRepository $cmsRepository, string $defaultLocale = 'cs')
     {
@@ -22,7 +19,7 @@ class ResponseSubscriber implements EventSubscriberInterface
     }
 
 
-    public function onKernelResponse(FilterResponseEvent $event)
+    public function onKernelResponse(FilterResponseEvent $event):void
     {
         $request = $event->getRequest();
         $response = $event->getResponse();

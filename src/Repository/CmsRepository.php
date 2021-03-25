@@ -27,6 +27,7 @@ class CmsRepository extends ServiceEntityRepository
             ->setParameter('slug', $slug)
             ->andWhere('c.language = :language')
             ->setParameter('language', $language)
+            ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
         ;
@@ -36,7 +37,7 @@ class CmsRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('c')
             ->andWhere('c.type = :type')->setParameter('type', $type)
             ->andWhere('c.language = :language')->setParameter('language', $language);
-            if ($status) {
+            if ($status!==null) {
                 $qb->andWhere('c.status = :status')->setParameter('status', $status);
             }
 

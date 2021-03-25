@@ -42,7 +42,7 @@ class Locality extends BaseEntity implements DefinitionEntityInterface
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\WrbSoilClass")
      */
-    private WrbSoilClass $wrbSoilClass;
+    private ?WrbSoilClass $wrbSoilClass;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Plot", mappedBy="locality")
@@ -73,6 +73,7 @@ class Locality extends BaseEntity implements DefinitionEntityInterface
         $this->organization = null;
         $this->descriptionCZ = null;
         $this->descriptionEN = null;
+        $this->wrbSoilClass = null;
         $this->plots = new ArrayCollection();
         $this->soilSamples = new ArrayCollection();
         $this->measurements = new ArrayCollection();
@@ -139,12 +140,12 @@ class Locality extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-    public function getWrbSoilClass(): WrbSoilClass
+    public function getWrbSoilClass(): ?WrbSoilClass
     {
         return $this->wrbSoilClass;
     }
 
-    public function setWrbSoilClass(WrbSoilClass $wrbSoilClass): self
+    public function setWrbSoilClass(?WrbSoilClass $wrbSoilClass): self
     {
         $this->wrbSoilClass = $wrbSoilClass;
 

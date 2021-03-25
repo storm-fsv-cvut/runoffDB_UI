@@ -35,7 +35,7 @@ class RunGroupType extends AbstractType {
         $this->translator = $translator;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options): void {
         $builder
             ->add('runType', EntityType::class, [
                 'class' => RunTypeEntity::class,
@@ -74,7 +74,7 @@ class RunGroupType extends AbstractType {
 
     }
 
-    public function configureOptions(OptionsResolver $resolver) {
+    public function configureOptions(OptionsResolver $resolver): void {
         $resolver->setDefaults([
             'data_class' => RunGroup::class,
         ]);

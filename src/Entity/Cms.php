@@ -17,7 +17,7 @@ class Cms extends BaseEntity
     private int $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
     private string $slug;
 
@@ -51,6 +51,9 @@ class Cms extends BaseEntity
         $this->title = null;
         $this->type = null;
         $this->status = null;
+        $this->slug = "";
+        $this->language  = "cs";
+        $this->content  = "";
     }
 
 

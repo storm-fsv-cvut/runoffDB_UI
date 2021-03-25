@@ -4,6 +4,7 @@
 namespace App\Services;
 
 
+use _HumbugBoxcbe25c660cef\Nette\Neon\Exception;
 use App\Entity\Sequence;
 use App\Repository\SequenceRepository;
 use App\Repository\TillageSequenceRepository;
@@ -39,7 +40,10 @@ class SequenceService {
         $this->tillageSequenceRepository = $tillageSequenceRepository;
         $this->translator = $translator;
         $this->requestStack = $requestStack;
-        $this->locale = $this->requestStack->getCurrentRequest()->getLocale() ? $this->requestStack->getCurrentRequest()->getLocale() : $this->requestStack->getCurrentRequest()->getDefaultLocale();
+        if ($this->requestStack->getCurrentRequest()===null) {
+            throw new Exception('Invalid request');
+        }
+        $this->locale = $this->requestStack->getCurrentRequest()->getLocale()!==null ? $this->requestStack->getCurrentRequest()->getLocale() : $this->requestStack->getCurrentRequest()->getDefaultLocale();
     }
 
     public function getRunsArray(Sequence $sequence): array {

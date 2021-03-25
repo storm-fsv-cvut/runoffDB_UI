@@ -110,18 +110,18 @@ class Run extends BaseEntity {
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Record", cascade={"persist","remove"})
-     * @ORM\JoinColumn(nullable="true",name="init_moisture_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\JoinColumn(nullable=true,name="init_moisture_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private ?Record $initMoisture;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Record", cascade={"persist","remove"})
-     * @ORM\JoinColumn(nullable="true",name="rain_intensity_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\JoinColumn(nullable=true,name="rain_intensity_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private ?Record $rainIntensity;
 
     /**
-     * @ORM\ManyToOne(nullable="true",targetEntity="App\Entity\RunGroup", inversedBy="runs")
+     * @ORM\ManyToOne(targetEntity="App\Entity\RunGroup", inversedBy="runs")
      */
     private ?RunGroup $runGroup;
 
@@ -420,7 +420,8 @@ class Run extends BaseEntity {
     }
 
     public function getSequence(): ?Sequence {
-        return $this->getRunGroup()->getSequence();
+
+        return $this->getRunGroup()!==null ? $this->getRunGroup()->getSequence() : null;
     }
 
     public function getDatetime(): ?\DateTimeInterface {
@@ -428,11 +429,10 @@ class Run extends BaseEntity {
     }
 
     public function getFormatedDatetime(): string {
-        return $this->getRunGroup()->getDatetime()!==null ? $this->getRunGroup()->getDatetime()->format("d.m.Y H:i"): " - ";
+        return $this->getRunGroup()!==null ? $this->getRunGroup()->getDatetime()!==null ? $this->getRunGroup()->getDatetime()->format("d.m.Y H:i"): " - ": " - ";
     }
 
     public function getRunType(): ?RunType {
-        return $this->getRunGroup()->getRunType();
+        return $this->getRunGroup()!==null ? $this->getRunGroup()->getRunType() : null;
     }
-
 }

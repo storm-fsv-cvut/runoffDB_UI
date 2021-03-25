@@ -76,7 +76,7 @@ class Measurement extends BaseEntity {
     private ?Locality $locality;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="measurements", nullable="true")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="measurements")
      */
     private ?User $user;
 
@@ -91,6 +91,7 @@ class Measurement extends BaseEntity {
         $this->records = new ArrayCollection();
         $this->runs = new ArrayCollection();
         $this->soilSamples = new ArrayCollection();
+        $this->plot = null;
     }
 
     public function __toString(): string {

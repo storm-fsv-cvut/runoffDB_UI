@@ -25,28 +25,12 @@ class MenuBuilder {
      * @var array
      */
     private $definitionEntities;
-    private $factory;
-
-    /**
-     * @var Matcher
-     */
-    private $matcher;
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-    /**
-     * @var CmsRepository
-     */
-    private $cmsRepository;
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    private FactoryInterface $factory;
+    private Matcher $matcher;
+    private TranslatorInterface $translator;
+    private RequestStack $requestStack;
+    private CmsRepository $cmsRepository;
+    private ContainerInterface $container;
 
 
     /**
@@ -55,9 +39,9 @@ class MenuBuilder {
      * @param EntityManagerInterface $em
      * @param TranslatorInterface $translator
      */
-    public function __construct(FactoryInterface $factory, EntityManagerInterface $em, TranslatorInterface $translator, RequestStack $requestStack, CmsRepository $cmsRepository, UserRepository $userRepository, ContainerInterface $container) {
+    public function __construct(FactoryInterface $factory, EntityManagerInterface $em, TranslatorInterface $translator, RequestStack $requestStack, CmsRepository $cmsRepository, ContainerInterface $container) {
         foreach ($em->getMetadataFactory()->getAllMetadata() as $entity) {
-            if (in_array('App\Entity\DefinitionEntityInterface', $entity->getReflectionClass()->getInterfaceNames())) {
+            if (in_array('App\Entity\DefinitionEntityInterface', $entity->getReflectionClass()->getInterfaceNames(),false)) {
                 $this->definitionEntities[$entity->name] = $translator->trans($entity->name);
             }
         }
@@ -75,10 +59,7 @@ class MenuBuilder {
      */
     public function createAdminMenu(array $options) {
         $authChecker = $this->container->get('security.authorization_checker');
-
-
-        $pages = $this->cmsRepository->findAllByType('content', $this->requestStack->getCurrentRequest()->getLocale());
-        $this->matcher = new Matcher(new RouteVoter($this->requestStack));
+        $this->matcher = new Matcher([new RouteVoter($this->requestStack)]);
         $menu = $this->factory->createItem('root');
         $menu->setChildrenAttribute('class', 'sidebar-menu tree');
         $menu->setChildrenAttribute('data-widget', 'tree');

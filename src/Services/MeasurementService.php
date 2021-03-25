@@ -26,23 +26,21 @@ class MeasurementService {
         $this->filesystem = $filesystem;
     }
 
-    public function getMeasurementById(int $id):Measurement {
+    public function getMeasurementById(int $id): ?Measurement {
         return $this->measurementRepository->find($id);
     }
 
-    public function generateDetails() {
+    public function generateDetails(): void {
         $measurements = $this->measurementRepository->findAll();
         foreach ($measurements as $measurement) {
             $changed = false;
-            $run = null;
-            $soilSample = null;
             foreach ($measurement->getRuns() as $run) {
              break;
             }
             foreach ($measurement->getSoilSamples() as $soilSample) {
                 break;
             }
-            if ($measurement->getLocality() === NULL) {
+            if ($measurement!==null && $measurement->getLocality() === NULL) {
                 if ($run!=null) {
                     $changed = true;
                     $measurement->setLocality($run->getSequence()->getLocality());
@@ -52,7 +50,7 @@ class MeasurementService {
                 }
             }
 
-            if ($measurement->getPlot() === NULL) {
+            if ($measurement!==null && $measurement->getPlot() === NULL) {
                 if ($run!=null) {
                     $changed = true;
                     $measurement->setPlot($run->getPlot());
@@ -62,7 +60,7 @@ class MeasurementService {
                 }
             }
 
-            if ($measurement->getDate() === NULL) {
+            if ($measurement!==null && $measurement->getDate() === NULL) {
                 if ($run!=null) {
                     $changed = true;
                     $measurement->setDate($run->getSequence()->getDate());

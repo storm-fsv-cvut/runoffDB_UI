@@ -123,10 +123,14 @@ class SequenceController extends AbstractController
                     $entityManager->persist($run);
                     $entityManager->flush();
                 }
-                return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
+
             }
         }
-        return null;
+        if (($sequence ?? null)!==null) {
+            return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -143,7 +147,7 @@ class SequenceController extends AbstractController
             if ($record===null) {
                 throw new \Exception("Record doesn't exist");
             }
-            if ($record->getMeasurement()!=null) {
+            if ($record->getMeasurement()!==null) {
                 foreach ($record->getMeasurement()->getRuns() as $run) {
                     $sequence = $run->getSequence();
                     $run->setInitMoisture($record);
@@ -173,7 +177,7 @@ class SequenceController extends AbstractController
     /**
      * @Route("/{_locale}/delete-file", name="deleteFile")
      */
-    public function deleteFile(RunRepository $runRepository, Request $request): RedirectResponse
+    public function deleteFile(RunRepository $runRepository, Request $request): ?RedirectResponse
     {
         $run = $runRepository->find($request->get('runId'));
         if ($run === null) {
@@ -181,7 +185,11 @@ class SequenceController extends AbstractController
         }
         $filename = $request->get('filename');
         $run->removeFile($filename);
-        return $this->redirectToRoute('sequence', ['id' => $run->getSequence()->getId()]);
+        if ($run->getSequence()!==null) {
+            return $this->redirectToRoute('sequence', ['id' => $run->getSequence()->getId()]);
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -284,7 +292,7 @@ class SequenceController extends AbstractController
                     $partialForm = $sequenceForm->getClickedButton()->getParent();
                     $partialData = $partialForm->getData();
 
-                    if ($partialForm->has('rawData')!==null && $partialForm->get('rawData')!==null) {
+                    if ($partialForm->has('rawData') && $partialForm->get('rawData')!==null) {
                         foreach ($partialForm->get('rawData')->getData() as $file) {
                             $runService->uploadFile($file, $partialData);
                         }

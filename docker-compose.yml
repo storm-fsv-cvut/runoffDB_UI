@@ -1,0 +1,36 @@
+version: "3.4"
+services:
+  rainsimulator:
+    networks:
+      - overlay
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - database
+    environment:
+      APP_ENV: dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/var/www/html
+  database:
+    ports:
+      - 3306:3306
+    image: mariadb
+    restart: always
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./database/:/database
+    networks:
+      - overlay
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: rainsimulator
+      MYSQL_USER: user
+      MYSQL_PASSWORD: userpass
+networks:
+  overlay:
+volumes:
+  db_data:

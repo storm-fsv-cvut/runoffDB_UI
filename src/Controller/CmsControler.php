@@ -93,6 +93,7 @@ class CmsControler extends AbstractController {
         }
 
         $params= [];
+        $params['type'] = $type;
         $params['form'] = $form->createView();
         $params['cms'] = $entity ?? null;
         return $this->render('cms/edit.html.twig', $params);

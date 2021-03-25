@@ -15,7 +15,7 @@ class Sequence extends BaseEntity {
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private int  $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="date")
@@ -65,16 +65,19 @@ class Sequence extends BaseEntity {
     private ?bool $deleted;
 
     /**
-     * @ORM\ManyToOne(nullable=true, targetEntity="App\Entity\User", inversedBy="sequences")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="sequences")
      */
     private ?User $user;
 
     public function __construct() {
+        $this->id = null;
         $this->simulator = null;
         $this->cropBBCH = null;
         $this->cropConditionCZ = null;
         $this->cropConditionEN = null;
+        $this->surfaceCover = null;
         $this->deleted = null;
+        $this->date = null;
         $this->projects = new ArrayCollection();
         $this->runGroups = new ArrayCollection();
     }
@@ -159,14 +162,6 @@ class Sequence extends BaseEntity {
         }
 
         return $this;
-    }
-
-    public function validateSoilSamples(): array {
-        $res = [];
-        foreach ($this->getRuns()->toArray() as $run) {
-            $res[] = $run->validateSoilSamples();
-        }
-        return $res;
     }
 
     public function getSurfaceCover(): ?Record {
@@ -257,7 +252,7 @@ class Sequence extends BaseEntity {
     }
 
     public function getLocality(): ?Locality {
-        if ($this->getRuns()!==null && $this->getRuns()->count() > 0) {
+        if ($this->getRuns()!==null && $this->getRuns()->count() > 0 && $this->getRuns()->get(0)->getPlot()!==null) {
             return $this->getRuns()->get(0)->getPlot()->getLocality();
         }
         return null;

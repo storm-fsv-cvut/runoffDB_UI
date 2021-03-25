@@ -10,27 +10,28 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class LocaleSubscriber implements EventSubscriberInterface
 {
-    private $defaultLocale;
+    private string $defaultLocale;
 
     public function __construct(string $defaultLocale = 'cs')
     {
         $this->defaultLocale = $defaultLocale;
     }
 
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(GetResponseEvent $event):void
     {
         $request = $event->getRequest();
         if (!$request->hasPreviousSession()) {
             return;
         }
-        if ($locale = $request->attributes->get('_locale')) {
+        $locale = $request->attributes->get('_locale');
+        if ($locale!==null) {
             $request->getSession()->set('_locale', $locale);
         } else {
             $request->setLocale($request->getSession()->get('_locale', $this->defaultLocale));
         }
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents():array
     {
         return [
             KernelEvents::REQUEST => [['onKernelRequest', 20]],

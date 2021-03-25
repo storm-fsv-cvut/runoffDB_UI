@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use _HumbugBoxcbe25c660cef\Nette\Neon\Exception;
 use App\Entity\SoilSample;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -36,8 +37,11 @@ class SoilSampleRepository extends ServiceEntityRepository
         return $queryBuilder;
     }
 
-    public function setDeleted(int $id) {
+    public function setDeleted(int $id): void {
         $soilSample = $this->find($id);
+        if ($soilSample===null) {
+            throw new Exception("Soil sample doesnt exists");
+        }
         $soilSample->setDeleted(true);
         $this->getEntityManager()->persist($soilSample);
         $this->getEntityManager()->flush();

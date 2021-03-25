@@ -40,6 +40,11 @@ class TillageSequence extends BaseEntity
         $this->operation = null;
     }
 
+    public function __toString():string
+    {
+        return (string) $this->getId();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

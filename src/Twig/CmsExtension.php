@@ -28,7 +28,7 @@ class CmsExtension extends AbstractExtension {
         $this->requestStack = $requestStack;
     }
 
-    public function getFunctions() {
+    public function getFunctions():array {
         return [
             new TwigFunction('title', [$this, 'title']),
             new TwigFunction('content', [$this, 'content']),
@@ -36,21 +36,30 @@ class CmsExtension extends AbstractExtension {
         ];
     }
 
-    public function content(string $slug) {
+    public function content(string $slug):string {
+        if($this->requestStack->getCurrentRequest()===null) {
+            throw new \Exception('invalid request');
+        }
         $language = $this->requestStack->getCurrentRequest()->getLocale();
         $post = $this->cmsRepository->findBySlug($slug, $language);
-        return $post ? $post->getContent() : "";
+        return ($post!==null && $post->getContent()!==null) ? $post->getContent() : "";
     }
 
-    public function title(string $slug) {
+    public function title(string $slug):string {
+        if($this->requestStack->getCurrentRequest()===null) {
+            throw new \Exception('invalid request');
+        }
         $language = $this->requestStack->getCurrentRequest()->getLocale();
         $post = $this->cmsRepository->findBySlug($slug, $language);
-        return $post ? $post->getTitle() : "";
+        return ($post!==null && $post->getTitle()!==null) ? $post->getTitle() : "";
     }
 
-    public function tooltips() {
+    public function tooltips():string {
+        if($this->requestStack->getCurrentRequest()===null) {
+            throw new \Exception('invalid request');
+        }
         $language = $this->requestStack->getCurrentRequest()->getLocale();
         $tips = $this->cmsRepository->findAllByType('tooltip',$language);
-        return json_encode($tips);
+        return (string) json_encode($tips);
     }
 }

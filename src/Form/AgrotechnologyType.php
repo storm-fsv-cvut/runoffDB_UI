@@ -13,38 +13,50 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AgrotechnologyType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
+    public function buildForm(
+        FormBuilderInterface $builder,
+        array $options
+    ): void {
         $builder
-            ->add('nameCZ',TextType::class,['label'=>'nameCZ','required'=>false])
-            ->add('nameEN',TextType::class,['label'=>'nameEN','required'=>false])
-            ->add('descriptionCZ',TextareaType::class,['label'=>'descriptionCZ','required'=>false])
-            ->add('descriptionEN',TextareaType::class,['label'=>'descriptionEN','required'=>false])
-            ->add('managTyp',TextType::class,['label'=>'managTyp','required'=>false])
-            ->add('noteCZ',TextareaType::class,['label'=>'noteCZ','required'=>false])
-            ->add('noteEN',TextareaType::class,['label'=>'noteEN','required'=>false]);
+            ->add('nameCZ', TextType::class, ['label' => 'nameCZ', 'required' => false])
+            ->add('nameEN', TextType::class, ['label' => 'nameEN', 'required' => false])
+            ->add('descriptionCZ', TextareaType::class, ['label' => 'descriptionCZ', 'required' => false])
+            ->add('descriptionEN', TextareaType::class, ['label' => 'descriptionEN', 'required' => false])
+            ->add('managTyp', TextType::class, ['label' => 'managTyp', 'required' => false])
+            ->add('noteCZ', TextareaType::class, ['label' => 'noteCZ', 'required' => false])
+            ->add('noteEN', TextareaType::class, ['label' => 'noteEN', 'required' => false]);
 
-        $builder->add('tillageSequences', CollectionType::class, [
-            'entry_type' => TillageSequenceType::class,
-            'label'=>'tillageSequences',
-            'mapped' => true,
-            'prototype' => true,
-            'allow_add' => true,
-            'allow_delete' => true,
-            'required'=>false,
-            'by_reference' => false
-        ]);
+        $builder->add(
+            'tillageSequences',
+            CollectionType::class,
+            [
+                'entry_type' => TillageSequenceType::class,
+                'label' => 'tillageSequences',
+                'mapped' => true,
+                'prototype' => true,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'required' => false,
+                'by_reference' => false
+            ]
+        );
 
-        $builder->add('save', SubmitType::class, [
-            'attr' => ['class' => 'btn btn-success'],
-            'label' => 'save'
-        ]);
+        $builder->add(
+            'save',
+            SubmitType::class,
+            [
+                'attr' => ['class' => 'btn btn-success'],
+                'label' => 'save'
+            ]
+        );
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
-            'data_class' => Agrotechnology::class,
-        ]);
+        $resolver->setDefaults(
+            [
+                'data_class' => Agrotechnology::class,
+            ]
+        );
     }
 }

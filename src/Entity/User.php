@@ -146,11 +146,11 @@ class User extends BaseEntity implements UserInterface {
     public function eraseCredentials(): void {
     }
 
-    public function getOrganization(): ?Organization {
+    public function getOrganization(): Organization {
         return $this->organization;
     }
 
-    public function setOrganization(?Organization $organization): self {
+    public function setOrganization(Organization $organization): self {
         $this->organization = $organization;
 
         return $this;

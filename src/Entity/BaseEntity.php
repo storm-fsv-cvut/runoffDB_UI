@@ -6,7 +6,7 @@ namespace App\Entity;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class BaseEntity implements LocalisableInterface {
+abstract class BaseEntity implements LocalisableInterface {
     /**
      * @var string
      */

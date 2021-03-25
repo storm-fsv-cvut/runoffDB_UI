@@ -29,7 +29,7 @@ class SequenceType extends AbstractType {
         $this->recordsService = $recordsService;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options): void {
         $builder
             ->add('simulator')
             ->add('date', DateType::class,['widget'=>'single_text', 'label'=>'date'])
@@ -61,7 +61,7 @@ class SequenceType extends AbstractType {
             'allow_delete' => true
         ]);
     }
-    public function configureOptions(OptionsResolver $resolver) {
+    public function configureOptions(OptionsResolver $resolver): void {
         $resolver->setDefaults([
             'data_class' => Sequence::class,
         ]);

@@ -25,7 +25,7 @@ class Data extends BaseEntity
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private string $value;
+    private ?string $value;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Record", inversedBy="datas")
@@ -50,11 +50,16 @@ class Data extends BaseEntity
 
     public function __construct() {
         $this->time = null;
+        $this->value = null;
         $this->relatedValueX = null;
         $this->relatedValueY = null;
         $this->relatedValueZ = null;
     }
 
+    public function __toString():string
+    {
+        return (string) $this->getId();
+    }
 
     public function getId(): ?int
     {
@@ -88,7 +93,7 @@ class Data extends BaseEntity
         return number_format( (float) $this->value, $this->getRecord()->getUnit()->getDecimals(), ".", "" );
     }
 
-    public function setValue(string $value): self
+    public function setValue(?string $value): self
     {
         $this->value = $value;
         return $this;

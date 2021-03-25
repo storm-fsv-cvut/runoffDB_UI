@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use _HumbugBoxcbe25c660cef\Nette\Neon\Exception;
 use App\Entity\Sequence;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
@@ -63,14 +64,11 @@ class SequenceRepository extends ServiceEntityRepository
         return $queryBuilder;
     }
 
-    public function findBySetRecord(int $record_id) {
-        $queryBuilder = $this->createQueryBuilder('sequence');
-        $queryBuilder->andWhere($queryBuilder->expr()->in('sequence.surfaceCover',$record_id));
-        return $queryBuilder->getQuery()->getResult();
-    }
-
-    public function setDeleted(int $id) {
+    public function setDeleted(int $id): void {
         $sequence = $this->find($id);
+        if ($sequence===null) {
+            throw new Exception("Sequence doesnt exists");
+        }
         $sequence->setDeleted(true);
         $this->getEntityManager()->persist($sequence);
         $this->getEntityManager()->flush();
