@@ -368,7 +368,7 @@ class Run extends BaseEntity {
     }
 
     public function getFilesPath(): string {
-            return "data/run/" . $this->getId() . "/" . $this->getId();
+            return "data/run/" . $this->getId();
     }
 
     public function removeFile(string $filename):void {

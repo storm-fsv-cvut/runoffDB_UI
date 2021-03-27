@@ -68,7 +68,7 @@ class RunService {
     }
 
     public function uploadFile(UploadedFile $file, Run $run) {
-        $dir = $this->parameterBag->get('kernel.project_dir')."/public/data/sequence/".$run->getSequence()->getId()."/".$run->getId();
+        $dir = $this->parameterBag->get('kernel.project_dir')."/public/data/run/".$run->getId()."/";
         if (!$this->filesystem->exists($dir)) {
             $this->filesystem->mkdir($dir);
         }

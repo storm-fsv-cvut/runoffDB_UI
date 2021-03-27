@@ -1,38 +1,38 @@
-fullname: Name
-email: Email
+fullname: Jméno
+email: E-mail
 username: Login
 password: Heslo
 save: Uložit
 close: Zavřít
-new: New
+new: Nový
 edit: Upravit
 delete: Smazat
 list: Seznam
 add: Přidat
-add record: Přidat data
+add record: Přidat záznam
 continue: Pokračovat
 Setup: Nastavení
 Home: Úvod
-App\Entity\Plot: Plocha
+App\Entity\Plot: Exp. plocha
 App\Entity\Locality: Lokalita
 App\Entity\Organization: Organizace
-App\Entity\SoilType: Typ půdy
+App\Entity\SoilType: Půdní typ
 App\Entity\Agrotechnology: Agrotechnologie
 App\Entity\Crop: Plodina
 App\Entity\CropType: Typ plodiny
-App\Entity\Operation: Operace
+App\Entity\Operation: Agrooperace
 App\Entity\SoilSample: Vzorek půdy
-App\Entity\OperationIntensity: Operation Intensity
-App\Entity\OperationType: Operation Type
-App\Entity\Texture: Textura
+App\Entity\OperationIntensity: Intenzita agrooperace
+App\Entity\OperationType: Typ agrooperace
+App\Entity\Texture: Zrnitostní složení
 App\Entity\AssignmentType: Typ přiřazení
-App\Entity\CropErType: Crop ER Type
-App\Entity\Project: Project
-App\Entity\RecordType: Record Type
-App\Entity\RunType: Run Type
-App\Entity\Simulator: Simulator
-App\Entity\WrbSoilClass: WRB Soil Class
-App\Entity\Unit: Unit
+App\Entity\CropErType: Erozní typ plodiny
+App\Entity\Project: Projekt
+App\Entity\RecordType: Typ záznamu
+App\Entity\RunType: Typ simulace
+App\Entity\Simulator: Simulátor
+App\Entity\WrbSoilClass: Půdní třída WRB
+App\Entity\Unit: Jednotka
 App\Entity\Phenomenon: Měřený jev
 App\Entity\Model: Model
 App\Entity\QualityIndex: Ukazatel kvality
@@ -41,17 +41,17 @@ quality index: Ukazatel kvality
 protection measure: Protierozní opatření
 Protection measure: Protierozní opatření
 Phenomenon: Měřený jev
-sequence: Sekvence
-sequences: Sekvence
+sequence: Sekvence simulací
+sequences: Sekvence simulací
 soilSamples: Vzorky půdy
 na: Nezadáno
-soil_sample_bulk: Půdní vzorek pro objemovou hmotnost
-soilSampleBulk: Půdní vzorek pro objemovou hmotnost
-soil_sample_texture: Půdní vzorek pro zrnitost
-soilSampleTexture: Půdní vzorek pro zrnitos
-soil_sample_corg: Půdní vzorek pro organický uhlík
-soilSampleCorg: Půdní vzorek pro organický uhlík
-surfaceCover: Stupeň zakrytí listy
+soil_sample_bulk: Půdní vzorek na objemovou hmotnost
+soilSampleBulk: Půdní vzorek na objemovou hmotnost
+soil_sample_texture: Půdní vzorek na zrnitost
+soilSampleTexture: Půdní vzorek na zrnitost
+soil_sample_corg: Půdní vzorek na organický uhlík
+soilSampleCorg: Půdní vzorek na organický uhlík
+surfaceCover: Stupeň zakrytí povrchu
 assignmentType: Typ přiřazení
 rain_intensity: intenzita srážky
 init_moisture: počáteční vlhkost
@@ -85,61 +85,61 @@ datetime: Datum a čas
 add measurement: Přidat měření
 add run: Přidat simulaci
 save csv: Uložit csv
-upload data: Uložit data
-isTimeline: Časová řada
+upload data: Nahrát data
+isTimeline: Záznam je časová řada
 unit: Měřená veličina
 relatedValueUnit: Veličina dalšího rozměru
 sourceRecords: Zdrojové záznamy
-relatedRecords: Jiné vztažené záznamy
-derived from: Odvozeno z
+relatedRecords: Další propojené záznamy
+derived from: Odvozeno ze záznamu/záznamů
 label_next: Další
 label_previous: Předchozí
 Search: Hledat
-add plot: Přidat plochu
-add plotrun: Přidat simulaci na ploše
+add plot: Přidat exp. plochu
+add plotrun: Přidat simulaci ve skupině
 not set: Nenastaveno
 Soil Samples: Vzorky půdy
 Users: Uživatelé
 agrotechnology: Agrotechnologie
-days from last agrooperation: Počet dnů od poslední agro-operace
-canopy cover: Stupeň zakrytí listy
+days from last agrooperation: Počet dnů od poslední agrooperace
+canopy cover: Stupeň zakrytí povrchu listy
 overview table: Přehled
 add soil sample: Přidat vzorek půdy
 Date sampled: Datum odběru
-Sample location: Místo odběru
-Sample depth m: Hloubka odběru (m)
+Sample location: Popis místa odběru
+Sample depth m: Hloubka odběru [m]
 Date processed: Datum zpracování
 Processed at: Místo zpracování
 measurements: Měření
 set as init moisture: Nastavit jako počáteční vlhkost
-set as rain intensity: Nastavit jako intenzitu deště
-edit sequence: Upravit sekvenci
+set as rain intensity: Nastavit jako intenzitu srážky
+edit sequence: Upravit vlastnosti sekvence
 name: Název
-established: Založeno
+established: Založena
 plotWidth: Šířka plochy
 plotLength: Délka plochy
-plotSlope: Sklon
+plotSlope: Sklon [%]
 Soil origin locality: Zdrojová lokalita půdy
 Crop: Plodina
 Agrotechnology: Agrotechnologie
 dateSampled: Datum odebrání
 dateProcessed: Datum zpracování
 processedAt: Místo zpracování
-corg: CORG
-moistureVperc: moistureVperc
-sampleDepthM: Hloubka odběru (m)
-texture: Textura
-locality: Umístění
+corg: Corg
+moistureVperc: Objemová vlhkost
+sampleDepthM: Hloubka odběru [m]
+texture: Zrnitostní složení
+locality: Lokalita
 managTyp: Způsob obdělávání
-operationType: Typ operace
-operationIntensity: Intenzita operace
-operationDepthM: Hloubka(m)
+operationType: Typ agrooperace
+operationIntensity: Intenzita agrooperace
+operationDepthM: Hloubka zpracování půdy [m]
 machineryTypeCZ: Typ stroje (cz)
 machineryTypeEN: Typ stroje (en)
 contactPerson: Kontaktní osoba
 contactNumber: Telefon
 contactEmail: Email
-name_code: Zkratka
+name_code: Zkratka názvu
 files: Soubory
 delete?: Opravdu smazat?
 users: Uživatelé
@@ -147,11 +147,11 @@ new user: Nový uživatel
 sign out: Odhlásit
 sign in: Přihlásit
 cancel: Zrušit
-W r bsoil class: WRB soil class
+W r bsoil class: Půdní třída WRB
 lat: Lat
 lng: Lng
 Header: Hlavička
-pondingStart: ponding start
+pondingStart: začátek povrchové retence
 date from: datum od
 date to: datum do
 delete prompt: opravdu smazat

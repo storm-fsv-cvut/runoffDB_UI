@@ -1,0 +1,173 @@
+fullname: Full name
+email: E-mail
+username: Login
+password: Password
+save: Save
+close: Close
+new: New
+edit: Edit
+delete: Delete
+list: List
+add: Add entry
+add record: Add data record
+continue: Continue
+Setup: Settings
+Home: Home
+App\Entity\Plot: Exp. plot
+App\Entity\Locality: Locality
+App\Entity\Organization: Institution
+App\Entity\SoilType: Soil type
+App\Entity\Agrotechnology: Agrotechnology
+App\Entity\Crop: Crop
+App\Entity\CropType: Crop type
+App\Entity\Operation: Tillage operation
+App\Entity\SoilSample: Soil sample
+App\Entity\OperationIntensity: Tillage operation intensity
+App\Entity\OperationType: Tillage operation type
+App\Entity\Texture: Particle size distribution
+App\Entity\AssignmentType: Assignment type
+App\Entity\CropErType: Crop erosion type
+App\Entity\Project: Project
+App\Entity\RecordType: Record type
+App\Entity\RunType: Run type
+App\Entity\Simulator: Simulator
+App\Entity\WrbSoilClass: WRB soil class
+App\Entity\Unit: Unit
+App\Entity\Phenomenon: Phenomen
+App\Entity\Model: Model
+App\Entity\QualityIndex: Quality index
+App\Entity\ProtectionMeasure: Protection measure
+quality index: Quality index
+protection measure: Protection measure
+Protection measure: Protection measure
+Phenomenon: Phenomen
+sequence: Simulation runs squence
+sequences: Simulation runs squence
+soilSamples: Soil samples
+na: Not available
+soil_sample_bulk: Bulk density soil sample
+soilSampleBulk: Bulk density soil sample
+soil_sample_texture: Soil texture sample
+soilSampleTexture: Soil texture sample
+soil_sample_corg: Organic carbon soil sample
+soilSampleCorg: Organic carbon soil sample
+surfaceCover: Surface cover
+assignmentType: Assignment type
+rain_intensity: Precipitation intensity
+init_moisture: Initial moisture
+time: time
+rain_start: precipitation start
+runoff_start: delay till the surface runoff
+Organization: Institution
+Simulator: Simulotor
+Date: Date
+Locality: Locality
+Plot: Exp. plot
+plot: Exp. plot
+Canopy cover: Canopy cover
+Crop condition: Crop condition
+crop condition: Crop condition
+cropConditionCZ: Crop condition (cs)
+cropConditionEN: Crop condition (en)
+Crop b b c h: Crop BBCH
+runType: Run type
+runoffStart: delay till the surface runoff
+precedingPrecipitation: Preceeding precipitation
+note: Note
+descriptionCZ: Description (cs)
+descriptionEN: Description (en)
+nameCZ: Name (cs)
+nameEN: Name (en)
+noteCZ: Note (cs)
+noteEN: Note (en)
+rawData: Files
+datetime: Date and time
+add measurement: Add measurement
+add run: Add run
+save csv: Save CSV
+upload data: Upload data
+isTimeline: The record is timeline
+unit: Measured unit
+relatedValueUnit: Related value unit
+sourceRecords: Source records
+relatedRecords: Related records
+derived from: Derived from record(s)
+label_next: Next
+label_previous: previous
+Search: Search
+add plot: Add exp. plot
+add plotrun: Add simulation to group
+not set: Not set
+Soil Samples: Soil samples
+Users: Users
+agrotechnology: Agrotechnology
+days from last agrooperation: Number of days since the last tillage operation
+canopy cover: Canopy cover
+overview table: Overveiw
+add soil sample: Add soil sample
+Date sampled: Date of sampling
+Sample location: Sampling place description
+Sample depth m: Sampling depth [m]
+Date processed: Date of processing
+Processed at: Processed at
+measurements: Measurements
+set as init moisture: Set as initial moisture
+set as rain intensity: Set as precipitation intensity
+edit sequence: Edit sequence properties
+name: Name
+established: Established
+plotWidth: Plot width
+plotLength: Plot length
+plotSlope: Plot inclination [%]
+Soil origin locality: Soil origin locality
+Crop: Crop
+Agrotechnology: Agrotechnology
+dateSampled: Date of sampling
+dateProcessed: Date of processing
+processedAt: Processed at
+corg: Corg
+moistureVperc: Volumetric water content
+sampleDepthM: Sampling depth [m]
+texture: Soil texture
+locality: Locality
+managTyp: Management type
+operationType: Tillage operation type
+operationIntensity: Tillage operation intensity
+operationDepthM: Tillage operation depth [m]
+machineryTypeCZ: Machinery type (cz)
+machineryTypeEN: Machinery type (en)
+contactPerson: Contact person
+contactNumber: Phone number
+contactEmail: E-mail address
+name_code: Name abbreviation
+files: Files
+delete?: Really delete?
+users: Users
+new user: New user
+sign out: Log out
+sign in: Log in
+cancel: Cancel
+W r bsoil class: WRB soil class
+lat: Lat
+lng: Lng
+Header: Header
+pondingStart: Ponding start delay
+date from: from
+date to: to
+delete prompt: Really delete?
+Date sampled from: sampling date from
+Date sampled to: sampling date to
+Slug: Url
+status: Status
+Title: Title
+Content: Content
+language: Language
+draft: draft
+publish: publish
+tillageSequences: Tillage operations sequence
+operation: tillage operation
+author: Author
+load data: Load data
+loadDataFile: Data from file
+skip_first_row: First line contains headers
+first_column_time: First column contains time

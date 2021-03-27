@@ -47,7 +47,7 @@ class User extends BaseEntity implements UserInterface {
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Organization", inversedBy="users")
      */
-    private Organization $organization;
+    private ?Organization $organization;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\SoilSample", mappedBy="user")
@@ -68,6 +68,7 @@ class User extends BaseEntity implements UserInterface {
         $this->soilSamples = new ArrayCollection();
         $this->measurements = new ArrayCollection();
         $this->sequences = new ArrayCollection();
+        $this->organization = null;
     }
 
     public function __toString(): string {
@@ -146,11 +147,11 @@ class User extends BaseEntity implements UserInterface {
     public function eraseCredentials(): void {
     }
 
-    public function getOrganization(): Organization {
+    public function getOrganization(): ?Organization {
         return $this->organization;
     }
 
-    public function setOrganization(Organization $organization): self {
+    public function setOrganization(?Organization $organization): self {
         $this->organization = $organization;
 
         return $this;
