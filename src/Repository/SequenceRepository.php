@@ -7,7 +7,7 @@ use App\Entity\Sequence;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Sequence|null find($id, $lockMode = null, $lockVersion = null)
@@ -22,7 +22,7 @@ class SequenceRepository extends ServiceEntityRepository
      */
     private $plotRepository;
 
-    public function __construct(RegistryInterface $registry, PlotRepository $plotRepository)
+    public function __construct(ManagerRegistry $registry, PlotRepository $plotRepository)
     {
         parent::__construct($registry, Sequence::class);
         $this->plotRepository = $plotRepository;

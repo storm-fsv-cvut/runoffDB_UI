@@ -6,7 +6,7 @@ use App\Entity\Measurement;
 use App\Entity\Phenomenon;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use function PHPStan\dumpType;
 
 /**
@@ -17,7 +17,7 @@ use function PHPStan\dumpType;
  */
 class MeasurementRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Measurement::class);
     }

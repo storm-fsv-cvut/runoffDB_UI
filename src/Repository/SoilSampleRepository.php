@@ -6,7 +6,7 @@ use _HumbugBoxcbe25c660cef\Nette\Neon\Exception;
 use App\Entity\SoilSample;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method SoilSample|null find($id, $lockMode = null, $lockVersion = null)
@@ -16,7 +16,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class SoilSampleRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, SoilSample::class);
     }
