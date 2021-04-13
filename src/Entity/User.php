@@ -240,4 +240,9 @@ class User extends BaseEntity implements UserInterface {
 
         return $this;
     }
+
+    public function setRole(string $role): void
+    {
+        $this->role = $role;
+    }
 }
