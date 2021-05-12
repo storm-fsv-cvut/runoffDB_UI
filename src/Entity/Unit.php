@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Unit extends BaseEntity implements DefinitionEntityInterface
 {
+    public const DEFAULT_DECIMALS = 2;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

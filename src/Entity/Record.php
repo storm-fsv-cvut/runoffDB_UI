@@ -102,9 +102,9 @@ class Record extends BaseEntity {
     public function __toString() {
         if ($this->getData()->get(0) !==null) {
             if($this->getMeasurement()!==null && $this->getMeasurement()->getLocality()!==null) {
-                return "#".$this->getId()." (".$this->getMeasurement()->getLocality()." ".$this->getMeasurement()->getFormatedDate().") ".number_format((float)$this->getData()->get(0)->getValue(), 0) . " " . $this->getUnit()->getUnit();
+                return "#".$this->getId()." (".$this->getMeasurement()->getLocality()." ".$this->getMeasurement()->getFormatedDate().") ".number_format((float)$this->getData()->get(0)->getValue(), 0) . " " . ($this->getUnit()!==null ? $this->getUnit()->getUnit() : '');
             } else {
-                return "#".$this->getId()." ".number_format((float)$this->getData()->get(0)->getValue(), 0) . " " . $this->getUnit()->getUnit();
+                return "#".$this->getId()." ".number_format((float)$this->getData()->get(0)->getValue(), 0) . " " . ($this->getUnit()!==null ? $this->getUnit()->getUnit() : '');
             }
         } else {
             return "#".$this->getId();
@@ -112,7 +112,7 @@ class Record extends BaseEntity {
     }
 
     public function getIdAndUnitString():string {
-        return "#".$this->getId()." (".$this->getUnit()->getName().")";
+        return "#".$this->getId().($this->getUnit()!==null ? " (".$this->getUnit()->getName().")" : '');
     }
 
     public function getNote():?string {

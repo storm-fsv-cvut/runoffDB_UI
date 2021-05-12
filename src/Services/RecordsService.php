@@ -11,7 +11,6 @@ use App\Repository\PhenomenonRepository;
 use App\Repository\RecordRepository;
 use App\Repository\SequenceRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\NoResultException;
 use ParseCsv\Csv;
 use ReflectionClass;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -76,32 +75,33 @@ class RecordsService
             if ($record === null) {
                 throw new Exception("Invalid record ID");
             }
-            $counter++;
-            $phenomenon = $record->getMeasurement()->getPhenomenon()->getPhenomenonKey();
-            if (!isset($datasets[$phenomenon])) {
-                $datasets[$phenomenon] = [];
-            }
-            $columns[] = ['number', $record->getUnit()->getName() . " [" . $record->getUnit()->getUnit(
-                ) . "]", $typeMapper[$phenomenon] ?? 'line', $phenomenon];
-
-            foreach ($record->getData() as $data) {
-                if ($data->getTime() != null) {
-                    $datarow = [
-                        0 => [(int)$data->getTime()->format('H'), (int)$data->getTime()->format(
-                            'i'
-                        ), (int)$data->getTime()->format('s')]
-                    ];
+            if ($record->getMeasurement()!==null && $record->getMeasurement()->getPhenomenon()!==null) {
+                $counter++;
+                $phenomenon = $record->getMeasurement()->getPhenomenon()->getPhenomenonKey();
+                if (!isset($datasets[$phenomenon])) {
+                    $datasets[$phenomenon] = [];
                 }
-                for ($i = 1; $i <= sizeof($records); $i++) {
-                    if ($i == $counter) {
-                        $datarow[$i] = $data->getValue() + 0;
-                    } else {
-                        $datarow[$i] = null;
+                $columns[] = ['number', $record->getUnit()->getName() . " [" . $record->getUnit()->getUnit(
+                    ) . "]", $typeMapper[$phenomenon] ?? 'line', $phenomenon];
+
+                foreach ($record->getData() as $data) {
+                    if ($data->getTime() != null) {
+                        $datarow = [
+                            0 => [(int)$data->getTime()->format('H'), (int)$data->getTime()->format(
+                                'i'
+                            ), (int)$data->getTime()->format('s')]
+                        ];
                     }
+                    for ($i = 1; $i <= sizeof($records); $i++) {
+                        if ($i == $counter) {
+                            $datarow[$i] = $data->getValue() + 0;
+                        } else {
+                            $datarow[$i] = null;
+                        }
+                    }
+                    $datasets[$phenomenon][] = $datarow;
                 }
-                $datasets[$phenomenon][] = $datarow;
             }
-
         }
 
         if (isset($datasets['precip'])) {

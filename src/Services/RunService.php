@@ -79,7 +79,7 @@ class RunService {
         $measurements = $run->getMeasurements();
         $res = [];
         foreach ($measurements as $measurement) {
-            if ($measurement->getPhenomenon()!=null AND $measurement->getPhenomenon()->getPhenomenonKey() == $phenomenonKey) {
+            if ($measurement->getPhenomenon()!==null && $measurement->getPhenomenon()->getPhenomenonKey() === $phenomenonKey) {
                 $res+=$measurement->getRecords()->toArray();
             }
         }

@@ -110,7 +110,7 @@ class SequenceService {
         $locality = $sequence->getLocality();
         return [
             'id' => $sequence->getId(),
-            'date' => $sequence->getDate()->format("d.m.Y"),
+            'date' => $sequence->getFormatedDate(),
             'simulator' => $sequence->getSimulator(),
             'locality' => $locality ? $locality->getName() : " n/a ",
             'canopy_cover' => $sequence->getSurfaceCover(),

@@ -10,6 +10,7 @@ use DateTimeInterface;
  */
 class Data extends BaseEntity
 {
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -90,7 +91,7 @@ class Data extends BaseEntity
 
     public function getValueRounded(): string
     {
-        return number_format( (float) $this->value, $this->getRecord()->getUnit()->getDecimals(), ".", "" );
+            return number_format((float)$this->value, ($this->getRecord()->getUnit()!==null) ? $this->getRecord()->getUnit()->getDecimals() : Unit::DEFAULT_DECIMALS, ".", "");
     }
 
     public function setValue(?string $value): self
