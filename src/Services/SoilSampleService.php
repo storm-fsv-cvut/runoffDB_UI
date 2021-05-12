@@ -88,8 +88,10 @@ class SoilSampleService {
         $measurements = $soilSample->getMeasurements();
         $res = [];
         foreach ($measurements as $measurement) {
-            if ($measurement->getPhenomenon()->getPhenomenonKey() == $phenomenonKey) {
-                $res+=$measurement->getRecords()->toArray();
+            if ($measurement->getPhenomenon()!=null) {
+                if ($measurement->getPhenomenon()->getPhenomenonKey() == $phenomenonKey) {
+                    $res += $measurement->getRecords()->toArray();
+                }
             }
         }
         return $res;

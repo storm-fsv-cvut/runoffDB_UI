@@ -13,6 +13,7 @@ use App\Repository\RecordRepository;
 use App\Services\RecordsService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Form;
@@ -48,7 +49,7 @@ class SequenceBasicType extends AbstractType
     {
         $builder
             ->add('simulator')
-            ->add('date')
+            ->add('date', DateType::class,['widget'=>'single_text'])
             ->add('cropBBCH')
             ->add('surfaceCover', EntityType::class, [
                 'class'=>Record::class,
