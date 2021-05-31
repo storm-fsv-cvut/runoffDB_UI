@@ -41,7 +41,7 @@ class MenuBuilder {
      */
     public function __construct(FactoryInterface $factory, EntityManagerInterface $em, TranslatorInterface $translator, RequestStack $requestStack, CmsRepository $cmsRepository, ContainerInterface $container) {
         foreach ($em->getMetadataFactory()->getAllMetadata() as $entity) {
-            if (in_array('App\Entity\DefinitionEntityInterface', $entity->getReflectionClass()->getInterfaceNames(),false)) {
+            if (in_array('App\Entity\DefinitionEntityInterface', $entity->getReflectionClass()->getInterfaceNames(),true)) {
                 $this->definitionEntities[$entity->name] = $translator->trans($entity->name);
             }
         }

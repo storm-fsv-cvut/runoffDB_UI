@@ -60,14 +60,14 @@ class RunService {
         $this->phenomenonRepository = $phenomenonRepository;
     }
 
-    public function addRun(FormInterface $formRun, Sequence $sequence) {
+    public function addRun(FormInterface $formRun, Sequence $sequence):void {
         $run = $formRun->getData();
         $run->setSequence($sequence);
         $this->entityManager->persist($run);
         $this->entityManager->flush();
     }
 
-    public function uploadFile(UploadedFile $file, Run $run) {
+    public function uploadFile(UploadedFile $file, Run $run):void {
         $dir = $this->parameterBag->get('kernel.project_dir')."/public/data/run/".$run->getId()."/";
         if (!$this->filesystem->exists($dir)) {
             $this->filesystem->mkdir($dir);

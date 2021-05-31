@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use _HumbugBoxcbe25c660cef\Nette\Neon\Exception;
+use Exception;;
 use App\Entity\Record;
 use App\Entity\Sequence;
 use App\Entity\SoilSample;
@@ -81,20 +81,29 @@ class RecordsService
                 if (!isset($datasets[$phenomenon])) {
                     $datasets[$phenomenon] = [];
                 }
-                $columns[] = ['number', $record->getUnit()->getName() . " [" . $record->getUnit()->getUnit(
-                    ) . "]", $typeMapper[$phenomenon] ?? 'line', $phenomenon];
-
+                if ($record->getUnit()!==null) {
+                    $columns[] = ['number', $record->getUnit()->getName() . " [" . $record->getUnit()->getUnit(
+                        ) . "]", $typeMapper[$phenomenon] ?? 'line', $phenomenon];
+                } else {
+                    $columns[] = ['number', " - [ - ]", $typeMapper[$phenomenon] ?? 'line', $phenomenon];
+                }
                 foreach ($record->getData() as $data) {
                     if ($data->getTime() != null) {
-                        $datarow = [
-                            0 => [(int)$data->getTime()->format('H'), (int)$data->getTime()->format(
-                                'i'
-                            ), (int)$data->getTime()->format('s')]
-                        ];
+                        if ($data->getTime()!==null) {
+                            $datarow = [
+                                0 => [(int)$data->getTime()->format('H'), (int)$data->getTime()->format(
+                                    'i'
+                                ), (int)$data->getTime()->format('s')]
+                            ];
+                        } else {
+                            $datarow = [
+                                0 => [0, 0, 0]
+                            ];
+                        }
                     }
                     for ($i = 1; $i <= sizeof($records); $i++) {
                         if ($i == $counter) {
-                            $datarow[$i] = $data->getValue() + 0;
+                            $datarow[$i] = ((int) $data->getValue()) + 0;
                         } else {
                             $datarow[$i] = null;
                         }
@@ -172,47 +181,51 @@ class RecordsService
         return $records;
     }
 
-    public function deleteRecord(int $record_id)
+    public function deleteRecord(int $record_id):void
     {
         $record = $this->entityManager->find(Record::class, $record_id);
-        foreach ($record->getData() as $data) {
-            $this->entityManager->remove($data);
+        if ($record!==null) {
+            foreach ($record->getData() as $data) {
+                $this->entityManager->remove($data);
+            }
+            $this->entityManager->remove($record);
+            $this->entityManager->flush();
         }
-        $this->entityManager->remove($record);
-        $this->entityManager->flush();
     }
 
     public function isRecordSetAsInSequenceContext(Record $record, Sequence $sequence): bool
     {
-        $reflect = new ReflectionClass($sequence);
-        $reflect->getProperties();
-        if ($sequence->getSurfaceCover() != null && $sequence->getSurfaceCover()->getId() == $record->getId()) {
+        if ($sequence->getSurfaceCover() !== null && $sequence->getSurfaceCover()->getId() === $record->getId()) {
             return true;
         }
-        foreach ($sequence->getRuns() as $run) {
-            if ($run->getInitMoisture() != null && $run->getInitMoisture()->getId() == $record->getId()) {
-                return true;
-            }
-            if ($run->getRainIntensity() != null && $run->getRainIntensity()->getId() == $record->getId()) {
-                return true;
+        if ($sequence->getRuns()!==null) {
+            foreach ($sequence->getRuns() as $run) {
+                if ($run->getInitMoisture() !== null && $run->getInitMoisture()->getId() === $record->getId()) {
+                    return true;
+                }
+                if ($run->getRainIntensity() !== null && $run->getRainIntensity()->getId() === $record->getId()) {
+                    return true;
+                }
             }
         }
         return false;
     }
 
-    public function isRecordSetAsInSoilSampleContext(Record $record, SoilSample $soilSample)
+    public function isRecordSetAsInSoilSampleContext(Record $record, SoilSample $soilSample):bool
     {
-        if ($soilSample->getBulkDensity() != null && $soilSample->getBulkDensity()->getId() == $record->getId()) {
+        if ($soilSample->getBulkDensity() !== null && $soilSample->getBulkDensity()->getId() === $record->getId()) {
             return true;
         }
-        if ($soilSample->getCorg() != null && $soilSample->getCorg()->getId() == $record->getId()) {
+        if ($soilSample->getCorg() !== null && $soilSample->getCorg()->getId() === $record->getId()) {
             return true;
         }
-        if ($soilSample->getMoisture() != null && $soilSample->getMoisture()->getId() == $record->getId()) {
+        if ($soilSample->getMoisture() !== null && $soilSample->getMoisture()->getId() === $record->getId()) {
             return true;
         }
-        if ($soilSample->getTextureRecord() != null && $soilSample->getTextureRecord()->getId() == $record->getId()) {
+        if ($soilSample->getTextureRecord() !== null && $soilSample->getTextureRecord()->getId() === $record->getId()) {
             return true;
         }
+
+        return false;
     }
 }

@@ -18,7 +18,7 @@ class RunGroupService {
         $this->entityManager = $entityManager;
     }
 
-    public function addRunGroup(FormInterface $formRunGroup, Sequence $sequence) {
+    public function addRunGroup(FormInterface $formRunGroup, Sequence $sequence):void {
         $runGroup = $formRunGroup->getData();
         $runGroup->setSequence($sequence);
         $this->entityManager->persist($runGroup);

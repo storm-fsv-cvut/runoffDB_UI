@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use _HumbugBoxcbe25c660cef\Nette\Neon\Exception;
+use Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

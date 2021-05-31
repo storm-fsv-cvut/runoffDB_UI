@@ -67,9 +67,9 @@ class Simulator extends BaseEntity implements DefinitionEntityInterface
 
     public function __toString() {
         if ($this->getName()!==null) {
-            return $this->getName() . ' (' . ($this->getOrganization() ? $this->getOrganization()->getName() : "") . ')';
+            return $this->getName() . ' (' . ($this->getOrganization()!==null ? $this->getOrganization()->getName() : "") . ')';
         } else {
-            return "#".$this->getId() . ' (' . ($this->getOrganization() ? $this->getOrganization()->getName() : "") . ')';
+            return "#".$this->getId() . ' (' . ($this->getOrganization()!==null ? $this->getOrganization()->getName() : "") . ')';
         }
     }
     public function getName():?string {
@@ -178,9 +178,9 @@ class Simulator extends BaseEntity implements DefinitionEntityInterface
 
     public function getLabel(): string {
         if ($this->getName()!==null) {
-            return $this->getName() . ' (' . ($this->getOrganization() ? $this->getOrganization()->getName() : "") . ')';
+            return $this->getName() . ' (' . ($this->getOrganization()!==null ? $this->getOrganization()->getName() : "") . ')';
         } else {
-            return "#".$this->getId() . ' (' . ($this->getOrganization() ? $this->getOrganization()->getName() : "") . ')';
+            return "#".$this->getId() . ' (' . ($this->getOrganization()!==null ? $this->getOrganization()->getName() : "") . ')';
         }
     }
 

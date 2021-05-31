@@ -10,25 +10,20 @@ namespace App\Controller;
 
 use App\Entity\Measurement;
 use App\Entity\Record;
-use App\Entity\Sequence;
 use App\Entity\SoilSample;
 use App\Form\MeasurementType;
 use App\Form\RecordType;
-use App\Form\SequenceBasicType;
-use App\Form\SequenceFilterType;
 use App\Form\SoilSampleBasicType;
 use App\Form\SoilSampleFilterType;
 use App\Form\SoilSampleType;
 use App\Repository\MeasurementRepository;
 use App\Repository\PhenomenonRepository;
 use App\Repository\RecordRepository;
-use App\Repository\RunRepository;
 use App\Repository\SoilSampleRepository;
 use App\Security\EntityVoter;
 use App\Services\MeasurementService;
 use App\Services\RecordsService;
 use App\Services\SoilSampleService;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -38,14 +33,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class SoilSampleController extends AbstractController {
+class SoilSampleController extends AbstractController
+{
 
     /**
      * @Route("/{_locale}/sample-chart-data", name="chartDataSoilSample")
      */
-    public function getChartData(RecordsService $recordsService, Request $request): JsonResponse {
+    public function getChartData(RecordsService $recordsService, Request $request): JsonResponse
+    {
         $data = $request->get('ids');
-        if ($data!=null) {
+        if ($data != null) {
             return $this->json($recordsService->getChartData($data));
         } else {
             return $this->json(0);
@@ -55,23 +52,25 @@ class SoilSampleController extends AbstractController {
     /**
      * @Route("/{_locale}/soil-sample/{id}", name="soilSample")
      */
-    public function edit(SoilSampleService $soilSampleService,
-                         Request $request,
-                         EntityManagerInterface $entityManager,
-                         MeasurementRepository $measurementRepository,
-                         MeasurementService $measurementService,
-                         RecordsService $recordsService,
-                         int $id = null):Response {
-        if ($this->get('security.token_storage')->getToken()===null) {
+    public function edit(
+        SoilSampleService $soilSampleService,
+        Request $request,
+        EntityManagerInterface $entityManager,
+        MeasurementRepository $measurementRepository,
+        MeasurementService $measurementService,
+        RecordsService $recordsService,
+        int $id = null
+    ): Response {
+        if ($this->get('security.token_storage')->getToken() === null) {
             throw new \Exception("User token is null");
         }
         $user = $this->get('security.token_storage')->getToken()->getUser();
-        if ($id!==null) {
+        if ($id !== null) {
             $newMesurementForm = $this->createForm(MeasurementType::class, new Measurement());
             $newRecordForm = $this->createForm(RecordType::class, new Record());
             $soilSample = $soilSampleService->getSoilSampleById($id);
             $soilSampleForm = $this->createForm(SoilSampleType::class, $soilSample);
-            $this->denyAccessUnlessGranted(EntityVoter::VIEW,$soilSample);
+            $this->denyAccessUnlessGranted(EntityVoter::VIEW, $soilSample);
 
             if ($request->isMethod('POST')) {
                 $soilSampleForm->handleRequest($request);
@@ -99,7 +98,7 @@ class SoilSampleController extends AbstractController {
                 if ($newRecordForm->isSubmitted()) {
                     $record = $newRecordForm->getData();
                     $measurement = $measurementRepository->find($newRecordForm->get('parent_id')->getData());
-                    if ($measurement===null) {
+                    if ($measurement === null) {
                         throw new \Exception("measurement doesn't exist");
                     }
                     $record->setMeasurement($measurement);
@@ -110,7 +109,7 @@ class SoilSampleController extends AbstractController {
                     }
 
                     $file = $newRecordForm->get('datafile')->getData();
-                    if ($file!==null) {
+                    if ($file !== null) {
                         $soilSampleService->uploadFile($file, $soilSample);
                     }
                     $entityManager->flush();
@@ -118,14 +117,14 @@ class SoilSampleController extends AbstractController {
                 }
             }
 
-            if ($request->get('delete_measurement')!==null) {
-                    $measurementService->deleteMeasurement($request->get('delete_measurement'));
-                    return $this->redirectToRoute('soilSample', ['id' => $soilSample->getId()]);
+            if ($request->get('delete_measurement') !== null) {
+                $measurementService->deleteMeasurement($request->get('delete_measurement'));
+                return $this->redirectToRoute('soilSample', ['id' => $soilSample->getId()]);
             }
 
-            if ($request->get('delete_record')!==null) {
+            if ($request->get('delete_record') !== null) {
                 $record = $entityManager->find(Record::class, $request->get('delete_record'));
-                if ($record===null) {
+                if ($record === null) {
                     throw new \Exception("record doesn't exist");
                 }
                 foreach ($record->getData() as $data) {
@@ -138,14 +137,17 @@ class SoilSampleController extends AbstractController {
                 return $this->redirectToRoute('soilSample', ['id' => $soilSample->getId()]);
             }
 
-            return $this->render('soilSample/edit.html.twig',[
-                'measurementForm' => $newMesurementForm->createView(),
-                'recordForm' => $newRecordForm->createView(),
-                'recordsService'=>$recordsService,
-                'measurements'=>$soilSampleService->getMeasurementsArray($soilSample),
-                'soilSample'=>$soilSample,
-                'form' => $soilSampleForm->createView(),
-            ]);
+            return $this->render(
+                'soilSample/edit.html.twig',
+                [
+                    'measurementForm' => $newMesurementForm->createView(),
+                    'recordForm' => $newRecordForm->createView(),
+                    'recordsService' => $recordsService,
+                    'measurements' => $soilSampleService->getMeasurementsArray($soilSample),
+                    'soilSample' => $soilSample,
+                    'form' => $soilSampleForm->createView(),
+                ]
+            );
         } else {
             $this->denyAccessUnlessGranted(EntityVoter::VIEW);
             $form = $this->createForm(SoilSampleBasicType::class, new SoilSample());
@@ -164,37 +166,54 @@ class SoilSampleController extends AbstractController {
                 }
             }
 
-            return $this->render('soilSample/add.html.twig', [
-                'form' => $form->createView()
-            ]);
+            return $this->render(
+                'soilSample/add.html.twig',
+                [
+                    'form' => $form->createView()
+                ]
+            );
         }
     }
 
     /**
      * @Route("/{_locale}/soil-samples", name="soilSamples")
      */
-    public function list(PaginatorInterface $paginator, SoilSampleRepository $soilSampleRepository, Request $request, SoilSampleService $soilSampleService, PhenomenonRepository $phenomenonRepository):Response {
+    public function list(
+        PaginatorInterface $paginator,
+        SoilSampleRepository $soilSampleRepository,
+        Request $request,
+        SoilSampleService $soilSampleService,
+        PhenomenonRepository $phenomenonRepository
+    ): Response {
 
         $filter = $this->createForm(SoilSampleFilterType::class);
         $filter->handleRequest($request);
         $pagination = $paginator->paginate(
-            $soilSampleRepository->getPaginatorQuery($filter->getData(), $request->get('order','date'), $request->get('direction','DESC')),
+            $soilSampleRepository->getPaginatorQuery(
+                $filter->getData(),
+                $request->get('order', 'date'),
+                $request->get('direction', 'DESC')
+            ),
             $request->query->getInt('page', 1),
             20
         );
 
-        return $this->render('soilSample/list.html.twig', [
-            'pagination' => $pagination,
-            'filter'=>$filter->createView(),
-            'phenomenonRepository'=>$phenomenonRepository,
-            'soilSampleService' => $soilSampleService
-        ]);
+        return $this->render(
+            'soilSample/list.html.twig',
+            [
+                'pagination' => $pagination,
+                'filter' => $filter->createView(),
+                'phenomenonRepository' => $phenomenonRepository,
+                'soilSampleService' => $soilSampleService
+            ]
+        );
     }
 
     /**
      * @Route("/{_locale}/remove-soil-sample", name="remove_soilsample")
      */
-    public function removeSoilSample(Request $request,SoilSampleRepository $soilSampleRepository): RedirectResponse {
+    public function removeSoilSample(Request $request, SoilSampleRepository $soilSampleRepository): RedirectResponse
+    {
         $soilSampleRepository->setDeleted($request->get('id'));
         return $this->redirectToRoute('soilSamples');
     }
@@ -202,19 +221,27 @@ class SoilSampleController extends AbstractController {
     /**
      * @Route("/{_locale}/is-moisture", name="ismoisture")
      */
-    public function istmoisture(RecordRepository $recordRepository, SoilSampleRepository $soilSampleRepository, SoilSampleService $soilSampleService, EntityManagerInterface $entityManager, Request $request):?RedirectResponse {
+    public function istmoisture(
+        RecordRepository $recordRepository,
+        SoilSampleRepository $soilSampleRepository,
+        SoilSampleService $soilSampleService,
+        EntityManagerInterface $entityManager,
+        Request $request
+    ): ?RedirectResponse {
 
-        if ($request->get('soilSampleId')!==null && $request->get('recordId')!==null) {
-            $soilSample = $soilSampleService->getSoilSampleById($request->get('soilSampleId') );
-            $this->denyAccessUnlessGranted(EntityVoter::EDIT,$soilSample);
-            $record = $recordRepository->find($request->get('recordId'));
-            if ($record===null) {
-                throw new \Exception("record doesn't exist");
+        if ($request->get('soilSampleId') !== null && $request->get('recordId') !== null) {
+            $soilSample = $soilSampleService->getSoilSampleById($request->get('soilSampleId'));
+            if ($soilSample !== null) {
+                $this->denyAccessUnlessGranted(EntityVoter::EDIT, $soilSample);
+                $record = $recordRepository->find($request->get('recordId'));
+                if ($record === null) {
+                    throw new \Exception("record doesn't exist");
+                }
+                $soilSample->setMoisture($record);
+                $entityManager->persist($soilSample);
+                $entityManager->flush();
+                return $this->redirectToRoute('soilSample', ['id' => $soilSample->getId()]);
             }
-            $soilSample->setMoisture($record);
-            $entityManager->persist($soilSample);
-            $entityManager->flush();
-            return $this->redirectToRoute('soilSample', ['id' => $soilSample->getId()]);
         }
         return null;
     }
@@ -223,18 +250,26 @@ class SoilSampleController extends AbstractController {
     /**
      * @Route("/{_locale}/is-texture", name="istexture")
      */
-    public function istexture(RecordRepository $recordRepository, SoilSampleRepository $soilSampleRepository, SoilSampleService $soilSampleService, EntityManagerInterface $entityManager, Request $request):?RedirectResponse {
-        if ($request->get('soilSampleId')!==null && $request->get('recordId')!==null) {
-            $soilSample = $soilSampleService->getSoilSampleById($request->get('soilSampleId') );
-            $this->denyAccessUnlessGranted(EntityVoter::EDIT,$soilSample);
-            $record = $recordRepository->find($request->get('recordId'));
-            if ($record===null) {
-                throw new \Exception("record doesn't exist");
+    public function istexture(
+        RecordRepository $recordRepository,
+        SoilSampleRepository $soilSampleRepository,
+        SoilSampleService $soilSampleService,
+        EntityManagerInterface $entityManager,
+        Request $request
+    ): ?RedirectResponse {
+        if ($request->get('soilSampleId') !== null && $request->get('recordId') !== null) {
+            $soilSample = $soilSampleService->getSoilSampleById($request->get('soilSampleId'));
+            if ($soilSample !== null) {
+                $this->denyAccessUnlessGranted(EntityVoter::EDIT, $soilSample);
+                $record = $recordRepository->find($request->get('recordId'));
+                if ($record === null) {
+                    throw new \Exception("record doesn't exist");
+                }
+                $soilSample->setTextureRecord($record);
+                $entityManager->persist($soilSample);
+                $entityManager->flush();
+                return $this->redirectToRoute('soilSample', ['id' => $soilSample->getId()]);
             }
-            $soilSample->setTextureRecord($record);
-            $entityManager->persist($soilSample);
-            $entityManager->flush();
-            return $this->redirectToRoute('soilSample', ['id' => $soilSample->getId()]);
         }
         return null;
     }
@@ -242,18 +277,26 @@ class SoilSampleController extends AbstractController {
     /**
      * @Route("/{_locale}/is-corg", name="iscorg")
      */
-    public function iscorg(RecordRepository $recordRepository, SoilSampleRepository $soilSampleRepository, SoilSampleService $soilSampleService, EntityManagerInterface $entityManager, Request $request):?RedirectResponse {
-        if ($request->get('soilSampleId')!==null && $request->get('recordId')!==null) {
-            $soilSample = $soilSampleService->getSoilSampleById($request->get('soilSampleId') );
-            $this->denyAccessUnlessGranted(EntityVoter::EDIT,$soilSample);
-            $record = $recordRepository->find($request->get('recordId'));
-            if ($record===null) {
-                throw new \Exception("record doesn't exist");
+    public function iscorg(
+        RecordRepository $recordRepository,
+        SoilSampleRepository $soilSampleRepository,
+        SoilSampleService $soilSampleService,
+        EntityManagerInterface $entityManager,
+        Request $request
+    ): ?RedirectResponse {
+        if ($request->get('soilSampleId') !== null && $request->get('recordId') !== null) {
+            $soilSample = $soilSampleService->getSoilSampleById($request->get('soilSampleId'));
+            if ($soilSample !== null) {
+                $this->denyAccessUnlessGranted(EntityVoter::EDIT, $soilSample);
+                $record = $recordRepository->find($request->get('recordId'));
+                if ($record === null) {
+                    throw new \Exception("record doesn't exist");
+                }
+                $soilSample->setCorg($record);
+                $entityManager->persist($soilSample);
+                $entityManager->flush();
+                return $this->redirectToRoute('soilSample', ['id' => $soilSample->getId()]);
             }
-            $soilSample->setCorg($record);
-            $entityManager->persist($soilSample);
-            $entityManager->flush();
-            return $this->redirectToRoute('soilSample', ['id' => $soilSample->getId()]);
         }
         return null;
     }
@@ -261,12 +304,18 @@ class SoilSampleController extends AbstractController {
     /**
      * @Route("/{_locale}/is-bulkDensity", name="isbulkDensity")
      */
-    public function isbulkDensity(RecordRepository $recordRepository, SoilSampleRepository $soilSampleRepository, SoilSampleService $soilSampleService, EntityManagerInterface $entityManager, Request $request):?RedirectResponse {
-        if ($request->get('soilSampleId')!==null && $request->get('recordId')!==null) {
-            $soilSample = $soilSampleService->getSoilSampleById($request->get('soilSampleId') );
-            $this->denyAccessUnlessGranted(EntityVoter::EDIT,$soilSample);
+    public function isbulkDensity(
+        RecordRepository $recordRepository,
+        SoilSampleRepository $soilSampleRepository,
+        SoilSampleService $soilSampleService,
+        EntityManagerInterface $entityManager,
+        Request $request
+    ): ?RedirectResponse {
+        if ($request->get('soilSampleId') !== null && $request->get('recordId') !== null) {
+            $soilSample = $soilSampleService->getSoilSampleById($request->get('soilSampleId'));
+            $this->denyAccessUnlessGranted(EntityVoter::EDIT, $soilSample);
             $record = $recordRepository->find($request->get('recordId'));
-            if ($record===null) {
+            if ($record === null) {
                 throw new \Exception("record doesn't exist");
             }
             $soilSample->setBulkDensity($record);
@@ -280,14 +329,23 @@ class SoilSampleController extends AbstractController {
     /**
      * @Route("/{_locale}/soil-samples-overview", name="soilSamplesOverview")
      */
-    public function overview(EntityManagerInterface $em, Request $request, SoilSampleService $soilSampleService, SoilSampleRepository $soilSampleRepository, PhenomenonRepository $phenomenonRepository):Response {
+    public function overview(
+        EntityManagerInterface $em,
+        Request $request,
+        SoilSampleService $soilSampleService,
+        SoilSampleRepository $soilSampleRepository,
+        PhenomenonRepository $phenomenonRepository
+    ): Response {
         $this->denyAccessUnlessGranted(EntityVoter::VIEW);
-        $soilSamples = $soilSampleRepository->findBy(["deleted"=>null],['dateSampled'=>'ASC']);
-        return $this->render('soilSample/overview.html.twig',[
-            'soilSamples'=>$soilSamples,
-            'phenomenonRepository'=>$phenomenonRepository,
-            'soilSampleService' => $soilSampleService
-        ]);
+        $soilSamples = $soilSampleRepository->findBy(["deleted" => null], ['dateSampled' => 'ASC']);
+        return $this->render(
+            'soilSample/overview.html.twig',
+            [
+                'soilSamples' => $soilSamples,
+                'phenomenonRepository' => $phenomenonRepository,
+                'soilSampleService' => $soilSampleService
+            ]
+        );
     }
 
 }

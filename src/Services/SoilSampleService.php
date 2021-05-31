@@ -4,7 +4,7 @@
 namespace App\Services;
 
 
-use _HumbugBoxcbe25c660cef\Nette\Neon\Exception;
+use Exception;;
 use App\Entity\Run;
 use App\Entity\Sequence;
 use App\Entity\SoilSample;
@@ -50,7 +50,7 @@ class SoilSampleService {
         if ($this->requestStack->getCurrentRequest()===null) {
             throw new Exception('Invalid request');
         }
-        $this->locale = $this->requestStack->getCurrentRequest()->getLocale()!==null ? $this->requestStack->getCurrentRequest()->getLocale() : $this->requestStack->getCurrentRequest()->getDefaultLocale();
+        $this->locale = $this->requestStack->getCurrentRequest()->getLocale();
         $this->soilSampleRepository = $soilSampleRepository;
         $this->parameterBag = $parameterBag;
         $this->filesystem = $filesystem;

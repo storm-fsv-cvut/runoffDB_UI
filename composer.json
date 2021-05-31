@@ -73,7 +73,7 @@
     "scripts": {
         "phpstan": [
             "@php bin/console cache:warmup --env=dev",
-            "phpstan analyse -l max -c phpstan.neon src"
+            "phpstan analyse -l 8 -c phpstan.neon src"
         ],
         "auto-scripts": {
             "cache:clear": "symfony-cmd",

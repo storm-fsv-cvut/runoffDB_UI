@@ -126,7 +126,7 @@ class SequenceController extends AbstractController
 
             }
         }
-        if (($sequence ?? null)!==null) {
+        if (isset($sequence) && $sequence!==null) {
             return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
         } else {
             return null;

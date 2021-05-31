@@ -8,7 +8,7 @@
 
 namespace App\Controller;
 
-use _HumbugBoxcbe25c660cef\Nette\Neon\Exception;
+use Exception;
 use App\Entity\Measurement;
 use App\Entity\Record;
 use App\Entity\Sequence;

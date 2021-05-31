@@ -2,7 +2,7 @@
 
 namespace App\Twig;
 
-use _HumbugBoxcbe25c660cef\Nette\Neon\Exception;
+use Exception;;
 use App\Entity\LocalisableInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -30,7 +30,7 @@ class LocaliseEntityExtension extends AbstractExtension {
         if ($this->request===null) {
             throw new Exception("Invalid request");
         }
-        $locale = $this->request->getLocale()!==null ? $this->request->getLocale() : $this->request->getDefaultLocale();
+        $locale = $this->request->getLocale();
         $entity->setLocale($locale);
         return $entity->__toString();
     }

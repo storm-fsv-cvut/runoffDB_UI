@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use _HumbugBoxcbe25c660cef\Nette\Neon\Exception;
+use Exception;;
 use App\Entity\Sequence;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;

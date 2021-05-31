@@ -425,7 +425,10 @@ class Run extends BaseEntity {
     }
 
     public function getDatetime(): ?\DateTimeInterface {
-        return $this->getRunGroup()->getDatetime();
+        if ($this->getRunGroup()!==null) {
+            return $this->getRunGroup()->getDatetime();
+        }
+        return null;
     }
 
     public function getFormatedDatetime(): string {
