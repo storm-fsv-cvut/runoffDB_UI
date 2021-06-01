@@ -243,9 +243,15 @@
                                                             <div class="box-header{% if recordsService.isRecordSetAsInSequenceContext(record, sequence)%} bg-warning{% endif %}" >
                                                                 <h4 class="box-title">
                                                                     <a data-toggle="collapse" data-parent="#accordion" href="#record-{{ record.getId() }}" class="collapsed" aria-expanded="false">
-                                                                        {{ record.getUnit().getName()|capitalize }}
+                                                                        {% if record.getUnit() is not same as(null) %}
+                                                                            {{ record.getUnit().getName()|capitalize }}
+                                                                        {% endif %}
                                                                     </a>
-                                                                    <small>{{ record.getRecordType().getName() }}</small>
+                                                                    <small>
+                                                                        {% if record.getRecordType()  is not same as(null)%}
+                                                                        {{ record.getRecordType().getName() }}
+                                                                        {% endif %}
+                                                                    </small>
                                                                     <span class="badge bg-primary">#{{ record.getId() }}</span>
                                                                     {% for sourceRecord in record.getSourceRecords() %}
                                                                         <span class="badge bg-primary">{% trans %}derived from{% endtrans %} #{{ sourceRecord.getId() }}</span>
@@ -305,8 +311,11 @@
                                                                                     ]
                                                                                 </th>
                                                                             {% endif %}
-                                                                            <th>{{ record.getUnit().getName() }}
+                                                                            <th>
+                                                                                {% if record.getUnit() is not same as(null) %}
+                                                                                {{ record.getUnit().getName() }}
                                                                                 [{{ record.getUnit().getUnit()|raw }}]
+                                                                                {% endif %}
                                                                             </th>
                                                                         </tr>
                                                                         {% if (is_granted('viewall',sequence)) %}

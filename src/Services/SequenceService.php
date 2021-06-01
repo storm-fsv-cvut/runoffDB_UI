@@ -127,7 +127,7 @@ class SequenceService {
 
     public function getSequenceById(int $id): Sequence {
         $sequence = $this->sequenceRepository->find($id);
-        if ($sequence) {
+        if ($sequence===null) {
             throw new Exception("Sequence doesn't exist:".$id);
         }
         return $this->sequenceRepository->find($id);

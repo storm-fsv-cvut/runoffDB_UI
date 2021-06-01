@@ -44,9 +44,11 @@
                                     <div class="box-header">
                                         <h4 class="box-title">
                                             <a data-toggle="collapse" data-parent="#accordion" href="#record-{{ record.getId() }}" class="collapsed" aria-expanded="false">
+                                                {% if record.getUnit() is not same as(null) %}
                                                 {{ record.getUnit().getName() }}
+                                                {% endif %}
                                             </a>
-                                            {% if record.getRecordType() %}
+                                            {% if record.getRecordType()  is not same as(null)%}
                                             <small>{{ record.getRecordType().getName() }}</small>
                                             {% endif %}
                                             <span class="badge bg-primary">#{{ record.getId() }}</span>
@@ -96,8 +98,11 @@
                                                             [{{ record.getRelatedValueZUnit().getUnit()|raw }}]
                                                         </th>
                                                     {% endif %}
-                                                    <th>{{ record.getUnit().getName() }}
+                                                    <th>
+                                                        {% if record.getUnit() is not same as(null) %}
+                                                        {{ record.getUnit().getName() }}
                                                         [{{ record.getUnit().getUnit()|raw }}]
+                                                        {% endif %}
                                                     </th>
                                                 </tr>
                                                 {% if (is_granted('viewall',measurement)) %}
