@@ -24,7 +24,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class DefinitionEntityControler extends AbstractController {
 
     /**
-     * @Route("/{_locale}/settings", name="definition_entities")
+     * @Route("/{_locale}/settings", name="settings")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
@@ -51,7 +51,7 @@ class DefinitionEntityControler extends AbstractController {
     }
 
     /**
-     * @Route("/{_locale}/setting/{id}", name="definition_entity")
+     * @Route("/{_locale}/setting/{id}", name="setting")
      */
     public function edit(Request $request, EntityManagerInterface $entityManager, TranslatorInterface $translator, ?int $id = null):Response {
         $this->denyAccessUnlessGranted('edit');
@@ -76,7 +76,7 @@ class DefinitionEntityControler extends AbstractController {
     }
 
     /**
-     * @Route("/{_locale}/settings/delete/{id}", name="delete_definition_entity")
+     * @Route("/{_locale}/settings/delete/{id}", name="delete_setting")
      */
     public function delete(Request $request, EntityManagerInterface $entityManager, TranslatorInterface $translator, ?int $id = null) {
         $this->denyAccessUnlessGranted('edit');

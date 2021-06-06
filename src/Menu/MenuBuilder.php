@@ -9,18 +9,19 @@
 namespace App\Menu;
 
 use App\Repository\CmsRepository;
-use App\Repository\UserRepository;
 use App\Security\EntityVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\Matcher\Matcher;
+use Knp\Menu\Matcher\Voter\RegexVoter;
 use Knp\Menu\Matcher\Voter\RouteVoter;
 use Knp\Menu\Matcher\Voter\UriVoter;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class MenuBuilder {
+class MenuBuilder
+{
     /**
      * @var array
      */
@@ -39,9 +40,20 @@ class MenuBuilder {
      * @param EntityManagerInterface $em
      * @param TranslatorInterface $translator
      */
-    public function __construct(FactoryInterface $factory, EntityManagerInterface $em, TranslatorInterface $translator, RequestStack $requestStack, CmsRepository $cmsRepository, ContainerInterface $container) {
+    public function __construct(
+        FactoryInterface $factory,
+        EntityManagerInterface $em,
+        TranslatorInterface $translator,
+        RequestStack $requestStack,
+        CmsRepository $cmsRepository,
+        ContainerInterface $container
+    ) {
         foreach ($em->getMetadataFactory()->getAllMetadata() as $entity) {
-            if (in_array('App\Entity\DefinitionEntityInterface', $entity->getReflectionClass()->getInterfaceNames(),true)) {
+            if (in_array(
+                'App\Entity\DefinitionEntityInterface',
+                $entity->getReflectionClass()->getInterfaceNames(),
+                true
+            )) {
                 $this->definitionEntities[$entity->name] = $translator->trans($entity->name);
             }
         }
@@ -57,9 +69,11 @@ class MenuBuilder {
      * @param array $options
      * @return \Knp\Menu\ItemInterface
      */
-    public function createAdminMenu(array $options) {
+    public function createAdminMenu(array $options)
+    {
+        $pattern = "/".substr($this->requestStack->getCurrentRequest()->attributes->get('_route'),0,3)."/";
+        $this->matcher = new Matcher([new RegexVoter($pattern)]);
         $authChecker = $this->container->get('security.authorization_checker');
-        $this->matcher = new Matcher([new RouteVoter($this->requestStack)]);
         $menu = $this->factory->createItem('root');
         $menu->setChildrenAttribute('class', 'sidebar-menu tree');
         $menu->setChildrenAttribute('data-widget', 'tree');
@@ -68,33 +82,55 @@ class MenuBuilder {
         $sequences->setAttribute('class', 'treeview');
         $sequences->setChildrenAttribute('class', 'treeview-menu');
         if ($authChecker->isGranted(EntityVoter::EDIT)) {
-            $sequences->addChild($this->translator->trans('add'), ['route' => 'sequence']);
+            $add = $sequences->addChild($this->translator->trans('add'), ['route' => 'sequence']);
+            if ($this->matcher->isCurrent($add)) {
+                $sequences->setCurrent(true);
+            }
         }
-        $sequences->addChild($this->translator->trans('list'), ['route' => 'sequences']);
-        $sequences->addChild($this->translator->trans('overview table'), ['route' => 'sequencesOverview']);
+        $list = $sequences->addChild($this->translator->trans('list'), ['route' => 'sequences']);
+        $overview = $sequences->addChild($this->translator->trans('overview table'), ['route' => 'sequencesOverview']);
+        if ($this->matcher->isCurrent($list) || $this->matcher->isCurrent($overview)) {
+            $sequences->setCurrent(true);
+        }
 
         $soilSample = $menu->addChild($this->translator->trans('soilSamples'), ['uri' => '#']);
         $soilSample->setAttribute('class', 'treeview');
         $soilSample->setChildrenAttribute('class', 'treeview-menu');
         if ($authChecker->isGranted(EntityVoter::EDIT)) {
-            $soilSample->addChild($this->translator->trans('add'), ['route' => 'soilSample']);
+            $add = $soilSample->addChild($this->translator->trans('add'), ['route' => 'soilSample']);
+            if ($this->matcher->isCurrent($add)) {
+                $soilSample->setCurrent(true);
+            }
         }
-        $soilSample->addChild($this->translator->trans('list'), ['route' => 'soilSamples']);
+        $list = $soilSample->addChild($this->translator->trans('list'), ['route' => 'soilSamples']);
+
+        if ($this->matcher->isCurrent($list)) {
+            $soilSample->setCurrent(true);
+        }
 
         $measurement = $menu->addChild($this->translator->trans('measurements'), ['uri' => '#']);
         $measurement->setAttribute('class', 'treeview');
         $measurement->setChildrenAttribute('class', 'treeview-menu');
         if ($authChecker->isGranted(EntityVoter::EDIT)) {
-            $measurement->addChild($this->translator->trans('add'), ['route' => 'measurement']);
+            $add = $measurement->addChild($this->translator->trans('add'), ['route' => 'measurement']);
+            if ($this->matcher->isCurrent($add)) {
+                $measurement->setCurrent(true);
+            }
         }
-        $measurement->addChild($this->translator->trans('list'), ['route' => 'measurements']);
+        $list = $measurement->addChild($this->translator->trans('list'), ['route' => 'measurements']);
+        if ($this->matcher->isCurrent($list)) {
+            $measurement->setCurrent(true);
+        }
 
         if ($authChecker->isGranted(EntityVoter::EDIT)) {
             $cms = $menu->addChild($this->translator->trans('CMS'), ['uri' => '#']);
             $cms->setAttribute('class', 'treeview');
             $cms->setChildrenAttribute('class', 'treeview-menu');
-            $cms->addChild($this->translator->trans('Tooltips'), ['route' => 'tooltips']);
-            $cms->addChild($this->translator->trans('Content'), ['route' => 'contents']);
+            $tooltips = $cms->addChild($this->translator->trans('Tooltips'), ['route' => 'cms-list']);
+            $contents = $cms->addChild($this->translator->trans('Content'), ['route' => 'cms-list']);
+            if ($this->matcher->isCurrent($tooltips) || $this->matcher->isCurrent($contents)) {
+                $cms->setCurrent(true);
+            }
         }
 
         if ($authChecker->isGranted(EntityVoter::EDIT)) {
@@ -102,15 +138,21 @@ class MenuBuilder {
             $setup->setAttribute('class', 'treeview');
             $setup->setChildrenAttribute('class', 'treeview-menu');
             foreach ($this->definitionEntities as $entity => $entity_name) {
-                $item = $setup->addChild($entity_name, ['route' => 'definition_entities', 'routeParameters' => ['class' => $entity]]);
+                $item = $setup->addChild(
+                    $entity_name,
+                    ['route' => 'settings', 'routeParameters' => ['class' => $entity]]
+                );
                 if ($this->matcher->isCurrent($item)) {
-                    $item->setCurrent(true);
+                    $setup->setCurrent(true);
                 }
             }
         }
 
         if ($authChecker->isGranted(EntityVoter::ADMIN)) {
-            $menu->addChild($this->translator->trans('users'), ['route' => 'users']);
+            $users = $menu->addChild($this->translator->trans('users'), ['route' => 'users']);
+            if ($this->matcher->isCurrent($users)) {
+                $users->setCurrent(true);
+            }
         }
         return $menu;
     }

@@ -1,6 +1,6 @@
 $(document).ready(function (e) {
-    $("li.current_ancestor ul").css({display: "block"});
-    $("li.current_ancestor").addClass("menu-open");
+    $("li.current ul").css({display: "block"});
+    $("li.current").addClass("menu-open");
 
     $(".addFormRow").on('click', function (e) {
         let table = $(this).parents('table');

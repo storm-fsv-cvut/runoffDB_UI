@@ -16,35 +16,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class CmsControler extends AbstractController {
 
     /**
-     * @Route("/{_locale}/cms/contents", name="contents")
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Exception
+     * @Route("/{_locale}/cms-list/", name="cms-list")
      */
-    function listContent(CmsRepository $cmsRepository, Request $request, PaginatorInterface $paginator) {
-        $this->denyAccessUnlessGranted('edit');
-
-        $pagination = $paginator->paginate(
-            $cmsRepository->getPaginatorQuery(['type' => 'content'], $request->get('order','id'), $request->get('direction','DESC')),
-            $request->query->getInt('page', 1),
-            20
-        );
-
-        $params= [];
-        $params['type'] = 'content';
-        $params['pagination'] = $pagination;
-        return $this->render('cms/list.html.twig', $params);
-    }
-
-
-    /**
-     * @Route("/{_locale}/cms/tooltips", name="tooltips")
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Exception
-     */
-    function listTooltips(CmsRepository $cmsRepository, Request $request, PaginatorInterface $paginator) {
+    function listCms(CmsRepository $cmsRepository, Request $request, PaginatorInterface $paginator) {
+        $type = $request->get('type','content');
         $this->denyAccessUnlessGranted('edit');
         $qb = $cmsRepository->createQueryBuilder('cms');
-        $qb->where("cms.type = 'tooltip'");
+        $qb->where("cms.type = '$type'");
         $pagination = $paginator->paginate(
             $qb,
             $request->query->getInt('page', 1),
@@ -58,7 +36,7 @@ class CmsControler extends AbstractController {
     }
 
     /**
-     * @Route("/{_locale}/page/{slug}", name="view_cms")
+     * @Route("/{_locale}/page/{slug}", name="page")
      * @return \Symfony\Component\HttpFoundation\Response
      */
     function view(Request $request, CmsRepository $cmsRepository, string $slug) {
@@ -67,13 +45,11 @@ class CmsControler extends AbstractController {
     }
 
     /**
-     * @Route("/{_locale}/cms/edit/{type}/{id}", name="edit_cms")
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Exception
+     * @Route("/{_locale}/cms/{id}", name="cms")
      */
-    function edit(CmsRepository $cmsRepository, Request $request, EntityManagerInterface $entityManager, string $type, ?int $id = null) {
+    function edit(CmsRepository $cmsRepository, Request $request, EntityManagerInterface $entityManager, ?int $id = null) {
+        $type = $request->get('type','content');
         $this->denyAccessUnlessGranted('edit');
-
         if ($id!==null) {
             $entity = $cmsRepository->find($id);
             $form = $this->createForm(CmsType::class, $cmsRepository->find($id));
