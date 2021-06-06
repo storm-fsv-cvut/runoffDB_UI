@@ -94,7 +94,8 @@ relatedRecords: Další propojené záznamy
 derived from: Odvozeno ze záznamu/záznamů
 label_next: Další
 label_previous: Předchozí
-Search: Hledat
+Search: Filtrovat
+Search by: Filtrovat podle
 add plot: Přidat exp. plochu
 add plotrun: Přidat simulaci ve skupině
 not set: Nenastaveno
@@ -158,6 +159,7 @@ delete prompt: opravdu smazat
 Date sampled from: Datum odběru od
 Date sampled to: Datum odběru do
 Slug: Url
+slug-tooltip: Heslo
 status: Stav
 Title: Titulek
 Content: Obsah

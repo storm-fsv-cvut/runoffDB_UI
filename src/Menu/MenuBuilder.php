@@ -126,8 +126,8 @@ class MenuBuilder
             $cms = $menu->addChild($this->translator->trans('CMS'), ['uri' => '#']);
             $cms->setAttribute('class', 'treeview');
             $cms->setChildrenAttribute('class', 'treeview-menu');
-            $tooltips = $cms->addChild($this->translator->trans('Tooltips'), ['route' => 'cms-list']);
-            $contents = $cms->addChild($this->translator->trans('Content'), ['route' => 'cms-list']);
+            $tooltips = $cms->addChild($this->translator->trans('Tooltips'), ['route' => 'cms-list', 'routeParameters'=>['type'=>'tooltip']]);
+            $contents = $cms->addChild($this->translator->trans('Content'), ['route' => 'cms-list', 'routeParameters'=>['type'=>'content']]);
             if ($this->matcher->isCurrent($tooltips) || $this->matcher->isCurrent($contents)) {
                 $cms->setCurrent(true);
             }

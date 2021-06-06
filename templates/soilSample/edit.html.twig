@@ -11,7 +11,7 @@
             {{ soilSample }}
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-list"></i> Seznam</a></li>
+            <li><a href="{{ path('soilSamples')}}"><i class="fa fa-list"></i> Seznam</a></li>
         </ol>
     </section>
 
@@ -32,32 +32,63 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <dl class="dl-horizontal">
+                                    {% if soilSample.getLocality() is not same as null %}
                                     <dt>{% trans %}locality{% endtrans %}:</dt>
                                     <dd>{{ soilSample.getLocality() }}</dd>
+                                    {% endif %}
+
+                                    {% if soilSample.getPlot() is not same as null %}
                                     <dt>{% trans %}Plot{% endtrans %}:</dt>
                                     <dd>{{ soilSample.getPlot() }}</dd>
+                                    {% endif %}
+
+                                    {% if soilSample.getFormatedDateSampled() is not same as null %}
                                     <dt>{% trans %}Sample date{% endtrans %}:</dt>
                                     <dd>{{ soilSample.getFormatedDateSampled() }}</dd>
+                                    {% endif %}
+
+                                    {% if soilSample.getProcessedAt() is not same as null %}
                                     <dt>{% trans %}Processed at{% endtrans %}:</dt>
                                     <dd>{{ soilSample.getProcessedAt() }}</dd>
+                                    {% endif %}
+
+                                    {% if soilSample.getFormatedDateSampled() is not same as null %}
                                     <dt>{% trans %}Process date{% endtrans %}:</dt>
                                     <dd>{{ soilSample.getFormatedDateSampled() }}</dd>
+                                    {% endif %}
+
+                                    {% if soilSample.getWRBsoilClass() is not same as null %}
                                     <dt>{% trans %}WRB soil class{% endtrans %}:</dt>
                                     <dd>{{ soilSample.getWRBsoilClass() }}</dd>
+                                    {% endif %}
+
+                                    {% if soilSample.getDescription() is not same as null %}
                                     <dt>{% trans %}Description{% endtrans %}:</dt>
                                     <dd>{{ soilSample.getDescription() }}</dd>
+                                    {% endif %}
                                 </dl>
                             </div>
                             <div class="col-md-6">
                                 <dl class="dl-horizontal">
+                                    {% if soilSample.getTextureRecord() is not same as null %}
                                     <dt>{% trans %}texture{% endtrans %}:</dt>
                                     <dd>{{ soilSample.getTextureRecord() }}</dd>
+                                    {% endif %}
+
+                                    {% if soilSample.getCorg() is not same as null %}
                                     <dt>{% trans %}corg{% endtrans %}:</dt>
                                     <dd>{{ soilSample.getCorg() }}</dd>
+                                    {% endif %}
+
+                                    {% if soilSample.getMoisture() is not same as null %}
                                     <dt>{% trans %}moisture{% endtrans %}:</dt>
                                     <dd>{{ soilSample.getMoisture() }}</dd>
+                                    {% endif %}
+
+                                    {% if soilSample.getBulkDensity() is not same as null %}
                                     <dt>{% trans %}bulkDensity{% endtrans %}:</dt>
                                     <dd>{{ soilSample.getBulkDensity() }}</dd>
+                                    {% endif %}
                                 </dl>
                             </div>
                         </div>

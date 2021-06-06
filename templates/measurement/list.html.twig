@@ -10,6 +10,11 @@
 
         <div class="box box-primary">
             {{ form_start(filter) }}
+        <div class="box-header">
+            <h4>
+            {% trans %}Search by{% endtrans %}
+            </h4>
+        </div>
             <div class="box-body">
                 <div class="row">
                     <div class="form-group col-md-2">{{ form_row(filter.phenomenon) }}</div>

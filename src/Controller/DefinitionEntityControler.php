@@ -70,7 +70,7 @@ class DefinitionEntityControler extends AbstractController {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($entity);
             $entityManager->flush();
-            return $this->redirectToRoute('definition_entities', ['class' => $class]);
+            return $this->redirectToRoute('settings', ['class' => $class]);
         }
         return $this->render('definitionEntity/edit.html.twig', ['form' => $form->createView(), 'class_name' => $translator->trans($class), 'class' => $class]);
     }
@@ -84,6 +84,6 @@ class DefinitionEntityControler extends AbstractController {
         $dataClass = $id!==null ? $entityManager->find($class, $id) : null;
         $entityManager->remove($dataClass);
         $entityManager->flush();
-        return $this->redirectToRoute('definition_entities',['class'=>$class]);
+        return $this->redirectToRoute('settings',['class'=>$class]);
     }
 }

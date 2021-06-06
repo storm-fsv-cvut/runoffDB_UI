@@ -16,10 +16,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class CmsControler extends AbstractController {
 
     /**
-     * @Route("/{_locale}/cms-list/", name="cms-list")
+     * @Route("/{_locale}/cms-list/{type}", name="cms-list")
      */
-    function listCms(CmsRepository $cmsRepository, Request $request, PaginatorInterface $paginator) {
-        $type = $request->get('type','content');
+    function listCms(CmsRepository $cmsRepository, Request $request, PaginatorInterface $paginator, string $type) {
         $this->denyAccessUnlessGranted('edit');
         $qb = $cmsRepository->createQueryBuilder('cms');
         $qb->where("cms.type = '$type'");
@@ -45,10 +44,9 @@ class CmsControler extends AbstractController {
     }
 
     /**
-     * @Route("/{_locale}/cms/{id}", name="cms")
+     * @Route("/{_locale}/cms/{type}/{id}", name="cms")
      */
-    function edit(CmsRepository $cmsRepository, Request $request, EntityManagerInterface $entityManager, ?int $id = null) {
-        $type = $request->get('type','content');
+    function edit(CmsRepository $cmsRepository, Request $request, EntityManagerInterface $entityManager, ?int $id = null, string $type) {
         $this->denyAccessUnlessGranted('edit');
         if ($id!==null) {
             $entity = $cmsRepository->find($id);
@@ -65,7 +63,7 @@ class CmsControler extends AbstractController {
             $entityManager->persist($cms);
             $entityManager->flush();
 
-            return $this->redirectToRoute($type.'s');
+            return $this->redirectToRoute('cms-list',['type'=>$type]);
         }
 
         $params= [];

@@ -8,7 +8,7 @@
             #{{ measurement.getId()}} {{ measurement.getPhenomenon()}} {% if measurement.getDate()!=null %}{{ measurement.getDate().format('d.m.Y') }}{% endif %} {{ measurement.getLocality()}}
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-list"></i> Seznam</a></li>
+            <li><a href="{{ path('measurements')}}"><i class="fa fa-list"></i> Seznam</a></li>
         </ol>
     </section>
     {% if (is_granted('edit',measurement)) %}

@@ -105,6 +105,11 @@ table.sort-table th .sortable:before{
     -moz-osx-font-smoothing: grayscale;
 }
 
+label.required:after {
+    content:"*";
+    color:red;
+}
+
 @media (min-width: 768px) {
     .modal-dialog {
         width: 700px;

@@ -6,6 +6,7 @@ use App\Entity\Cms;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -34,7 +35,11 @@ class CmsType extends AbstractType
                 'choices'=>['cs'=>'cs','en'=>'en'],
                 'label'=>$this->translator->trans('language')
             ])
-            ->add('title')
+            ->add('title', TextType::class ,[
+                'label'=>'title',
+                'empty_data' => '',
+                'required'=>false
+            ])
             ->add('content');
 
 
