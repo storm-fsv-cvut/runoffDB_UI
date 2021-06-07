@@ -229,15 +229,15 @@ class SoilSampleController extends AbstractController
         Request $request
     ): ?RedirectResponse {
 
-        if ($request->get('soilSampleId') !== null && $request->get('recordId') !== null) {
+        if ($request->get('soilSampleId') !== null) {
             $soilSample = $soilSampleService->getSoilSampleById($request->get('soilSampleId'));
             if ($soilSample !== null) {
                 $this->denyAccessUnlessGranted(EntityVoter::EDIT, $soilSample);
-                $record = $recordRepository->find($request->get('recordId'));
-                if ($record === null) {
-                    throw new \Exception("record doesn't exist");
-                }
-                $soilSample->setMoisture($record);
+                if ($request->get('recordId') !== null) {
+                    $record = $recordRepository->find($request->get('recordId'));
+                } else {
+                    $record = null;
+                }                $soilSample->setMoisture($record);
                 $entityManager->persist($soilSample);
                 $entityManager->flush();
                 return $this->redirectToRoute('soilSample', ['id' => $soilSample->getId()]);
@@ -257,15 +257,15 @@ class SoilSampleController extends AbstractController
         EntityManagerInterface $entityManager,
         Request $request
     ): ?RedirectResponse {
-        if ($request->get('soilSampleId') !== null && $request->get('recordId') !== null) {
+        if ($request->get('soilSampleId') !== null) {
             $soilSample = $soilSampleService->getSoilSampleById($request->get('soilSampleId'));
             if ($soilSample !== null) {
                 $this->denyAccessUnlessGranted(EntityVoter::EDIT, $soilSample);
-                $record = $recordRepository->find($request->get('recordId'));
-                if ($record === null) {
-                    throw new \Exception("record doesn't exist");
-                }
-                $soilSample->setTextureRecord($record);
+                if ($request->get('recordId') !== null) {
+                    $record = $recordRepository->find($request->get('recordId'));
+                } else {
+                    $record = null;
+                }                $soilSample->setTextureRecord($record);
                 $entityManager->persist($soilSample);
                 $entityManager->flush();
                 return $this->redirectToRoute('soilSample', ['id' => $soilSample->getId()]);
@@ -284,13 +284,14 @@ class SoilSampleController extends AbstractController
         EntityManagerInterface $entityManager,
         Request $request
     ): ?RedirectResponse {
-        if ($request->get('soilSampleId') !== null && $request->get('recordId') !== null) {
+        if ($request->get('soilSampleId') !== null) {
             $soilSample = $soilSampleService->getSoilSampleById($request->get('soilSampleId'));
             if ($soilSample !== null) {
                 $this->denyAccessUnlessGranted(EntityVoter::EDIT, $soilSample);
-                $record = $recordRepository->find($request->get('recordId'));
-                if ($record === null) {
-                    throw new \Exception("record doesn't exist");
+                if ($request->get('recordId') !== null) {
+                    $record = $recordRepository->find($request->get('recordId'));
+                } else {
+                    $record = null;
                 }
                 $soilSample->setCorg($record);
                 $entityManager->persist($soilSample);
@@ -311,12 +312,13 @@ class SoilSampleController extends AbstractController
         EntityManagerInterface $entityManager,
         Request $request
     ): ?RedirectResponse {
-        if ($request->get('soilSampleId') !== null && $request->get('recordId') !== null) {
+        if ($request->get('soilSampleId') !== null) {
             $soilSample = $soilSampleService->getSoilSampleById($request->get('soilSampleId'));
             $this->denyAccessUnlessGranted(EntityVoter::EDIT, $soilSample);
-            $record = $recordRepository->find($request->get('recordId'));
-            if ($record === null) {
-                throw new \Exception("record doesn't exist");
+            if ($request->get('recordId') !== null) {
+                $record = $recordRepository->find($request->get('recordId'));
+            } else {
+                $record = null;
             }
             $soilSample->setBulkDensity($record);
             $entityManager->persist($soilSample);

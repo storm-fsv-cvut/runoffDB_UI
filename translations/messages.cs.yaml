@@ -173,3 +173,4 @@ load data: Načíst data
 loadDataFile: Data ze souboru
 skip_first_row: Vynechat první řádek
 first_column_time: První sloupec je čas
+unlink: Zrušit vazbu

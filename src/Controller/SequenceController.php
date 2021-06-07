@@ -36,7 +36,6 @@ use App\Services\RunService;
 use App\Services\SequenceService;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use mysql_xdevapi\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -56,7 +55,7 @@ class SequenceController extends AbstractController
     public function getChartData(RecordsService $recordsService, Request $request): JsonResponse
     {
         $data = $request->get('ids');
-        if ($data!=null) {
+        if ($data != null) {
             return $this->json($recordsService->getChartData($data));
         } else {
             return $this->json(0);
@@ -90,7 +89,7 @@ class SequenceController extends AbstractController
     public function validateFile(RecordsService $recordsService, Request $request): ?JsonResponse
     {
         $file = $request->files;
-        if ($file->get('datafile')!==null) {
+        if ($file->get('datafile') !== null) {
             return $this->json(
                 $recordsService->validateDataFile(
                     $file->get('datafile'),
@@ -111,7 +110,7 @@ class SequenceController extends AbstractController
         EntityManagerInterface $entityManager,
         Request $request
     ): ?RedirectResponse {
-        if ($request->get('recordId')!==null) {
+        if ($request->get('recordId') !== null) {
             $record = $recordRepository->find($request->get('recordId'));
             if ($record===null) {
                 throw new \Exception("Record doesn't exist");
@@ -120,6 +119,20 @@ class SequenceController extends AbstractController
                 foreach ($record->getMeasurement()->getRuns() as $run) {
                     $sequence = $run->getSequence();
                     $run->setRainIntensity($record);
+                    $entityManager->persist($run);
+                    $entityManager->flush();
+                }
+
+            }
+        } else if ($request->get('removeRecordId') !== null) {
+            $record = $recordRepository->find($request->get('removeRecordId'));
+            if ($record===null) {
+                throw new \Exception("Record doesn't exist");
+            }
+            if ($record->getMeasurement()!==null) {
+                foreach ($record->getMeasurement()->getRuns() as $run) {
+                    $sequence = $run->getSequence();
+                    $run->setRainIntensity(null);
                     $entityManager->persist($run);
                     $entityManager->flush();
                 }
@@ -142,12 +155,12 @@ class SequenceController extends AbstractController
         Request $request
     ): RedirectResponse {
         $sequence = null;
-        if ($request->get('recordId')!==null) {
+        if ($request->get('recordId') !== null) {
             $record = $recordRepository->find($request->get('recordId'));
-            if ($record===null) {
+            if ($record === null) {
                 throw new \Exception("Record doesn't exist");
             }
-            if ($record->getMeasurement()!==null) {
+            if ($record->getMeasurement() !== null) {
                 foreach ($record->getMeasurement()->getRuns() as $run) {
                     $sequence = $run->getSequence();
                     $run->setInitMoisture($record);
@@ -155,15 +168,31 @@ class SequenceController extends AbstractController
                     $entityManager->flush();
                 }
             }
+        } else if ($request->get('removeRecordId') !== null) {
+            $record = $recordRepository->find($request->get('removeRecordId'));
+            if ($record === null) {
+                throw new \Exception("Record doesn't exist");
+            }
+            if ($record->getMeasurement() !== null) {
+                foreach ($record->getMeasurement()->getRuns() as $run) {
+                    $sequence = $run->getSequence();
+                    $run->setInitMoisture(null);
+                    $entityManager->persist($run);
+                    $entityManager->flush();
+                }
+            }
         }
-        return $this->redirectToRoute('sequence', ['id' => $sequence!==null ? $sequence->getId() : null]);
+        return $this->redirectToRoute('sequence', ['id' => $sequence !== null ? $sequence->getId() : null]);
     }
 
     /**
      * @Route("/{_locale}/download-file", name="downloadFile")
      */
-    public function downloadFile(RunRepository $runRepository, Request $request, ParameterBagInterface $parameterBag): BinaryFileResponse
-    {
+    public function downloadFile(
+        RunRepository $runRepository,
+        Request $request,
+        ParameterBagInterface $parameterBag
+    ): BinaryFileResponse {
         $run = $runRepository->find($request->get('runId'));
         if ($run === null) {
             throw new \Exception("Run doesn't exist");
@@ -185,7 +214,7 @@ class SequenceController extends AbstractController
         }
         $filename = $request->get('filename');
         $run->removeFile($filename);
-        if ($run->getSequence()!==null) {
+        if ($run->getSequence() !== null) {
             return $this->redirectToRoute('sequence', ['id' => $run->getSequence()->getId()]);
         } else {
             return null;
@@ -211,11 +240,11 @@ class SequenceController extends AbstractController
         RunGroupService $runGroupService,
         int $id = null
     ): Response {
-        if ($this->get('security.token_storage')->getToken()===null) {
+        if ($this->get('security.token_storage')->getToken() === null) {
             throw new \Exception("User token is null");
         }
         $user = $this->get('security.token_storage')->getToken()->getUser();
-        if ($id!==null) {
+        if ($id !== null) {
             $sequence = $sequenceService->getSequenceById($id);
             $this->denyAccessUnlessGranted(EntityVoter::VIEW, $sequence);
 
@@ -241,7 +270,7 @@ class SequenceController extends AbstractController
                 if ($newRunForm->isSubmitted()) {
                     $newRunFormData = $newRunForm->getData();
                     $runGroup = $runGroupRepository->find($newRunForm->get('parent_id')->getData());
-                    if ($runGroup===null) {
+                    if ($runGroup === null) {
                         throw new \Exception("runGroup doesn't exist");
                     }
                     $newRunFormData->setRunGroup($runGroup);
@@ -253,7 +282,7 @@ class SequenceController extends AbstractController
                 if ($newMesurementForm->isSubmitted()) {
                     $formMeasurementData = $newMesurementForm->getData();
                     $run = $runRepository->find($newMesurementForm->get('parent_id')->getData());
-                    if ($run===null) {
+                    if ($run === null) {
                         throw new \Exception("measurement doesn't exist");
                     }
                     $formMeasurementData->addRun($run);
@@ -270,7 +299,7 @@ class SequenceController extends AbstractController
                      */
                     $record = $newRecordForm->getData();
                     $measurement = $measurementRepository->find($newRecordForm->get('parent_id')->getData());
-                    if ($measurement===null) {
+                    if ($measurement === null) {
                         throw new \Exception("Measurement doesn't exist");
                     }
                     $record->setMeasurement($measurement);
@@ -280,7 +309,7 @@ class SequenceController extends AbstractController
                     }
 
                     $file = $newRecordForm->get('datafile')->getData();
-                    if ($file!==null) {
+                    if ($file !== null) {
                         $runService->uploadFile($file, $measurement->getRuns()->get(0));
                     }
                     $entityManager->flush();
@@ -292,7 +321,7 @@ class SequenceController extends AbstractController
                     $partialForm = $sequenceForm->getClickedButton()->getParent();
                     $partialData = $partialForm->getData();
 
-                    if ($partialForm->has('rawData') && $partialForm->get('rawData')!==null) {
+                    if ($partialForm->has('rawData') && $partialForm->get('rawData') !== null) {
                         foreach ($partialForm->get('rawData')->getData() as $file) {
                             $runService->uploadFile($file, $partialData);
                         }
@@ -305,9 +334,9 @@ class SequenceController extends AbstractController
                 return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
             }
 
-            if ($request->get('delete_run')!==null) {
+            if ($request->get('delete_run') !== null) {
                 $run = $entityManager->find(Run::class, $request->get('delete_run'));
-                if ($run===null) {
+                if ($run === null) {
                     throw new \Exception("run doesn't exist");
                 }
                 foreach ($run->getMeasurements() as $measurement) {
@@ -329,14 +358,14 @@ class SequenceController extends AbstractController
             }
 
 
-            if ($request->get('delete_measurement')!==null) {
+            if ($request->get('delete_measurement') !== null) {
                 $measurementService->deleteMeasurement($request->get('delete_measurement'));
                 return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
             }
 
-            if ($request->get('delete_record')!==null) {
+            if ($request->get('delete_record') !== null) {
                 $record = $entityManager->find(Record::class, $request->get('delete_record'));
-                if ($record===null) {
+                if ($record === null) {
                     throw new \Exception("record doesn't exist");
                 }
                 foreach ($record->getData() as $data) {

@@ -72,22 +72,39 @@
                                 <dl class="dl-horizontal">
                                     {% if soilSample.getTextureRecord() is not same as null %}
                                     <dt>{% trans %}texture{% endtrans %}:</dt>
-                                    <dd>{{ soilSample.getTextureRecord() }}</dd>
+                                    <dd>
+                                        {{ soilSample.getTextureRecord() }}
+                                        {% if (is_granted('edit',soilSample)) %}
+                                            <a role="menuitem" data-confirm="{% trans %}unlink{% endtrans %}?" href="{{ path('istexture', {soilSampleId:soilSample.getId(),recordId:null}) }}"><i class="text-danger fa fa-trash"></i></a>
+                                        {% endif %}
+                                    </dd>
                                     {% endif %}
 
                                     {% if soilSample.getCorg() is not same as null %}
                                     <dt>{% trans %}corg{% endtrans %}:</dt>
-                                    <dd>{{ soilSample.getCorg() }}</dd>
+                                    <dd>{{ soilSample.getCorg() }}
+                                        {% if (is_granted('edit',soilSample)) %}
+                                            <a role="menuitem" data-confirm="{% trans %}unlink{% endtrans %}?" href="{{ path('iscorg', {soilSampleId:soilSample.getId(),recordId:null}) }}"><i class="text-danger fa fa-trash"></i></a>
+                                        {% endif %}
+                                    </dd>
                                     {% endif %}
 
                                     {% if soilSample.getMoisture() is not same as null %}
                                     <dt>{% trans %}moisture{% endtrans %}:</dt>
-                                    <dd>{{ soilSample.getMoisture() }}</dd>
+                                    <dd>{{ soilSample.getMoisture() }}
+                                        {% if (is_granted('edit',soilSample)) %}
+                                            <a role="menuitem" data-confirm="{% trans %}unlink{% endtrans %}?" href="{{ path('ismoisture', {soilSampleId:soilSample.getId(),recordId:null}) }}"><i class="text-danger fa fa-trash"></i></a>
+                                        {% endif %}
+                                    </dd>
                                     {% endif %}
 
                                     {% if soilSample.getBulkDensity() is not same as null %}
                                     <dt>{% trans %}bulkDensity{% endtrans %}:</dt>
-                                    <dd>{{ soilSample.getBulkDensity() }}</dd>
+                                    <dd>{{ soilSample.getBulkDensity() }}
+                                        {% if (is_granted('edit',soilSample)) %}
+                                            <a role="menuitem" data-confirm="{% trans %}unlink{% endtrans %}?" href="{{ path('isbulkDensity', {soilSampleId:soilSample.getId(),recordId:null}) }}"><i class="text-danger fa fa-trash"></i></a>
+                                        {% endif %}
+                                    </dd>
                                     {% endif %}
                                 </dl>
                             </div>
