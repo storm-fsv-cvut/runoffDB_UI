@@ -11,7 +11,7 @@
             {{ soilSample }}
         </h1>
         <ol class="breadcrumb">
-            <li><a href="{{ path('soilSamples')}}"><i class="fa fa-list"></i> Seznam</a></li>
+            <li><a href="{{ path('soilSamples') }}"><i class="fa fa-list"></i> Seznam</a></li>
         </ol>
     </section>
 
@@ -20,6 +20,37 @@
         {% if (is_granted('edit',soilSample)) %}
             {{ form_start(form) }}
         {% endif %}
+
+        {% if runService.findBySoilSample(soilSample)|length >0 %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="box box-solid">
+                        <div class="box-header">
+                            <h4 class="box-title">
+                                <a data-toggle="collapse" data-parent="#accordion"
+                                   href="#runs" class="collapsed"
+                                   aria-expanded="false">{% trans %}linked runs{% endtrans %}
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="runs" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                            <div class="box-body">
+                                {% for run in runService.findBySoilSample(soilSample) %}
+                                    <p>
+                                        {{ run }}
+                                        {% if run.getSequence()!=null %}
+                                            <a href="{{ path('sequence',{'id':run.getSequence().getId()}) }}"
+                                               target="_blank"> <i class="fa fa-external-link"></i></a>
+                                        {% endif %}
+                                    </p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
         <div class="row">
             <div class="col-lg-12">
                 <div class="box box-solid">
@@ -33,78 +64,97 @@
                             <div class="col-md-6">
                                 <dl class="dl-horizontal">
                                     {% if soilSample.getLocality() is not same as null %}
-                                    <dt>{% trans %}locality{% endtrans %}:</dt>
-                                    <dd>{{ soilSample.getLocality() }}</dd>
+                                        <dt>{% trans %}locality{% endtrans %}:</dt>
+                                        <dd>{{ soilSample.getLocality() }}</dd>
                                     {% endif %}
 
                                     {% if soilSample.getPlot() is not same as null %}
-                                    <dt>{% trans %}Plot{% endtrans %}:</dt>
-                                    <dd>{{ soilSample.getPlot() }}</dd>
+                                        <dt>{% trans %}Plot{% endtrans %}:</dt>
+                                        <dd>{{ soilSample.getPlot() }}</dd>
                                     {% endif %}
 
                                     {% if soilSample.getFormatedDateSampled() is not same as null %}
-                                    <dt>{% trans %}Sample date{% endtrans %}:</dt>
-                                    <dd>{{ soilSample.getFormatedDateSampled() }}</dd>
+                                        <dt>{% trans %}Sample date{% endtrans %}:</dt>
+                                        <dd>{{ soilSample.getFormatedDateSampled() }}</dd>
                                     {% endif %}
 
                                     {% if soilSample.getProcessedAt() is not same as null %}
-                                    <dt>{% trans %}Processed at{% endtrans %}:</dt>
-                                    <dd>{{ soilSample.getProcessedAt() }}</dd>
+                                        <dt>{% trans %}Processed at{% endtrans %}:</dt>
+                                        <dd>{{ soilSample.getProcessedAt() }}</dd>
                                     {% endif %}
 
                                     {% if soilSample.getFormatedDateSampled() is not same as null %}
-                                    <dt>{% trans %}Process date{% endtrans %}:</dt>
-                                    <dd>{{ soilSample.getFormatedDateSampled() }}</dd>
+                                        <dt>{% trans %}Process date{% endtrans %}:</dt>
+                                        <dd>{{ soilSample.getFormatedDateSampled() }}</dd>
                                     {% endif %}
 
                                     {% if soilSample.getWRBsoilClass() is not same as null %}
-                                    <dt>{% trans %}WRB soil class{% endtrans %}:</dt>
-                                    <dd>{{ soilSample.getWRBsoilClass() }}</dd>
+                                        <dt>{% trans %}WRB soil class{% endtrans %}:</dt>
+                                        <dd>{{ soilSample.getWRBsoilClass() }}</dd>
+                                    {% endif %}
+
+                                    {% if soilSample.getSampleDepthM() is not same as null %}
+                                        <dt>{% trans %}sampleDepthM{% endtrans %}:</dt>
+                                        <dd>{{ soilSample.getSampleDepthM() }} m</dd>
+                                    {% endif %}
+
+                                    {% if soilSample.getSampleLocation() is not same as null %}
+                                        <dt>{% trans %}sampleLocation{% endtrans %}:</dt>
+                                        <dd>{{ soilSample.getSampleLocation() }}</dd>
                                     {% endif %}
 
                                     {% if soilSample.getDescription() is not same as null %}
-                                    <dt>{% trans %}Description{% endtrans %}:</dt>
-                                    <dd>{{ soilSample.getDescription() }}</dd>
+                                        <dt>{% trans %}Description{% endtrans %}:</dt>
+                                        <dd>{{ soilSample.getDescription() }}</dd>
                                     {% endif %}
+
                                 </dl>
                             </div>
                             <div class="col-md-6">
                                 <dl class="dl-horizontal">
                                     {% if soilSample.getTextureRecord() is not same as null %}
-                                    <dt>{% trans %}texture{% endtrans %}:</dt>
-                                    <dd>
-                                        {{ soilSample.getTextureRecord() }}
-                                        {% if (is_granted('edit',soilSample)) %}
-                                            <a role="menuitem" data-confirm="{% trans %}unlink{% endtrans %}?" href="{{ path('istexture', {soilSampleId:soilSample.getId(),recordId:null}) }}"><i class="text-danger fa fa-trash"></i></a>
-                                        {% endif %}
-                                    </dd>
+                                        <dt>{% trans %}texture{% endtrans %}:</dt>
+                                        <dd>
+                                            {{ soilSample.getTextureRecord() }}
+                                            {% if (is_granted('edit',soilSample)) %}
+                                                <a role="menuitem" data-confirm="{% trans %}unlink{% endtrans %}?"
+                                                   href="{{ path('istexture', {soilSampleId:soilSample.getId(),recordId:null}) }}"><i
+                                                            class="text-danger fa fa-trash"></i></a>
+                                            {% endif %}
+                                        </dd>
                                     {% endif %}
 
                                     {% if soilSample.getCorg() is not same as null %}
-                                    <dt>{% trans %}corg{% endtrans %}:</dt>
-                                    <dd>{{ soilSample.getCorg() }}
-                                        {% if (is_granted('edit',soilSample)) %}
-                                            <a role="menuitem" data-confirm="{% trans %}unlink{% endtrans %}?" href="{{ path('iscorg', {soilSampleId:soilSample.getId(),recordId:null}) }}"><i class="text-danger fa fa-trash"></i></a>
-                                        {% endif %}
-                                    </dd>
+                                        <dt>{% trans %}corg{% endtrans %}:</dt>
+                                        <dd>{{ soilSample.getCorg() }}
+                                            {% if (is_granted('edit',soilSample)) %}
+                                                <a role="menuitem" data-confirm="{% trans %}unlink{% endtrans %}?"
+                                                   href="{{ path('iscorg', {soilSampleId:soilSample.getId(),recordId:null}) }}"><i
+                                                            class="text-danger fa fa-trash"></i></a>
+                                            {% endif %}
+                                        </dd>
                                     {% endif %}
 
                                     {% if soilSample.getMoisture() is not same as null %}
-                                    <dt>{% trans %}moisture{% endtrans %}:</dt>
-                                    <dd>{{ soilSample.getMoisture() }}
-                                        {% if (is_granted('edit',soilSample)) %}
-                                            <a role="menuitem" data-confirm="{% trans %}unlink{% endtrans %}?" href="{{ path('ismoisture', {soilSampleId:soilSample.getId(),recordId:null}) }}"><i class="text-danger fa fa-trash"></i></a>
-                                        {% endif %}
-                                    </dd>
+                                        <dt>{% trans %}moisture{% endtrans %}:</dt>
+                                        <dd>{{ soilSample.getMoisture() }}
+                                            {% if (is_granted('edit',soilSample)) %}
+                                                <a role="menuitem" data-confirm="{% trans %}unlink{% endtrans %}?"
+                                                   href="{{ path('ismoisture', {soilSampleId:soilSample.getId(),recordId:null}) }}"><i
+                                                            class="text-danger fa fa-trash"></i></a>
+                                            {% endif %}
+                                        </dd>
                                     {% endif %}
 
                                     {% if soilSample.getBulkDensity() is not same as null %}
-                                    <dt>{% trans %}bulkDensity{% endtrans %}:</dt>
-                                    <dd>{{ soilSample.getBulkDensity() }}
-                                        {% if (is_granted('edit',soilSample)) %}
-                                            <a role="menuitem" data-confirm="{% trans %}unlink{% endtrans %}?" href="{{ path('isbulkDensity', {soilSampleId:soilSample.getId(),recordId:null}) }}"><i class="text-danger fa fa-trash"></i></a>
-                                        {% endif %}
-                                    </dd>
+                                        <dt>{% trans %}bulkDensity{% endtrans %}:</dt>
+                                        <dd>{{ soilSample.getBulkDensity() }}
+                                            {% if (is_granted('edit',soilSample)) %}
+                                                <a role="menuitem" data-confirm="{% trans %}unlink{% endtrans %}?"
+                                                   href="{{ path('isbulkDensity', {soilSampleId:soilSample.getId(),recordId:null}) }}"><i
+                                                            class="text-danger fa fa-trash"></i></a>
+                                            {% endif %}
+                                        </dd>
                                     {% endif %}
                                 </dl>
                             </div>
@@ -112,7 +162,8 @@
                     </div>
                     {% if (is_granted('edit',soilSample)) %}
                         <div class="box-footer">
-                            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-parent="{{ soilSample.getId() }}" data-target="#measurement">
+                            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal"
+                                    data-parent="{{ soilSample.getId() }}" data-target="#measurement">
                                 {% trans %}add measurement{% endtrans %}
                             </button>
                         </div>
@@ -135,15 +186,21 @@
                                         </a>
                                         <ul class="dropdown-menu">
                                             <li role="presentation">
-                                                <a role="menuitem" tabindex="-1" href="javascript:;" data-toggle="modal" data-parent="{{ measurementArray['id'] }}" data-target="#record">{% trans %}add record{% endtrans %}</a>
+                                                <a role="menuitem" tabindex="-1" href="javascript:;" data-toggle="modal"
+                                                   data-parent="{{ measurementArray['id'] }}"
+                                                   data-target="#record">{% trans %}add record{% endtrans %}</a>
                                             </li>
                                             <li role="presentation" class="divider"></li>
                                             <li role="presentation">
-                                                <a role="menuitem" data-toggle="modal" data-target="#measurement{{ formMeasurement.vars.value.getId() }}" tabindex="-1" href="#">{% trans %}edit{% endtrans %}</a>
+                                                <a role="menuitem" data-toggle="modal"
+                                                   data-target="#measurement{{ formMeasurement.vars.value.getId() }}"
+                                                   tabindex="-1" href="#">{% trans %}edit{% endtrans %}</a>
                                             </li>
                                             <li role="presentation" class="divider"></li>
                                             <li role="presentation">
-                                                <a role="menuitem" tabindex="-1" data-confirm="{% trans %}delete?{% endtrans %}" href="{{ path('soilSample', {id:soilSample.getId(),delete_measurement:formMeasurement.vars.value.getId()}) }}">{% trans %}delete{% endtrans %}</a>
+                                                <a role="menuitem" tabindex="-1"
+                                                   data-confirm="{% trans %}delete?{% endtrans %}"
+                                                   href="{{ path('soilSample', {id:soilSample.getId(),delete_measurement:formMeasurement.vars.value.getId()}) }}">{% trans %}delete{% endtrans %}</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -162,16 +219,18 @@
                                 {% for formRecord in formMeasurement.records %}
                                     {% set record = formRecord.vars.value %}
                                     <div class="panel box box-solid">
-                                        <div class="box-header{% if recordsService.isRecordSetAsInSoilSampleContext(record, soilSample)%} bg-warning{% endif %}">
+                                        <div class="box-header{% if recordsService.isRecordSetAsInSoilSampleContext(record, soilSample) %} bg-warning{% endif %}">
                                             <h4 class="box-title">
-                                                <a data-toggle="collapse" data-parent="#accordion" href="#record-{{ record.getId() }}" class="collapsed" aria-expanded="false">
+                                                <a data-toggle="collapse" data-parent="#accordion"
+                                                   href="#record-{{ record.getId() }}" class="collapsed"
+                                                   aria-expanded="false">
                                                     {% if record.getUnit() is not same as(null) %}
-                                                    {{ record.getUnit().getName() }}
+                                                        {{ record.getUnit().getName() }}
                                                     {% endif %}
                                                 </a>
                                                 <small>
-                                                    {% if record.getRecordType()  is not same as(null)%}
-                                                    {{ record.getRecordType().getName() }}
+                                                    {% if record.getRecordType()  is not same as(null) %}
+                                                        {{ record.getRecordType().getName() }}
                                                     {% endif %}
                                                 </small>
                                                 <span class="badge bg-primary">#{{ record.getId() }}</span>
@@ -181,7 +240,10 @@
                                             </h4>
                                             <div class="box-tools pull-right">
                                                 {% if record.getIsTimeline() %}
-                                                    <input type="checkbox" class="icheckbox_flat-green" data-toggle="chart" data-target="#chart-soil-sample" data-sample="{{ soilSample.getId() }}" data-record="{{ record.getId() }}">
+                                                    <input type="checkbox" class="icheckbox_flat-green"
+                                                           data-toggle="chart" data-target="#chart-soil-sample"
+                                                           data-sample="{{ soilSample.getId() }}"
+                                                           data-record="{{ record.getId() }}">
                                                 {% endif %}
                                                 {% if (is_granted('edit',soilSample)) %}
                                                     <div class="dropdown inline">
@@ -190,22 +252,31 @@
                                                         </a>
                                                         <ul class="dropdown-menu">
                                                             <li role="presentation">
-                                                                <a role="menuitem" href="{{ path('ismoisture', {soilSampleId:soilSample.getId(),recordId:record.getId()}) }}">{% trans %}set as moisture{% endtrans %}</a>
+                                                                <a role="menuitem"
+                                                                   href="{{ path('ismoisture', {soilSampleId:soilSample.getId(),recordId:record.getId()}) }}">{% trans %}set as moisture{% endtrans %}</a>
                                                             </li>
                                                             <li role="presentation">
-                                                                <a role="menuitem" href="{{ path('istexture', {soilSampleId:soilSample.getId(),recordId:record.getId()}) }}">{% trans %}set as texture{% endtrans %}</a>
+                                                                <a role="menuitem"
+                                                                   href="{{ path('istexture', {soilSampleId:soilSample.getId(),recordId:record.getId()}) }}">{% trans %}set as texture{% endtrans %}</a>
                                                             </li>
                                                             <li role="presentation">
-                                                                <a role="menuitem" href="{{ path('iscorg', {soilSampleId:soilSample.getId(),recordId:record.getId()}) }}">{% trans %}set as corg{% endtrans %}</a>
+                                                                <a role="menuitem"
+                                                                   href="{{ path('iscorg', {soilSampleId:soilSample.getId(),recordId:record.getId()}) }}">{% trans %}set as corg{% endtrans %}</a>
                                                             </li>
                                                             <li role="presentation">
-                                                                <a role="menuitem" href="{{ path('isbulkDensity', {soilSampleId:soilSample.getId(),recordId:record.getId()}) }}">{% trans %}set as bulkDensity{% endtrans %}</a>
+                                                                <a role="menuitem"
+                                                                   href="{{ path('isbulkDensity', {soilSampleId:soilSample.getId(),recordId:record.getId()}) }}">{% trans %}set as bulkDensity{% endtrans %}</a>
                                                             </li>
                                                             <li role="presentation">
-                                                                <a role="menuitem" data-confirm="{% trans %}delete?{% endtrans %}" tabindex="-1" href="{{ path('soilSample', {id:soilSample.getId(),delete_record:record.getId()}) }}">{% trans %}delete{% endtrans %}</a>
+                                                                <a role="menuitem"
+                                                                   data-confirm="{% trans %}delete?{% endtrans %}"
+                                                                   tabindex="-1"
+                                                                   href="{{ path('soilSample', {id:soilSample.getId(),delete_record:record.getId()}) }}">{% trans %}delete{% endtrans %}</a>
                                                             </li>
                                                             <li role="presentation">
-                                                                <a role="menuitem" tabindex="-1" href="#" data-toggle="modal" data-target="#record{{ record.getId() }}">{% trans %}edit{% endtrans %}</a>
+                                                                <a role="menuitem" tabindex="-1" href="#"
+                                                                   data-toggle="modal"
+                                                                   data-target="#record{{ record.getId() }}">{% trans %}edit{% endtrans %}</a>
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -215,7 +286,8 @@
                                         {% if (is_granted('edit',soilSample)) %}
                                             {% include "forms/recordTypeModalEdit.html.twig" %}
                                         {% endif %}
-                                        <div id="record-{{ record.getId() }}" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                        <div id="record-{{ record.getId() }}" class="panel-collapse collapse"
+                                             aria-expanded="false" style="height: 0px;">
                                             <div class="box-body">
                                                 <p><i>{{ record.getNoteCZ() }}</i></p>
                                                 <table class="table table-bordered">
@@ -238,8 +310,8 @@
                                                         {% endif %}
                                                         <th>
                                                             {% if record.getUnit() is not same as(null) %}
-                                                            {{ record.getUnit().getName() }}
-                                                            [{{ record.getUnit().getUnit()|raw }}]
+                                                                {{ record.getUnit().getName() }}
+                                                                [{{ record.getUnit().getUnit()|raw }}]
                                                             {% endif %}
                                                         </th>
                                                     </tr>
@@ -288,7 +360,8 @@
             <div class="col-xs-12">
                 <div class="box box-primary chart-box">
                     <div class="box-body collapse">
-                        <div id="chart-soil-sample" style="height: 300px;" data-datalink="{{ path('chartDataSoilSample') }}"></div>
+                        <div id="chart-soil-sample" style="height: 300px;"
+                             data-datalink="{{ path('chartDataSoilSample') }}"></div>
                     </div>
                     <!-- /.box-body-->
                 </div>
@@ -305,7 +378,8 @@
 {% endblock %}
 
 {% block footer %}
-<div class="float-right d-none d-sm-inline-block">
-    <b>{{"author"|trans}}:</b> {{soilSample.getUser().getFullname()}} - {{soilSample.getUser().getOrganization()}}
-</div>
+    <div class="float-right d-none d-sm-inline-block">
+        <b>{{ "author"|trans }}:</b> {{ soilSample.getUser().getFullname() }}
+        - {{ soilSample.getUser().getOrganization() }}
+    </div>
 {% endblock %}

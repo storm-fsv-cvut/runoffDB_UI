@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Run;
+use App\Entity\SoilSample;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -47,4 +48,17 @@ class RunRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findBySoilSample(SoilSample $soilSample): array
+    {
+        $qb = $this->createQueryBuilder('s');
+        $qb->andWhere(
+            $qb->expr()->orX(
+                $qb->expr()->eq('s.soilSampleBulk',$soilSample->getId()),
+                $qb->expr()->eq('s.soilSampleTexture',$soilSample->getId()),
+                $qb->expr()->eq('s.soilSampleCorg',$soilSample->getId())
+            )
+        );
+
+        return $qb->getQuery()->getResult();
+    }
 }

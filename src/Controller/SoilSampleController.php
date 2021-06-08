@@ -23,6 +23,7 @@ use App\Repository\SoilSampleRepository;
 use App\Security\EntityVoter;
 use App\Services\MeasurementService;
 use App\Services\RecordsService;
+use App\Services\RunService;
 use App\Services\SoilSampleService;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -59,6 +60,7 @@ class SoilSampleController extends AbstractController
         MeasurementRepository $measurementRepository,
         MeasurementService $measurementService,
         RecordsService $recordsService,
+        RunService $runService,
         int $id = null
     ): Response {
         if ($this->get('security.token_storage')->getToken() === null) {
@@ -145,6 +147,7 @@ class SoilSampleController extends AbstractController
                     'recordsService' => $recordsService,
                     'measurements' => $soilSampleService->getMeasurementsArray($soilSample),
                     'soilSample' => $soilSample,
+                    'runService' => $runService,
                     'form' => $soilSampleForm->createView(),
                 ]
             );

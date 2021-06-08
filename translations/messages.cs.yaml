@@ -173,4 +173,12 @@ load data: Načíst data
 loadDataFile: Data ze souboru
 skip_first_row: Vynechat první řádek
 first_column_time: První sloupec je čas
+
 unlink: Zrušit vazbu
+linked runs: Provázané simulace
+Sample date: Datum odběru
+Process date: Datum zpracování
+Description: Popis
+sampleLocation: Popis místa odběru
+bulkDensity: Objemová hmotnost
+Corg: Organický uhlík

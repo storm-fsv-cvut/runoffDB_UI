@@ -7,6 +7,7 @@ use App\Entity\Record;
 use App\Entity\RecordType;
 use App\Entity\Run;
 use App\Entity\Sequence;
+use App\Entity\SoilSample;
 use App\Repository\PhenomenonRepository;
 use App\Repository\RecordTypeRepository;
 use App\Repository\RunRepository;
@@ -84,5 +85,9 @@ class RunService {
             }
         }
         return $res;
+    }
+
+    public function findBySoilSample(SoilSample $soilSample): array {
+        return $this->runRepository->findBySoilSample($soilSample);
     }
 }

@@ -105,7 +105,11 @@ class Plot extends BaseEntity implements DefinitionEntityInterface
 
 
     public function __toString() {
-        return "#".$this->getId()." ".$this->getName().($this->getLocality()!==null ? (" ".$this->getLocality()->getName()) : "").(" ".$this->getEstablished()->format("d.m.Y"));
+            if ($this->getLocale() == 'en' ) {
+                return $this->getName() . ' - ' . $this->getCrop()->getName() . ", est. " . $this->getEstablished()->format('Y-m-d')." (#".$this->getId().")";
+            } else {
+                return $this->getName() . ' - ' . $this->getCrop()->getName() . ", zal. " . $this->getEstablished()->format('d.m.Y')." (#".$this->getId().")";
+            }
     }
 
     public function getNote():?string {
