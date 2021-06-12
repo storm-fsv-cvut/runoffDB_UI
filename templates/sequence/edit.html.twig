@@ -11,14 +11,14 @@
             {{ header['date'] }} - {{ header['locality'] }}
         </h1>
         <ol class="breadcrumb">
-            <li><a href="{{ path('sequences')}}"><i class="fa fa-list"></i> Seznam</a></li>
+            <li><a href="{{ path('sequences') }}"><i class="fa fa-list"></i> Seznam</a></li>
             <li class="active">{{ header['date'] }} - {{ header['locality'] }}</li>
         </ol>
     </section>
 
     <section class="content">
         {% if (is_granted('edit',sequence)) %}
-        {{ form_start(form) }}
+            {{ form_start(form) }}
         {% endif %}
         <div class="box box-solid">
             <div class="box-header">
@@ -29,26 +29,39 @@
             <div class="box-body">
                 <div class="row">
                     <dl class="dl-horizontal col-md-6">
-                        <dt>{% trans %}date{% endtrans %}:</dt>
-                        <dd>{{ header['date'] }}</dd>
-                        <dt>{% trans %}simulator{% endtrans %}:</dt>
-                        <dd>{{ header['simulator'] }}</dd>
-                        <dt>{% trans %}locality{% endtrans %}:</dt>
-                        <dd>{{ header['locality'] }}</dd>
+                        {% if header['date']!=null %}
+                            <dt>{% trans %}date{% endtrans %}:</dt>
+                            <dd>{{ header['date'] }}</dd>
+                        {% endif %}
+                        {% if header['simulator']!=null %}
+                            <dt>{% trans %}simulator{% endtrans %}:</dt>
+                            <dd>{{ header['simulator'] }}</dd>
+                        {% endif %}
+                        {% if header['locality']!=null %}
+                            <dt>{% trans %}locality{% endtrans %}:</dt>
+                            <dd>{{ header['locality'] }}</dd>
+                        {% endif %}
                     </dl>
                     <dl class="dl-horizontal col-md-6">
-                        <dt>{% trans %}canopy cover{% endtrans %}:</dt>
-                        <dd>{{ header['canopy_cover'] }}</dd>
-                        <dt>{% trans %}Crop b b c h{% endtrans %}:</dt>
-                        <dd>{{ header['crop_bbch'] }}</dd>
-                        <dt>{% trans %}crop condition{% endtrans %}:</dt>
-                        <dd>{{ header['crop_condition'] }}</dd>
+                        {% if header['canopy_cover']!=null %}
+                            <dt>{% trans %}canopy cover{% endtrans %}:</dt>
+                            <dd>{{ header['canopy_cover'] }}</dd>
+                        {% endif %}
+                        {% if header['crop_bbch']!=null %}
+                            <dt>{% trans %}Crop b b c h{% endtrans %}:</dt>
+                            <dd>{{ header['crop_bbch'] }}</dd>
+                        {% endif %}
+                        {% if header['crop_condition']!=null %}
+                            <dt>{% trans %}crop condition{% endtrans %}:</dt>
+                            <dd>{{ header['crop_condition'] }}</dd>
+                        {% endif %}
                     </dl>
                 </div>
             </div>
             {% if (is_granted('edit',sequence)) %}
                 <div class="box-footer">
-                    <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#runGroupType">
+                    <button type="button" class="btn btn-warning btn-sm" data-toggle="modal"
+                            data-target="#runGroupType">
                         {% trans %}add run{% endtrans %}
                     </button>
                 </div>
@@ -78,12 +91,15 @@
                                                 </a>
                                                 <ul class="dropdown-menu">
                                                     <li role="presentation">
-                                                        <a role="menuitem" data-toggle="modal" data-target="#runGroupType{{ runGroup.getId() }}" tabindex="-1" href="javascript:;">{% trans %}edit{% endtrans %}</a>
+                                                        <a role="menuitem" data-toggle="modal"
+                                                           data-target="#runGroupType{{ runGroup.getId() }}"
+                                                           tabindex="-1"
+                                                           href="javascript:;">{% trans %}edit{% endtrans %}</a>
                                                     </li>
                                                 </ul>
                                             </div>
                                             {% if (is_granted('edit',sequence)) %}
-                                            {% include "forms/runGroupTypeModalEdit.html.twig" %}
+                                                {% include "forms/runGroupTypeModalEdit.html.twig" %}
                                             {% endif %}
                                         </div>
                                     </div>
@@ -92,19 +108,30 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <dl class="dl-horizontal">
-                                                <dt>{% trans %}rain_start{% endtrans %}:</dt>
-                                                <dd>{{ runGroup.getDatetime().format("H:i") }}</dd>
-                                                <dt>{% trans %}precedingPrecipitation{% endtrans %}:</dt>
-                                                <dd>{{ runGroup.getPrecedingPrecipitation() }}</dd>
-                                                <dt>{% trans %}note{% endtrans %}:</dt>
-                                                <dd>{{ runGroup.getNote() }}</dd>
+                                                {% if  runGroup.getDatetime()!=null %}
+                                                    <dt>{% trans %}rain_start{% endtrans %}:</dt>
+                                                    <dd>{{ runGroup.getDatetime().format("H:i") }}</dd>
+                                                {% endif %}
+
+                                                {% if  runGroup.getPrecedingPrecipitation()!=null %}
+                                                    <dt>{% trans %}precedingPrecipitation{% endtrans %}:</dt>
+                                                    <dd>{{ runGroup.getPrecedingPrecipitation() }}</dd>
+                                                {% endif %}
+
+                                                {% if  runGroup.getNote()!=null %}
+                                                    <dt>{% trans %}note{% endtrans %}:</dt>
+                                                    <dd>{{ runGroup.getNote() }}</dd>
+                                                {% endif %}
+
                                             </dl>
                                         </div>
                                     </div>
                                 </div>
                                 {% if (is_granted('edit',sequence)) %}
                                     <div class="box-footer">
-                                        <button type="button" class="btn btn-warning btn-sm"  data-toggle="modal" data-target="#run" data-parent="{{ runGroup.getId() }}" tabindex="-1" href="javascript:;">
+                                        <button type="button" class="btn btn-warning btn-sm" data-toggle="modal"
+                                                data-target="#run" data-parent="{{ runGroup.getId() }}" tabindex="-1"
+                                                href="javascript:;">
                                             {% trans %}add plotrun{% endtrans %}
                                         </button>
                                     </div>
@@ -128,16 +155,21 @@
                                                     </a>
                                                     <ul class="dropdown-menu">
                                                         <li role="presentation">
-                                                            <a role="menuitem" data-toggle="modal" data-target="#runType{{ run.getId() }}" tabindex="-1" href="javascript:;">{% trans %}edit{% endtrans %}</a>
+                                                            <a role="menuitem" data-toggle="modal"
+                                                               data-target="#runType{{ run.getId() }}" tabindex="-1"
+                                                               href="javascript:;">{% trans %}edit{% endtrans %}</a>
                                                         </li>
                                                         <li role="presentation" class="divider"></li>
                                                         <li role="presentation">
-                                                            <a role="menuitem" data-confirm="{% trans %}delete?{% endtrans %}" tabindex="-1" href="{{ path('sequence', {id:header['id'],delete_run:run.getId()}) }}">{% trans %}delete{% endtrans %}</a>
+                                                            <a role="menuitem"
+                                                               data-confirm="{% trans %}delete?{% endtrans %}"
+                                                               tabindex="-1"
+                                                               href="{{ path('sequence', {id:header['id'],delete_run:run.getId()}) }}">{% trans %}delete{% endtrans %}</a>
                                                         </li>
                                                     </ul>
                                                 </div>
                                                 {% if (is_granted('edit',sequence)) %}
-                                                {% include "forms/runTypeModalEdit.html.twig" %}
+                                                    {% include "forms/runTypeModalEdit.html.twig" %}
                                                 {% endif %}
                                             </div>
                                         </div>
@@ -146,50 +178,73 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <dl class="dl-horizontal">
-                                                    <dt>{% trans %}note{% endtrans %}:</dt>
-                                                    <dd>{{ runArray['note'] }}</dd>
-                                                    <dt>{% trans %}runoff_start{% endtrans %}:</dt>
-                                                    <dd>{{ runArray['runoff_start'] }}</dd>
-                                                    <dt>{% trans %}ponding_start{% endtrans %}:</dt>
-                                                    <dd>{{ runArray['ponding_start'] }}</dd>
+
+                                                    {% if runArray['note'] != null %}
+                                                        <dt>{% trans %}note{% endtrans %}:</dt>
+                                                        <dd>{{ runArray['note'] }}</dd>
+                                                    {% endif %}
+
+                                                    {% if runArray['runoff_start'] != null %}
+                                                        <dt>{% trans %}runoff_start{% endtrans %}:</dt>
+                                                        <dd>{{ runArray['runoff_start'] }}</dd>
+                                                    {% endif %}
+
+                                                    {% if runArray['ponding_start'] != null %}
+                                                        <dt>{% trans %}ponding_start{% endtrans %}:</dt>
+                                                        <dd>{{ runArray['ponding_start'] }}</dd>
+                                                    {% endif %}
 
                                                     {% if runArray['rain_intensity']!=null %}
-                                                    <dt>{% trans %}rain_intensity{% endtrans %}:</dt>
-                                                    <dd>
-                                                        {{ runArray['rain_intensity']|raw }}
-                                                        {% if (is_granted('edit',sequence)) %}
-                                                            <a role="menuitem" data-confirm="{% trans %}unlink{% endtrans %}?" href="{{ path('israinintensityr', {recordId:null, removeRecordId:run.getRainIntensity().getId()}) }}"><i class="text-danger fa fa-trash"></i></a>
-                                                        {% endif %}
-                                                    </dd>
+                                                        <dt>{% trans %}rain_intensity{% endtrans %}:</dt>
+                                                        <dd>
+                                                            {{ runArray['rain_intensity']|raw }}
+                                                            {% if (is_granted('edit',sequence)) %}
+                                                                <a role="menuitem"
+                                                                   data-confirm="{% trans %}unlink{% endtrans %}?"
+                                                                   href="{{ path('israinintensityr', {recordId:null, removeRecordId:run.getRainIntensity().getId()}) }}"><i
+                                                                            class="text-danger fa fa-trash"></i></a>
+                                                            {% endif %}
+                                                        </dd>
                                                     {% endif %}
 
                                                     {% if runArray['init_moisture']!=null %}
-                                                    <dt>{% trans %}init_moisture{% endtrans %}:</dt>
-                                                    <dd>{{ runArray['init_moisture']|raw }}
-                                                        {% if (is_granted('edit',sequence)) %}
-                                                            <a role="menuitem" data-confirm="{% trans %}unlink{% endtrans %}?" href="{{ path('isinitmoisturer', {recordId:null, removeRecordId:run.getInitMoisture().getId()}) }}"><i class="text-danger fa fa-trash"></i></a>
-                                                        {% endif %}
-                                                    </dd>
+                                                        <dt>{% trans %}init_moisture{% endtrans %}:</dt>
+                                                        <dd>{{ runArray['init_moisture']|raw }}
+                                                            {% if (is_granted('edit',sequence)) %}
+                                                                <a role="menuitem"
+                                                                   data-confirm="{% trans %}unlink{% endtrans %}?"
+                                                                   href="{{ path('isinitmoisturer', {recordId:null, removeRecordId:run.getInitMoisture().getId()}) }}"><i
+                                                                            class="text-danger fa fa-trash"></i></a>
+                                                            {% endif %}
+                                                        </dd>
                                                     {% endif %}
 
                                                     {{ macros.soilsample('soil_sample_corg', runArray['soil_sample_corg'], runArray['soil_sample_corg_assignment']) }}
                                                     {{ macros.soilsample('soil_sample_bulk', runArray['soil_sample_bulk'], runArray['soil_sample_bulk_assignment']) }}
                                                     {{ macros.soilsample('soil_sample_texture', runArray['soil_sample_texture'], runArray['soil_sample_texture_assignment']) }}
-                                                    <dt>{% trans %}files{% endtrans %}</dt>
-                                                    <dd>
-                                                        {% for file in runArray['files'] %}
-                                                            <a href="{{ path('downloadFile',{'runId':runArray['id'],'filename':file}) }}" target="_blank">{{ file }}</a>
-                                                            <a class="text-danger" data-confirm="{% trans %}delete?{% endtrans %}" href="{{ path('deleteFile',{'runId':runArray['id'],'filename':file}) }}"><i class="fa fa-trash"></i></a>
-                                                            <br/>
-                                                        {% endfor %}
-                                                    </dd>
+
+                                                    {% if runArray['files']|length>0 %}
+                                                        <dt>{% trans %}files{% endtrans %}</dt>
+                                                        <dd>
+                                                            {% for file in runArray['files'] %}
+                                                                <a href="{{ path('downloadSequenceFile',{'id':sequence.getId(),'runId':runArray['id'],'filename':file}) }}"
+                                                                   target="_blank">{{ file }}</a>
+                                                                <a class="text-danger"
+                                                                   data-confirm="{% trans %}delete?{% endtrans %}"
+                                                                   href="{{ path('deleteSequenceFile',{'id':sequence.getId(),'runId':runArray['id'],'filename':file}) }}"><i
+                                                                            class="fa fa-trash"></i></a>
+                                                                <br/>
+                                                            {% endfor %}
+                                                        </dd>
+                                                    {% endif %}
                                                 </dl>
                                             </div>
                                         </div>
                                     </div>
                                     {% if (is_granted('edit',sequence)) %}
                                         <div class="box-footer">
-                                            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-parent="{{ runArray['id'] }}" data-target="#measurement">
+                                            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal"
+                                                    data-parent="{{ runArray['id'] }}" data-target="#measurement">
                                                 {% trans %}add measurement{% endtrans %}
                                             </button>
                                         </div>
@@ -222,28 +277,41 @@
                                                             </a>
                                                             <ul class="dropdown-menu">
                                                                 <li role="presentation">
-                                                                    <a role="menuitem" tabindex="-1" href="javascript:;" data-toggle="modal" data-parent="{{ measurementArray['id'] }}" data-target="#record">{% trans %}add record{% endtrans %}</a>
+                                                                    <a role="menuitem" tabindex="-1" href="javascript:;"
+                                                                       data-toggle="modal"
+                                                                       data-parent="{{ measurementArray['id'] }}"
+                                                                       data-target="#record">{% trans %}add record{% endtrans %}</a>
                                                                 </li>
                                                                 <li role="presentation" class="divider"></li>
                                                                 <li role="presentation">
-                                                                    <a role="menuitem" data-toggle="modal" data-target="#measurement{{ formMeasurement.vars.value.getId() }}" tabindex="-1" href="#">{% trans %}edit{% endtrans %}</a>
+                                                                    <a role="menuitem" data-toggle="modal"
+                                                                       data-target="#measurement{{ formMeasurement.vars.value.getId() }}"
+                                                                       tabindex="-1"
+                                                                       href="#">{% trans %}edit{% endtrans %}</a>
                                                                 </li>
                                                                 <li role="presentation" class="divider"></li>
                                                                 <li role="presentation">
-                                                                    <a role="menuitem" tabindex="-1" data-confirm="{% trans %}delete?{% endtrans %}" href="{{ path('sequence', {id:header['id'],delete_measurement:formMeasurement.vars.value.getId()}) }}">{% trans %}delete{% endtrans %}</a>
+                                                                    <a role="menuitem" tabindex="-1"
+                                                                       data-confirm="{% trans %}delete?{% endtrans %}"
+                                                                       href="{{ path('sequence', {id:header['id'],delete_measurement:formMeasurement.vars.value.getId()}) }}">{% trans %}delete{% endtrans %}</a>
                                                                 </li>
                                                             </ul>
                                                         </div>
 
                                                         {% for runFormCheckboxes in runGroupForm.children.runs.children %}
                                                             #{{ runFormCheckboxes.vars.value.getId() }}
-                                                            <input type="checkbox" {% if measurement.belongsToRun(runFormCheckboxes.vars.value.getId()) %}checked="checked"{% endif %} class="icheckbox_flat-green append-run" data-link="{{ path('addRunMeasurement',{'measurement_id':measurement.getId()}) }}" value="{{ runFormCheckboxes.vars.value.getId() }}">
+                                                            <input type="checkbox"
+                                                                   {% if measurement.belongsToRun(runFormCheckboxes.vars.value.getId()) %}checked="checked"{% endif %}
+                                                                   class="icheckbox_flat-green append-run"
+                                                                   data-link="{{ path('addRunMeasurement',{'measurement_id':measurement.getId()}) }}"
+                                                                   value="{{ runFormCheckboxes.vars.value.getId() }}">
                                                         {% endfor %}
                                                     </h4>
                                                     {% if (is_granted('edit',sequence)) %}
-                                                    {% include "forms/measurementTypeModalEdit.html.twig"  with {'parentId':runArray['id']} %}
-                                                        {% endif %}
+                                                        {% include "forms/measurementTypeModalEdit.html.twig"  with {'parentId':runArray['id']} %}
+                                                    {% endif %}
                                                 {% endif %}
+
                                                 <p>
                                                     {% if measurementArray['description'] %}
                                                         {{ measurementArray['description'] }}
@@ -253,19 +321,43 @@
                                                     <i>* {{ measurementArray['note'] }}</i>
                                                 {% endif %}
                                                 <div class="box-group" id="accordion">
+
+                                                    {% if measurement.getFiles()|length>0 %}
+
+                                                        <div class="box box-solid">
+                                                            <div class="box-body">
+                                                                <dt>{% trans %}files{% endtrans %}</dt>
+                                                                <dd>
+                                                                    {% for file in measurement.getFiles() %}
+                                                                        <a href="{{ path('downloadSequenceFile',{'id':sequence.getId(),'measurementId':measurement.getId(),'filename':file}) }}"
+                                                                           target="_blank">{{ file }}</a>
+                                                                        <a class="text-danger"
+                                                                           data-confirm="{% trans %}delete?{% endtrans %}"
+                                                                           href="{{ path('deleteSequenceFile',{'id':sequence.getId(),'measurementId':measurement.getId(),'filename':file}) }}"><i
+                                                                                    class="fa fa-trash"></i></a>
+                                                                        <br/>
+                                                                    {% endfor %}
+                                                                </dd>
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
+
+
                                                     {% for formRecord in formMeasurement.records %}
                                                         {% set record = formRecord.vars.value %}
                                                         <div class="panel box box-solid">
-                                                            <div class="box-header{% if recordsService.isRecordSetAsInSequenceContext(record, sequence)%} bg-warning{% endif %}" >
+                                                            <div class="box-header{% if recordsService.isRecordSetAsInSequenceContext(record, sequence) %} bg-warning{% endif %}">
                                                                 <h4 class="box-title">
-                                                                    <a data-toggle="collapse" data-parent="#accordion" href="#record-{{ record.getId() }}" class="collapsed" aria-expanded="false">
+                                                                    <a data-toggle="collapse" data-parent="#accordion"
+                                                                       href="#record-{{ record.getId() }}"
+                                                                       class="collapsed" aria-expanded="false">
                                                                         {% if record.getUnit() is not same as(null) %}
                                                                             {{ record.getUnit().getName()|capitalize }}
                                                                         {% endif %}
                                                                     </a>
                                                                     <small>
-                                                                        {% if record.getRecordType()  is not same as(null)%}
-                                                                        {{ record.getRecordType().getName() }}
+                                                                        {% if record.getRecordType()  is not same as(null) %}
+                                                                            {{ record.getRecordType().getName() }}
                                                                         {% endif %}
                                                                     </small>
                                                                     <span class="badge bg-primary">#{{ record.getId() }}</span>
@@ -275,25 +367,38 @@
                                                                 </h4>
                                                                 <div class="box-tools pull-right">
                                                                     {% if record.getIsTimeline() %}
-                                                                        <input type="checkbox" class="icheckbox_flat-green" data-toggle="chart" data-target="#chart-run-{{ runGroup.getId() }}" data-run="{{ runArray['id'] }}" data-record="{{ record.getId() }}">
+                                                                        <input type="checkbox"
+                                                                               class="icheckbox_flat-green"
+                                                                               data-toggle="chart"
+                                                                               data-target="#chart-run-{{ runGroup.getId() }}"
+                                                                               data-run="{{ runArray['id'] }}"
+                                                                               data-record="{{ record.getId() }}">
                                                                     {% endif %}
                                                                     {% if (is_granted('edit',sequence)) %}
                                                                         <div class="dropdown inline">
-                                                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                                                            <a class="dropdown-toggle"
+                                                                               data-toggle="dropdown" href="#">
                                                                                 <span class="caret"></span>
                                                                             </a>
                                                                             <ul class="dropdown-menu">
                                                                                 <li role="presentation">
-                                                                                    <a role="menuitem" href="{{ path('isinitmoisturer', {recordId:record.getId()}) }}">{% trans %}set as init moisture{% endtrans %}</a>
+                                                                                    <a role="menuitem"
+                                                                                       href="{{ path('isinitmoisturer', {recordId:record.getId()}) }}">{% trans %}set as init moisture{% endtrans %}</a>
                                                                                 </li>
                                                                                 <li role="presentation">
-                                                                                    <a role="menuitem" href="{{ path('israinintensityr', {recordId:record.getId()}) }}">{% trans %}set as rain intensity{% endtrans %}</a>
+                                                                                    <a role="menuitem"
+                                                                                       href="{{ path('israinintensityr', {recordId:record.getId()}) }}">{% trans %}set as rain intensity{% endtrans %}</a>
                                                                                 </li>
                                                                                 <li role="presentation">
-                                                                                    <a role="menuitem" data-confirm="{% trans %}delete?{% endtrans %}" tabindex="-1" href="{{ path('sequence', {id:header['id'],delete_record:record.getId()}) }}">{% trans %}delete{% endtrans %}</a>
+                                                                                    <a role="menuitem"
+                                                                                       data-confirm="{% trans %}delete?{% endtrans %}"
+                                                                                       tabindex="-1"
+                                                                                       href="{{ path('sequence', {id:header['id'],delete_record:record.getId()}) }}">{% trans %}delete{% endtrans %}</a>
                                                                                 </li>
                                                                                 <li role="presentation">
-                                                                                    <a role="menuitem" tabindex="-1" href="#" data-toggle="modal" data-target="#record{{ record.getId() }}">{% trans %}edit{% endtrans %}</a>
+                                                                                    <a role="menuitem" tabindex="-1"
+                                                                                       href="#" data-toggle="modal"
+                                                                                       data-target="#record{{ record.getId() }}">{% trans %}edit{% endtrans %}</a>
                                                                                 </li>
                                                                             </ul>
                                                                         </div>
@@ -303,7 +408,9 @@
                                                             {% if (is_granted('edit',sequence)) %}
                                                                 {% include "forms/recordTypeModalEdit.html.twig" %}
                                                             {% endif %}
-                                                            <div id="record-{{ record.getId() }}" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                                            <div id="record-{{ record.getId() }}"
+                                                                 class="panel-collapse collapse" aria-expanded="false"
+                                                                 style="height: 0px;">
                                                                 <div class="box-body">
                                                                     <p><i>{{ record.getNoteCZ() }}</i></p>
                                                                     <table class="table table-bordered">
@@ -329,39 +436,39 @@
                                                                             {% endif %}
                                                                             <th>
                                                                                 {% if record.getUnit() is not same as(null) %}
-                                                                                {{ record.getUnit().getName() }}
-                                                                                [{{ record.getUnit().getUnit()|raw }}]
+                                                                                    {{ record.getUnit().getName() }}
+                                                                                    [{{ record.getUnit().getUnit()|raw }}]
                                                                                 {% endif %}
                                                                             </th>
                                                                         </tr>
                                                                         {% if (is_granted('viewall',sequence)) %}
-                                                                        {% for data in record.getData() %}
-                                                                            <tr>
-                                                                                <td>{{ data.getFormatedTime() }}</td>
-                                                                                {% if  record.getRelatedValueXUnit() is not same as(null) %}
-                                                                                    {% if data.getRelatedValueX() is not same as(null) %}
-                                                                                        <td>{{ data.getRelatedValueXRounded() }}</td>
-                                                                                    {% else %}
-                                                                                        <td></td>
+                                                                            {% for data in record.getData() %}
+                                                                                <tr>
+                                                                                    <td>{{ data.getFormatedTime() }}</td>
+                                                                                    {% if  record.getRelatedValueXUnit() is not same as(null) %}
+                                                                                        {% if data.getRelatedValueX() is not same as(null) %}
+                                                                                            <td>{{ data.getRelatedValueXRounded() }}</td>
+                                                                                        {% else %}
+                                                                                            <td></td>
+                                                                                        {% endif %}
                                                                                     {% endif %}
-                                                                                {% endif %}
-                                                                                {% if  record.getRelatedValueYUnit() is not same as(null) %}
-                                                                                    {% if data.getRelatedValueY() is not same as(null) %}
-                                                                                        <td>{{ data.getRelatedValueYRounded() }}</td>
-                                                                                    {% else %}
-                                                                                        <td></td>
+                                                                                    {% if  record.getRelatedValueYUnit() is not same as(null) %}
+                                                                                        {% if data.getRelatedValueY() is not same as(null) %}
+                                                                                            <td>{{ data.getRelatedValueYRounded() }}</td>
+                                                                                        {% else %}
+                                                                                            <td></td>
+                                                                                        {% endif %}
                                                                                     {% endif %}
-                                                                                {% endif %}
-                                                                                {% if  record.getRelatedValueZUnit() is not same as(null) %}
-                                                                                    {% if data.getRelatedValueZ() is not same as(null) %}
-                                                                                        <td>{{ data.getRelatedValueZRounded() }}</td>
-                                                                                    {% else %}
-                                                                                        <td></td>
+                                                                                    {% if  record.getRelatedValueZUnit() is not same as(null) %}
+                                                                                        {% if data.getRelatedValueZ() is not same as(null) %}
+                                                                                            <td>{{ data.getRelatedValueZRounded() }}</td>
+                                                                                        {% else %}
+                                                                                            <td></td>
+                                                                                        {% endif %}
                                                                                     {% endif %}
-                                                                                {% endif %}
-                                                                                <td>{{ data.getValueRounded() }}</td>
-                                                                            </tr>
-                                                                        {% endfor %}
+                                                                                    <td>{{ data.getValueRounded() }}</td>
+                                                                                </tr>
+                                                                            {% endfor %}
                                                                         {% endif %}
                                                                     </table>
                                                                 </div>
@@ -370,6 +477,7 @@
                                                     {% endfor %}
                                                 </div>
                                             </div>
+
                                         </div>
                                     {% endif %}
                                 {% endfor %}
@@ -387,7 +495,8 @@
                             <h3 class="box-title">{{ runGroup.getRunType()|capitalize }}</h3>
                         </div>
                         <div class="box-body collapse">
-                            <div id="chart-run-{{ runGroup.getId() }}" style="height: 300px;" data-datalink="{{ path('chartData') }}"></div>
+                            <div id="chart-run-{{ runGroup.getId() }}" style="height: 300px;"
+                                 data-datalink="{{ path('chartData') }}"></div>
                         </div>
                         <!-- /.box-body-->
                     </div>
@@ -396,7 +505,7 @@
 
         {% endfor %}
         {% if (is_granted('edit',sequence)) %}
-        {{ form_end(form,{'render_rest': false}) }}
+            {{ form_end(form,{'render_rest': false}) }}
         {% endif %}
     </section>
     {% if (is_granted('edit',sequence)) %}
@@ -409,6 +518,6 @@
 
 {% block footer %}
     <div class="float-right d-none d-sm-inline-block">
-        <b>{{"author"|trans}}:</b> {{sequence.getUser().getFullname()}} - {{sequence.getUser().getOrganization()}}
+        <b>{{ "author"|trans }}:</b> {{ sequence.getUser().getFullname() }} - {{ sequence.getUser().getOrganization() }}
     </div>
 {% endblock %}

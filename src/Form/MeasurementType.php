@@ -9,6 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -32,6 +33,17 @@ class MeasurementType extends AbstractType {
                 'attr' => ['class' => 'btn btn-success'],
                 'label' => 'save'
             ]);
+
+        $builder->add(
+            'rawData',
+            FileType::class,
+            [
+                'label' => 'rawData',
+                'multiple' => true,
+                'required' => false,
+                'mapped' => false
+            ]
+        );
 
         $builder->add('records', CollectionType::class, [
             'entry_type' => RecordType::class,

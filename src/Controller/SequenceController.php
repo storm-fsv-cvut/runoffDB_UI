@@ -43,6 +43,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 
 
@@ -112,10 +113,10 @@ class SequenceController extends AbstractController
     ): ?RedirectResponse {
         if ($request->get('recordId') !== null) {
             $record = $recordRepository->find($request->get('recordId'));
-            if ($record===null) {
+            if ($record === null) {
                 throw new \Exception("Record doesn't exist");
             }
-            if ($record->getMeasurement()!==null) {
+            if ($record->getMeasurement() !== null) {
                 foreach ($record->getMeasurement()->getRuns() as $run) {
                     $sequence = $run->getSequence();
                     $run->setRainIntensity($record);
@@ -126,10 +127,10 @@ class SequenceController extends AbstractController
             }
         } else if ($request->get('removeRecordId') !== null) {
             $record = $recordRepository->find($request->get('removeRecordId'));
-            if ($record===null) {
+            if ($record === null) {
                 throw new \Exception("Record doesn't exist");
             }
-            if ($record->getMeasurement()!==null) {
+            if ($record->getMeasurement() !== null) {
                 foreach ($record->getMeasurement()->getRuns() as $run) {
                     $sequence = $run->getSequence();
                     $run->setRainIntensity(null);
@@ -139,7 +140,7 @@ class SequenceController extends AbstractController
 
             }
         }
-        if (isset($sequence) && $sequence!==null) {
+        if (isset($sequence) && $sequence !== null) {
             return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
         } else {
             return null;
@@ -186,39 +187,59 @@ class SequenceController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/download-file", name="downloadFile")
+     * @Route("/{_locale}/sequence/{id}/download-file", name="downloadSequenceFile")
      */
     public function downloadFile(
         RunRepository $runRepository,
+        MeasurementRepository $measurementRepository,
         Request $request,
-        ParameterBagInterface $parameterBag
+        ParameterBagInterface $parameterBag,
+        int $id
     ): BinaryFileResponse {
-        $run = $runRepository->find($request->get('runId'));
-        if ($run === null) {
-            throw new \Exception("Run doesn't exist");
+        if ($request->get('runId') != null) {
+            $entity = $runRepository->find($request->get('runId'));
+        } else if ($request->get('measurementId') != null) {
+            $entity = $measurementRepository->find($request->get('measurementId'));
+        } else {
+            $entity = null;
+        }
+        if ($entity === null) {
+            throw new \Exception("Parent doesn't exist");
         }
         $filename = $request->get('filename');
-        return BinaryFileResponse::create(
-            $parameterBag->get('kernel.project_dir') . "/public/" . $run->getFilesPath() . '/' . $filename
+        $response = BinaryFileResponse::create(
+            $parameterBag->get('kernel.project_dir') . "/public/" . $entity->getFilesPath() . '/' . $filename
         );
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $filename
+        );
+        return $response;
     }
 
     /**
-     * @Route("/{_locale}/delete-file", name="deleteFile")
+     * @Route("/{_locale}/sequence/{id}/delete-file", name="deleteSequenceFile")
      */
-    public function deleteFile(RunRepository $runRepository, Request $request): ?RedirectResponse
-    {
-        $run = $runRepository->find($request->get('runId'));
-        if ($run === null) {
-            throw new \Exception("Run doesn't exist");
+    public function deleteFile(
+        RunRepository $runRepository,
+        MeasurementRepository $measurementRepository,
+        Request $request,
+        int $id
+    ): ?RedirectResponse {
+        if ($request->get('runId') != null) {
+            $entity = $runRepository->find($request->get('runId'));
+        } else if ($request->get('measurementId') != null) {
+            $entity = $measurementRepository->find($request->get('measurementId'));
+        } else {
+            $entity = null;
+        }
+        if ($entity === null) {
+            throw new \Exception("Parent doesn't exist");
         }
         $filename = $request->get('filename');
-        $run->removeFile($filename);
-        if ($run->getSequence() !== null) {
-            return $this->redirectToRoute('sequence', ['id' => $run->getSequence()->getId()]);
-        } else {
-            return null;
-        }
+        $entity->removeFile($filename);
+
+        return $this->redirectToRoute('sequence', ['id' => $id]);
     }
 
     /**
@@ -323,7 +344,12 @@ class SequenceController extends AbstractController
 
                     if ($partialForm->has('rawData') && $partialForm->get('rawData') !== null) {
                         foreach ($partialForm->get('rawData')->getData() as $file) {
-                            $runService->uploadFile($file, $partialData);
+                            if ($partialData instanceof Run) {
+                                $runService->uploadFile($file, $partialData);
+                            }
+                            if ($partialData instanceof Measurement) {
+                                $measurementService->uploadFile($file, $partialData);
+                            }
                         }
                     }
 

@@ -77,7 +77,7 @@ class SoilSampleService {
     }
 
     public function uploadFile(UploadedFile $file, SoilSample $soilSample):void {
-        $dir = $this->parameterBag->get('kernel.project_dir')."/public/data/soil-sample/".$soilSample->getId();
+        $dir = $this->parameterBag->get('kernel.project_dir')."/public/".$soilSample->getFilesPath();
         if (!$this->filesystem->exists($dir)) {
             $this->filesystem->mkdir($dir);
         }

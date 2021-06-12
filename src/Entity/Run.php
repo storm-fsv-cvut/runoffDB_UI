@@ -13,7 +13,7 @@ use Symfony\Component\Finder\Finder;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RunRepository")
  */
-class Run extends BaseEntity {
+class Run extends BaseEntity implements FileStorageEntityInterface {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

@@ -182,3 +182,6 @@ Description: Popis
 sampleLocation: Popis místa odběru
 bulkDensity: Objemová hmotnost
 Corg: Organický uhlík
+moisture: Vlhkost
+add_soilsample_header: Vložte základní vlastnosti vzorku. Měřené hodnoty můžete vložit po uložení vzorku
+add_sequence_header: Zadejte základní vlastnosti sekvence simualcí. Měření můžete vložit po uložení.

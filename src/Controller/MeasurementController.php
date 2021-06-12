@@ -8,6 +8,7 @@
 
 namespace App\Controller;
 
+use App\Repository\SoilSampleRepository;
 use Exception;
 use App\Entity\Measurement;
 use App\Entity\Record;
@@ -30,9 +31,12 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MeasurementController extends AbstractController {
@@ -74,6 +78,13 @@ class MeasurementController extends AbstractController {
 
                 if ($measurementForm->isSubmitted()) {
                     $measurement = $measurementForm->getData();
+
+                    if ($measurementForm->has('rawData') && $measurementForm->get('rawData') !== null) {
+                        foreach ($measurementForm->get('rawData')->getData() as $file) {
+                            $measurementService->uploadFile($file, $measurementForm->getData());
+                        }
+                    }
+
                     $entityManager->persist($measurement);
                     $entityManager->flush();
                 }
@@ -154,5 +165,50 @@ class MeasurementController extends AbstractController {
         );
 
         return $this->render('measurement/list.html.twig', ['pagination' => $pagination,'filter'=>$filter->createView()]);
+    }
+
+    /**
+     * @Route("/{_locale}/measurement/{id}/download-file", name="downloadMeasurementFile")
+     */
+    public function downloadFile(
+        MeasurementRepository $measurementRepository,
+        Request $request,
+        ParameterBagInterface $parameterBag,
+        int $id
+    ): BinaryFileResponse {
+        $entity = $measurementRepository->find($id);
+
+        if ($entity === null) {
+            throw new \Exception("Parent doesn't exist");
+        }
+        $filename = $request->get('filename');
+        $response = BinaryFileResponse::create(
+            $parameterBag->get('kernel.project_dir') . "/public/" . $entity->getFilesPath() . '/' . $filename
+        );
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $filename
+        );
+
+        return $response;
+    }
+
+    /**
+     * @Route("/{_locale}/measurement/{id}/delete-file", name="deleteMeasurementFile")
+     */
+    public function deleteFile(
+        MeasurementRepository $measurementRepository,
+        Request $request,
+        int $id
+    ): ?RedirectResponse {
+
+        $entity = $measurementRepository->find($id);
+        if ($entity === null) {
+            throw new \Exception("Parent doesn't exist");
+        }
+        $filename = $request->get('filename');
+        $entity->removeFile($filename);
+
+        return $this->redirectToRoute('measurement', ['id' => $id]);
     }
 }

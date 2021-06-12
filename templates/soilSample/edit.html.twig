@@ -125,7 +125,7 @@
                                     {% endif %}
 
                                     {% if soilSample.getCorg() is not same as null %}
-                                        <dt>{% trans %}corg{% endtrans %}:</dt>
+                                        <dt>{% trans %}Corg{% endtrans %}:</dt>
                                         <dd>{{ soilSample.getCorg() }}
                                             {% if (is_granted('edit',soilSample)) %}
                                                 <a role="menuitem" data-confirm="{% trans %}unlink{% endtrans %}?"
@@ -155,6 +155,17 @@
                                                             class="text-danger fa fa-trash"></i></a>
                                             {% endif %}
                                         </dd>
+                                    {% endif %}
+
+                                    {% if soilSample.getFiles()|length>0 %}
+                                    <dt>{% trans %}files{% endtrans %}</dt>
+                                    <dd>
+                                        {% for file in soilSample.getFiles() %}
+                                            <a href="{{ path('downloadSoilSampleFile',{'id':soilSample.getId(),'filename':file}) }}" target="_blank">{{ file }}</a>
+                                            <a class="text-danger" data-confirm="{% trans %}delete?{% endtrans %}" href="{{ path('deleteSoilSampleFile',{'id':soilSample.getId(),'filename':file}) }}"><i class="fa fa-trash"></i></a>
+                                            <br/>
+                                        {% endfor %}
+                                    </dd>
                                     {% endif %}
                                 </dl>
                             </div>

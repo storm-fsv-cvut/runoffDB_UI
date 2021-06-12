@@ -117,7 +117,7 @@ class MeasurementService
 
     public function uploadFile(UploadedFile $file, Measurement $measurement): void
     {
-        $dir = $this->parameterBag->get('kernel.project_dir') . "/public/data/measurement/" . $measurement->getId();
+        $dir = $this->parameterBag->get('kernel.project_dir') . "/public/".$measurement->getFilesPath();
         if (!$this->filesystem->exists($dir)) {
             $this->filesystem->mkdir($dir);
         }

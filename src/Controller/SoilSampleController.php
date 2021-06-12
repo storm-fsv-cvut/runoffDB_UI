@@ -19,6 +19,7 @@ use App\Form\SoilSampleType;
 use App\Repository\MeasurementRepository;
 use App\Repository\PhenomenonRepository;
 use App\Repository\RecordRepository;
+use App\Repository\RunRepository;
 use App\Repository\SoilSampleRepository;
 use App\Security\EntityVoter;
 use App\Services\MeasurementService;
@@ -28,10 +29,13 @@ use App\Services\SoilSampleService;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 
 class SoilSampleController extends AbstractController
@@ -86,6 +90,12 @@ class SoilSampleController extends AbstractController
                     }
                     $entityManager->persist($soilSample);
                     $entityManager->flush();
+
+                    if ($soilSampleForm->has('rawData') && $soilSampleForm->get('rawData') !== null) {
+                        foreach ($soilSampleForm->get('rawData')->getData() as $file) {
+                            $soilSampleService->uploadFile($file, $soilSampleForm->getData());
+                        }
+                    }
                 }
 
                 if ($newMesurementForm->isSubmitted()) {
@@ -353,4 +363,51 @@ class SoilSampleController extends AbstractController
         );
     }
 
+
+    /**
+     * @Route("/{_locale}/soil-sample/{id}/download-file", name="downloadSoilSampleFile")
+     */
+    public function downloadFile(
+        RunRepository $runRepository,
+        SoilSampleRepository $soilSampleRepository,
+        Request $request,
+        ParameterBagInterface $parameterBag,
+        int $id
+    ): BinaryFileResponse {
+        $entity = $soilSampleRepository->find($id);
+
+        if ($entity === null) {
+            throw new \Exception("Parent doesn't exist");
+        }
+        $filename = $request->get('filename');
+        $response = BinaryFileResponse::create(
+            $parameterBag->get('kernel.project_dir') . "/public/" . $entity->getFilesPath() . '/' . $filename
+        );
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $filename
+        );
+
+        return $response;
+    }
+
+    /**
+     * @Route("/{_locale}/soil-sample/{id}/delete-file", name="deleteSoilSampleFile")
+     */
+    public function deleteFile(
+        RunRepository $runRepository,
+        SoilSampleRepository $soilSampleRepository,
+        Request $request,
+        int $id
+    ): ?RedirectResponse {
+
+        $entity = $soilSampleRepository->find($id);
+        if ($entity === null) {
+            throw new \Exception("Parent doesn't exist");
+        }
+        $filename = $request->get('filename');
+        $entity->removeFile($filename);
+
+        return $this->redirectToRoute('soilSample', ['id' => $id]);
+    }
 }

@@ -6,11 +6,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use phpDocumentor\Reflection\Types\Integer;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SoilSampleRepository")
  */
-class SoilSample extends BaseEntity
+class SoilSample extends BaseEntity implements FileStorageEntityInterface
 {
     /**
      * @ORM\Id()
@@ -416,4 +418,33 @@ class SoilSample extends BaseEntity
 
         return $this;
     }
+
+    public function getFiles(): array {
+        $files = [];
+        $filesystem = new Filesystem();
+        $dir = $this->getFilesPath();
+        if ($filesystem->exists($dir)) {
+            $finder = new Finder();
+            $finder->files()->in($dir);
+            if ($finder->hasResults()) {
+                foreach ($finder as $file) {
+                    $files[] = $file->getRelativePathname();
+                }
+            }
+        }
+        return $files;
+    }
+
+    public function getFilesPath(): string {
+        return "data/soilsample/" . $this->getId();
+    }
+
+    public function removeFile(string $filename):void {
+        $filesystem = new Filesystem();
+        $dir = $this->getFilesPath();
+        if ($filesystem->exists($dir.'/'.$filename)) {
+            $filesystem->remove($dir.'/'.$filename);
+        }
+    }
+
 }
