@@ -112,6 +112,12 @@ class Record extends BaseEntity {
         }
     }
 
+    public function getHtmlLabel() {
+        $decimals = ($this->getUnit()!==null ? $this->getUnit()->getDecimals() : 0);
+        $label =  '<span data-toggle="tooltip" data-placement="top" title="#'.$this->getId().'">'.number_format((float)$this->getData()->get(0)->getValue(), $decimals) . " " . ($this->getUnit()!==null ? $this->getUnit()->getUnit() : ''). '</span>';
+        return $label;
+    }
+
     public function getIdAndUnitString():string {
         return "#".$this->getId().($this->getUnit()!==null ? " (".$this->getUnit()->getName().")" : '');
     }

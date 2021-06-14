@@ -82,7 +82,7 @@ noteCZ: Poznámka (cs)
 noteEN: Poznámka (en)
 rawData: Soubory
 datetime: Datum a čas
-add measurement: Přidat měření
+add measurement: Nové měření
 add run: Přidat simulaci
 save csv: Uložit csv
 upload data: Nahrát data
@@ -185,3 +185,10 @@ Corg: Organický uhlík
 moisture: Vlhkost
 add_soilsample_header: Vložte základní vlastnosti vzorku. Měřené hodnoty můžete vložit po uložení vzorku
 add_sequence_header: Zadejte základní vlastnosti sekvence simualcí. Měření můžete vložit po uložení.
+Fullname: Jméno
+Username: Login
+organization: Organizace
+footer_text: Podpořeno výzkumným projektem QK1810341 Národní agentury zemědělského výzkumu.
+append measurement: Připojit měření
+measurementId: ID měření
+unlink?: Zrušit vazbu?

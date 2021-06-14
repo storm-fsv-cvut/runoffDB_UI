@@ -122,7 +122,7 @@ class MenuBuilder
             $measurement->setCurrent(true);
         }
 
-        if ($authChecker->isGranted(EntityVoter::EDIT)) {
+        if ($authChecker->isGranted(EntityVoter::CMS)) {
             $cms = $menu->addChild($this->translator->trans('CMS'), ['uri' => '#']);
             $cms->setAttribute('class', 'treeview');
             $cms->setChildrenAttribute('class', 'treeview-menu');

@@ -13,6 +13,7 @@ use App\Entity\Record;
 use App\Entity\Run;
 use App\Entity\RunGroup;
 use App\Entity\Sequence;
+use App\Form\AppendMeasurementType;
 use App\Form\MeasurementType;
 use App\Form\RecordType;
 use App\Form\RunGroupType;
@@ -270,6 +271,7 @@ class SequenceController extends AbstractController
             $this->denyAccessUnlessGranted(EntityVoter::VIEW, $sequence);
 
             $sequenceForm = $this->createForm(SequenceType::class, $sequence);
+            $appendMesurementForm = $this->createForm(AppendMeasurementType::class);
             $newRunForm = $this->createForm(RunType::class, new Run());
             $newRunGroupForm = $this->createForm(RunGroupType::class, new RunGroup());
             $newMesurementForm = $this->createForm(MeasurementType::class, new Measurement());
@@ -280,6 +282,7 @@ class SequenceController extends AbstractController
                 $sequenceForm->handleRequest($request);
                 $newRunForm->handleRequest($request);
                 $newMesurementForm->handleRequest($request);
+                $appendMesurementForm->handleRequest($request);
                 $newRecordForm->handleRequest($request);
                 $newRunGroupForm->handleRequest($request);
 
@@ -309,6 +312,22 @@ class SequenceController extends AbstractController
                     $formMeasurementData->addRun($run);
                     $formMeasurementData->setUser($user);
                     $entityManager->persist($formMeasurementData);
+                    $entityManager->flush();
+                    return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
+                }
+
+                if ($appendMesurementForm->isSubmitted()) {
+                    $measurementId = $appendMesurementForm->get('measurementId')->getData();
+                    $measurement = $measurementRepository->find($measurementId);
+                    $run = $runRepository->find($appendMesurementForm->get('parent_id')->getData());
+                    if ($run === null) {
+                        throw new \Exception("run doesn't exist");
+                    }
+                    if ($measurement === null) {
+                        throw new \Exception("measurement doesn't exist");
+                    }
+                    $run->addMeasurement($measurement);
+                    $entityManager->persist($run);
                     $entityManager->flush();
                     return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
                 }
@@ -383,9 +402,23 @@ class SequenceController extends AbstractController
                 return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
             }
 
-
             if ($request->get('delete_measurement') !== null) {
                 $measurementService->deleteMeasurement($request->get('delete_measurement'));
+                return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
+            }
+
+            if ($request->get('unlink_measurement') !== null) {
+                $measurement = $measurementRepository->find($request->get('unlink_measurement'));
+                $run = $runRepository->find($request->get('unlink_measurement'));
+                if ($run === null) {
+                    throw new \Exception("run doesn't exist");
+                }
+                if ($measurement === null) {
+                    throw new \Exception("measurement doesn't exist");
+                }
+                $run->removeMeasurement($measurement);
+                $entityManager->persist($run);
+                $entityManager->flush();
                 return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
             }
 
@@ -404,7 +437,6 @@ class SequenceController extends AbstractController
                 return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
             }
 
-
             return $this->render(
                 'sequence/edit.html.twig',
                 [
@@ -413,6 +445,7 @@ class SequenceController extends AbstractController
                     'form' => $sequenceForm->createView(),
                     'sequence' => $sequence,
                     'measurementForm' => $newMesurementForm->createView(),
+                    'appendMeasurementForm' => $appendMesurementForm->createView(),
                     'runForm' => $newRunForm->createView(),
                     'runGroupForm' => $newRunGroupForm->createView(),
                     'runSevice' => $runService,

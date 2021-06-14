@@ -15,11 +15,12 @@ class EntityVoter extends Voter
     const VIEW = 'view';
     const ADMIN = 'admin';
     const EDITUSER = 'edituser';
+    const CMS = 'editcontent';
 
 
     protected function supports($attribute, $subject): bool
     {
-        if (!in_array($attribute, [self::ADMIN, self::VIEW, self::EDIT, self::VIEW_ALL, self::EDITUSER], true)) {
+        if (!in_array($attribute, [self::ADMIN, self::VIEW, self::EDIT, self::VIEW_ALL, self::EDITUSER, self::CMS], true)) {
             return false;
         }
         return true;
@@ -59,6 +60,8 @@ class EntityVoter extends Voter
                         && $subject->getUser() !== null
                         && $subject->getUser()->getOrganization() !== null) {
                         return $subject->getUser()->getOrganization()->getId() == $user->getOrganization()->getId();
+                    } else if ($subject === null) {
+                        return true;
                     }
                 }
             } else if ($attribute == self::VIEW_ALL) {
@@ -72,6 +75,15 @@ class EntityVoter extends Voter
                 }
             } else if ($attribute == self::EDITUSER) {
                 if ($user->getId() === $subject->getId()) {
+                    return true;
+                }
+            } else if ($attribute == self::CMS) {
+                if ($user->isInRole(
+                    [
+                        UserRole::ROLE_ADMIN,
+                        UserRole::ROLE_EDITOR
+                    ]
+                )) {
                     return true;
                 }
             }

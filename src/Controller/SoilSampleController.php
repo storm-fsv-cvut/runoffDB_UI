@@ -11,6 +11,7 @@ namespace App\Controller;
 use App\Entity\Measurement;
 use App\Entity\Record;
 use App\Entity\SoilSample;
+use App\Form\AppendMeasurementType;
 use App\Form\MeasurementType;
 use App\Form\RecordType;
 use App\Form\SoilSampleBasicType;
@@ -73,6 +74,7 @@ class SoilSampleController extends AbstractController
         $user = $this->get('security.token_storage')->getToken()->getUser();
         if ($id !== null) {
             $newMesurementForm = $this->createForm(MeasurementType::class, new Measurement());
+            $appendMesurementForm = $this->createForm(AppendMeasurementType::class);
             $newRecordForm = $this->createForm(RecordType::class, new Record());
             $soilSample = $soilSampleService->getSoilSampleById($id);
             $soilSampleForm = $this->createForm(SoilSampleType::class, $soilSample);
@@ -81,6 +83,7 @@ class SoilSampleController extends AbstractController
             if ($request->isMethod('POST')) {
                 $soilSampleForm->handleRequest($request);
                 $newMesurementForm->handleRequest($request);
+                $appendMesurementForm->handleRequest($request);
                 $newRecordForm->handleRequest($request);
 
                 if ($soilSampleForm->isSubmitted()) {
@@ -104,6 +107,17 @@ class SoilSampleController extends AbstractController
                     $measurement->setUser($user);
                     $entityManager->persist($measurement);
                     $entityManager->flush();
+                    return $this->redirectToRoute('soilSample', ['id' => $soilSample->getId()]);
+                }
+
+                if ($appendMesurementForm->isSubmitted()) {
+                    $measurementId = $appendMesurementForm->get('measurementId')->getData();
+                    $measurement = $measurementRepository->find($measurementId);
+                    if ($measurement != null) {
+                        $soilSample->addMeasurement($measurement);
+                        $entityManager->persist($soilSample);
+                        $entityManager->flush();
+                    }
                     return $this->redirectToRoute('soilSample', ['id' => $soilSample->getId()]);
                 }
 
@@ -134,6 +148,16 @@ class SoilSampleController extends AbstractController
                 return $this->redirectToRoute('soilSample', ['id' => $soilSample->getId()]);
             }
 
+            if ($request->get('unlink_measurement') !== null) {
+                $measurement = $measurementRepository->find($request->get('unlink_measurement'));
+                if ($measurement != null) {
+                    $soilSample->removeMeasurement($measurement);
+                    $entityManager->persist($soilSample);
+                    $entityManager->flush();
+                }
+                return $this->redirectToRoute('soilSample', ['id' => $soilSample->getId()]);
+            }
+
             if ($request->get('delete_record') !== null) {
                 $record = $entityManager->find(Record::class, $request->get('delete_record'));
                 if ($record === null) {
@@ -153,6 +177,7 @@ class SoilSampleController extends AbstractController
                 'soilSample/edit.html.twig',
                 [
                     'measurementForm' => $newMesurementForm->createView(),
+                    'appendMeasurementForm' => $appendMesurementForm->createView(),
                     'recordForm' => $newRecordForm->createView(),
                     'recordsService' => $recordsService,
                     'measurements' => $soilSampleService->getMeasurementsArray($soilSample),

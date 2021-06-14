@@ -247,6 +247,10 @@
                                                     data-parent="{{ runArray['id'] }}" data-target="#measurement">
                                                 {% trans %}add measurement{% endtrans %}
                                             </button>
+                                            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal"
+                                                    data-parent="{{ runArray['id'] }}" data-target="#append_measurement">
+                                                {% trans %}append measurement{% endtrans %}
+                                            </button>
                                         </div>
                                     {% endif %}
                                 </div>
@@ -292,9 +296,15 @@
                                                                 <li role="presentation" class="divider"></li>
                                                                 <li role="presentation">
                                                                     <a role="menuitem" tabindex="-1"
+                                                                       data-confirm="{% trans %}unlink?{% endtrans %}"
+                                                                       href="{{ path('sequence', {id:header['id'],runId:run.getId(),unlink_measurement:formMeasurement.vars.value.getId()}) }}">{% trans %}unlink{% endtrans %}</a>
+                                                                </li>
+                                                                <li role="presentation">
+                                                                    <a role="menuitem" tabindex="-1"
                                                                        data-confirm="{% trans %}delete?{% endtrans %}"
                                                                        href="{{ path('sequence', {id:header['id'],delete_measurement:formMeasurement.vars.value.getId()}) }}">{% trans %}delete{% endtrans %}</a>
                                                                 </li>
+
                                                             </ul>
                                                         </div>
 
@@ -510,6 +520,7 @@
     </section>
     {% if (is_granted('edit',sequence)) %}
         {% include "forms/measurementTypeModalNew.html.twig" %}
+        {% include "forms/measurementTypeModalAppend.html.twig" %}
         {% include "forms/recordTypeModalNew.html.twig" %}
         {% include "forms/runTypeModalNew.html.twig" %}
         {% include "forms/runGroupTypeModalNew.html.twig" %}

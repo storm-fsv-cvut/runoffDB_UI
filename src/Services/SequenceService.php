@@ -5,7 +5,6 @@ namespace App\Services;
 
 
 use App\Entity\Sequence;
-use App\Entity\SoilSample;
 use App\Repository\RunRepository;
 use App\Repository\SequenceRepository;
 use App\Repository\TillageSequenceRepository;
@@ -74,17 +73,7 @@ class SequenceService
                     $run->getRainIntensity() !== null &&
                     $run->getRainIntensity()->getData()->get(0) !== null
                 ) {
-                    if ($run->getRainIntensity()->getUnit() !== null) {
-                        $rain_intensity = number_format(
-                                $run->getRainIntensity()->getData()->get(0)->getValue(),
-                                0
-                            ) . " " . $run->getRainIntensity()->getUnit()->getUnit();
-                    } else {
-                        $rain_intensity = number_format(
-                            $run->getRainIntensity()->getData()->get(0)->getValue(),
-                            0
-                        );
-                    }
+                    $rain_intensity = $run->getRainIntensity()->getHtmlLabel();
                 } else {
                     $rain_intensity = "";
                 }
@@ -93,17 +82,7 @@ class SequenceService
                     $run->getInitMoisture() !== null &&
                     $run->getInitMoisture()->getData()->get(0) !== null
                 ) {
-                    if ($run->getInitMoisture()->getUnit() !== null) {
-                        $init_moisture = number_format(
-                                $run->getInitMoisture()->getData()->get(0)->getValue(),
-                                0
-                            ) . " " . $run->getInitMoisture()->getUnit()->getUnit();
-                    } else {
-                        $init_moisture = number_format(
-                            $run->getInitMoisture()->getData()->get(0)->getValue(),
-                            0
-                        );
-                    }
+                    $init_moisture = $run->getInitMoisture()->getHtmlLabel();
                 } else {
                     $init_moisture = "";
                 }

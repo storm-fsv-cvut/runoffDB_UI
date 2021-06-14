@@ -115,7 +115,7 @@
                                     {% if soilSample.getTextureRecord() is not same as null %}
                                         <dt>{% trans %}texture{% endtrans %}:</dt>
                                         <dd>
-                                            {{ soilSample.getTextureRecord() }}
+                                            {{ soilSample.getTextureRecord().getHtmlLabel()|raw }}
                                             {% if (is_granted('edit',soilSample)) %}
                                                 <a role="menuitem" data-confirm="{% trans %}unlink{% endtrans %}?"
                                                    href="{{ path('istexture', {soilSampleId:soilSample.getId(),recordId:null}) }}"><i
@@ -126,7 +126,7 @@
 
                                     {% if soilSample.getCorg() is not same as null %}
                                         <dt>{% trans %}Corg{% endtrans %}:</dt>
-                                        <dd>{{ soilSample.getCorg() }}
+                                        <dd>{{ soilSample.getCorg().getHtmlLabel()|raw }}
                                             {% if (is_granted('edit',soilSample)) %}
                                                 <a role="menuitem" data-confirm="{% trans %}unlink{% endtrans %}?"
                                                    href="{{ path('iscorg', {soilSampleId:soilSample.getId(),recordId:null}) }}"><i
@@ -137,7 +137,7 @@
 
                                     {% if soilSample.getMoisture() is not same as null %}
                                         <dt>{% trans %}moisture{% endtrans %}:</dt>
-                                        <dd>{{ soilSample.getMoisture() }}
+                                        <dd>{{ soilSample.getMoisture().getHtmlLabel()|raw }}
                                             {% if (is_granted('edit',soilSample)) %}
                                                 <a role="menuitem" data-confirm="{% trans %}unlink{% endtrans %}?"
                                                    href="{{ path('ismoisture', {soilSampleId:soilSample.getId(),recordId:null}) }}"><i
@@ -148,7 +148,7 @@
 
                                     {% if soilSample.getBulkDensity() is not same as null %}
                                         <dt>{% trans %}bulkDensity{% endtrans %}:</dt>
-                                        <dd>{{ soilSample.getBulkDensity() }}
+                                        <dd>{{ soilSample.getBulkDensity().getHtmlLabel()|raw }}
                                             {% if (is_granted('edit',soilSample)) %}
                                                 <a role="menuitem" data-confirm="{% trans %}unlink{% endtrans %}?"
                                                    href="{{ path('isbulkDensity', {soilSampleId:soilSample.getId(),recordId:null}) }}"><i
@@ -176,6 +176,12 @@
                             <button type="button" class="btn btn-warning btn-sm" data-toggle="modal"
                                     data-parent="{{ soilSample.getId() }}" data-target="#measurement">
                                 {% trans %}add measurement{% endtrans %}
+                            </button>
+
+
+                            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal"
+                                    data-parent="{{ soilSample.getId() }}" data-target="#append_measurement">
+                                {% trans %}append measurement{% endtrans %}
                             </button>
                         </div>
                     {% endif %}
@@ -208,6 +214,11 @@
                                                    tabindex="-1" href="#">{% trans %}edit{% endtrans %}</a>
                                             </li>
                                             <li role="presentation" class="divider"></li>
+                                            <li role="presentation">
+                                                <a role="menuitem" tabindex="-1"
+                                                   data-confirm="{% trans %}unlink?{% endtrans %}"
+                                                   href="{{ path('soilSample', {id:soilSample.getId(),unlink_measurement:formMeasurement.vars.value.getId()}) }}">{% trans %}unlink{% endtrans %}</a>
+                                            </li>
                                             <li role="presentation">
                                                 <a role="menuitem" tabindex="-1"
                                                    data-confirm="{% trans %}delete?{% endtrans %}"
@@ -384,6 +395,7 @@
     </section>
     {% if (is_granted('edit',soilSample)) %}
         {% include "forms/measurementTypeModalNew.html.twig" %}
+        {% include "forms/measurementTypeModalAppend.html.twig" %}
         {% include "forms/recordTypeModalNew.html.twig" %}
     {% endif %}
 {% endblock %}

@@ -29,8 +29,8 @@ class CmsControler extends AbstractController {
         );
 
         $params= [];
+        $params['type'] = $type;
         $params['pagination'] = $pagination;
-        $params['type'] = 'tooltip';
         return $this->render('cms/list.html.twig', $params);
     }
 
@@ -57,12 +57,11 @@ class CmsControler extends AbstractController {
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
             $cms = $form->getData();
             $cms->setType($type);
             $entityManager->persist($cms);
             $entityManager->flush();
-
             return $this->redirectToRoute('cms-list',['type'=>$type]);
         }
 
