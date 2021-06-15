@@ -34,7 +34,7 @@ class Sequence extends BaseEntity {
     private ?int $cropBBCH;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Project", mappedBy="sequences")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Project")
      */
     private Collection $projects;
 

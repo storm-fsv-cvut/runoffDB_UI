@@ -134,10 +134,15 @@ class SequenceService
     public function getSequenceHeader(Sequence $sequence): array
     {
         $locality = $sequence->getLocality();
+        $projects = null;
+        foreach ($sequence->getProjects() as $project) {
+            $projects.=$project->getProjectName()." ";
+        }
         return [
             'id' => $sequence->getId(),
             'date' => $sequence->getFormatedDate(),
             'simulator' => $sequence->getSimulator(),
+            'projects' => $projects,
             'locality' => $locality !== null ? $locality->getName() : " n/a ",
             'canopy_cover' => $sequence->getSurfaceCover(),
             'crop_bbch' => $sequence->getCropBBCH(),

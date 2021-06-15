@@ -4,6 +4,7 @@
 namespace App\Form;
 
 
+use App\Entity\Project;
 use App\Entity\Record;
 use App\Entity\Run;
 use App\Entity\Sequence;
@@ -34,6 +35,17 @@ class SequenceType extends AbstractType {
             ->add('simulator')
             ->add('date', DateType::class,['widget'=>'single_text', 'label'=>'date'])
             ->add('cropBBCH')
+            ->add(
+                'projects',
+                EntityType::class,
+                [
+                    'expanded'=>true,
+                    'mapped' => true,
+                    'multiple'=>true,
+                    'class' => Project::class,
+                    'label' => 'projects'
+                ]
+            )
             ->add('surfaceCover', EntityType::class, [
                 'class'=>Record::class,
                 'choices'=>$this->recordsService->getRecordsByPhenomenonKey("surcov"),

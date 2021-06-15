@@ -1,0 +1,42 @@
+{{ form_start(form) }}
+
+
+<div class="row">
+    <div class="col-md-12">
+        {{ form_row(form.projectName) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {{ form_row(form.descriptionCZ) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {{ form_row(form.descriptionEN) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {{ form_row(form.fundingAgency) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {{ form_row(form.projectCode) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {{ form_row(form.organisations) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        {{ form_row(form.save) }}
+    </div>
+    <div class="col-md-6">
+        <a href="{{ path('settings',{'class':class}) }}" class="btn btn-warning pull-right">{% trans %}cancel{% endtrans %}</a>
+    </div>
+</div>
+{{ form_end(form,{'render_rest': false}) }}

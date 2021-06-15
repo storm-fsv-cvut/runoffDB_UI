@@ -24,7 +24,7 @@ class Project extends BaseEntity implements DefinitionEntityInterface
     private string $projectName;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Sequence", inversedBy="projects")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Sequence")
      */
     private Collection $sequences;
 

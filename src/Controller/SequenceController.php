@@ -360,7 +360,7 @@ class SequenceController extends AbstractController
                 if ($sequenceForm->isSubmitted()) {
                     $partialForm = $sequenceForm->getClickedButton()->getParent();
                     $partialData = $partialForm->getData();
-
+                    $partialData->getProjects();
                     if ($partialForm->has('rawData') && $partialForm->get('rawData') !== null) {
                         foreach ($partialForm->get('rawData')->getData() as $file) {
                             if ($partialData instanceof Run) {

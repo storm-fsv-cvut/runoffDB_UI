@@ -37,6 +37,10 @@
                             <dt>{% trans %}simulator{% endtrans %}:</dt>
                             <dd>{{ header['simulator'] }}</dd>
                         {% endif %}
+                        {% if header['projects']!=null %}
+                            <dt>{% trans %}projects{% endtrans %}:</dt>
+                            <dd>{{ header['projects'] }}</dd>
+                        {% endif %}
                         {% if header['locality']!=null %}
                             <dt>{% trans %}locality{% endtrans %}:</dt>
                             <dd>{{ header['locality'] }}</dd>

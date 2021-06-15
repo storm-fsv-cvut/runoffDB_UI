@@ -10,18 +10,17 @@ namespace App\Controller;
 
 use App\Form\AgrotechnologyType;
 use App\Form\DefinitionEntityType;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface;
+use App\Form\ProjectType;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-class DefinitionEntityControler extends AbstractController {
+class DefinitionEntityControler extends AbstractController
+{
 
     /**
      * @Route("/{_locale}/settings", name="settings")
@@ -29,7 +28,12 @@ class DefinitionEntityControler extends AbstractController {
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function list(EntityManagerInterface $em, Request $request, TranslatorInterface $translator, PaginatorInterface $paginator): Response {
+    public function list(
+        EntityManagerInterface $em,
+        Request $request,
+        TranslatorInterface $translator,
+        PaginatorInterface $paginator
+    ): Response {
         $this->denyAccessUnlessGranted('edit');
         $class = $request->get('class');
 
@@ -53,12 +57,20 @@ class DefinitionEntityControler extends AbstractController {
     /**
      * @Route("/{_locale}/setting/{id}", name="setting")
      */
-    public function edit(Request $request, EntityManagerInterface $entityManager, TranslatorInterface $translator, ?int $id = null):Response {
+    public function edit(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        TranslatorInterface $translator,
+        ?int $id = null
+    ): Response {
         $this->denyAccessUnlessGranted('edit');
         $class = $request->get('class');
-        $dataClass = $id!==null ? $entityManager->find($class, $id) : null;
+        $dataClass = $id !== null ? $entityManager->find($class, $id) : null;
         if ($class == "App\Entity\Agrotechnology") {
             $form = $this->createForm(AgrotechnologyType::class, $dataClass, ['data_class' => $class]);
+            $form->handleRequest($request);
+        } else if ($class == "App\Entity\Project") {
+            $form = $this->createForm(ProjectType::class, $dataClass, ['data_class' => $class]);
             $form->handleRequest($request);
         } else {
             $form = $this->createForm(DefinitionEntityType::class, $dataClass, ['data_class' => $class]);
@@ -72,18 +84,28 @@ class DefinitionEntityControler extends AbstractController {
             $entityManager->flush();
             return $this->redirectToRoute('settings', ['class' => $class]);
         }
-        return $this->render('definitionEntity/edit.html.twig', ['form' => $form->createView(), 'class_name' => $translator->trans($class), 'class' => $class]);
+        return $this->render(
+            'definitionEntity/edit.html.twig',
+            ['form' => $form->createView(), 'class_name' => $translator->trans(
+                $class
+            ), 'class' => $class]
+        );
     }
 
     /**
      * @Route("/{_locale}/settings/delete/{id}", name="delete_setting")
      */
-    public function delete(Request $request, EntityManagerInterface $entityManager, TranslatorInterface $translator, ?int $id = null) {
+    public function delete(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        TranslatorInterface $translator,
+        ?int $id = null
+    ) {
         $this->denyAccessUnlessGranted('edit');
         $class = $request->get('class');
-        $dataClass = $id!==null ? $entityManager->find($class, $id) : null;
+        $dataClass = $id !== null ? $entityManager->find($class, $id) : null;
         $entityManager->remove($dataClass);
         $entityManager->flush();
-        return $this->redirectToRoute('settings',['class'=>$class]);
+        return $this->redirectToRoute('settings', ['class' => $class]);
     }
 }

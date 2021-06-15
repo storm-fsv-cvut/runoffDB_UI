@@ -192,3 +192,11 @@ footer_text: Podpořeno výzkumným projektem QK1810341 Národní agentury země
 append measurement: Připojit měření
 measurementId: ID měření
 unlink?: Zrušit vazbu?
+projectName: Název projektu
+projectCode: Kód projektu
+fundingAgency: Agentura
+organisations: Organizace
+date: Datum
+projects: Projekty
+simulator: Simulátor
+
