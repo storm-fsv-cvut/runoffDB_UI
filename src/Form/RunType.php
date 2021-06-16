@@ -76,12 +76,14 @@ class RunType extends AbstractType {
             ->add('runoffStart', TimeType::class, [
                 'label' => 'runoffStart',
                 'widget'=>'single_text',
-                'required'=>false
+                'required'=>false,
+                'with_seconds'=>true
             ])
             ->add('pondingStart', TimeType::class, [
                 'label' => 'pondingStart',
                 'widget'=>'single_text',
-                'required'=>false
+                'required'=>false,
+                'with_seconds'=>true
             ])
             ->add('noteCZ', TextareaType::class, [
                 'label' => 'noteCZ',

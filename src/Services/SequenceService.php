@@ -89,8 +89,8 @@ class SequenceService
 
                 $runArray = [
                     'id' => $run->getId(),
-                    'runoff_start' => $run->getRunoffStart() !== null ? $run->getRunoffStart()->format("H:i") : "",
-                    'ponding_start' => $run->getPondingStart() !== null ? $run->getPondingStart()->format("H:i") : "",
+                    'runoff_start' => $run->getRunoffStart() !== null ? $run->getRunoffStart()->format("H:i:s") : "",
+                    'ponding_start' => $run->getPondingStart() !== null ? $run->getPondingStart()->format("H:i:s") : "",
                     'soil_sample_texture' => $run->getSoilSampleTexture(),
                     'soil_sample_texture_assignment' => $run->getTextureAssignmentType(),
                     'soil_sample_bulk' => $run->getSoilSampleBulk(),

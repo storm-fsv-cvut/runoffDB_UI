@@ -36,6 +36,14 @@ class RecordType extends AbstractType
             ->add('noteCZ',TextareaType::class,['label'=>'noteCZ','required'=>false])
             ->add('isTimeline',CheckboxType::class,['label'=>'isTimeline','required'=>false])
             ->add('noteEN',TextareaType::class,['label'=>'noteEN','required'=>false])
+            ->add('descriptionCZ', TextareaType::class, [
+                'label' => 'descriptionCZ',
+                'required'=>false
+            ])
+            ->add('descriptionEN', TextareaType::class, [
+                'label' => 'descriptionEN',
+                'required'=>false
+            ])
             ->add('recordType',EntityType::class, ['class'=>\App\Entity\RecordType::class,'label'=>'record type'])
             ->add('qualityIndex',EntityType::class, ['class'=>QualityIndex::class,'label'=>'quality index', 'placeholder' => ""])
             ->add('parent_id', HiddenType::class, ['mapped' => false])

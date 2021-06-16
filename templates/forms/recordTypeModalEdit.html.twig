@@ -57,6 +57,28 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="form-group col-sm-12">
+                        <div class="nav-tabs-custom">
+                            <ul class="nav nav-tabs">
+                                <li class="active">
+                                    <a href="#{{ formRecord.descriptionCZ.vars.id }}" data-toggle="tab" aria-expanded="true">{{ form_label(formRecord.descriptionCZ) }}</a>
+                                </li>
+                                <li class="">
+                                    <a href="#{{ formRecord.descriptionEN.vars.id }}" data-toggle="tab" aria-expanded="false">{{ form_label(formRecord.descriptionEN) }}</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="{{ formRecord.descriptionCZ.vars.id }}">
+                                    {{ form_widget(formRecord.descriptionCZ) }}
+                                </div>
+                                <div class="tab-pane" id="{{ formRecord.descriptionEN.vars.id }}">
+                                    {{ form_widget(formRecord.descriptionEN) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="form-group col-sm-6">
                         {{ form_row(formRecord.sourceRecords) }}
                     </div>

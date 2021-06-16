@@ -40,6 +40,16 @@ class Record extends BaseEntity {
     private ?string $noteEN = null;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $descriptionCZ = null;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $descriptionEN = null;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Unit")
      * @ORM\JoinColumn(referencedColumnName="id")
      */
@@ -126,7 +136,9 @@ class Record extends BaseEntity {
         return $this->getLocale() == 'en' ? $this->getNoteEN() : $this->getNoteCZ();
     }
 
-
+    public function getDescription():?string {
+        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
+    }
 
     public function getId(): ?int {
         return $this->id;
@@ -294,5 +306,27 @@ class Record extends BaseEntity {
         $this->isTimeline = $isTimeline;
 
         return $this;
+    }
+
+
+    public function getDescriptionCZ(): ?string
+    {
+        return $this->descriptionCZ;
+    }
+
+
+    public function setDescriptionCZ(?string $descriptionCZ): void
+    {
+        $this->descriptionCZ = $descriptionCZ;
+    }
+
+    public function getDescriptionEN(): ?string
+    {
+        return $this->descriptionEN;
+    }
+
+    public function setDescriptionEN(?string $descriptionEN): void
+    {
+        $this->descriptionEN = $descriptionEN;
     }
 }

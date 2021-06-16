@@ -115,6 +115,11 @@ class MeasurementController extends AbstractController {
                 return $this->redirectToRoute('measurement', ['id' => $measurement!==null ? $measurement->getId() : null]);
             }
 
+            if ($request->get('delete_measurement') !== null) {
+                $measurementService->deleteMeasurement($request->get('delete_measurement'));
+                return $this->redirectToRoute('measurements');
+            }
+
             return $this->render('measurement/edit.html.twig',[
                 'recordForm' => $newRecordForm->createView(),
                 'measurement'=>$measurement,
