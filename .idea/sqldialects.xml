@@ -2,5 +2,6 @@
 <project version="4">
   <component name="SqlDialectMappings">
     <file url="file://C:/download/localhost.sql" dialect="MySQL" />
+    <file url="file://C:/download/runoffdb.sql" dialect="MySQL" />
   </component>
 </project>

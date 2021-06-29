@@ -179,6 +179,10 @@ linked runs: Provázané simulace
 Sample date: Datum odběru
 Process date: Datum zpracování
 Description: Popis
+Description cz: Popis (cs)
+Description en: Popis (en)
+Description c z: Popis (cs)
+Description e n: Popis (en)
 sampleLocation: Popis místa odběru
 bulkDensity: Objemová hmotnost
 Corg: Organický uhlík
@@ -200,4 +204,17 @@ date: Datum
 projects: Projekty
 simulator: Simulátor
 edit run: Upravit simulaci
-
+Wrb soil class: Půdní třída WRB
+set as moisture: Nastavit jako Vlhkost
+set as texture: Nastavit jako Zrnitostní složení
+set as corg: Nastavit jako Organický uhlík
+set as bulkDensity: Nastavit jako Objemová hmotnost
+edit soil sample: Upravit vzorek
+record type: Druh záznamu
+relatedValueXUnit: Veličina X rozměru
+relatedValueZUnit: Veličina Z rozměru
+relatedValueYUnit: Veličina Y rozměru
+variety: variety
+isCatchCrop: is catch crop
+Crop type: Typ plodiny
+Croper type: ER typ plodiny

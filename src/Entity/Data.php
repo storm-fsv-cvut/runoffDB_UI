@@ -24,9 +24,9 @@ class Data extends BaseEntity
     private ?DateTimeInterface $time;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="float", length=255)
      */
-    private ?string $value;
+    private ?float $value;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Record", inversedBy="datas")
@@ -84,7 +84,7 @@ class Data extends BaseEntity
         return $this;
     }
 
-    public function getValue(): ?string
+    public function getValue(): ?float
     {
         return $this->value;
     }
@@ -94,7 +94,7 @@ class Data extends BaseEntity
             return number_format((float)$this->value, ($this->getRecord()->getUnit()!==null) ? $this->getRecord()->getUnit()->getDecimals() : Unit::DEFAULT_DECIMALS, ".", "");
     }
 
-    public function setValue(?string $value): self
+    public function setValue(?float $value): self
     {
         $this->value = $value;
         return $this;

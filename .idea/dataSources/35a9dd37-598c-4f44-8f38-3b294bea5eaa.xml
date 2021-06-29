@@ -3179,7 +3179,7 @@ sequence_ID</ColNames>
     </column>
     <column id="803" parent="371" name="value">
       <Position>4</Position>
-      <DataType>varchar(255)|0s</DataType>
+      <DataType>double|0s</DataType>
       <NotNull>1</NotNull>
     </column>
     <column id="804" parent="371" name="related_value_x">

@@ -7,6 +7,7 @@ RUN apt-get update \
  && a2enmod headers \
  && mv /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini \
  && sed -e 's/;date.timezone =/date.timezone = "Europe\/Prague"/' -i /usr/local/etc/php/php.ini \
+ && sed -e 's/;max_input_vars = 1000/max_input_vars = 10000/' -i /usr/local/etc/php/php.ini \
  && sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf \
  && sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf \
  && apt-get install -y mariadb-client \
