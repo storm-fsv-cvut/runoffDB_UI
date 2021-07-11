@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use DOMDocument;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RecordRepository")
@@ -328,5 +329,34 @@ class Record extends BaseEntity {
     public function setDescriptionEN(?string $descriptionEN): void
     {
         $this->descriptionEN = $descriptionEN;
+    }
+
+    public function getXmlDomElement(DOMDocument $dom):\DOMElement {
+        $record = $dom->createElement('record');
+        $datas = $dom->createElement('datas');
+        foreach ($this->getData() as $data) {
+            $datas->append($data->getXmlDomElement($dom));
+        }
+        $record->append(
+            $dom->createElement('id',$this->getId()),
+            $dom->createElement('recordType',$this->getRecordType()->getName()),
+            $dom->createElement('note',$this->getNote()),
+            $dom->createElement('description',$this->getDescription()),
+            $dom->createElement('unit',$this->getUnit()->getUnit()),
+            $dom->createElement('qualityIndex',$this->getQualityIndex()),
+            $datas
+        );
+
+        if ($this->getRelatedValueXUnit()!==null) {
+            $record->append($this->getRelatedValueXUnit()->getUnit());
+        }
+        if ($this->getRelatedValueYUnit()!==null) {
+            $record->append($this->getRelatedValueYUnit()->getUnit());
+        }
+        if ($this->getRelatedValueZUnit()!==null) {
+            $record->append($this->getRelatedValueZUnit()->getUnit());
+        }
+
+        return $record;
     }
 }

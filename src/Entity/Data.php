@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use DateTimeInterface;
+use DOMDocument;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DataRepository")
@@ -49,7 +50,8 @@ class Data extends BaseEntity
      */
     private ?float $relatedValueZ;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->time = null;
         $this->value = null;
         $this->relatedValueX = null;
@@ -57,9 +59,9 @@ class Data extends BaseEntity
         $this->relatedValueZ = null;
     }
 
-    public function __toString():string
+    public function __toString(): string
     {
-        return (string) $this->getId();
+        return (string)$this->getId();
     }
 
     public function getId(): ?int
@@ -74,7 +76,7 @@ class Data extends BaseEntity
 
     public function getFormatedTime(): string
     {
-        return $this->getTime()!==null ? $this->getTime()->format("H:i:s") : " - ";
+        return $this->getTime() !== null ? $this->getTime()->format("H:i:s") : " - ";
     }
 
     public function setTime(?DateTimeInterface $time): self
@@ -91,7 +93,12 @@ class Data extends BaseEntity
 
     public function getValueRounded(): string
     {
-            return number_format((float)$this->value, ($this->getRecord()->getUnit()!==null) ? $this->getRecord()->getUnit()->getDecimals() : Unit::DEFAULT_DECIMALS, ".", "");
+        return number_format((float)$this->value,
+                             ($this->getRecord()->getUnit() !== null) ? $this->getRecord()->getUnit()->getDecimals(
+                             ) : Unit::DEFAULT_DECIMALS,
+                             ".",
+                             ""
+        );
     }
 
     public function setValue(?float $value): self
@@ -118,7 +125,13 @@ class Data extends BaseEntity
 
     public function getRelatedValueXRounded(): string
     {
-        return number_format( (float) $this->relatedValueX, $this->getRecord()->getRelatedValueXUnit()!==null ? $this->getRecord()->getRelatedValueXUnit()->getDecimals() : 10, ".", "" );
+        return number_format((float)$this->relatedValueX,
+                             $this->getRecord()->getRelatedValueXUnit() !== null ? $this->getRecord()
+                                                                                        ->getRelatedValueXUnit()
+                                                                                        ->getDecimals() : 10,
+                             ".",
+                             ""
+        );
     }
 
     public function setRelatedValueX(?float $relatedValueX): self
@@ -135,7 +148,13 @@ class Data extends BaseEntity
 
     public function getRelatedValueYRounded(): string
     {
-        return number_format( (float) $this->relatedValueY,  $this->getRecord()->getRelatedValueYUnit()!==null ? $this->getRecord()->getRelatedValueYUnit()->getDecimals() : 10, ".", "" );
+        return number_format((float)$this->relatedValueY,
+                             $this->getRecord()->getRelatedValueYUnit() !== null ? $this->getRecord()
+                                                                                        ->getRelatedValueYUnit()
+                                                                                        ->getDecimals() : 10,
+                             ".",
+                             ""
+        );
     }
 
     public function setRelatedValueY(?float $relatedValueY): self
@@ -152,7 +171,13 @@ class Data extends BaseEntity
 
     public function getRelatedValueZRounded(): string
     {
-        return number_format( (float) $this->relatedValueZ,  $this->getRecord()->getRelatedValueZUnit()!==null ? $this->getRecord()->getRelatedValueZUnit()->getDecimals() : 10, ".", "" );
+        return number_format((float)$this->relatedValueZ,
+                             $this->getRecord()->getRelatedValueZUnit() !== null ? $this->getRecord()
+                                                                                        ->getRelatedValueZUnit()
+                                                                                        ->getDecimals() : 10,
+                             ".",
+                             ""
+        );
     }
 
     public function setRelatedValueZ(?float $relatedValueZ): self
@@ -160,5 +185,32 @@ class Data extends BaseEntity
         $this->relatedValueZ = $relatedValueZ;
 
         return $this;
+    }
+
+    public function getXmlDomElement(DOMDocument $dom): \DOMElement
+    {
+        $data = $dom->createElement('data');
+        $data->append(
+            $dom->createElement('id', $this->getId()),
+            $dom->createElement('time', $this->getFormatedTime()),
+            $dom->createElement('value', $this->getValue())
+        );
+
+        if ($this->getRelatedValueX() !== null) {
+            $data->append(
+                $dom->createElement('relatedValueX', $this->getRelatedValueX())
+            );
+        }
+        if ($this->getRelatedValueY() !== null) {
+            $data->append(
+                $dom->createElement('relatedValueY', $this->getRelatedValueY())
+            );
+        }
+        if ($this->getRelatedValueZ() !== null) {
+            $data->append(
+                $dom->createElement('relatedValueZ', $this->getRelatedValueZ())
+            );
+        }
+        return $data;
     }
 }

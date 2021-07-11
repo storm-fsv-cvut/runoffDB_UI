@@ -5,7 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use phpDocumentor\Reflection\Types\Integer;
+use DOMDocument;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
@@ -35,7 +35,7 @@ class SoilSample extends BaseEntity implements FileStorageEntityInterface
     /**
      * @ORM\Column(type="string", length=500, nullable=true)
      */
-    private ?string  $sampleLocation;
+    private ?string $sampleLocation;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Plot", inversedBy="soilSamples")
@@ -125,7 +125,8 @@ class SoilSample extends BaseEntity implements FileStorageEntityInterface
      */
     private ?User $user;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->processedAt = null;
         $this->sampleLocation = null;
         $this->plot = null;
@@ -147,11 +148,13 @@ class SoilSample extends BaseEntity implements FileStorageEntityInterface
         $this->measurements = new ArrayCollection();
     }
 
-    public function __toString() {
-        return "#".$this->getId()." - ".$this->getLocality();
+    public function __toString()
+    {
+        return "#" . $this->getId() . " - " . $this->getLocality();
     }
 
-    public function getDescription():?string {
+    public function getDescription(): ?string
+    {
         return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
@@ -167,7 +170,7 @@ class SoilSample extends BaseEntity implements FileStorageEntityInterface
 
     public function getFormatedDateSampled(): string
     {
-        return $this->dateSampled!==null ? $this->dateSampled->format('d.m.Y') : " - ";
+        return $this->dateSampled !== null ? $this->dateSampled->format('d.m.Y') : " - ";
     }
 
     public function setDateSampled(?\DateTimeInterface $dateSampled): self
@@ -237,8 +240,9 @@ class SoilSample extends BaseEntity implements FileStorageEntityInterface
         return $this;
     }
 
-    public function getLabel(): string {
-       return "#".$this->getId();
+    public function getLabel(): string
+    {
+        return "#" . $this->getId();
     }
 
     public function getDescriptionCZ(): ?string
@@ -296,7 +300,7 @@ class SoilSample extends BaseEntity implements FileStorageEntityInterface
 
     public function getFormatedDateProcessed(): string
     {
-        return $this->dateProcessed!==null ? $this->dateProcessed->format('d.m.Y') : "";
+        return $this->dateProcessed !== null ? $this->dateProcessed->format('d.m.Y') : "";
     }
 
     public function setDateProcessed(?\DateTimeInterface $dateProcessed): self
@@ -419,7 +423,8 @@ class SoilSample extends BaseEntity implements FileStorageEntityInterface
         return $this;
     }
 
-    public function getFiles(): array {
+    public function getFiles(): array
+    {
         $files = [];
         $filesystem = new Filesystem();
         $dir = $this->getFilesPath();
@@ -435,16 +440,79 @@ class SoilSample extends BaseEntity implements FileStorageEntityInterface
         return $files;
     }
 
-    public function getFilesPath(): string {
+    public function getFilesPath(): string
+    {
         return "data/soilsample/" . $this->getId();
     }
 
-    public function removeFile(string $filename):void {
+    public function removeFile(string $filename): void
+    {
         $filesystem = new Filesystem();
         $dir = $this->getFilesPath();
-        if ($filesystem->exists($dir.'/'.$filename)) {
-            $filesystem->remove($dir.'/'.$filename);
+        if ($filesystem->exists($dir . '/' . $filename)) {
+            $filesystem->remove($dir . '/' . $filename);
         }
     }
 
+    public function getXmlDomElement(DOMDocument $dom): \DOMElement
+    {
+        $soilSample = $dom->createElement('soilSample');
+        $soilSample->append(
+            $dom->createElement('id', $this->getId()),
+            $dom->createElement('sampleLocation', $this->getSampleLocation()),
+            $dom->createElement('description', $this->getDescription()),
+            $dom->createElement('sampleDepthM', $this->getSampleDepthM())
+        );
+        if ($this->getDateSampled()!==null) {
+            $soilSample->append(
+                $dom->createElement('dateSampled', $this->getDateSampled()->format('Y-m-d')),
+            );
+        }
+        if ($this->getDateProcessed()!==null) {
+            $soilSample->append(
+                $dom->createElement('dateProcessed', $this->getDateProcessed()->format('Y-m-d')),
+            );
+        }
+        if ($this->getProcessedAt()!==null) {
+            $soilSample->append(
+                $dom->createElement('processedAt', $this->getProcessedAt()->getName()),
+            );
+        }
+        if ($this->getBulkDensity()!==null) {
+            $soilSample->append(
+                $this->getBulkDensity()->getXmlDomElement($dom)
+            );
+        }
+        if ($this->getCorg()!==null) {
+            $soilSample->append(
+                $this->getCorg()->getXmlDomElement($dom)
+            );
+        }
+        if ($this->getMoisture()!==null) {
+            $soilSample->append(
+                $this->getMoisture()->getXmlDomElement($dom)
+            );
+        }
+        if ($this->getTextureRecord()!==null) {
+            $soilSample->append(
+                $this->getTextureRecord()->getXmlDomElement($dom)
+            );
+        }
+        if ($this->getLocality()!==null) {
+            $soilSample->append(
+                $dom->createElement('locality', (string) $this->getLocality())
+            );
+        }
+        if ($this->getPlot()!==null) {
+            $soilSample->append(
+                $dom->createElement('plot', (string) $this->getPlot())
+            );
+        }
+        if ($this->getWrbSoilClass()!==null) {
+            $soilSample->append(
+                $dom->createElement('wrbSoilClass', (string) $this->WrbSoilClass())
+            );
+        }
+        return $soilSample;
+    }
 }

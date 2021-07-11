@@ -6,6 +6,7 @@ use _HumbugBox01d8f9a04075\Nette\Utils\DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use DOMDocument;
 use phpDocumentor\Reflection\Types\String_;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -437,5 +438,19 @@ class Run extends BaseEntity implements FileStorageEntityInterface {
 
     public function getRunType(): ?RunType {
         return $this->getRunGroup()!==null ? $this->getRunGroup()->getRunType() : null;
+    }
+
+    public function getXmlDomElement(DOMDocument $dom):\DOMElement {
+        $run = $dom->createElement('run');
+        $measurements = $dom->createElement('measurements');
+        foreach ($this->getMeasurements() as $measurement) {
+            $measurements->append($measurement->getXmlDomElement($dom));
+        }
+        $run->append(
+            $dom->createElement('id',$this->getId()),
+            $dom->createElement('note',$this->getNote()),
+            $measurements
+        );
+        return $run;
     }
 }

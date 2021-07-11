@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use DOMDocument;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UnitRepository")
@@ -144,5 +145,17 @@ class Unit extends BaseEntity implements DefinitionEntityInterface
      */
     public function setDecimals(int $decimals): void {
         $this->decimals = $decimals;
+    }
+
+    public function getXmlDomElement(DOMDocument $dom):\DOMElement {
+        $unit = $dom->createElement('unit');
+        $unit->append(
+            $dom->createElement('id',$this->getId()),
+            $dom->createElement('name',$this->getName()),
+            $dom->createElement('unit',$this->getUnit()),
+            $dom->createElement('decimals',$this->getDecimals()),
+            $dom->createElement('description',$this->getDescription())
+        );
+        return $unit;
     }
 }

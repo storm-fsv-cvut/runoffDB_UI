@@ -8,6 +8,7 @@
 
 namespace App\Controller;
 
+use _HumbugBoxa9bfddcdef37\Nette\Neon\Exception;
 use App\Entity\Measurement;
 use App\Entity\Record;
 use App\Entity\Run;
@@ -481,6 +482,18 @@ class SequenceController extends AbstractController
     public function removeSequence(Request $request, SequenceRepository $sequenceRepository): RedirectResponse
     {
         $sequenceRepository->setDeleted($request->get('id'));
+        return $this->redirectToRoute('sequences');
+    }
+
+    /**
+     * @Route("/{_locale}/export-sequence", name="export_sequence")
+     */
+    public function exportSequence(Request $request, SequenceService $sequenceService): RedirectResponse
+    {
+        if ($request->get('id')===null) {
+            throw new \Exception("Invalid parameter id");
+        }
+        $sequenceService->exportSequence($request->get('id'));
         return $this->redirectToRoute('sequences');
     }
 

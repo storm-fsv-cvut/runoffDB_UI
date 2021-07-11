@@ -8,11 +8,10 @@ use App\Entity\Sequence;
 use App\Repository\RunRepository;
 use App\Repository\SequenceRepository;
 use App\Repository\TillageSequenceRepository;
+use DOMDocument;
 use Exception;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
-
-;
 
 class SequenceService
 {
@@ -136,7 +135,7 @@ class SequenceService
         $locality = $sequence->getLocality();
         $projects = null;
         foreach ($sequence->getProjects() as $project) {
-            $projects.=$project->getProjectName()." ";
+            $projects .= $project->getProjectName() . " ";
         }
         return [
             'id' => $sequence->getId(),
@@ -149,4 +148,32 @@ class SequenceService
             'crop_condition' => $sequence->getCropCondition()
         ];
     }
+
+    public function exportSequence(int $id)
+    {
+          $sequence = $this->getSequenceById($id);
+
+//        ini_set("memory_limit",'4G');
+//        $defaultContext = [
+//            AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
+//                return $object->getId();
+//            },
+//        ];
+//        $normalizer = new GetSetMethodNormalizer(null, null, null, null, null,  $defaultContext);
+//        $encoder = new JsonEncoder();
+//        $serializer = new Serializer([$normalizer], [$encoder]);
+//        $array = $serializer->serialize($sequence, 'json', [
+//            AbstractNormalizer::IGNORED_ATTRIBUTES => ['projects','simulator','runGroups']
+//        ]);
+//        dump($array);
+
+        $dom = new DOMDocument();
+        $dom->encoding = 'utf-8';
+        $dom->xmlVersion = '1.0';
+        $dom->formatOutput = true;
+        $dom->append($sequence->getXmlDomElement($dom));
+        echo ($dom->saveXML());
+        exit;
+    }
+
 }

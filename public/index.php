@@ -3,7 +3,7 @@
 use App\Kernel;
 use Symfony\Component\Debug\Debug;
 use Symfony\Component\HttpFoundation\Request;
-ini_set('memory_limit','512M');
+ini_set('memory_limit','1024M');
 require dirname(__DIR__).'/config/bootstrap.php';
 
 if ($_SERVER['APP_DEBUG']) {

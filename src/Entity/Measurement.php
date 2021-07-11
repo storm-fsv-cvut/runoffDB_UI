@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use DateTimeInterface;
+use DOMDocument;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
@@ -334,5 +335,26 @@ class Measurement extends BaseEntity implements FileStorageEntityInterface {
         if ($filesystem->exists($dir.'/'.$filename)) {
             $filesystem->remove($dir.'/'.$filename);
         }
+    }
+
+    public function getXmlDomElement(DOMDocument $dom):\DOMElement {
+        $measurement = $dom->createElement('measurement');
+        $records = $dom->createElement('records');
+        foreach ($this->getRecords() as $record) {
+            $records->append($record->getXmlDomElement($dom));
+        }
+        $measurement->append(
+            $dom->createElement('id',$this->getId()),
+            $dom->createElement('note',$this->getNote()),
+            $dom->createElement('description',$this->getDescription()),
+            $records
+        );
+
+        if ($this->getPhenomenon() !== null) {
+            $measurement->append(
+                $dom->createElement('phenomenon',$this->getPhenomenon()->getPhenomenonKey())
+            );
+        }
+        return $measurement;
     }
 }

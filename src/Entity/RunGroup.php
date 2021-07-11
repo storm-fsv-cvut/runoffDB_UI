@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use DOMDocument;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RunGroupRepository")
@@ -189,5 +190,22 @@ class RunGroup extends BaseEntity
         }
 
         return $measurements;
+    }
+
+    public function getXmlDomElement(DOMDocument $dom):\DOMElement {
+        $runGroup = $dom->createElement('runGroup');
+
+        $runs = $dom->createElement('runs');
+        foreach ($this->getRuns() as $run) {
+            $runs->append($run->getXmlDomElement($dom));
+        }
+
+        $runGroup->append(
+            $dom->createElement('id',$this->getId()),
+            $dom->createElement('note',$this->getNote()),
+            $runs
+        );
+
+        return $runGroup;
     }
 }
