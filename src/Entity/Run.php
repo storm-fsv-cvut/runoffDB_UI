@@ -14,7 +14,8 @@ use Symfony\Component\Finder\Finder;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RunRepository")
  */
-class Run extends BaseEntity implements FileStorageEntityInterface {
+class Run extends BaseEntity implements FileStorageEntityInterface
+{
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -126,7 +127,8 @@ class Run extends BaseEntity implements FileStorageEntityInterface {
      */
     private ?RunGroup $runGroup;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->soilSampleBulk = null;
         $this->bulkAssignmentType = null;
         $this->soilSampleTexture = null;
@@ -145,22 +147,18 @@ class Run extends BaseEntity implements FileStorageEntityInterface {
         $this->measurements = new ArrayCollection();
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return "#" . $this->getId();
     }
 
-    public function getNote():?string {
-        return $this->getLocale() == 'en' ? $this->getNoteEN() : $this->getNoteCZ();
+    public function getId(): int
+    {
+        return $this->id;
     }
 
-    /**
-     * @return Collection|Measurement[]
-     */
-    public function getMeasurements(): Collection {
-        return $this->measurements;
-    }
-
-    public function addMeasurement(Measurement $measurement): self {
+    public function addMeasurement(Measurement $measurement): self
+    {
         if (!$this->measurements->contains($measurement)) {
             $this->measurements[] = $measurement;
             $measurement->addRun($this);
@@ -169,7 +167,8 @@ class Run extends BaseEntity implements FileStorageEntityInterface {
         return $this;
     }
 
-    public function removeMeasurement(Measurement $measurement): self {
+    public function removeMeasurement(Measurement $measurement): self
+    {
         if ($this->measurements->contains($measurement)) {
             $this->measurements->removeElement($measurement);
             $measurement->removeRun($this);
@@ -177,139 +176,91 @@ class Run extends BaseEntity implements FileStorageEntityInterface {
         return $this;
     }
 
-    public function getId(): int {
-        return $this->id;
-    }
-
-    public function getSoilSampleBulk(): ?SoilSample {
-        return $this->soilSampleBulk;
-    }
-
-    public function setSoilSampleBulk(?SoilSample $soilSampleBulk): self {
-        $this->soilSampleBulk = $soilSampleBulk;
-        return $this;
-    }
-
-    public function getBulkAssignmentType(): ?AssignmentType {
-        return $this->bulkAssignmentType;
-    }
-
-    public function setBulkAssignmentType(?AssignmentType $bulkAssignmentType): self {
-        $this->bulkAssignmentType = $bulkAssignmentType;
-
-        return $this;
-    }
-
-    public function getSoilSampleTexture(): ?SoilSample {
-        return $this->soilSampleTexture;
-    }
-
-    public function setSoilSampleTexture(?SoilSample $soilSampleTexture): self {
-        $this->soilSampleTexture = $soilSampleTexture;
-
-        return $this;
-    }
-
-    public function getPlot(): ?Plot {
+    public function getPlot(): ?Plot
+    {
         return $this->plot;
     }
 
-    public function setPlot(?Plot $plot): self {
+    public function setPlot(?Plot $plot): self
+    {
         $this->plot = $plot;
 
         return $this;
     }
 
-    public function getTextureAssignmentType(): ?AssignmentType {
+    public function getTextureAssignmentType(): ?AssignmentType
+    {
         return $this->textureAssignmentType;
     }
 
-    public function setTextureAssignmentType(?AssignmentType $textureAssignmentType): self {
+    public function setTextureAssignmentType(?AssignmentType $textureAssignmentType): self
+    {
         $this->textureAssignmentType = $textureAssignmentType;
 
         return $this;
     }
 
-    public function getSoilSampleCorg(): ?SoilSample {
-        return $this->soilSampleCorg;
-    }
-
-    public function setSoilSampleCorg(?SoilSample $soilSampleCorg): self {
-        $this->soilSampleCorg = $soilSampleCorg;
-
-        return $this;
-    }
-
-    public function getCorgAssignmentType(): ?AssignmentType {
+    public function getCorgAssignmentType(): ?AssignmentType
+    {
         return $this->corgAssignmentType;
     }
 
-    public function setCorgAssignmentType(?AssignmentType $corgAssignmentType): self {
+    public function setCorgAssignmentType(?AssignmentType $corgAssignmentType): self
+    {
         $this->corgAssignmentType = $corgAssignmentType;
 
         return $this;
     }
 
-    public function getRunoffStart(): ?\DateTimeInterface {
+    public function getFormatedRunoffStart(): string
+    {
+        return $this->getRunoffStart() !== null ? $this->getRunoffStart()->format("G:i:s") : ' - ';
+    }
+
+    public function getRunoffStart(): ?\DateTimeInterface
+    {
         return $this->runoffStart;
     }
 
-    public function getFormatedRunoffStart(): string {
-        return $this->getRunoffStart()!==null ? $this->getRunoffStart()->format("G:i:s") : ' - ';
-    }
-
-    public function setRunoffStart(?\DateTimeInterface $runoffStart): self {
+    public function setRunoffStart(?\DateTimeInterface $runoffStart): self
+    {
         $this->runoffStart = $runoffStart;
 
         return $this;
     }
 
-    public function getCropPictures(): ?string {
+    public function getCropPictures(): ?string
+    {
         return $this->cropPictures;
     }
 
-    public function setCropPictures(?string $cropPictures): self {
+    public function setCropPictures(?string $cropPictures): self
+    {
         $this->cropPictures = $cropPictures;
 
         return $this;
     }
 
-    public function getPlotPictures(): ?string {
+    public function getPlotPictures(): ?string
+    {
         return $this->plotPictures;
     }
 
-    public function setPlotPictures(?string $plotPictures): self {
+    public function setPlotPictures(?string $plotPictures): self
+    {
         $this->plotPictures = $plotPictures;
 
         return $this;
     }
 
-    public function getRawDataPath(): ?string {
+    public function getRawDataPath(): ?string
+    {
         return $this->rawDataPath;
     }
 
-    public function setRawDataPath(?string $rawDataPath): self {
+    public function setRawDataPath(?string $rawDataPath): self
+    {
         $this->rawDataPath = $rawDataPath;
-
-        return $this;
-    }
-
-    public function getNoteCZ(): ?string {
-        return $this->noteCZ;
-    }
-
-    public function setNoteCZ(?string $noteCZ): self {
-        $this->noteCZ = $noteCZ;
-
-        return $this;
-    }
-
-    public function getNoteEN(): ?string {
-        return $this->noteEN;
-    }
-
-    public function setNoteEN(?string $noteEN): self {
-        $this->noteEN = $noteEN;
 
         return $this;
     }
@@ -317,11 +268,13 @@ class Run extends BaseEntity implements FileStorageEntityInterface {
     /**
      * @return Collection|SoilSample[]
      */
-    public function getSoilSamples(): Collection {
+    public function getSoilSamples(): Collection
+    {
         return $this->soilSamples;
     }
 
-    public function addSoilSample(SoilSample $soilSample): self {
+    public function addSoilSample(SoilSample $soilSample): self
+    {
         if (!$this->soilSamples->contains($soilSample)) {
             $this->soilSamples[] = $soilSample;
             $soilSample->setRun($this);
@@ -330,7 +283,8 @@ class Run extends BaseEntity implements FileStorageEntityInterface {
         return $this;
     }
 
-    public function removeSoilSample(SoilSample $soilSample): self {
+    public function removeSoilSample(SoilSample $soilSample): self
+    {
         if ($this->soilSamples->contains($soilSample)) {
             $this->soilSamples->removeElement($soilSample);
             // set the owning side to null (unless already changed)
@@ -342,17 +296,25 @@ class Run extends BaseEntity implements FileStorageEntityInterface {
         return $this;
     }
 
-    public function getPondingStart(): ?\DateTimeInterface {
+    public function getPondingStart(): ?\DateTimeInterface
+    {
         return $this->pondingStart;
     }
 
-    public function setPondingStart(?\DateTimeInterface $pondingStart): self {
+    public function getFormatedPondingStart(): string
+    {
+        return $this->getPondingStart() !== null ? $this->getPondingStart()->format("G:i:s") : ' - ';
+    }
+
+    public function setPondingStart(?\DateTimeInterface $pondingStart): self
+    {
         $this->pondingStart = $pondingStart;
 
         return $this;
     }
 
-    public function getFiles(): array {
+    public function getFiles(): array
+    {
         $files = [];
         $filesystem = new Filesystem();
         $dir = $this->getFilesPath();
@@ -368,20 +330,59 @@ class Run extends BaseEntity implements FileStorageEntityInterface {
         return $files;
     }
 
-    public function getFilesPath(): string {
-            return "data/run/" . $this->getId();
+    public function getFilesPath(): string
+    {
+        return "data/run/" . $this->getId();
     }
 
-    public function removeFile(string $filename):void {
+    public function removeFile(string $filename): void
+    {
         $filesystem = new Filesystem();
         $dir = $this->getFilesPath();
-        if ($filesystem->exists($dir.'/'.$filename)) {
-            $filesystem->remove($dir.'/'.$filename);
+        if ($filesystem->exists($dir . '/' . $filename)) {
+            $filesystem->remove($dir . '/' . $filename);
         }
     }
 
-    public function validateSoilSamples():bool {
-        return $this->getSoilSampleCorg()!==null && $this->getSoilSampleBulk()!==null && $this->getSoilSampleTexture()!==null;
+    public function validateSoilSamples(): bool
+    {
+        return $this->getSoilSampleCorg() !== null && $this->getSoilSampleBulk(
+            ) !== null && $this->getSoilSampleTexture() !== null;
+    }
+
+    public function getSoilSampleCorg(): ?SoilSample
+    {
+        return $this->soilSampleCorg;
+    }
+
+    public function setSoilSampleCorg(?SoilSample $soilSampleCorg): self
+    {
+        $this->soilSampleCorg = $soilSampleCorg;
+
+        return $this;
+    }
+
+    public function getSoilSampleBulk(): ?SoilSample
+    {
+        return $this->soilSampleBulk;
+    }
+
+    public function setSoilSampleBulk(?SoilSample $soilSampleBulk): self
+    {
+        $this->soilSampleBulk = $soilSampleBulk;
+        return $this;
+    }
+
+    public function getSoilSampleTexture(): ?SoilSample
+    {
+        return $this->soilSampleTexture;
+    }
+
+    public function setSoilSampleTexture(?SoilSample $soilSampleTexture): self
+    {
+        $this->soilSampleTexture = $soilSampleTexture;
+
+        return $this;
     }
 
     public function getInitMoisture(): ?Record
@@ -408,6 +409,12 @@ class Run extends BaseEntity implements FileStorageEntityInterface {
         return $this;
     }
 
+    public function getSequence(): ?Sequence
+    {
+
+        return $this->getRunGroup() !== null ? $this->getRunGroup()->getSequence() : null;
+    }
+
     public function getRunGroup(): ?RunGroup
     {
         return $this->runGroup;
@@ -420,37 +427,154 @@ class Run extends BaseEntity implements FileStorageEntityInterface {
         return $this;
     }
 
-    public function getSequence(): ?Sequence {
-
-        return $this->getRunGroup()!==null ? $this->getRunGroup()->getSequence() : null;
-    }
-
-    public function getDatetime(): ?\DateTimeInterface {
-        if ($this->getRunGroup()!==null) {
+    public function getDatetime(): ?\DateTimeInterface
+    {
+        if ($this->getRunGroup() !== null) {
             return $this->getRunGroup()->getDatetime();
         }
         return null;
     }
 
-    public function getFormatedDatetime(): string {
-        return $this->getRunGroup()!==null ? $this->getRunGroup()->getDatetime()!==null ? $this->getRunGroup()->getDatetime()->format("d.m.Y H:i"): " - ": " - ";
+    public function getFormatedDatetime(): string
+    {
+        return $this->getRunGroup() !== null ? $this->getRunGroup()->getDatetime() !== null ? $this->getRunGroup()
+                                                                                                   ->getDatetime()
+                                                                                                   ->format(
+                                                                                                       "d.m.Y H:i"
+                                                                                                   ) : " - " : " - ";
     }
 
-    public function getRunType(): ?RunType {
-        return $this->getRunGroup()!==null ? $this->getRunGroup()->getRunType() : null;
+    public function getRunType(): ?RunType
+    {
+        return $this->getRunGroup() !== null ? $this->getRunGroup()->getRunType() : null;
     }
 
-    public function getXmlDomElement(DOMDocument $dom):\DOMElement {
+    public function getXmlDomElement(DOMDocument $dom): \DOMElement
+    {
         $run = $dom->createElement('run');
+
         $measurements = $dom->createElement('measurements');
         foreach ($this->getMeasurements() as $measurement) {
             $measurements->append($measurement->getXmlDomElement($dom));
         }
+
         $run->append(
-            $dom->createElement('id',$this->getId()),
-            $dom->createElement('note',$this->getNote()),
+            $dom->createElement('id', $this->getId()),
+            $dom->createElement('note', $this->getNote()),
             $measurements
         );
+
+        if ($this->getSoilSampleBulk() !== null) {
+            $soilSampleBulk = $dom->createElement('soilSampleBulk');
+            $soilSampleBulk->append($this->getSoilSampleBulk()->getXmlDomElement($dom));
+            if ($this->getBulkAssignmentType() !== null) {
+                $soilSampleBulk->append($this->getBulkAssignmentType()->getXmlDomElement($dom));
+            }
+
+            $run->append($soilSampleBulk);
+        }
+
+        if ($this->getSoilSampleCorg() !== null) {
+            $soilSampleCorg = $dom->createElement('soilSampleCorg');
+            $soilSampleCorg->append($this->getSoilSampleCorg()->getXmlDomElement($dom));
+            if ($this->getCorgAssignmentType() !== null) {
+                $soilSampleCorg->append($this->getCorgAssignmentType()->getXmlDomElement($dom));
+            }
+
+            $run->append($soilSampleCorg);
+        }
+
+        if ($this->getSoilSampleTexture() !== null) {
+            $soilSampleTexture = $dom->createElement('soilSampleTexture');
+            $soilSampleTexture->append($this->getSoilSampleTexture()->getXmlDomElement($dom));
+            if ($this->getTextureAssignmentType() !== null) {
+                $soilSampleTexture->append($this->getTextureAssignmentType()->getXmlDomElement($dom));
+            }
+
+            $run->append($soilSampleTexture);
+        }
+
+        if ($this->getRunoffStart()!==null) {
+            $run->append(
+                $dom->createElement('runoffStart', $this->getFormatedRunoffStart())
+            );
+        }
+
+        if ($this->getPondingStart()!==null) {
+            $run->append(
+                $dom->createElement('pondingStart', $this->getFormatedPondingStart())
+            );
+        }
+
+        if ($this->getInitMoisture()!==null) {
+            $initMoisture = $dom->createElement('initMoisture');
+            $initMoisture->append(
+                $this->getInitMoisture()->getXmlDomElement($dom)
+            );
+            $run->append($initMoisture);
+        }
+
+        if ($this->getRainIntensity()!==null) {
+            $rainIntensity = $dom->createElement('rainIntensity');
+            $rainIntensity->append(
+                $this->getRainIntensity()->getXmlDomElement($dom)
+            );
+            $run->append($rainIntensity);
+        }
+
+        if($this->getPlot()!==null){
+            $run->append($this->getPlot()->getXmlDomElement($dom));
+        }
+
         return $run;
+    }
+
+    /**
+     * @return Collection|Measurement[]
+     */
+    public function getMeasurements(): Collection
+    {
+        return $this->measurements;
+    }
+
+    public function getNote(): ?string
+    {
+        return $this->getLocale() == 'en' ? $this->getNoteEN() : $this->getNoteCZ();
+    }
+
+    public function getNoteEN(): ?string
+    {
+        return $this->noteEN;
+    }
+
+    public function setNoteEN(?string $noteEN): self
+    {
+        $this->noteEN = $noteEN;
+
+        return $this;
+    }
+
+    public function getNoteCZ(): ?string
+    {
+        return $this->noteCZ;
+    }
+
+    public function setNoteCZ(?string $noteCZ): self
+    {
+        $this->noteCZ = $noteCZ;
+
+        return $this;
+    }
+
+    public function getBulkAssignmentType(): ?AssignmentType
+    {
+        return $this->bulkAssignmentType;
+    }
+
+    public function setBulkAssignmentType(?AssignmentType $bulkAssignmentType): self
+    {
+        $this->bulkAssignmentType = $bulkAssignmentType;
+
+        return $this;
     }
 }

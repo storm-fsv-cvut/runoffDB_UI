@@ -93,6 +93,27 @@ class Sequence extends BaseEntity
             )) : ("#" . $this->getId() . " - " . $this->getLocality());
     }
 
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(?\DateTimeInterface $date): self
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    public function getLocality(): ?Locality
+    {
+        if ($this->getRuns() !== null && $this->getRuns()->count() > 0 && $this->getRuns()->get(0)->getPlot(
+            ) !== null) {
+            return $this->getRuns()->get(0)->getPlot()->getLocality();
+        }
+        return null;
+    }
+
     /**
      * @return Collection|Run[]
      */
@@ -108,38 +129,22 @@ class Sequence extends BaseEntity
         return $runs;
     }
 
+    /**
+     * @return Collection|RunGroup[]
+     */
+    public function getRunGroups(): Collection
+    {
+        return $this->runGroups;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getDate(): ?\DateTimeInterface
-    {
-        return $this->date;
-    }
-
     public function getFormatedDate(): string
     {
         return $this->getDate() !== null ? $this->getDate()->format("d. m. Y") : ' - ';
-    }
-
-    public function setDate(?\DateTimeInterface $date): self
-    {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    public function getSimulator(): ?Simulator
-    {
-        return $this->simulator;
-    }
-
-    public function setSimulator(?Simulator $simulator): self
-    {
-        $this->simulator = $simulator;
-
-        return $this;
     }
 
     public function getCropBBCH(): ?int
@@ -199,18 +204,6 @@ class Sequence extends BaseEntity
         return $this->getLocale() == 'en' ? $this->getCropConditionEN() : $this->getCropConditionCZ();
     }
 
-    public function getCropConditionCZ(): ?string
-    {
-        return $this->cropConditionCZ;
-    }
-
-    public function setCropConditionCZ(?string $cropConditionCZ): self
-    {
-        $this->cropConditionCZ = $cropConditionCZ;
-
-        return $this;
-    }
-
     public function getCropConditionEN(): ?string
     {
         return $this->cropConditionEN;
@@ -219,6 +212,18 @@ class Sequence extends BaseEntity
     public function setCropConditionEN(?string $cropConditionEN): self
     {
         $this->cropConditionEN = $cropConditionEN;
+
+        return $this;
+    }
+
+    public function getCropConditionCZ(): ?string
+    {
+        return $this->cropConditionCZ;
+    }
+
+    public function setCropConditionCZ(?string $cropConditionCZ): self
+    {
+        $this->cropConditionCZ = $cropConditionCZ;
 
         return $this;
     }
@@ -242,6 +247,17 @@ class Sequence extends BaseEntity
         return $records;
     }
 
+    public function listPlots(): string
+    {
+        $names = [];
+        foreach ($this->getPlots() as $plot) {
+            if (!in_array($plot->getName(), $names, true)) {
+                $names[] = $plot->getName();
+            }
+        }
+        return implode(", ", $names);
+    }
+
     /**
      * @return array<Plot>
      */
@@ -256,17 +272,6 @@ class Sequence extends BaseEntity
         return $plots;
     }
 
-    public function listPlots(): string
-    {
-        $names = [];
-        foreach ($this->getPlots() as $plot) {
-            if (!in_array($plot->getName(), $names, true)) {
-                $names[] = $plot->getName();
-            }
-        }
-        return implode(", ", $names);
-    }
-
     public function listCrops(): string
     {
         $names = [];
@@ -278,23 +283,6 @@ class Sequence extends BaseEntity
             }
         }
         return implode(", ", $names);
-    }
-
-    public function getLocality(): ?Locality
-    {
-        if ($this->getRuns() !== null && $this->getRuns()->count() > 0 && $this->getRuns()->get(0)->getPlot(
-            ) !== null) {
-            return $this->getRuns()->get(0)->getPlot()->getLocality();
-        }
-        return null;
-    }
-
-    /**
-     * @return Collection|RunGroup[]
-     */
-    public function getRunGroups(): Collection
-    {
-        return $this->runGroups;
     }
 
     public function addRunGroup(RunGroup $runGroup): self
@@ -356,9 +344,26 @@ class Sequence extends BaseEntity
         $sequence->append(
             $dom->createElement('id', $this->getId()),
             $dom->createElement('date', $this->getDate() != null ? $this->getDate()->format("Y-m-d") : ""),
-            $runGroups
+            $runGroups,
+
         );
 
+        if ($this->getSimulator() !== null) {
+            $sequence->append($this->getSimulator()->getXmlDomElement($dom));
+        }
+
         return $sequence;
+    }
+
+    public function getSimulator(): ?Simulator
+    {
+        return $this->simulator;
+    }
+
+    public function setSimulator(?Simulator $simulator): self
+    {
+        $this->simulator = $simulator;
+
+        return $this;
     }
 }

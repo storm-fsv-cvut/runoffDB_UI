@@ -488,13 +488,26 @@ class SequenceController extends AbstractController
     /**
      * @Route("/{_locale}/export-sequence", name="export_sequence")
      */
-    public function exportSequence(Request $request, SequenceService $sequenceService): RedirectResponse
+    public function exportSequence(Request $request, SequenceService $sequenceService): Response
     {
-        if ($request->get('id')===null) {
+
+        if ($request->get('id') === null) {
             throw new \Exception("Invalid parameter id");
         }
-        $sequenceService->exportSequence($request->get('id'));
-        return $this->redirectToRoute('sequences');
+
+        $id = $request->get('id');
+        $xml = $sequenceService->exportSequence($id);
+
+        $response = new Response();
+        $filename = 'sequence-' . $id . '.xml';
+        $response->headers->set('Cache-Control', 'private');
+        $response->headers->set('Content-type', 'application/xhtml+xml');
+        $response->headers->set('Content-Disposition', 'attachment; filename="' . $filename . '";');
+        $response->headers->set('Content-length', strlen($xml));
+        $response->sendHeaders();
+        $response->setContent($xml);
+
+        return $response;
     }
 
     /**

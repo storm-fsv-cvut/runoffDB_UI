@@ -16,7 +16,7 @@ class Simulator extends BaseEntity implements DefinitionEntityInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private int  $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -26,7 +26,7 @@ class Simulator extends BaseEntity implements DefinitionEntityInterface
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private ?string  $nameEN;
+    private ?string $nameEN;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Organization", inversedBy="simulators")
@@ -55,7 +55,8 @@ class Simulator extends BaseEntity implements DefinitionEntityInterface
      */
     private ?string $reference;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->nameCZ = null;
         $this->nameEN = null;
         $this->organization = null;
@@ -65,36 +66,20 @@ class Simulator extends BaseEntity implements DefinitionEntityInterface
         $this->sequences = new ArrayCollection();
     }
 
-    public function __toString() {
-        if ($this->getName()!==null) {
-            return $this->getName() . ' (' . ($this->getOrganization()!==null ? $this->getOrganization()->getName() : "") . ')';
+    public function __toString()
+    {
+        if ($this->getName() !== null) {
+            return $this->getName() . ' (' . ($this->getOrganization() !== null ? $this->getOrganization()->getName(
+                ) : "") . ')';
         } else {
-            return "#".$this->getId() . ' (' . ($this->getOrganization()!==null ? $this->getOrganization()->getName() : "") . ')';
+            return "#" . $this->getId() . ' (' . ($this->getOrganization() !== null ? $this->getOrganization()->getName(
+                ) : "") . ')';
         }
     }
-    public function getName():?string {
+
+    public function getName(): ?string
+    {
         return $this->getLocale() == 'en' ? $this->getNameEN() : $this->getNameCZ();
-    }
-
-    public function getDescription():?string {
-        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getNameCZ(): ?string
-    {
-        return $this->nameCZ;
-    }
-
-    public function setNameCZ(?string $nameCZ): self
-    {
-        $this->nameCZ = $nameCZ;
-
-        return $this;
     }
 
     public function getNameEN(): ?string
@@ -105,6 +90,18 @@ class Simulator extends BaseEntity implements DefinitionEntityInterface
     public function setNameEN(?string $nameEN): self
     {
         $this->nameEN = $nameEN;
+
+        return $this;
+    }
+
+    public function getNameCZ(): ?string
+    {
+        return $this->nameCZ;
+    }
+
+    public function setNameCZ(?string $nameCZ): self
+    {
+        $this->nameCZ = $nameCZ;
 
         return $this;
     }
@@ -121,28 +118,9 @@ class Simulator extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-    public function getDescriptionCZ(): ?string
+    public function getId(): ?int
     {
-        return $this->descriptionCZ;
-    }
-
-    public function setDescriptionCZ(?string $descriptionCZ): self
-    {
-        $this->descriptionCZ = $descriptionCZ;
-
-        return $this;
-    }
-
-    public function getDescriptionEN(): ?string
-    {
-        return $this->descriptionEN;
-    }
-
-    public function setDescriptionEN(?string $descriptionEN): self
-    {
-        $this->descriptionEN = $descriptionEN;
-
-        return $this;
+        return $this->id;
     }
 
     /**
@@ -176,12 +154,60 @@ class Simulator extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-    public function getLabel(): string {
-        if ($this->getName()!==null) {
-            return $this->getName() . ' (' . ($this->getOrganization()!==null ? $this->getOrganization()->getName() : "") . ')';
+    public function getLabel(): string
+    {
+        if ($this->getName() !== null) {
+            return $this->getName() . ' (' . ($this->getOrganization() !== null ? $this->getOrganization()->getName(
+                ) : "") . ')';
         } else {
-            return "#".$this->getId() . ' (' . ($this->getOrganization()!==null ? $this->getOrganization()->getName() : "") . ')';
+            return "#" . $this->getId() . ' (' . ($this->getOrganization() !== null ? $this->getOrganization()->getName(
+                ) : "") . ')';
         }
+    }
+
+    public function getXmlDomElement(\DOMDocument $dom)
+    {
+        $simulator = $dom->createElement('simulator');
+        $simulator->append(
+            $dom->createElement('name', $this->getName()),
+            $dom->createElement('description', $this->getDescription()),
+            $dom->createElement('reference', $this->getReference())
+        );
+
+        if ($this->getOrganization() !== null) {
+            $simulator->append($this->getOrganization()->getXmlDomElement($dom));
+        }
+
+        return $simulator;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
+    }
+
+    public function getDescriptionEN(): ?string
+    {
+        return $this->descriptionEN;
+    }
+
+    public function setDescriptionEN(?string $descriptionEN): self
+    {
+        $this->descriptionEN = $descriptionEN;
+
+        return $this;
+    }
+
+    public function getDescriptionCZ(): ?string
+    {
+        return $this->descriptionCZ;
+    }
+
+    public function setDescriptionCZ(?string $descriptionCZ): self
+    {
+        $this->descriptionCZ = $descriptionCZ;
+
+        return $this;
     }
 
     public function getReference(): ?string

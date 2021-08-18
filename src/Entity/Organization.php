@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OrganizationRepository")
  */
@@ -60,7 +61,7 @@ class Organization extends BaseEntity implements DefinitionEntityInterface
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="organization")
      */
-    private Collection  $users;
+    private Collection $users;
 
     public function __construct()
     {
@@ -80,11 +81,6 @@ class Organization extends BaseEntity implements DefinitionEntityInterface
         return $this->getName() !== null ? $this->getName() : "#" . $this->getId();
     }
 
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
     public function getName(): ?string
     {
         return $this->name;
@@ -97,40 +93,9 @@ class Organization extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-    public function getContactPerson(): ?string
+    public function getId(): int
     {
-        return $this->contactPerson;
-    }
-
-    public function setContactPerson(?string $contactPerson): self
-    {
-        $this->contactPerson = $contactPerson;
-
-        return $this;
-    }
-
-    public function getContactNumber(): ?string
-    {
-        return $this->contactNumber;
-    }
-
-    public function setContactNumber(?string $contactNumber): self
-    {
-        $this->contactNumber = $contactNumber;
-
-        return $this;
-    }
-
-    public function getContactEmail(): ?string
-    {
-        return $this->contactEmail;
-    }
-
-    public function setContactEmail(?string $contactEmail): self
-    {
-        $this->contactEmail = $contactEmail;
-
-        return $this;
+        return $this->id;
     }
 
     /**
@@ -272,6 +237,56 @@ class Organization extends BaseEntity implements DefinitionEntityInterface
                 $user->setOrganization(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getXmlDomElement(\DOMDocument $dom)
+    {
+        $organization = $dom->createElement('organization');
+
+        $organization->append(
+            $dom->createElement('name', $this->getName()),
+            $dom->createElement('contactPerson', $this->getContactPerson()),
+            $dom->createElement('contactNumber', $this->getContactNumber()),
+            $dom->createElement('contactEmail', $this->getContactEmail())
+        );
+
+        return $organization;
+    }
+
+    public function getContactPerson(): ?string
+    {
+        return $this->contactPerson;
+    }
+
+    public function setContactPerson(?string $contactPerson): self
+    {
+        $this->contactPerson = $contactPerson;
+
+        return $this;
+    }
+
+    public function getContactNumber(): ?string
+    {
+        return $this->contactNumber;
+    }
+
+    public function setContactNumber(?string $contactNumber): self
+    {
+        $this->contactNumber = $contactNumber;
+
+        return $this;
+    }
+
+    public function getContactEmail(): ?string
+    {
+        return $this->contactEmail;
+    }
+
+    public function setContactEmail(?string $contactEmail): self
+    {
+        $this->contactEmail = $contactEmail;
 
         return $this;
     }

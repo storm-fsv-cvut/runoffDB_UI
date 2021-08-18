@@ -332,4 +332,10 @@ class Plot extends BaseEntity implements DefinitionEntityInterface
 
         return $this;
     }
+
+    public function getXmlDomElement(\DOMDocument $dom)
+    {
+        $plot = $dom->createElement('plot', (string) $this);
+        return $plot;
+    }
 }

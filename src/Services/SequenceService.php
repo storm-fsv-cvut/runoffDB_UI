@@ -10,7 +10,10 @@ use App\Repository\SequenceRepository;
 use App\Repository\TillageSequenceRepository;
 use DOMDocument;
 use Exception;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SequenceService
@@ -121,15 +124,6 @@ class SequenceService
         return $runsArray;
     }
 
-    public function getSequenceById(int $id): Sequence
-    {
-        $sequence = $this->sequenceRepository->find($id);
-        if ($sequence === null) {
-            throw new Exception("Sequence doesn't exist:" . $id);
-        }
-        return $this->sequenceRepository->find($id);
-    }
-
     public function getSequenceHeader(Sequence $sequence): array
     {
         $locality = $sequence->getLocality();
@@ -149,31 +143,26 @@ class SequenceService
         ];
     }
 
-    public function exportSequence(int $id)
-    {
-          $sequence = $this->getSequenceById($id);
-
-//        ini_set("memory_limit",'4G');
-//        $defaultContext = [
-//            AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
-//                return $object->getId();
-//            },
-//        ];
-//        $normalizer = new GetSetMethodNormalizer(null, null, null, null, null,  $defaultContext);
-//        $encoder = new JsonEncoder();
-//        $serializer = new Serializer([$normalizer], [$encoder]);
-//        $array = $serializer->serialize($sequence, 'json', [
-//            AbstractNormalizer::IGNORED_ATTRIBUTES => ['projects','simulator','runGroups']
-//        ]);
-//        dump($array);
-
+    public function exportSequence(
+        int $id
+    ): string {
+        $sequence = $this->getSequenceById($id);
         $dom = new DOMDocument();
         $dom->encoding = 'utf-8';
         $dom->xmlVersion = '1.0';
         $dom->formatOutput = true;
         $dom->append($sequence->getXmlDomElement($dom));
-        echo ($dom->saveXML());
-        exit;
+        $xmlString = $dom->saveXML();
+        return $xmlString;
+    }
+
+    public function getSequenceById(int $id): Sequence
+    {
+        $sequence = $this->sequenceRepository->find($id);
+        if ($sequence === null) {
+            throw new Exception("Sequence doesn't exist:" . $id);
+        }
+        return $this->sequenceRepository->find($id);
     }
 
 }

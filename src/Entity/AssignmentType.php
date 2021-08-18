@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Query\Expr\Base;
+use DOMDocument;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AssigmentTypeRepository")
@@ -74,5 +75,9 @@ class AssignmentType extends BaseEntity implements DefinitionEntityInterface
 
     public function getLabel(): string {
         return $this->getDescription() ?? (string)$this->getId();
+    }
+
+    public function getXmlDomElement(DOMDocument $dom):\DOMElement {
+        return $dom->createElement('assignmentType',$this->getDescription());
     }
 }
