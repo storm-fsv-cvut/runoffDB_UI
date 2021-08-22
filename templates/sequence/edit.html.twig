@@ -46,20 +46,6 @@
                             <dd>{{ header['locality'] }}</dd>
                         {% endif %}
                     </dl>
-                    <dl class="dl-horizontal col-md-6">
-                        {% if header['canopy_cover']!=null %}
-                            <dt>{% trans %}canopy cover{% endtrans %}:</dt>
-                            <dd>{{ header['canopy_cover'] }}</dd>
-                        {% endif %}
-                        {% if header['crop_bbch']!=null %}
-                            <dt>{% trans %}Crop b b c h{% endtrans %}:</dt>
-                            <dd>{{ header['crop_bbch'] }}</dd>
-                        {% endif %}
-                        {% if header['crop_condition']!=null %}
-                            <dt>{% trans %}crop condition{% endtrans %}:</dt>
-                            <dd>{{ header['crop_condition'] }}</dd>
-                        {% endif %}
-                    </dl>
                 </div>
             </div>
             {% if (is_granted('edit',sequence)) %}
@@ -241,6 +227,20 @@
                                                             {% endfor %}
                                                         </dd>
                                                     {% endif %}
+
+                                                        {% if runArray['canopy_cover']!=null %}
+                                                            <dt>{% trans %}canopy cover{% endtrans %}:</dt>
+                                                            <dd>{{ runArray['canopy_cover'] }}</dd>
+                                                        {% endif %}
+                                                        {% if runArray['crop_bbch']!=null %}
+                                                            <dt>{% trans %}Crop b b c h{% endtrans %}:</dt>
+                                                            <dd>{{ runArray['crop_bbch'] }}</dd>
+                                                        {% endif %}
+                                                        {% if runArray['crop_condition']!=null %}
+                                                            <dt>{% trans %}crop condition{% endtrans %}:</dt>
+                                                            <dd>{{ runArray['crop_condition'] }}</dd>
+                                                        {% endif %}
+
                                                 </dl>
                                             </div>
                                         </div>

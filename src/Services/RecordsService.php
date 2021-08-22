@@ -195,11 +195,11 @@ class RecordsService
 
     public function isRecordSetAsInSequenceContext(Record $record, Sequence $sequence): bool
     {
-        if ($sequence->getSurfaceCover() !== null && $sequence->getSurfaceCover()->getId() === $record->getId()) {
-            return true;
-        }
         if ($sequence->getRuns()!==null) {
             foreach ($sequence->getRuns() as $run) {
+                if ($run->getSurfaceCover() !== null && $run->getSurfaceCover()->getId() === $record->getId()) {
+                    return true;
+                }
                 if ($run->getInitMoisture() !== null && $run->getInitMoisture()->getId() === $record->getId()) {
                     return true;
                 }

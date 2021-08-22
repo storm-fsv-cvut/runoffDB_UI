@@ -127,6 +127,27 @@ class Run extends BaseEntity implements FileStorageEntityInterface
      */
     private ?RunGroup $runGroup;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Record")
+     * @ORM\JoinColumn(name="surface_cover_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    private ?Record $surfaceCover;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private ?int $cropBBCH;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $cropConditionCZ;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $cropConditionEN;
+
     public function __construct()
     {
         $this->soilSampleBulk = null;
@@ -145,6 +166,63 @@ class Run extends BaseEntity implements FileStorageEntityInterface
         $this->pondingStart = null;
         $this->soilSamples = new ArrayCollection();
         $this->measurements = new ArrayCollection();
+        $this->cropBBCH = null;
+        $this->cropConditionCZ = null;
+        $this->cropConditionEN = null;
+        $this->surfaceCover = null;
+    }
+
+    public function getSurfaceCover(): ?Record
+    {
+        return $this->surfaceCover;
+    }
+
+    public function setSurfaceCover(?Record $surfaceCover): self
+    {
+        $this->surfaceCover = $surfaceCover;
+
+        return $this;
+    }
+
+    public function getCropCondition(): ?string
+    {
+        return $this->getLocale() == 'en' ? $this->getCropConditionEN() : $this->getCropConditionCZ();
+    }
+
+    public function getCropConditionEN(): ?string
+    {
+        return $this->cropConditionEN;
+    }
+
+    public function setCropConditionEN(?string $cropConditionEN): self
+    {
+        $this->cropConditionEN = $cropConditionEN;
+
+        return $this;
+    }
+
+    public function getCropConditionCZ(): ?string
+    {
+        return $this->cropConditionCZ;
+    }
+
+    public function setCropConditionCZ(?string $cropConditionCZ): self
+    {
+        $this->cropConditionCZ = $cropConditionCZ;
+
+        return $this;
+    }
+
+    public function getCropBBCH(): ?int
+    {
+        return $this->cropBBCH;
+    }
+
+    public function setCropBBCH(?int $cropBBCH): self
+    {
+        $this->cropBBCH = $cropBBCH;
+
+        return $this;
     }
 
     public function __toString()
@@ -173,59 +251,6 @@ class Run extends BaseEntity implements FileStorageEntityInterface
             $this->measurements->removeElement($measurement);
             $measurement->removeRun($this);
         }
-        return $this;
-    }
-
-    public function getPlot(): ?Plot
-    {
-        return $this->plot;
-    }
-
-    public function setPlot(?Plot $plot): self
-    {
-        $this->plot = $plot;
-
-        return $this;
-    }
-
-    public function getTextureAssignmentType(): ?AssignmentType
-    {
-        return $this->textureAssignmentType;
-    }
-
-    public function setTextureAssignmentType(?AssignmentType $textureAssignmentType): self
-    {
-        $this->textureAssignmentType = $textureAssignmentType;
-
-        return $this;
-    }
-
-    public function getCorgAssignmentType(): ?AssignmentType
-    {
-        return $this->corgAssignmentType;
-    }
-
-    public function setCorgAssignmentType(?AssignmentType $corgAssignmentType): self
-    {
-        $this->corgAssignmentType = $corgAssignmentType;
-
-        return $this;
-    }
-
-    public function getFormatedRunoffStart(): string
-    {
-        return $this->getRunoffStart() !== null ? $this->getRunoffStart()->format("G:i:s") : ' - ';
-    }
-
-    public function getRunoffStart(): ?\DateTimeInterface
-    {
-        return $this->runoffStart;
-    }
-
-    public function setRunoffStart(?\DateTimeInterface $runoffStart): self
-    {
-        $this->runoffStart = $runoffStart;
-
         return $this;
     }
 
@@ -292,23 +317,6 @@ class Run extends BaseEntity implements FileStorageEntityInterface
                 $soilSample->setRun(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getPondingStart(): ?\DateTimeInterface
-    {
-        return $this->pondingStart;
-    }
-
-    public function getFormatedPondingStart(): string
-    {
-        return $this->getPondingStart() !== null ? $this->getPondingStart()->format("G:i:s") : ' - ';
-    }
-
-    public function setPondingStart(?\DateTimeInterface $pondingStart): self
-    {
-        $this->pondingStart = $pondingStart;
 
         return $this;
     }
@@ -381,30 +389,6 @@ class Run extends BaseEntity implements FileStorageEntityInterface
     public function setSoilSampleTexture(?SoilSample $soilSampleTexture): self
     {
         $this->soilSampleTexture = $soilSampleTexture;
-
-        return $this;
-    }
-
-    public function getInitMoisture(): ?Record
-    {
-        return $this->initMoisture;
-    }
-
-    public function setInitMoisture(?Record $initMoisture): self
-    {
-        $this->initMoisture = $initMoisture;
-
-        return $this;
-    }
-
-    public function getRainIntensity(): ?Record
-    {
-        return $this->rainIntensity;
-    }
-
-    public function setRainIntensity(?Record $rainIntensity): self
-    {
-        $this->rainIntensity = $rainIntensity;
 
         return $this;
     }
@@ -494,19 +478,19 @@ class Run extends BaseEntity implements FileStorageEntityInterface
             $run->append($soilSampleTexture);
         }
 
-        if ($this->getRunoffStart()!==null) {
+        if ($this->getRunoffStart() !== null) {
             $run->append(
                 $dom->createElement('runoffStart', $this->getFormatedRunoffStart())
             );
         }
 
-        if ($this->getPondingStart()!==null) {
+        if ($this->getPondingStart() !== null) {
             $run->append(
                 $dom->createElement('pondingStart', $this->getFormatedPondingStart())
             );
         }
 
-        if ($this->getInitMoisture()!==null) {
+        if ($this->getInitMoisture() !== null) {
             $initMoisture = $dom->createElement('initMoisture');
             $initMoisture->append(
                 $this->getInitMoisture()->getXmlDomElement($dom)
@@ -514,7 +498,7 @@ class Run extends BaseEntity implements FileStorageEntityInterface
             $run->append($initMoisture);
         }
 
-        if ($this->getRainIntensity()!==null) {
+        if ($this->getRainIntensity() !== null) {
             $rainIntensity = $dom->createElement('rainIntensity');
             $rainIntensity->append(
                 $this->getRainIntensity()->getXmlDomElement($dom)
@@ -522,7 +506,7 @@ class Run extends BaseEntity implements FileStorageEntityInterface
             $run->append($rainIntensity);
         }
 
-        if($this->getPlot()!==null){
+        if ($this->getPlot() !== null) {
             $run->append($this->getPlot()->getXmlDomElement($dom));
         }
 
@@ -574,6 +558,100 @@ class Run extends BaseEntity implements FileStorageEntityInterface
     public function setBulkAssignmentType(?AssignmentType $bulkAssignmentType): self
     {
         $this->bulkAssignmentType = $bulkAssignmentType;
+
+        return $this;
+    }
+
+    public function getCorgAssignmentType(): ?AssignmentType
+    {
+        return $this->corgAssignmentType;
+    }
+
+    public function setCorgAssignmentType(?AssignmentType $corgAssignmentType): self
+    {
+        $this->corgAssignmentType = $corgAssignmentType;
+
+        return $this;
+    }
+
+    public function getTextureAssignmentType(): ?AssignmentType
+    {
+        return $this->textureAssignmentType;
+    }
+
+    public function setTextureAssignmentType(?AssignmentType $textureAssignmentType): self
+    {
+        $this->textureAssignmentType = $textureAssignmentType;
+
+        return $this;
+    }
+
+    public function getRunoffStart(): ?\DateTimeInterface
+    {
+        return $this->runoffStart;
+    }
+
+    public function setRunoffStart(?\DateTimeInterface $runoffStart): self
+    {
+        $this->runoffStart = $runoffStart;
+
+        return $this;
+    }
+
+    public function getFormatedRunoffStart(): string
+    {
+        return $this->getRunoffStart() !== null ? $this->getRunoffStart()->format("G:i:s") : ' - ';
+    }
+
+    public function getPondingStart(): ?\DateTimeInterface
+    {
+        return $this->pondingStart;
+    }
+
+    public function setPondingStart(?\DateTimeInterface $pondingStart): self
+    {
+        $this->pondingStart = $pondingStart;
+
+        return $this;
+    }
+
+    public function getFormatedPondingStart(): string
+    {
+        return $this->getPondingStart() !== null ? $this->getPondingStart()->format("G:i:s") : ' - ';
+    }
+
+    public function getInitMoisture(): ?Record
+    {
+        return $this->initMoisture;
+    }
+
+    public function setInitMoisture(?Record $initMoisture): self
+    {
+        $this->initMoisture = $initMoisture;
+
+        return $this;
+    }
+
+    public function getRainIntensity(): ?Record
+    {
+        return $this->rainIntensity;
+    }
+
+    public function setRainIntensity(?Record $rainIntensity): self
+    {
+        $this->rainIntensity = $rainIntensity;
+
+        return $this;
+    }
+
+    public function getPlot(): ?Plot
+    {
+        return $this->plot;
+    }
+
+    public function setPlot(?Plot $plot): self
+    {
+        $this->plot = $plot;
 
         return $this;
     }

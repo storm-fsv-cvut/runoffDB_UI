@@ -23,6 +23,37 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="form-group col-md-6">
+                        {{ form_row(runForm.cropBBCH) }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        {{ form_row(runForm.surfaceCover) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+
+                        <div class="nav-tabs-custom">
+                            <ul class="nav nav-tabs">
+                                <li class="active">
+                                    <a href="#Run_cropConditionCZ" data-toggle="tab" aria-expanded="true">{{ form_label(runForm.cropConditionCZ) }}</a>
+                                </li>
+                                <li class="">
+                                    <a href="#Run_cropConditionEN" data-toggle="tab" aria-expanded="false">{{ form_label(runForm.cropConditionEN) }}</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="Run_cropConditionCZ">
+                                    {{ form_widget(runForm.cropConditionCZ) }}
+                                </div>
+                                <div class="tab-pane" id="Run_cropConditionEN">
+                                    {{ form_widget(runForm.cropConditionEN) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="form-group col-md-12">
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs">

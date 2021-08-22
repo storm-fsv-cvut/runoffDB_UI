@@ -23,37 +23,6 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-md-2">
-                            {{ form_row(form.cropBBCH) }}
-                        </div>
-                        <div class="form-group col-md-2">
-                            {{ form_row(form.surfaceCover) }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-12">
-
-                            <div class="nav-tabs-custom">
-                                <ul class="nav nav-tabs">
-                                    <li class="active">
-                                        <a href="#Run_{{ form.vars.value.getId() }}_cropConditionCZ" data-toggle="tab" aria-expanded="true">{{ form_label(form.cropConditionCZ) }}</a>
-                                    </li>
-                                    <li class="">
-                                        <a href="#Run_{{ form.vars.value.getId() }}_cropConditionEN" data-toggle="tab" aria-expanded="false">{{ form_label(form.cropConditionEN) }}</a>
-                                    </li>
-                                </ul>
-                                <div class="tab-content">
-                                    <div class="tab-pane active" id="Run_{{ form.vars.value.getId() }}_cropConditionCZ">
-                                        {{ form_widget(form.cropConditionCZ) }}
-                                    </div>
-                                    <div class="tab-pane" id="Run_{{ form.vars.value.getId() }}_cropConditionEN">
-                                        {{ form_widget(form.cropConditionEN) }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
                         <div class="form-group col-md-12">
                             {{ form_row(form.projects) }}
                         </div>

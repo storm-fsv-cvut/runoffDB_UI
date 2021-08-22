@@ -6,9 +6,11 @@ namespace App\Form;
 
 use App\Entity\AssignmentType;
 use App\Entity\Plot;
+use App\Entity\Record;
 use App\Entity\Run;
 use App\Entity\RunType as RunTypeEntity;
 use App\Entity\SoilSample;
+use App\Services\RecordsService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -29,9 +31,11 @@ class RunType extends AbstractType {
      * @var TranslatorInterface
      */
     private $translator;
+    private RecordsService $recordsService;
 
-    public function __construct(TranslatorInterface $translator) {
+    public function __construct(TranslatorInterface $translator, RecordsService $recordsService) {
         $this->translator = $translator;
+        $this->recordsService = $recordsService;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void {
@@ -99,6 +103,21 @@ class RunType extends AbstractType {
                 'required' => false,
                 'mapped'=>false
             ])
+            ->add('surfaceCover', EntityType::class, [
+                'class'=>Record::class,
+                'choices'=>$this->recordsService->getRecordsByPhenomenonKey("surcov"),
+                'label' => 'surfaceCover',
+                'required'=>false
+            ])
+            ->add('cropConditionCZ', TextareaType::class, [
+                'label' => 'cropConditionCZ',
+                'required'=>false
+            ])
+            ->add('cropConditionEN', TextareaType::class, [
+                'label' => 'cropConditionEN',
+                'required'=>false
+            ])
+            ->add('cropBBCH')
             ->add('save', SubmitType::class,[
                 'attr'=>['class'=>'btn btn-success']
             ]);

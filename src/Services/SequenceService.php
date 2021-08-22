@@ -98,6 +98,9 @@ class SequenceService
                     'soil_sample_bulk' => $run->getSoilSampleBulk(),
                     'soil_sample_bulk_assignment' => $run->getBulkAssignmentType(),
                     'soil_sample_corg' => $run->getSoilSampleCorg(),
+                    'canopy_cover' => $run->getSurfaceCover(),
+                    'crop_bbch' => $run->getCropBBCH(),
+                    'crop_condition' => $run->getCropCondition(),
                     'note' => $run->getNote(),
                     'rain_intensity' => $rain_intensity,
                     'init_moisture' => $init_moisture,
@@ -136,10 +139,7 @@ class SequenceService
             'date' => $sequence->getFormatedDate(),
             'simulator' => $sequence->getSimulator(),
             'projects' => $projects,
-            'locality' => $locality !== null ? $locality->getName() : " n/a ",
-            'canopy_cover' => $sequence->getSurfaceCover(),
-            'crop_bbch' => $sequence->getCropBBCH(),
-            'crop_condition' => $sequence->getCropCondition()
+            'locality' => $locality !== null ? $locality->getName() : " n/a "
         ];
     }
 

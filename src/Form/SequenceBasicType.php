@@ -51,7 +51,6 @@ class SequenceBasicType extends AbstractType
         $builder
             ->add('simulator')
             ->add('date', DateType::class,['widget'=>'single_text'])
-            ->add('cropBBCH')
             ->add(
                 'projects',
                 EntityType::class,
@@ -62,20 +61,7 @@ class SequenceBasicType extends AbstractType
                     'label' => 'projects'
                 ]
             )
-            ->add('surfaceCover', EntityType::class, [
-                'class'=>Record::class,
-                'choices'=>$this->recordsService->getRecordsByPhenomenonKey("surcov"),
-                'label' => 'surfaceCover',
-                'required'=>false
-            ])
-            ->add('cropConditionCZ', TextareaType::class, [
-                'label' => 'cropConditionCZ',
-                'required'=>false
-            ])
-            ->add('cropConditionEN', TextareaType::class, [
-                'label' => 'cropConditionEN',
-                'required'=>false
-            ])
+
             ->add('save', SubmitType::class,[
                 'attr'=>['class'=>'btn btn-success']
             ]);

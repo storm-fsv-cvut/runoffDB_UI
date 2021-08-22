@@ -32,30 +32,9 @@ class Sequence extends BaseEntity
     private ?Simulator $simulator;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private ?int $cropBBCH;
-
-    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Project")
      */
     private Collection $projects;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Record")
-     * @ORM\JoinColumn(name="surface_cover_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    private ?Record $surfaceCover;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private ?string $cropConditionCZ;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private ?string $cropConditionEN;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\RunGroup", mappedBy="sequence", orphanRemoval=true)
@@ -76,10 +55,6 @@ class Sequence extends BaseEntity
     {
         $this->id = null;
         $this->simulator = null;
-        $this->cropBBCH = null;
-        $this->cropConditionCZ = null;
-        $this->cropConditionEN = null;
-        $this->surfaceCover = null;
         $this->deleted = null;
         $this->date = null;
         $this->projects = new ArrayCollection();
@@ -147,18 +122,6 @@ class Sequence extends BaseEntity
         return $this->getDate() !== null ? $this->getDate()->format("d. m. Y") : ' - ';
     }
 
-    public function getCropBBCH(): ?int
-    {
-        return $this->cropBBCH;
-    }
-
-    public function setCropBBCH(?int $cropBBCH): self
-    {
-        $this->cropBBCH = $cropBBCH;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Project[]
      */
@@ -183,47 +146,6 @@ class Sequence extends BaseEntity
             $this->projects->removeElement($project);
             $project->removeSequence($this);
         }
-
-        return $this;
-    }
-
-    public function getSurfaceCover(): ?Record
-    {
-        return $this->surfaceCover;
-    }
-
-    public function setSurfaceCover(?Record $surfaceCover): self
-    {
-        $this->surfaceCover = $surfaceCover;
-
-        return $this;
-    }
-
-    public function getCropCondition(): ?string
-    {
-        return $this->getLocale() == 'en' ? $this->getCropConditionEN() : $this->getCropConditionCZ();
-    }
-
-    public function getCropConditionEN(): ?string
-    {
-        return $this->cropConditionEN;
-    }
-
-    public function setCropConditionEN(?string $cropConditionEN): self
-    {
-        $this->cropConditionEN = $cropConditionEN;
-
-        return $this;
-    }
-
-    public function getCropConditionCZ(): ?string
-    {
-        return $this->cropConditionCZ;
-    }
-
-    public function setCropConditionCZ(?string $cropConditionCZ): self
-    {
-        $this->cropConditionCZ = $cropConditionCZ;
 
         return $this;
     }
