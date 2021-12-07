@@ -35,12 +35,7 @@
                                                 </td>
                                                 <td rowspan="{{ runs.count() }}">{{ sequence.getLocality() }}</td>
                                                 <td rowspan="{{ runs.count() }}">
-                                                    {% if sequence.getCropCondition() %}
-                                                        <span data-toggle="tooltip" class="tip" data-placement="top"
-                                                              title="{{ sequence.getCropCondition() }}">{{ sequence.getID() }}</span>
-                                                    {% else %}
                                                         {{ sequence.getID() }}
-                                                    {% endif %}
                                                 </td>
                                             {% endif %}
                                             <td class="{% if run.getRunType().getId()==1 %}dry{% elseif run.getRunType().getId()==2 %}moist{% elseif run.getRunType().getId()==3 %}wet{% endif %}">
@@ -76,20 +71,11 @@
                                                 </td>
                                             {% endfor %}
 
-                                            {% if sequence.getSurfaceCover()!=null %}
-                                                <td class="hasrecords-1">
-                                                    <span class="d-block w-100" data-toggle="tooltip"
-                                                          title="{% trans %}surfaceCover{% endtrans %}"
-                                                          data-placement="top">1</span>
-                                                </td>
-                                            {% else %}
                                                 <td class="hasrecords-0">
                                                     <span class="d-block w-100" data-toggle="tooltip"
                                                           title="{% trans %}surfaceCover{% endtrans %}"
                                                           data-placement="top">0</span>
                                                 </td>
-                                            {% endif %}
-
 
                                             {% set soilsample = run.getSoilSampleBulk() %}
                                             {% if soilsample %}

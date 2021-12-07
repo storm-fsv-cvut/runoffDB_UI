@@ -31,7 +31,7 @@ class Plot extends BaseEntity implements DefinitionEntityInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Locality")
-     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\JoinColumn(name="soil_origin_locality_id", nullable=true, referencedColumnName="id", onDelete="SET NULL")
      */
     private ?Locality $soilOriginLocality;
 
@@ -89,6 +89,7 @@ class Plot extends BaseEntity implements DefinitionEntityInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ProtectionMeasure")
+     * @ORM\JoinColumn(name="protection_measure_id", referencedColumnName="id", nullable=true)
      */
     private ?ProtectionMeasure $protectionMeasure;
 
@@ -106,9 +107,9 @@ class Plot extends BaseEntity implements DefinitionEntityInterface
 
     public function __toString() {
             if ($this->getLocale() == 'en' ) {
-                return $this->getName() . ' - ' . $this->getCrop()->getName() . ", est. " . $this->getEstablished()->format('Y-m-d')." (#".$this->getId().")";
+                return $this->getName() . ' - ' . ($this->getCrop() ? $this->getCrop()->getName() : '') . ", est. " . $this->getEstablished()->format('Y-m-d')." (#".$this->getId().")";
             } else {
-                return $this->getName() . ' - ' . $this->getCrop()->getName() . ", zal. " . $this->getEstablished()->format('d.m.Y')." (#".$this->getId().")";
+                return $this->getName() . ' - ' . ($this->getCrop() ? $this->getCrop()->getName() : '') . ", zal. " . $this->getEstablished()->format('d.m.Y')." (#".$this->getId().")";
             }
     }
 

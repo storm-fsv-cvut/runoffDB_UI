@@ -360,6 +360,8 @@ class SequenceController extends AbstractController
 
                 if ($sequenceForm->isSubmitted()) {
                     $partialForm = $sequenceForm->getClickedButton()->getParent();
+//                    dump($partialForm->get('datas')->getData());
+//                    exit;
                     $partialData = $partialForm->getData();
                     if ($partialForm->has('rawData') && $partialForm->get('rawData') !== null) {
                         foreach ($partialForm->get('rawData')->getData() as $file) {

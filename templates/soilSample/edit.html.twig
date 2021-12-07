@@ -11,7 +11,7 @@
             {{ soilSample }}
         </h1>
         <ol class="breadcrumb">
-            <li><a href="{{ path('soilSamples') }}"><i class="fa fa-list"></i> Seznam</a></li>
+            <li><a href="{{ path('soilSamples') }}"><i class="fa fa-list"></i>&nbsp;&nbsp;&nbsp;Seznam</a></li>
         </ol>
     </section>
 
@@ -55,9 +55,6 @@
             <div class="col-lg-12">
                 <div class="box box-solid">
                     <div class="box-header">
-                        {% if (is_granted('edit',soilSample)) %}
-                            {% include "forms/soilSampleTypeModalEdit.html.twig" %}
-                        {% endif %}
                     </div>
                     <div class="box-body">
                         <div class="row">
@@ -158,14 +155,17 @@
                                     {% endif %}
 
                                     {% if soilSample.getFiles()|length>0 %}
-                                    <dt>{% trans %}files{% endtrans %}</dt>
-                                    <dd>
-                                        {% for file in soilSample.getFiles() %}
-                                            <a href="{{ path('downloadSoilSampleFile',{'id':soilSample.getId(),'filename':file}) }}" target="_blank">{{ file }}</a>
-                                            <a class="text-danger" data-confirm="{% trans %}delete?{% endtrans %}" href="{{ path('deleteSoilSampleFile',{'id':soilSample.getId(),'filename':file}) }}"><i class="fa fa-trash"></i></a>
-                                            <br/>
-                                        {% endfor %}
-                                    </dd>
+                                        <dt>{% trans %}files{% endtrans %}</dt>
+                                        <dd>
+                                            {% for file in soilSample.getFiles() %}
+                                                <a href="{{ path('downloadSoilSampleFile',{'id':soilSample.getId(),'filename':file}) }}"
+                                                   target="_blank">{{ file }}</a>
+                                                <a class="text-danger" data-confirm="{% trans %}delete?{% endtrans %}"
+                                                   href="{{ path('deleteSoilSampleFile',{'id':soilSample.getId(),'filename':file}) }}"><i
+                                                            class="fa fa-trash"></i></a>
+                                                <br/>
+                                            {% endfor %}
+                                        </dd>
                                     {% endif %}
                                 </dl>
                             </div>
@@ -173,15 +173,19 @@
                     </div>
                     {% if (is_granted('edit',soilSample)) %}
                         <div class="box-footer">
-                            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal"
+                            {% if (is_granted('edit',soilSample)) %}
+                                {% include "forms/soilSampleTypeModalEdit.html.twig" %}
+                            {% endif %}
+
+                            <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
                                     data-parent="{{ soilSample.getId() }}" data-target="#measurement">
-                                {% trans %}add measurement{% endtrans %}
+                                <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;{% trans %}add measurement{% endtrans %}
                             </button>
 
 
-                            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal"
+                            <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
                                     data-parent="{{ soilSample.getId() }}" data-target="#append_measurement">
-                                {% trans %}append measurement{% endtrans %}
+                                <i class="fa fa-chain"></i>&nbsp;&nbsp;&nbsp;{% trans %}append measurement{% endtrans %}
                             </button>
                         </div>
                     {% endif %}
@@ -192,189 +196,304 @@
         <div class="row">
             <div class="col-md-12 records">
                 {% for formMeasurement in form.measurements %}
+
                     {% set measurementArray = measurements[formMeasurement.vars.value.getId()] %}
+
+
                     <div class="row">
                         <div class="col-md-12">
-                            {% if (is_granted('edit',soilSample)) %}
-                                <h4>
-                                    <div class="dropdown">
-                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                            {{ formMeasurement.vars.value.getPhenomenon() }} <span class="caret"></span>
-                                        </a>
-                                        <ul class="dropdown-menu">
-                                            <li role="presentation">
-                                                <a role="menuitem" tabindex="-1" href="javascript:;" data-toggle="modal"
-                                                   data-parent="{{ measurementArray['id'] }}"
-                                                   data-target="#record">{% trans %}add record{% endtrans %}</a>
-                                            </li>
-                                            <li role="presentation" class="divider"></li>
-                                            <li role="presentation">
-                                                <a role="menuitem" data-toggle="modal"
-                                                   data-target="#measurement{{ formMeasurement.vars.value.getId() }}"
-                                                   tabindex="-1" href="#">{% trans %}edit{% endtrans %}</a>
-                                            </li>
-                                            <li role="presentation" class="divider"></li>
-                                            <li role="presentation">
-                                                <a role="menuitem" tabindex="-1"
-                                                   data-confirm="{% trans %}unlink?{% endtrans %}"
-                                                   href="{{ path('soilSample', {id:soilSample.getId(),unlink_measurement:formMeasurement.vars.value.getId()}) }}">{% trans %}unlink{% endtrans %}</a>
-                                            </li>
-                                            <li role="presentation">
-                                                <a role="menuitem" tabindex="-1"
-                                                   data-confirm="{% trans %}delete?{% endtrans %}"
-                                                   href="{{ path('soilSample', {id:soilSample.getId(),delete_measurement:formMeasurement.vars.value.getId()}) }}">{% trans %}delete{% endtrans %}</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </h4>
-                                {% include "forms/measurementTypeModalEdit.html.twig" with {'parentId':soilSample.getId()} %}
-                            {% endif %}
-                            <p>
-                                {% if measurementArray['description'] %}
-                                    {{ measurementArray['description'] }}
-                                {% endif %}
-                            </p>
-                            {% if measurementArray['note'] %}
-                                <i>* {{ measurementArray['note'] }}</i>
-                            {% endif %}
-                            <div class="box-group" id="accordion">
-                                {% for formRecord in formMeasurement.records %}
-                                    {% set record = formRecord.vars.value %}
-                                    <div class="panel box box-solid">
-                                        <div class="box-header{% if recordsService.isRecordSetAsInSoilSampleContext(record, soilSample) %} bg-warning{% endif %}">
-                                            <h4 class="box-title">
-                                                <a data-toggle="collapse" data-parent="#accordion"
-                                                   href="#record-{{ record.getId() }}" class="collapsed"
-                                                   aria-expanded="false">
-                                                    {% if record.getUnit() is not same as(null) %}
-                                                        {{ record.getUnit().getName() }}
-                                                    {% endif %}
-                                                </a>
-                                                <small>
-                                                    {% if record.getRecordType()  is not same as(null) %}
-                                                        {{ record.getRecordType().getName() }}
-                                                    {% endif %}
-                                                </small>
-                                                <span class="badge bg-primary">#{{ record.getId() }}</span>
-                                                {% for sourceRecord in record.getSourceRecords() %}
-                                                    <span class="badge bg-primary">{% trans %}derived from{% endtrans %} #{{ sourceRecord.getId() }}</span>
-                                                {% endfor %}
-                                            </h4>
-                                            <div class="box-tools pull-right">
-                                                {% if record.getIsTimeline() %}
-                                                    <input type="checkbox" class="icheckbox_flat-green"
-                                                           data-toggle="chart" data-target="#chart-soil-sample"
-                                                           data-sample="{{ soilSample.getId() }}"
-                                                           data-record="{{ record.getId() }}">
+
+                            <div class="panel box box-info">
+                                <div class="box-header">
+                                    #{{ formMeasurement.vars.value.getId() }}
+                                </div>
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h4>{{ formMeasurement.vars.value.getPhenomenon() }}</h4>
+
+                                            <p>
+                                                {% if measurementArray['description'] %}
+                                                    {{ measurementArray['description'] }}
                                                 {% endif %}
-                                                {% if (is_granted('edit',soilSample)) %}
-                                                    <div class="dropdown inline">
-                                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                                            <span class="caret"></span>
+                                            </p>
+                                            {% if measurementArray['note'] %}
+                                                <i>* {{ measurementArray['note'] }}</i>
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            {% if (is_granted('edit',soilSample)) %}
+                                                <div class="row margin-bottom-sm">
+                                                    <div class="col-sm-12 align-right">
+                                                        <a class="btn btn-info btn-sm" href="javascript:;"
+                                                           data-toggle="modal"
+                                                           data-parent="{{ measurementArray['id'] }}"
+                                                           data-target="#record">
+                                                            <i
+                                                                    class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;{% trans %}add record{% endtrans %}
                                                         </a>
-                                                        <ul class="dropdown-menu">
-                                                            <li role="presentation">
-                                                                <a role="menuitem"
-                                                                   href="{{ path('ismoisture', {soilSampleId:soilSample.getId(),recordId:record.getId()}) }}">{% trans %}set as moisture{% endtrans %}</a>
-                                                            </li>
-                                                            <li role="presentation">
-                                                                <a role="menuitem"
-                                                                   href="{{ path('istexture', {soilSampleId:soilSample.getId(),recordId:record.getId()}) }}">{% trans %}set as texture{% endtrans %}</a>
-                                                            </li>
-                                                            <li role="presentation">
-                                                                <a role="menuitem"
-                                                                   href="{{ path('iscorg', {soilSampleId:soilSample.getId(),recordId:record.getId()}) }}">{% trans %}set as corg{% endtrans %}</a>
-                                                            </li>
-                                                            <li role="presentation">
-                                                                <a role="menuitem"
-                                                                   href="{{ path('isbulkDensity', {soilSampleId:soilSample.getId(),recordId:record.getId()}) }}">{% trans %}set as bulkDensity{% endtrans %}</a>
-                                                            </li>
-                                                            <li role="presentation">
-                                                                <a role="menuitem"
-                                                                   data-confirm="{% trans %}delete?{% endtrans %}"
-                                                                   tabindex="-1"
-                                                                   href="{{ path('soilSample', {id:soilSample.getId(),delete_record:record.getId()}) }}">{% trans %}delete{% endtrans %}</a>
-                                                            </li>
-                                                            <li role="presentation">
-                                                                <a role="menuitem" tabindex="-1" href="#"
-                                                                   data-toggle="modal"
-                                                                   data-target="#record{{ record.getId() }}">{% trans %}edit{% endtrans %}</a>
-                                                            </li>
-                                                        </ul>
                                                     </div>
-                                                {% endif %}
-                                            </div>
+                                                </div>
+                                                <div class="row margin-bottom-sm">
+                                                    <div class="col-sm-12 align-right">
+                                                        <a class="btn btn-info btn-sm" data-toggle="modal"
+                                                           data-target="#measurement{{ formMeasurement.vars.value.getId() }}"
+                                                           href="#">
+                                                            <i class="fa fa-pencil"></i>&nbsp;&nbsp;&nbsp;{% trans %}edit measurement{% endtrans %}
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="row margin-bottom-sm">
+                                                    <div class="col-sm-12 align-right">
+                                                        <a class="btn btn-info btn-sm"
+                                                           data-confirm="{% trans %}unlink?{% endtrans %}"
+                                                           href="{{ path('soilSample', {id:soilSample.getId(),unlink_measurement:formMeasurement.vars.value.getId()}) }}">
+                                                            <i class="fa fa-chain-broken"></i>&nbsp;&nbsp;&nbsp;{% trans %}unlink measurement{% endtrans %}
+
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="row margin-bottom">
+                                                    <div class="col-sm-12 align-right">
+                                                        <a class="btn btn-info btn-sm"
+                                                           data-confirm="{% trans %}delete?{% endtrans %}"
+                                                           href="{{ path('soilSample', {id:soilSample.getId(),delete_measurement:formMeasurement.vars.value.getId()}) }}">
+                                                            <i class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;{% trans %}delete measurement{% endtrans %}
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                {% include "forms/measurementTypeModalEdit.html.twig" with {'parentId':soilSample.getId()} %}
+                                            {% endif %}
                                         </div>
-                                        {% if (is_granted('edit',soilSample)) %}
-                                            {% include "forms/recordTypeModalEdit.html.twig" %}
-                                        {% endif %}
-                                        <div id="record-{{ record.getId() }}" class="panel-collapse collapse"
-                                             aria-expanded="false" style="height: 0px;">
-                                            <div class="box-body">
-                                                <p><i>{{ record.getNoteCZ() }}</i></p>
-                                                <table class="table table-bordered">
-                                                    <tr>
-                                                        <th>{% trans %}time{% endtrans %}</th>
-                                                        {% if record.getRelatedValueXUnit() is not same as(null) %}
-                                                            <th>{{ record.getRelatedValueXUnit().getName() }}
-                                                                [{{ record.getRelatedValueXUnit().getUnit()|raw }}]
-                                                            </th>
-                                                        {% endif %}
-                                                        {% if record.getRelatedValueYUnit() is not same as(null) %}
-                                                            <th>{{ record.getRelatedValueYUnit().getName() }}
-                                                                [{{ record.getRelatedValueYUnit().getUnit()|raw }}]
-                                                            </th>
-                                                        {% endif %}
-                                                        {% if record.getRelatedValueZUnit() is not same as(null) %}
-                                                            <th>{{ record.getRelatedValueZUnit().getName() }}
-                                                                [{{ record.getRelatedValueZUnit().getUnit()|raw }}]
-                                                            </th>
-                                                        {% endif %}
-                                                        <th>
-                                                            {% if record.getUnit() is not same as(null) %}
-                                                                {{ record.getUnit().getName() }}
-                                                                [{{ record.getUnit().getUnit()|raw }}]
+                                    </div>
+
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="box-group" id="accordion">
+                                                {% for formRecord in formMeasurement.records %}
+                                                    {% set record = formRecord.vars.value %}
+                                                    <div class="panel box bg-gray-light">
+                                                        <div class="box-header{% if recordsService.isRecordSetAsInSoilSampleContext(record, soilSample) %} bg-warning{% endif %}">
+                                                            <div>
+                                                                #{{ record.getId() }}</div>
+                                                            <br/>
+                                                            <h4 class="box-title">
+                                                                <a data-toggle="collapse" data-parent="#accordion"
+                                                                   href="#record-{{ record.getId() }}" class="collapsed"
+                                                                   aria-expanded="false">
+                                                                    {% if record.getUnit() is not same as(null) %}
+                                                                        {{ record.getUnit().getName() }}
+                                                                    {% endif %}
+                                                                </a>
+                                                                <small>
+                                                                    {% if record.getRecordType()  is not same as(null) %}
+                                                                        {{ record.getRecordType().getName() }}
+                                                                    {% endif %}
+                                                                </small>
+                                                            </h4>
+                                                            {% if record.getIsTimeline() %}
+                                                                <label class="pull-right text-gray-dark text-normal">
+                                                                    {% trans %}show chart{% endtrans %}
+                                                                    <input type="checkbox"
+                                                                           data-toggle="chart"
+                                                                           data-target="#chart-soil-sample"
+                                                                           data-sample="{{ soilSample.getId() }}"
+                                                                           data-record="{{ record.getId() }}">
+                                                                </label>
                                                             {% endif %}
-                                                        </th>
-                                                    </tr>
-                                                    {% if (is_granted('viewall',soilSample)) %}
-                                                        {% for data in record.getData() %}
-                                                            <tr>
-                                                                <td>{{ data.getFormatedTime() ?? 0 }}</td>
-                                                                {% if  record.getRelatedValueXUnit() is not same as(null) %}
-                                                                    {% if data.getRelatedValueX() is not same as(null) %}
-                                                                        <td>{{ data.getRelatedValueXRounded() }}</td>
-                                                                    {% else %}
-                                                                        <td></td>
-                                                                    {% endif %}
+                                                        </div>
+
+
+                                                        <div id="record-{{ record.getId() }}"
+                                                             class="panel-collapse collapse"
+                                                             aria-expanded="false" style="height: 0px;">
+                                                            <div class="box-body">
+
+
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <p>
+                                                                            {% trans %}derived from{% endtrans %}
+                                                                            {% for sourceRecord in record.getSourceRecords() %}
+                                                                                <span class="badge bg-primary"> #{{ sourceRecord.getId() }}</span>
+                                                                            {% endfor %}
+                                                                        </p>
+                                                                        <p>{{ record.getDescription() }}</p>
+                                                                        <p>
+                                                                            <i>{{ record.getNote() }}</i>
+                                                                        </p>
+                                                                    </div>
+
+
+                                                                    <div class="col-md-6 align-right">
+                                                                        {% if (is_granted('edit',soilSample)) %}
+                                                                            <p>
+
+                                                                                <label class="text-gray-dark text-normal">{% trans %}set as moisture{% endtrans %}
+                                                                                    {% if recordsService.isRecordSetAsInSoilSampleContext(record, soilSample, 'moisture') %}
+                                                                                        <input
+                                                                                                checked="checked"
+                                                                                                type="checkbox"
+                                                                                                class="href"
+                                                                                                data-hardlink="{{ path('ismoisture', {soilSampleId:soilSample.getId()}) }}"/>
+                                                                                    {% else %}
+                                                                                        <input
+                                                                                                type="checkbox"
+                                                                                                class="href"
+                                                                                                data-hardlink="{{ path('ismoisture', {soilSampleId:soilSample.getId(),recordId:record.getId()}) }}"/>
+                                                                                    {% endif %}
+                                                                                </label>
+                                                                                <br/>
+
+                                                                                <label class="text-gray-dark text-normal">{% trans %}set as texture{% endtrans %}
+                                                                                    {% if recordsService.isRecordSetAsInSoilSampleContext(record, soilSample, 'texture') %}
+                                                                                        <input
+                                                                                                checked="checked"
+                                                                                                type="checkbox"
+                                                                                                class="href"
+                                                                                                data-hardlink="{{ path('istexture', {soilSampleId:soilSample.getId()}) }}"/>
+                                                                                    {% else %}
+                                                                                        <input
+                                                                                                type="checkbox"
+                                                                                                class="href"
+                                                                                                data-hardlink="{{ path('istexture', {soilSampleId:soilSample.getId(),recordId:record.getId()}) }}"/>
+                                                                                    {% endif %}
+                                                                                </label>
+                                                                                <br/>
+                                                                                <label class="text-gray-dark text-normal">{% trans %}set as corg{% endtrans %}
+                                                                                    {% if recordsService.isRecordSetAsInSoilSampleContext(record, soilSample, 'corg') %}
+                                                                                        <input
+                                                                                                checked="checked"
+                                                                                                type="checkbox"
+                                                                                                class="href"
+                                                                                                data-hardlink="{{ path('iscorg', {soilSampleId:soilSample.getId()}) }}"/>
+                                                                                    {% else %}
+                                                                                        <input
+                                                                                                type="checkbox"
+                                                                                                class="href"
+                                                                                                data-hardlink="{{ path('iscorg', {soilSampleId:soilSample.getId(),recordId:record.getId()}) }}"/>
+                                                                                    {% endif %}
+                                                                                </label>
+                                                                                <br/>
+
+                                                                                <label class="text-gray-dark text-normal">{% trans %}set as bulkDensity{% endtrans %}
+                                                                                    {% if recordsService.isRecordSetAsInSoilSampleContext(record, soilSample, 'bulk_density') %}
+                                                                                        <input
+                                                                                                checked="checked"
+                                                                                                type="checkbox"
+                                                                                                class="href"
+                                                                                                data-hardlink="{{ path('isbulkDensity', {soilSampleId:soilSample.getId()}) }}"/>
+                                                                                    {% else %}
+                                                                                        <input
+                                                                                                type="checkbox"
+                                                                                                class="href"
+                                                                                                data-hardlink="{{ path('isbulkDensity', {soilSampleId:soilSample.getId(),recordId:record.getId()}) }}"/>
+                                                                                    {% endif %}
+                                                                                </label>
+                                                                            </p>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row">
+                                                                    <div class="col-sm-12">
+                                                                        <table class="table table-bordered">
+                                                                            <tr>
+                                                                                <th>{% trans %}time{% endtrans %}</th>
+                                                                                {% if record.getRelatedValueXUnit() is not same as(null) %}
+                                                                                    <th>{{ record.getRelatedValueXUnit().getName() }}
+                                                                                        [{{ record.getRelatedValueXUnit().getUnit()|raw }}
+                                                                                        ]
+                                                                                    </th>
+                                                                                {% endif %}
+                                                                                {% if record.getRelatedValueYUnit() is not same as(null) %}
+                                                                                    <th>{{ record.getRelatedValueYUnit().getName() }}
+                                                                                        [{{ record.getRelatedValueYUnit().getUnit()|raw }}
+                                                                                        ]
+                                                                                    </th>
+                                                                                {% endif %}
+                                                                                {% if record.getRelatedValueZUnit() is not same as(null) %}
+                                                                                    <th>{{ record.getRelatedValueZUnit().getName() }}
+                                                                                        [{{ record.getRelatedValueZUnit().getUnit()|raw }}
+                                                                                        ]
+                                                                                    </th>
+                                                                                {% endif %}
+                                                                                <th>
+                                                                                    {% if record.getUnit() is not same as(null) %}
+                                                                                        {{ record.getUnit().getName() }}
+                                                                                        [{{ record.getUnit().getUnit()|raw }}]
+                                                                                    {% endif %}
+                                                                                </th>
+                                                                            </tr>
+                                                                            {% if (is_granted('viewall',soilSample)) %}
+                                                                                {% for data in record.getData() %}
+                                                                                    <tr>
+                                                                                        <td>{{ data.getFormatedTime() ?? 0 }}</td>
+                                                                                        {% if  record.getRelatedValueXUnit() is not same as(null) %}
+                                                                                            {% if data.getRelatedValueX() is not same as(null) %}
+                                                                                                <td>{{ data.getRelatedValueXRounded() }}</td>
+                                                                                            {% else %}
+                                                                                                <td></td>
+                                                                                            {% endif %}
+                                                                                        {% endif %}
+                                                                                        {% if  record.getRelatedValueYUnit() is not same as(null) %}
+                                                                                            {% if data.getRelatedValueY() is not same as(null) %}
+                                                                                                <td>{{ data.getRelatedValueYRounded() }}</td>
+                                                                                            {% else %}
+                                                                                                <td></td>
+                                                                                            {% endif %}
+                                                                                        {% endif %}
+                                                                                        {% if  record.getRelatedValueZUnit() is not same as(null) %}
+                                                                                            {% if data.getRelatedValueZ() is not same as(null) %}
+                                                                                                <td>{{ data.getRelatedValueZRounded() }}</td>
+                                                                                            {% else %}
+                                                                                                <td></td>
+                                                                                            {% endif %}
+                                                                                        {% endif %}
+                                                                                        <td>{{ data.getValueRounded() }}</td>
+                                                                                    </tr>
+                                                                                {% endfor %}
+                                                                            {% endif %}
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+
+                                                                {% if (is_granted('edit',soilSample)) %}
+                                                                    <div class="box-footer bg-gray-light align-right">
+                                                                        <a
+                                                                                data-confirm="{% trans %}delete?{% endtrans %}"
+                                                                                class="btn btn-info btn-sm"
+                                                                                href="{{ path('soilSample', {id:soilSample.getId(),delete_record:record.getId()}) }}"><i
+                                                                                    class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;{% trans %}delete{% endtrans %}
+                                                                        </a>
+
+                                                                        <a role="menuitem"
+                                                                           class="btn btn-info btn-sm"
+                                                                           href="#"
+                                                                           data-toggle="modal"
+                                                                           data-target="#record{{ record.getId() }}"><i
+                                                                                    class="fa fa-pencil"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{% trans %}edit{% endtrans %}
+                                                                        </a>
+                                                                        {% include "forms/recordTypeModalEdit.html.twig" %}
+                                                                    </div>
                                                                 {% endif %}
-                                                                {% if  record.getRelatedValueYUnit() is not same as(null) %}
-                                                                    {% if data.getRelatedValueY() is not same as(null) %}
-                                                                        <td>{{ data.getRelatedValueYRounded() }}</td>
-                                                                    {% else %}
-                                                                        <td></td>
-                                                                    {% endif %}
-                                                                {% endif %}
-                                                                {% if  record.getRelatedValueZUnit() is not same as(null) %}
-                                                                    {% if data.getRelatedValueZ() is not same as(null) %}
-                                                                        <td>{{ data.getRelatedValueZRounded() }}</td>
-                                                                    {% else %}
-                                                                        <td></td>
-                                                                    {% endif %}
-                                                                {% endif %}
-                                                                <td>{{ data.getValueRounded() }}</td>
-                                                            </tr>
-                                                        {% endfor %}
-                                                    {% endif %}
-                                                </table>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
                                             </div>
                                         </div>
                                     </div>
-                                {% endfor %}
+                                </div>
                             </div>
 
                         </div>
                     </div>
+
+
                 {% endfor %}
             </div>
         </div>

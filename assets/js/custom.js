@@ -179,6 +179,10 @@ $('input[type="checkbox"].append-run').on('change', function (e) {
     })
 });
 
+$('input[type="checkbox"].href').on('change', function (e) {
+    window.location = $(this).data('hardlink');
+});
+
 function drawChart(element, ids) {
     var data = new google.visualization.DataTable();
     var chart = new google.visualization.ComboChart(document.getElementById($(element).attr('id')));

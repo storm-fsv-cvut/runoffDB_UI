@@ -110,6 +110,18 @@ label.required:after {
     color:red;
 }
 
+label.text-normal {
+    font-weight: normal !important;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.margin-bottom-sm {
+    margin-bottom: 5px;
+}
+
 @media (min-width: 768px) {
     .modal-dialog {
         width: 700px;

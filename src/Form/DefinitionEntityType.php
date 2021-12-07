@@ -45,8 +45,9 @@ class DefinitionEntityType extends AbstractType
                 ) !== false) {
             } else {
                 $metadata->getAssociationMappedByTargetField($associationName);
+                $nullable = str_contains($metadata->getReflectionProperty($associationName)->getDocComment(),'nullable=true');
                 $targetClass = ($metadata->getAssociationTargetClass($associationName));
-                $builder->add($associationName, EntityType::class, ['class' => $targetClass]);
+                $builder->add($associationName, EntityType::class, ['class' => $targetClass, 'required' => !$nullable]);
             }
         }
 

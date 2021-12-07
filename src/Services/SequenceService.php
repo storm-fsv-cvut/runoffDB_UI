@@ -138,6 +138,7 @@ class SequenceService
             'id' => $sequence->getId(),
             'date' => $sequence->getFormatedDate(),
             'simulator' => $sequence->getSimulator(),
+            'organization' => $sequence->getSimulator(),
             'projects' => $projects,
             'locality' => $locality !== null ? $locality->getName() : " n/a "
         ];

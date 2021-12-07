@@ -171,3 +171,58 @@ load data: Load data
 loadDataFile: Data from file
 skip_first_row: First line contains headers
 first_column_time: First column contains time
+
+unlink: Zrušit vazbu
+linked runs: Provázané simulace
+Sample date: Datum odběru
+Process date: Datum zpracování
+Description: Popis
+Description cz: Popis (cs)
+Description en: Popis (en)
+Description c z: Popis (cs)
+Description e n: Popis (en)
+sampleLocation: Popis místa odběru
+bulkDensity: Objemová hmotnost
+Corg: Organický uhlík
+moisture: Vlhkost
+add_soilsample_header: Vložte základní vlastnosti vzorku. Měřené hodnoty můžete vložit po uložení vzorku
+add_sequence_header: Zadejte základní vlastnosti sekvence simualcí. Měření můžete vložit po uložení.
+Fullname: Jméno
+Username: Login
+organization: Organizace
+footer_text: Supported by the research grant QK1810341 of the National Agency for the agricultural research.
+append measurement: Připojit měření
+measurementId: ID měření
+unlink?: Zrušit vazbu?
+projectName: Název projektu
+projectCode: Kód projektu
+fundingAgency: Agentura
+organisations: Organizace
+date: Datum
+projects: Projekty
+simulator: Simulátor
+edit run: Upravit simulaci
+Wrb soil class: Půdní třída WRB
+set as moisture: Nastavit jako Vlhkost
+set as texture: Nastavit jako Zrnitostní složení
+set as corg: Nastavit jako Organický uhlík
+set as bulkDensity: Nastavit jako Objemová hmotnost
+edit soil sample: Upravit vzorek
+record type: Druh záznamu
+relatedValueXUnit: Veličina X rozměru
+relatedValueZUnit: Veličina Z rozměru
+relatedValueYUnit: Veličina Y rozměru
+variety: variety
+isCatchCrop: is catch crop
+Crop type: Typ plodiny
+Croper type: ER typ plodiny
+Edit group: Upravit skupinu simulací
+Edit run: Upravit sekvenci
+Delete run: Odstranit sekvenci
+delete measurement: Smazat měření
+edit measurement: Upravit měření
+unlink measurement: Zrušit vazbu k simulaci
+financed from: Zdroj financování
+est.: Zal.
+belongs to run: Náleží k simulaci
+show chart: Zobrazit v grafu

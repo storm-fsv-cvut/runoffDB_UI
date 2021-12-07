@@ -8,7 +8,7 @@
             #{{ measurement.getId() }} {{ measurement.getPhenomenon() }} {% if measurement.getDate()!=null %}{{ measurement.getDate().format('d.m.Y') }}{% endif %} {{ measurement.getLocality() }}
         </h1>
         <ol class="breadcrumb">
-            <li><a href="{{ path('measurements') }}"><i class="fa fa-list"></i> Seznam</a></li>
+            <li><a href="{{ path('measurements') }}"><i class="fa fa-list"></i>&nbsp;&nbsp;&nbsp;Seznam</a></li>
         </ol>
     </section>
     {% if (is_granted('edit',measurement)) %}
@@ -16,172 +16,218 @@
     {% endif %}
     <section class="content">
         <div class="row">
-            <div class="col-md-12 records">
-                {% if (is_granted('edit',measurement)) %}
-                    <div class="row  margin-bottom">
-                        <div class="col-md-12">
-                            <a href="javascript:;" class="btn btn-primary" data-toggle="modal"
-                               data-parent="{{ measurement.getId() }}"
-                               data-target="#record">{% trans %}add record{% endtrans %}</a>
-                            <a data-toggle="modal" class="btn btn-primary"
-                               data-target="#measurement{{ measurement.getId() }}" tabindex="-1"
-                               href="#">{% trans %}edit{% endtrans %}</a>
-                            <a class="btn btn-primary" data-confirm="{% trans %}delete?{% endtrans %}"
-                               href="{{ path('measurement', {id:measurement.getId(),delete_measurement:measurement.getId()}) }}">{% trans %}delete{% endtrans %}</a>
-                        </div>
+            <div class="col-md-12">
+
+                <div class="panel box box-info">
+                    <div class="box-header">
+                        #{{ formMeasurement.vars.value.getId() }}
                     </div>
-                    {% include "forms/measurementTypeModalEdit.html.twig" with {'parentId':measurement.getId()} %}
-                {% endif %}
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4>{{ formMeasurement.vars.value.getPhenomenon() }}</h4>
 
-                {% if measurement.getFiles()|length>0 %}
+                                <p>
+                                    {% if measurement.getDescription() %}
+                                        {{ measurement.getDescription() }}
+                                    {% endif %}
+                                </p>
+                                {% if measurement.getNote() %}
+                                    <i>* {{ measurement.getNote() }}</i>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                {% if (is_granted('edit',measurement)) %}
+                                    <div class="row margin-bottom-sm">
+                                        <div class="col-sm-12 align-right">
+                                            <a class="btn btn-info btn-sm" href="javascript:;"
+                                               data-toggle="modal"
+                                               data-parent="{{ measurement.getId() }}"
+                                               data-target="#record">
+                                                <i
+                                                        class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;{% trans %}add record{% endtrans %}
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="row margin-bottom-sm">
+                                        <div class="col-sm-12 align-right">
+                                            <a class="btn btn-info btn-sm" data-toggle="modal"
+                                               data-target="#measurement{{ formMeasurement.vars.value.getId() }}"
+                                               href="#">
+                                                <i class="fa fa-pencil"></i>&nbsp;&nbsp;&nbsp;{% trans %}edit measurement{% endtrans %}
+                                            </a>
+                                        </div>
+                                    </div>
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="box box-solid">
-                                <div class="box-body">
-                                    <dt>{% trans %}files{% endtrans %}</dt>
-                                    <dd>
-                                        {% for file in measurement.getFiles() %}
-                                            <a href="{{ path('downloadMeasurementFile',{'id':measurement.getId(),'filename':file}) }}"
-                                               target="_blank">{{ file }}</a>
-                                            <a class="text-danger" data-confirm="{% trans %}delete?{% endtrans %}"
-                                               href="{{ path('deleteMeasurementFile',{'id':measurement.getId(),'filename':file}) }}"><i
-                                                        class="fa fa-trash"></i></a>
-                                            <br/>
-                                        {% endfor %}
-                                    </dd>
-                                </div>
+                                    <div class="row margin-bottom">
+                                        <div class="col-sm-12 align-right">
+                                            <a class="btn btn-info btn-sm"
+                                               data-confirm="{% trans %}delete?{% endtrans %}"
+                                               href="{{ path('measurement', {id:measurement.getId(),delete_measurement:measurement.getId()}) }}">
+                                                <i class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;{% trans %}delete measurement{% endtrans %}
+                                            </a>
+                                        </div>
+                                    </div>
+                                    {% include "forms/measurementTypeModalEdit.html.twig" with {'parentId':measurement.getId()} %}
+                                {% endif %}
                             </div>
                         </div>
-                    </div>
-                {% endif %}
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <p>
-                            {% if measurement.getDescription() %}
-                                {{ measurement.getDescription() }}
-                            {% endif %}
-                        </p>
-                        {% if measurement.getNote() %}
-                            <i>* {{ measurement.getNote() }}</i>
-                        {% endif %}
-                        <div class="box-group" id="accordion">
-                            {% for formRecord in formMeasurement.records %}
-                                {% set record = formRecord.vars.value %}
-                                <div class="panel box box-solid">
-                                    <div class="box-header">
-                                        <h4 class="box-title">
-                                            <a data-toggle="collapse" data-parent="#accordion"
-                                               href="#record-{{ record.getId() }}" class="collapsed"
-                                               aria-expanded="false">
-                                                {% if record.getUnit() is not same as(null) %}
-                                                    {{ record.getUnit().getName() }}
-                                                {% endif %}
-                                            </a>
-                                            {% if record.getRecordType()  is not same as(null) %}
-                                                <small>{{ record.getRecordType().getName() }}</small>
-                                            {% endif %}
-                                            <span class="badge bg-primary">#{{ record.getId() }}</span>
-                                            {% for sourceRecord in record.getSourceRecords() %}
-                                                <span class="badge bg-primary">{% trans %}derived from{% endtrans %} #{{ sourceRecord.getId() }}</span>
-                                            {% endfor %}
-                                        </h4>
-                                        <div class="box-tools pull-right">
-                                            {% if (is_granted('edit',measurement)) %}
-                                                <div class="dropdown inline">
-                                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                                        <span class="caret"></span>
-                                                    </a>
-                                                    <ul class="dropdown-menu">
-                                                        <li role="presentation">
-                                                            <a role="menuitem"
-                                                               data-confirm="{% trans %}delete?{% endtrans %}"
-                                                               tabindex="-1"
-                                                               href="{{ path('measurement', {id:measurement.getId(),delete_record:record.getId()}) }}">{% trans %}delete{% endtrans %}</a>
-                                                        </li>
-                                                        <li role="presentation">
-                                                            <a role="menuitem" tabindex="-1" href="#"
-                                                               data-toggle="modal"
-                                                               data-target="#record{{ record.getId() }}">{% trans %}edit{% endtrans %}</a>
-                                                        </li>
-                                                    </ul>
+                        {% if measurement.getFiles()|length>0 %}
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="box box-solid">
+                                                <div class="box-body">
+                                                    <dt>{% trans %}files{% endtrans %}</dt>
+                                                    <dd>
+                                                        {% for file in measurement.getFiles() %}
+                                                            <a href="{{ path('downloadMeasurementFile',{'id':measurement.getId(),'filename':file}) }}"
+                                                               target="_blank">{{ file }}</a>
+                                                            <a class="text-danger" data-confirm="{% trans %}delete?{% endtrans %}"
+                                                               href="{{ path('deleteMeasurementFile',{'id':measurement.getId(),'filename':file}) }}"><i
+                                                                        class="fa fa-trash"></i></a>
+                                                            <br/>
+                                                        {% endfor %}
+                                                    </dd>
                                                 </div>
-                                            {% endif %}
+                                            </div>
                                         </div>
                                     </div>
-                                    {% if (is_granted('edit',measurement)) %}
-                                        {% include "forms/recordTypeModalEdit.html.twig" %}
-                                    {% endif %}
-                                    <div id="record-{{ record.getId() }}" class="panel-collapse collapse"
-                                         aria-expanded="false" style="height: 0px;">
-                                        <div class="box-body">
-                                            <p><i>{{ record.getNoteCZ() }}</i></p>
-                                            <table class="table table-bordered">
-                                                <tr>
-                                                    <th>{% trans %}time{% endtrans %}</th>
-                                                    {% if record.getRelatedValueXUnit() is not same as(null) %}
-                                                        <th>{{ record.getRelatedValueXUnit().getName() }}
-                                                            [{{ record.getRelatedValueXUnit().getUnit()|raw }}]
-                                                        </th>
-                                                    {% endif %}
-                                                    {% if record.getRelatedValueYUnit() is not same as(null) %}
-                                                        <th>{{ record.getRelatedValueYUnit().getName() }}
-                                                            [{{ record.getRelatedValueYUnit().getUnit()|raw }}]
-                                                        </th>
-                                                    {% endif %}
-                                                    {% if record.getRelatedValueZUnit() is not same as(null) %}
-                                                        <th>{{ record.getRelatedValueZUnit().getName() }}
-                                                            [{{ record.getRelatedValueZUnit().getUnit()|raw }}]
-                                                        </th>
-                                                    {% endif %}
-                                                    <th>
+                                {% endif %}
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="box-group" id="accordion">
+                                    {% for formRecord in formMeasurement.records %}
+                                        {% set record = formRecord.vars.value %}
+                                        <div class="panel box bg-gray-light">
+                                            <div class="box-header">
+                                                <h4 class="box-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion"
+                                                       href="#record-{{ record.getId() }}" class="collapsed"
+                                                       aria-expanded="false">
                                                         {% if record.getUnit() is not same as(null) %}
                                                             {{ record.getUnit().getName() }}
-                                                            [{{ record.getUnit().getUnit()|raw }}]
                                                         {% endif %}
-                                                    </th>
-                                                </tr>
-                                                {% if (is_granted('viewall',measurement)) %}
-                                                    {% for data in record.getData() %}
-                                                        <tr>
-                                                            <td>{{ data.getFormatedTime() ?? 0 }}</td>
-                                                            {% if  record.getRelatedValueXUnit() is not same as(null) %}
-                                                                {% if data.getRelatedValueX() is not same as(null) %}
-                                                                    <td>{{ data.getRelatedValueXRounded() }}</td>
-                                                                {% else %}
-                                                                    <td></td>
-                                                                {% endif %}
-                                                            {% endif %}
-                                                            {% if  record.getRelatedValueYUnit() is not same as(null) %}
-                                                                {% if data.getRelatedValueY() is not same as(null) %}
-                                                                    <td>{{ data.getRelatedValueYRounded() }}</td>
-                                                                {% else %}
-                                                                    <td></td>
-                                                                {% endif %}
-                                                            {% endif %}
-                                                            {% if  record.getRelatedValueZUnit() is not same as(null) %}
-                                                                {% if data.getRelatedValueZ() is not same as(null) %}
-                                                                    <td>{{ data.getRelatedValueZRounded() }}</td>
-                                                                {% else %}
-                                                                    <td></td>
-                                                                {% endif %}
-                                                            {% endif %}
-                                                            <td>{{ data.getValueRounded() }}</td>
-                                                        </tr>
-                                                    {% endfor %}
-                                                {% endif %}
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
+                                                    </a>
+                                                    {% if record.getRecordType()  is not same as(null) %}
+                                                        <small>{{ record.getRecordType().getName() }}</small>
+                                                    {% endif %}
+                                                </h4>
+                                            </div>
 
+                                            <div id="record-{{ record.getId() }}" class="panel-collapse collapse"
+                                                 aria-expanded="false" style="height: 0px;">
+                                                <div class="box-body">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <p>
+                                                                {% trans %}derived from{% endtrans %}
+                                                                {% for sourceRecord in record.getSourceRecords() %}
+                                                                    <span class="badge bg-primary"> #{{ sourceRecord.getId() }}</span>
+                                                                {% endfor %}
+                                                            </p>
+                                                            <p>{{ record.getDescription() }}</p>
+                                                            <p>
+                                                                <i>{{ record.getNote() }}</i>
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-md-6"></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <table class="table table-bordered">
+                                                                <tr>
+                                                                    <th>{% trans %}time{% endtrans %}</th>
+                                                                    {% if record.getRelatedValueXUnit() is not same as(null) %}
+                                                                        <th>{{ record.getRelatedValueXUnit().getName() }}
+                                                                            [{{ record.getRelatedValueXUnit().getUnit()|raw }}]
+                                                                        </th>
+                                                                    {% endif %}
+                                                                    {% if record.getRelatedValueYUnit() is not same as(null) %}
+                                                                        <th>{{ record.getRelatedValueYUnit().getName() }}
+                                                                            [{{ record.getRelatedValueYUnit().getUnit()|raw }}]
+                                                                        </th>
+                                                                    {% endif %}
+                                                                    {% if record.getRelatedValueZUnit() is not same as(null) %}
+                                                                        <th>{{ record.getRelatedValueZUnit().getName() }}
+                                                                            [{{ record.getRelatedValueZUnit().getUnit()|raw }}]
+                                                                        </th>
+                                                                    {% endif %}
+                                                                    <th>
+                                                                        {% if record.getUnit() is not same as(null) %}
+                                                                            {{ record.getUnit().getName() }}
+                                                                            [{{ record.getUnit().getUnit()|raw }}]
+                                                                        {% endif %}
+                                                                    </th>
+                                                                </tr>
+                                                                {% if (is_granted('viewall',measurement)) %}
+                                                                    {% for data in record.getData() %}
+                                                                        <tr>
+                                                                            <td>{{ data.getFormatedTime() ?? 0 }}</td>
+                                                                            {% if  record.getRelatedValueXUnit() is not same as(null) %}
+                                                                                {% if data.getRelatedValueX() is not same as(null) %}
+                                                                                    <td>{{ data.getRelatedValueXRounded() }}</td>
+                                                                                {% else %}
+                                                                                    <td></td>
+                                                                                {% endif %}
+                                                                            {% endif %}
+                                                                            {% if  record.getRelatedValueYUnit() is not same as(null) %}
+                                                                                {% if data.getRelatedValueY() is not same as(null) %}
+                                                                                    <td>{{ data.getRelatedValueYRounded() }}</td>
+                                                                                {% else %}
+                                                                                    <td></td>
+                                                                                {% endif %}
+                                                                            {% endif %}
+                                                                            {% if  record.getRelatedValueZUnit() is not same as(null) %}
+                                                                                {% if data.getRelatedValueZ() is not same as(null) %}
+                                                                                    <td>{{ data.getRelatedValueZRounded() }}</td>
+                                                                                {% else %}
+                                                                                    <td></td>
+                                                                                {% endif %}
+                                                                            {% endif %}
+                                                                            <td>{{ data.getValueRounded() }}</td>
+                                                                        </tr>
+                                                                    {% endfor %}
+                                                                {% endif %}
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                {% if (is_granted('edit',measurement)) %}
+                                                    <div class="box-footer bg-gray-light align-right">
+                                                        <a
+                                                                data-confirm="{% trans %}delete?{% endtrans %}"
+                                                                class="btn btn-info btn-sm"
+                                                                href="{{ path('measurement', {id:measurement.getId(),delete_record:record.getId()}) }}"><i
+                                                                    class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;{% trans %}delete{% endtrans %}
+                                                        </a>
+
+                                                        <a role="menuitem"
+                                                           class="btn btn-info btn-sm"
+                                                           href="#"
+                                                           data-toggle="modal"
+                                                           data-target="#record{{ record.getId() }}"><i
+                                                                    class="fa fa-pencil"></i>&nbsp;&nbsp;&nbsp;{% trans %}edit{% endtrans %}
+                                                        </a>
+                                                        {% include "forms/recordTypeModalEdit.html.twig" %}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
     </section>
     {% if (is_granted('edit',measurement)) %}
         {{ form_end(formMeasurement,{'render_rest': false}) }}

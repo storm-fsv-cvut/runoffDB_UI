@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use DOMDocument;
 
@@ -200,7 +201,9 @@ class Record extends BaseEntity {
  * @return Collection|Data[]
  */
     public function getData(): Collection {
-        return $this->datas;
+        $criteria = Criteria::create();
+        $criteria->orderBy(array("time" => Criteria::ASC));
+        return $this->datas->matching($criteria);
     }
 
     /**

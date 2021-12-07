@@ -84,6 +84,7 @@ rawData: Soubory
 datetime: Datum a čas
 add measurement: Nové měření
 add run: Přidat simulaci
+add run group: Přidat skupinu simulací
 save csv: Uložit csv
 upload data: Nahrát data
 isTimeline: Záznam je časová řada
@@ -114,7 +115,7 @@ Processed at: Místo zpracování
 measurements: Měření
 set as init moisture: Nastavit jako počáteční vlhkost
 set as rain intensity: Nastavit jako intenzitu srážky
-edit sequence: Upravit vlastnosti sekvence
+edit sequence: Upravit sekvenci
 name: Název
 established: Založena
 plotWidth: Šířka plochy
@@ -218,3 +219,13 @@ variety: variety
 isCatchCrop: is catch crop
 Crop type: Typ plodiny
 Croper type: ER typ plodiny
+Edit group: Upravit skupinu simulací
+Edit run: Upravit sekvenci
+delete run: Odstranit sekvenci
+delete measurement: Smazat měření
+edit measurement: Upravit měření
+unlink measurement: Zrušit vazbu k simulaci
+financed from: Zdroj financování
+est.: Zal.
+belongs to run: Náleží k simulaci
+show chart: Zobrazit v grafu

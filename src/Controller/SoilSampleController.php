@@ -59,14 +59,14 @@ class SoilSampleController extends AbstractController
      * @Route("/{_locale}/soil-sample/{id}", name="soilSample")
      */
     public function edit(
-        SoilSampleService $soilSampleService,
-        Request $request,
+        SoilSampleService      $soilSampleService,
+        Request                $request,
         EntityManagerInterface $entityManager,
-        MeasurementRepository $measurementRepository,
-        MeasurementService $measurementService,
-        RecordsService $recordsService,
-        RunService $runService,
-        int $id = null
+        MeasurementRepository  $measurementRepository,
+        MeasurementService     $measurementService,
+        RecordsService         $recordsService,
+        RunService             $runService,
+        int                    $id = null
     ): Response {
         if ($this->get('security.token_storage')->getToken() === null) {
             throw new \Exception("User token is null");
@@ -217,10 +217,10 @@ class SoilSampleController extends AbstractController
      * @Route("/{_locale}/soil-samples", name="soilSamples")
      */
     public function list(
-        PaginatorInterface $paginator,
+        PaginatorInterface   $paginator,
         SoilSampleRepository $soilSampleRepository,
-        Request $request,
-        SoilSampleService $soilSampleService,
+        Request              $request,
+        SoilSampleService    $soilSampleService,
         PhenomenonRepository $phenomenonRepository
     ): Response {
 
@@ -260,11 +260,11 @@ class SoilSampleController extends AbstractController
      * @Route("/{_locale}/is-moisture", name="ismoisture")
      */
     public function istmoisture(
-        RecordRepository $recordRepository,
-        SoilSampleRepository $soilSampleRepository,
-        SoilSampleService $soilSampleService,
+        RecordRepository       $recordRepository,
+        SoilSampleRepository   $soilSampleRepository,
+        SoilSampleService      $soilSampleService,
         EntityManagerInterface $entityManager,
-        Request $request
+        Request                $request
     ): ?RedirectResponse {
 
         if ($request->get('soilSampleId') !== null) {
@@ -275,7 +275,8 @@ class SoilSampleController extends AbstractController
                     $record = $recordRepository->find($request->get('recordId'));
                 } else {
                     $record = null;
-                }                $soilSample->setMoisture($record);
+                }
+                $soilSample->setMoisture($record);
                 $entityManager->persist($soilSample);
                 $entityManager->flush();
                 return $this->redirectToRoute('soilSample', ['id' => $soilSample->getId()]);
@@ -289,11 +290,11 @@ class SoilSampleController extends AbstractController
      * @Route("/{_locale}/is-texture", name="istexture")
      */
     public function istexture(
-        RecordRepository $recordRepository,
-        SoilSampleRepository $soilSampleRepository,
-        SoilSampleService $soilSampleService,
+        RecordRepository       $recordRepository,
+        SoilSampleRepository   $soilSampleRepository,
+        SoilSampleService      $soilSampleService,
         EntityManagerInterface $entityManager,
-        Request $request
+        Request                $request
     ): ?RedirectResponse {
         if ($request->get('soilSampleId') !== null) {
             $soilSample = $soilSampleService->getSoilSampleById($request->get('soilSampleId'));
@@ -303,7 +304,8 @@ class SoilSampleController extends AbstractController
                     $record = $recordRepository->find($request->get('recordId'));
                 } else {
                     $record = null;
-                }                $soilSample->setTextureRecord($record);
+                }
+                $soilSample->setTextureRecord($record);
                 $entityManager->persist($soilSample);
                 $entityManager->flush();
                 return $this->redirectToRoute('soilSample', ['id' => $soilSample->getId()]);
@@ -316,11 +318,11 @@ class SoilSampleController extends AbstractController
      * @Route("/{_locale}/is-corg", name="iscorg")
      */
     public function iscorg(
-        RecordRepository $recordRepository,
-        SoilSampleRepository $soilSampleRepository,
-        SoilSampleService $soilSampleService,
+        RecordRepository       $recordRepository,
+        SoilSampleRepository   $soilSampleRepository,
+        SoilSampleService      $soilSampleService,
         EntityManagerInterface $entityManager,
-        Request $request
+        Request                $request
     ): ?RedirectResponse {
         if ($request->get('soilSampleId') !== null) {
             $soilSample = $soilSampleService->getSoilSampleById($request->get('soilSampleId'));
@@ -344,11 +346,11 @@ class SoilSampleController extends AbstractController
      * @Route("/{_locale}/is-bulkDensity", name="isbulkDensity")
      */
     public function isbulkDensity(
-        RecordRepository $recordRepository,
-        SoilSampleRepository $soilSampleRepository,
-        SoilSampleService $soilSampleService,
+        RecordRepository       $recordRepository,
+        SoilSampleRepository   $soilSampleRepository,
+        SoilSampleService      $soilSampleService,
         EntityManagerInterface $entityManager,
-        Request $request
+        Request                $request
     ): ?RedirectResponse {
         if ($request->get('soilSampleId') !== null) {
             $soilSample = $soilSampleService->getSoilSampleById($request->get('soilSampleId'));
@@ -371,10 +373,10 @@ class SoilSampleController extends AbstractController
      */
     public function overview(
         EntityManagerInterface $em,
-        Request $request,
-        SoilSampleService $soilSampleService,
-        SoilSampleRepository $soilSampleRepository,
-        PhenomenonRepository $phenomenonRepository
+        Request                $request,
+        SoilSampleService      $soilSampleService,
+        SoilSampleRepository   $soilSampleRepository,
+        PhenomenonRepository   $phenomenonRepository
     ): Response {
         $this->denyAccessUnlessGranted(EntityVoter::VIEW);
         $soilSamples = $soilSampleRepository->findBy(["deleted" => null], ['dateSampled' => 'ASC']);
@@ -393,11 +395,11 @@ class SoilSampleController extends AbstractController
      * @Route("/{_locale}/soil-sample/{id}/download-file", name="downloadSoilSampleFile")
      */
     public function downloadFile(
-        RunRepository $runRepository,
-        SoilSampleRepository $soilSampleRepository,
-        Request $request,
+        RunRepository         $runRepository,
+        SoilSampleRepository  $soilSampleRepository,
+        Request               $request,
         ParameterBagInterface $parameterBag,
-        int $id
+        int                   $id
     ): BinaryFileResponse {
         $entity = $soilSampleRepository->find($id);
 
@@ -420,10 +422,10 @@ class SoilSampleController extends AbstractController
      * @Route("/{_locale}/soil-sample/{id}/delete-file", name="deleteSoilSampleFile")
      */
     public function deleteFile(
-        RunRepository $runRepository,
+        RunRepository        $runRepository,
         SoilSampleRepository $soilSampleRepository,
-        Request $request,
-        int $id
+        Request              $request,
+        int                  $id
     ): ?RedirectResponse {
 
         $entity = $soilSampleRepository->find($id);
