@@ -5,6 +5,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -120,7 +121,9 @@ class Agrotechnology extends BaseEntity implements DefinitionEntityInterface
      */
     public function getTillageSequences(): Collection
     {
-        return $this->tillageSequences;
+        $criteria = Criteria::create();
+        $criteria->orderBy(array("date" => Criteria::ASC));
+        return $this->tillageSequences->matching($criteria);
     }
 
     public function addTillageSequence(TillageSequence $tillageSequence): self

@@ -17,7 +17,9 @@
     </section>
 
     <section class="content">
-
+        {% if (is_granted('edit',sequence)) %}
+            {{ form_start(form) }}
+        {% endif %}
         <div class="row">
 
             <div class="dl col-md-6">
@@ -36,9 +38,6 @@
             </div>
 
             <div class="col-md-6">
-                {% if (is_granted('edit',sequence)) %}
-                    {{ form_start(form) }}
-                {% endif %}
 
                 {% if (is_granted('edit',sequence)) %}
                     <div class="row margin-bottom-sm">

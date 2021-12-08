@@ -40,6 +40,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -359,9 +360,8 @@ class SequenceController extends AbstractController
                 }
 
                 if ($sequenceForm->isSubmitted()) {
+                    /** @var FormInterface $partialForm */
                     $partialForm = $sequenceForm->getClickedButton()->getParent();
-//                    dump($partialForm->get('datas')->getData());
-//                    exit;
                     $partialData = $partialForm->getData();
                     if ($partialForm->has('rawData') && $partialForm->get('rawData') !== null) {
                         foreach ($partialForm->get('rawData')->getData() as $file) {

@@ -16,6 +16,8 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RecordType extends AbstractType
@@ -91,6 +93,25 @@ class RecordType extends AbstractType
             'required'=>false,
             'by_reference' => false
         ]);
+
+//        $builder->addEventListener(
+//            FormEvents::PRE_SUBMIT,
+//            function (FormEvent $event) use ($options): void {
+//                $form = $event->getForm();
+//                $form
+//                    ->remove('datas')
+//                    ->add('datas', CollectionType::class, [
+//                        'entry_type' => DataType::class,
+//                        'label'=>'data',
+//                        'mapped' => true,
+//                        'prototype' => true,
+//                        'allow_add' => true,
+//                        'allow_delete' => true,
+//                        'required'=>false,
+//                        'by_reference' => false
+//                    ]);
+//            }
+//        );
     }
 
     public function configureOptions(OptionsResolver $resolver): void
