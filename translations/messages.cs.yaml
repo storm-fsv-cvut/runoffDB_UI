@@ -220,8 +220,8 @@ isCatchCrop: is catch crop
 Crop type: Typ plodiny
 Croper type: ER typ plodiny
 Edit group: Upravit skupinu simulací
-Edit run: Upravit sekvenci
-delete run: Odstranit sekvenci
+Edit run: Upravit simulaci
+delete run: Odstranit simulaci
 delete measurement: Smazat měření
 edit measurement: Upravit měření
 unlink measurement: Zrušit vazbu k simulaci
