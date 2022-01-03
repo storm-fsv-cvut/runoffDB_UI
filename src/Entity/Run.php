@@ -101,7 +101,7 @@ class Run extends BaseEntity implements FileStorageEntityInterface
     private Collection $soilSamples;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Measurement", mappedBy="runs", cascade={"persist","remove"}, orphanRemoval=true)
+     * @ORM\ManyToMany(targetEntity="App\Entity\Measurement", mappedBy="runs")
      */
     private Collection $measurements;
 

@@ -1,4 +1,5 @@
 $(document).ready(function (e) {
+    $('.textarea-wys').wysihtml5();
     $("li.current ul").css({display: "block"});
     $("li.current").addClass("menu-open");
 
