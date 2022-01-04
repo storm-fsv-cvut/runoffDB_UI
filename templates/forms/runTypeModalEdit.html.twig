@@ -83,6 +83,14 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
+                        {{ form_row(runForm.soilSampleCorg) }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        {{ form_row(runForm.corgAssignmentType) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
                         {{ form_row(runForm.soilSampleBulk) }}
                     </div>
                     <div class="form-group col-md-6">
@@ -95,14 +103,6 @@
                     </div>
                     <div class="form-group col-md-6">
                         {{ form_row(runForm.textureAssignmentType) }}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        {{ form_row(runForm.soilSampleCorg) }}
-                    </div>
-                    <div class="form-group col-md-6">
-                        {{ form_row(runForm.corgAssignmentType) }}
                     </div>
                 </div>
             </div>

@@ -58,17 +58,17 @@
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs">
                                 <li class="active">
-                                    <a href="#tab_1" data-toggle="tab" aria-expanded="true">{{ form_label(runForm.noteCZ) }}</a>
+                                    <a href="#tab_noteCZ" data-toggle="tab" aria-expanded="true">{{ form_label(runForm.noteCZ) }}</a>
                                 </li>
                                 <li class="">
-                                    <a href="#tab_2" data-toggle="tab" aria-expanded="false">{{ form_label(runForm.noteEN) }}</a>
+                                    <a href="#tab_noteEN" data-toggle="tab" aria-expanded="false">{{ form_label(runForm.noteEN) }}</a>
                                 </li>
                             </ul>
                             <div class="tab-content">
-                                <div class="tab-pane active" id="tab_1">
+                                <div class="tab-pane active" id="tab_noteCZ">
                                     {{ form_widget(runForm.noteCZ) }}
                                 </div>
-                                <div class="tab-pane" id="tab_2">
+                                <div class="tab-pane" id="tab_noteEN">
                                     {{ form_widget(runForm.noteEN) }}
                                 </div>
                             </div>
@@ -85,6 +85,14 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
+                        {{ form_row(runForm.soilSampleCorg) }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        {{ form_row(runForm.corgAssignmentType) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
                         {{ form_row(runForm.soilSampleBulk) }}
                     </div>
                     <div class="form-group col-md-6">
@@ -97,14 +105,6 @@
                     </div>
                     <div class="form-group col-md-6">
                         {{ form_row(runForm.textureAssignmentType) }}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        {{ form_row(runForm.soilSampleCorg) }}
-                    </div>
-                    <div class="form-group col-md-6">
-                        {{ form_row(runForm.corgAssignmentType) }}
                     </div>
                 </div>
             </div>
