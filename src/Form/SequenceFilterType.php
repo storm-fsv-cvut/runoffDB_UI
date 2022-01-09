@@ -7,6 +7,7 @@ use App\Entity\Locality;
 use App\Entity\Organization;
 use App\Entity\Plot;
 use App\Entity\Record;
+use App\Entity\Simulator;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
@@ -60,6 +61,12 @@ class SequenceFilterType extends AbstractType {
                 'required' => false,
                 'placeholder' => '',
                 'label' => 'Crop'
+            ])
+            ->add('simulator', EntityType::class, [
+                'class' => Simulator::class,
+                'required' => false,
+                'placeholder' => '',
+                'label' => 'Simulator'
             ])
             ->add('search', SubmitType::class, [
                 'label' => 'Search',

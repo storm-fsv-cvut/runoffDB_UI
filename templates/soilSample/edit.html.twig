@@ -80,9 +80,9 @@
                                         <dd>{{ soilSample.getProcessedAt() }}</dd>
                                     {% endif %}
 
-                                    {% if soilSample.getFormatedDateSampled() is not same as null %}
+                                    {% if soilSample.getFormatedDateProcessed() is not same as null %}
                                         <dt>{% trans %}Process date{% endtrans %}:</dt>
-                                        <dd>{{ soilSample.getFormatedDateSampled() }}</dd>
+                                        <dd>{{ soilSample.getFormatedDateProcessed() }}</dd>
                                     {% endif %}
 
                                     {% if soilSample.getWRBsoilClass() is not same as null %}

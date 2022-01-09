@@ -6,6 +6,7 @@ use Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -29,9 +30,18 @@ class DefinitionEntityType extends AbstractType
             throw new Exception("No data class set");
         }
         $metadata = $this->entityManager->getMetadataFactory()->getMetadataFor($builder->getDataClass());
+
         foreach ($metadata->getFieldNames() as $field) {
             if ($field != 'id') {
-                $builder->add($field, null, ['label' => $field]);
+                if($metadata->getTypeOfField($field)==='date') {
+                    $builder->add($field,DateTimeType::class, [
+                        'label' => 'datetime',
+                        'widget'=>'single_text',
+                        'required'=>true
+                    ]);
+                } else {
+                    $builder->add($field, null, ['label' => $field]);
+                }
             }
         }
 

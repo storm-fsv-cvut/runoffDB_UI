@@ -61,6 +61,9 @@ class SequenceRepository extends ServiceEntityRepository
         if (isset($filter['dateTo']) && $filter['dateTo']) {
             $queryBuilder->andWhere($queryBuilder->expr()->lte('sequence.date',"'".$filter['dateTo']->format("Y-m-d")."'"));
         }
+        if (isset($filter['simulator']) && $filter['simulator']) {
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('sequence.simulator',$filter['simulator']->getId()));
+        }
         return $queryBuilder;
     }
 

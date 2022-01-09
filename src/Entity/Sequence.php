@@ -42,7 +42,7 @@ class Sequence extends BaseEntity
     private Collection $runGroups;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean", nullable=false, options={"default": 0})
      */
     private ?bool $deleted;
 
