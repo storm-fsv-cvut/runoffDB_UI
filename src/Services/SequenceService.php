@@ -8,6 +8,7 @@ use App\Entity\Sequence;
 use App\Repository\RunRepository;
 use App\Repository\SequenceRepository;
 use App\Repository\TillageSequenceRepository;
+use Doctrine\ORM\QueryBuilder;
 use DOMDocument;
 use Exception;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -47,11 +48,11 @@ class SequenceService
     private $locale;
 
     public function __construct(
-        SequenceRepository $sequenceRepository,
+        SequenceRepository        $sequenceRepository,
         TillageSequenceRepository $tillageSequenceRepository,
-        TranslatorInterface $translator,
-        RequestStack $requestStack,
-        RunRepository $runRepository
+        TranslatorInterface       $translator,
+        RequestStack              $requestStack,
+        RunRepository             $runRepository
     ) {
         $this->sequenceRepository = $sequenceRepository;
         $this->tillageSequenceRepository = $tillageSequenceRepository;
@@ -164,6 +165,23 @@ class SequenceService
             throw new Exception("Sequence doesn't exist:" . $id);
         }
         return $this->sequenceRepository->find($id);
+    }
+
+    public function exportSequences(array $sequences): string
+    {
+        $dom = new DOMDocument();
+        $dom->encoding = 'utf-8';
+        $dom->xmlVersion = '1.0';
+        $dom->formatOutput = true;
+        $sequencesDom = $dom->createElement('sequences');
+        /** @var Sequence $sequence */
+        foreach ($sequences as $sequence) {
+            $sequencesDom->append($sequence->getXmlDomElement($dom));
+        }
+
+        $dom->append($sequencesDom);
+        $xmlString = $dom->saveXML();
+        return $xmlString;
     }
 
 }

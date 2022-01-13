@@ -288,4 +288,16 @@ class Sequence extends BaseEntity
 
         return $this;
     }
+
+    public function getOrganizationCode(): string {
+        if($this->getSimulator() !== null) {
+            if($this->getSimulator()->getOrganization()!==null) {
+                return $this->getSimulator()
+                            ->getOrganization()
+                            ->getNameCode();
+            }
+        }
+
+        return '';
+    }
 }

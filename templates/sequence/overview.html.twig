@@ -21,6 +21,12 @@
                                     <th>
                                         {{ knp_pagination_sortable(pagination, 'Locality'|trans({}, 'messages'), ['l.name']) }}
                                     </th>
+                                    <th>
+                                        {% trans %}Crop{% endtrans %}
+                                    </th>
+                                    <th>
+                                        {% trans %}Organization{% endtrans %}
+                                    </th>
                                     <th colspan="12"></th>
                                 </tr>
                                 </thead>
@@ -34,6 +40,12 @@
                                                                                     href="{{ path('sequence',{id:sequence.getId()}) }}">{{ sequence.getFormatedDate() }}</a>
                                                 </td>
                                                 <td rowspan="{{ runs.count() }}">{{ sequence.getLocality() }}</td>
+                                                <td rowspan="{{ runs.count() }}">
+                                                    {{ sequence.listCrops() }}
+                                                </td>
+                                                <td rowspan="{{ runs.count() }}">
+                                                    {{ sequence.getOrganizationCode() }}
+                                                </td>
                                                 <td rowspan="{{ runs.count() }}">
                                                         {{ sequence.getID() }}
                                                 </td>

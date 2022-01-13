@@ -41,6 +41,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -351,9 +352,9 @@ class SequenceController extends AbstractController
                     }
 
                     $file = $newRecordForm->get('datafile')->getData();
-                    if ($file !== null) {
-                        $runService->uploadFile($file, $measurement->getRuns()->get(0));
-                    }
+//                    if ($file !== null) {
+//                        $runService->uploadFile($file, $measurement->getRuns()->get(0));
+//                    }
                     $entityManager->flush();
 
                     return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
@@ -499,7 +500,6 @@ class SequenceController extends AbstractController
 
         $id = $request->get('id');
         $xml = $sequenceService->exportSequence($id);
-
         $response = new Response();
         $filename = 'sequence-' . $id . '.xml';
         $response->headers->set('Cache-Control', 'private');
@@ -519,17 +519,36 @@ class SequenceController extends AbstractController
         EntityManagerInterface $em,
         PaginatorInterface $paginator,
         Request $request,
-        SequenceRepository $sequenceRepository
+        SequenceRepository $sequenceRepository,
+        SequenceService $sequenceService
     ): Response {
         $filter = $this->createForm(SequenceFilterType::class);
         $filter->handleRequest($request);
 
+        $paginatorQuery = $sequenceRepository->getPaginatorQuery(
+            $filter->getData(),
+            $request->get('order', 'date'),
+            $request->get('direction', 'DESC')
+        );
+
+        if($filter->isSubmitted()) {
+            if ($filter->get('export')->isClicked()) {
+                $xml = $sequenceService->exportSequences($paginatorQuery->getQuery()->getResult());
+                $XMLresponse = new Response();
+                $filename = 'sequences.xml';
+                $XMLresponse->headers->set('Cache-Control', 'private');
+                $XMLresponse->headers->set('Content-type', 'application/xhtml+xml');
+                $XMLresponse->headers->set('Content-Disposition', 'attachment; filename="' . $filename . '";');
+                $XMLresponse->headers->set('Content-length', strlen($xml));
+                $XMLresponse->sendHeaders();
+                $XMLresponse->setContent($xml);
+
+                return $XMLresponse;
+            }
+        }
+
         $pagination = $paginator->paginate(
-            $sequenceRepository->getPaginatorQuery(
-                $filter->getData(),
-                $request->get('order', 'date'),
-                $request->get('direction', 'DESC')
-            ),
+            $paginatorQuery,
             $request->query->getInt('page', 1),
             20,
             [PaginatorInterface::DEFAULT_SORT_FIELD_NAME => 'sequence.date',

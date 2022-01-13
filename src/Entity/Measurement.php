@@ -293,8 +293,10 @@ class Measurement extends BaseEntity implements FileStorageEntityInterface {
     }
 
     public function getOrganization(): ?Organization {
-        if ($this->getUser()!==null) {
-            return $this->getUser()->getOrganization();
+        if ($this->getLocality()!==null) {
+            if ($this->getLocality()->getOrganization() !== null) {
+                return $this->getLocality()->getOrganization();
+            }
         }
         return null;
     }

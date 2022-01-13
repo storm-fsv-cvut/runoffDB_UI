@@ -51,7 +51,7 @@ class MeasurementRepository extends ServiceEntityRepository
             $queryBuilder->andWhere($queryBuilder->expr()->lte('measurement.date',"'".$filter['dateTo']->format("Y-m-d")."'"));
         }
         if (isset($filter['organization']) && $filter['organization']) {
-            $queryBuilder->andWhere($queryBuilder->expr()->eq('si.organization',$filter['organization']->getId()));
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('l.organization',$filter['organization']->getId()));
         }
         if (isset($filter['locality']) && $filter['locality']) {
             $queryBuilder->andWhere($queryBuilder->expr()->eq('measurement.locality',$filter['locality']->getId()));
