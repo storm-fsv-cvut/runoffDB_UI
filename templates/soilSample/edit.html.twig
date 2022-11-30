@@ -92,7 +92,7 @@
 
                                     {% if soilSample.getSampleDepthM() is not same as null %}
                                         <dt>{% trans %}sampleDepthM{% endtrans %}:</dt>
-                                        <dd>{{ soilSample.getSampleDepthM() }} m</dd>
+                                        <dd>{{ soilSample.getRoundedSampleDepthM() }} m</dd>
                                     {% endif %}
 
                                     {% if soilSample.getSampleLocation() is not same as null %}

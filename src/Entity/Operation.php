@@ -33,9 +33,9 @@ class Operation extends BaseEntity implements DefinitionEntityInterface
     private OperationIntensity $operationIntensity;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", nullable=true)
      */
-    private float $operationDepthM;
+    private ?float $operationDepthM;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\OperationType")
@@ -128,12 +128,12 @@ class Operation extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-    public function getOperationDepthM(): float
+    public function getOperationDepthM(): ?float
     {
         return $this->operationDepthM;
     }
 
-    public function setOperationDepthM(float $operationDepthM): self
+    public function setOperationDepthM(?float $operationDepthM): self
     {
         $this->operationDepthM = $operationDepthM;
 

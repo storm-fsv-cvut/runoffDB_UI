@@ -37,7 +37,8 @@ class SequenceRepository extends ServiceEntityRepository
         $queryBuilder->leftJoin('rg.runs', 'r', 'WITH', 'r.runGroup = rg.id');
         $queryBuilder->leftJoin('r.plot', 'p', 'WITH', 'r.plot = p.id');
         $queryBuilder->leftJoin('p.locality', 'l', 'WITH', 'p.locality = l.id');
-        $queryBuilder->andWhere($queryBuilder->expr()->eq('sequence.deleted',0));
+        $queryBuilder->andWhere($queryBuilder->expr()->orX($queryBuilder->expr()->eq('sequence.deleted',0), $queryBuilder->expr()->isNull('sequence.deleted')));
+
         if (isset($filter['crop']) && $filter['crop']) {
             $plots = $this->plotRepository->findBy(['crop'=>$filter['crop']]);
             $plotsIds = [];
@@ -64,6 +65,7 @@ class SequenceRepository extends ServiceEntityRepository
         if (isset($filter['simulator']) && $filter['simulator']) {
             $queryBuilder->andWhere($queryBuilder->expr()->eq('sequence.simulator',$filter['simulator']->getId()));
         }
+
         return $queryBuilder;
     }
 

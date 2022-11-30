@@ -286,6 +286,11 @@ class SoilSample extends BaseEntity implements FileStorageEntityInterface
         return $this->sampleDepthM;
     }
 
+    public function getRoundedSampleDepthM(): ?float
+    {
+        return round($this->sampleDepthM,2);
+    }
+
     public function setSampleDepthM(?float $sampleDepthM): self
     {
         $this->sampleDepthM = $sampleDepthM;
