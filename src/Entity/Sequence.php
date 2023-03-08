@@ -188,7 +188,9 @@ class Sequence extends BaseEntity
         $plots = [];
         if ($this->getRuns() !== null) {
             foreach ($this->getRuns()->toArray() as $run) {
-                $plots[] = $run->getPlot();
+                if($run->getPlot() !== null) {
+                    $plots[] = $run->getPlot();
+                }
             }
         }
         return $plots;
@@ -198,7 +200,7 @@ class Sequence extends BaseEntity
     {
         $names = [];
         foreach ($this->getPlots() as $plot) {
-            if ($plot->getCrop() !== null) {
+            if ($plot!==null && $plot->getCrop() !== null) {
                 if (!in_array($plot->getCrop()->getName(), $names, true)) {
                     $names[] = $plot->getCrop()->getName();
                 }
