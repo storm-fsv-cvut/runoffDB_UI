@@ -62,7 +62,7 @@ class SoilSampleFilterType extends AbstractType
                 SubmitType::class,
                 [
                     'label' => 'Search',
-                    'attr' => ['class' => 'btn btn-success']
+                    'attr' => ['class' => 'btn btn-success  pull-right']
                 ]
             )->setMethod("GET");
     }
