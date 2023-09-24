@@ -70,11 +70,11 @@ class SequenceFilterType extends AbstractType {
             ])
             ->add('search', SubmitType::class, [
                 'label' => 'Search',
-                'attr' => ['class' => 'btn btn-success']
+                'attr' => ['class' => 'btn btn-success pull-right']
             ])
             ->add('export', SubmitType::class, [
                 'label' => 'Export result',
-                'attr' => ['class' => 'btn btn-primary pull-right']
+                'attr' => ['class' => 'btn btn-primary']
             ])->setMethod("GET");
     }
 
