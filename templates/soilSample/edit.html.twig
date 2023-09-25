@@ -108,66 +108,6 @@
                                 </dl>
                             </div>
                             <div class="col-md-6">
-                                <dl class="dl-horizontal">
-                                    {% if soilSample.getTextureRecord() is not same as null %}
-                                        <dt>{% trans %}texture{% endtrans %}:</dt>
-                                        <dd>
-                                            {{ soilSample.getTextureRecord().getHtmlLabel()|raw }}
-                                            {% if (is_granted('edit',soilSample)) %}
-                                                <a role="menuitem" data-confirm="{% trans %}unlink{% endtrans %}?"
-                                                   href="{{ path('istexture', {soilSampleId:soilSample.getId(),recordId:null}) }}"><i
-                                                            class="text-danger fa fa-trash"></i></a>
-                                            {% endif %}
-                                        </dd>
-                                    {% endif %}
-
-                                    {% if soilSample.getCorg() is not same as null %}
-                                        <dt>{% trans %}Corg{% endtrans %}:</dt>
-                                        <dd>{{ soilSample.getCorg().getHtmlLabel()|raw }}
-                                            {% if (is_granted('edit',soilSample)) %}
-                                                <a role="menuitem" data-confirm="{% trans %}unlink{% endtrans %}?"
-                                                   href="{{ path('iscorg', {soilSampleId:soilSample.getId(),recordId:null}) }}"><i
-                                                            class="text-danger fa fa-trash"></i></a>
-                                            {% endif %}
-                                        </dd>
-                                    {% endif %}
-
-                                    {% if soilSample.getMoisture() is not same as null %}
-                                        <dt>{% trans %}moisture{% endtrans %}:</dt>
-                                        <dd>{{ soilSample.getMoisture().getHtmlLabel()|raw }}
-                                            {% if (is_granted('edit',soilSample)) %}
-                                                <a role="menuitem" data-confirm="{% trans %}unlink{% endtrans %}?"
-                                                   href="{{ path('ismoisture', {soilSampleId:soilSample.getId(),recordId:null}) }}"><i
-                                                            class="text-danger fa fa-trash"></i></a>
-                                            {% endif %}
-                                        </dd>
-                                    {% endif %}
-
-                                    {% if soilSample.getBulkDensity() is not same as null %}
-                                        <dt>{% trans %}bulkDensity{% endtrans %}:</dt>
-                                        <dd>{{ soilSample.getBulkDensity().getHtmlLabel()|raw }}
-                                            {% if (is_granted('edit',soilSample)) %}
-                                                <a role="menuitem" data-confirm="{% trans %}unlink{% endtrans %}?"
-                                                   href="{{ path('isbulkDensity', {soilSampleId:soilSample.getId(),recordId:null}) }}"><i
-                                                            class="text-danger fa fa-trash"></i></a>
-                                            {% endif %}
-                                        </dd>
-                                    {% endif %}
-
-                                    {% if soilSample.getFiles()|length>0 %}
-                                        <dt>{% trans %}files{% endtrans %}</dt>
-                                        <dd>
-                                            {% for file in soilSample.getFiles() %}
-                                                <a href="{{ path('downloadSoilSampleFile',{'id':soilSample.getId(),'filename':file}) }}"
-                                                   target="_blank">{{ file }}</a>
-                                                <a class="text-danger" data-confirm="{% trans %}delete?{% endtrans %}"
-                                                   href="{{ path('deleteSoilSampleFile',{'id':soilSample.getId(),'filename':file}) }}"><i
-                                                            class="fa fa-trash"></i></a>
-                                                <br/>
-                                            {% endfor %}
-                                        </dd>
-                                    {% endif %}
-                                </dl>
                             </div>
                         </div>
                     </div>
