@@ -15,6 +15,7 @@ use App\Entity\Run;
 use App\Entity\RunGroup;
 use App\Entity\Sequence;
 use App\Form\AppendMeasurementType;
+use App\Form\AppendRecordType;
 use App\Form\MeasurementType;
 use App\Form\RecordType;
 use App\Form\RunGroupType;
@@ -263,6 +264,7 @@ class SequenceController extends AbstractController
         UnitRepository $unitRepository,
         RecordsService $recordsService,
         RunGroupService $runGroupService,
+        RecordRepository $recordRepository,
         int $id = null
     ): Response {
         if ($this->get('security.token_storage')->getToken() === null) {
@@ -275,6 +277,7 @@ class SequenceController extends AbstractController
 
             $sequenceForm = $this->createForm(SequenceType::class, $sequence);
             $appendMesurementForm = $this->createForm(AppendMeasurementType::class);
+            $appendRecordForm = $this->createForm(AppendRecordType::class);
             $newRunForm = $this->createForm(RunType::class, new Run());
             $newRunGroupForm = $this->createForm(RunGroupType::class, new RunGroup());
             $newMesurementForm = $this->createForm(MeasurementType::class, new Measurement());
@@ -286,6 +289,7 @@ class SequenceController extends AbstractController
                 $newRunForm->handleRequest($request);
                 $newMesurementForm->handleRequest($request);
                 $appendMesurementForm->handleRequest($request);
+                $appendRecordForm->handleRequest($request);
                 $newRecordForm->handleRequest($request);
                 $newRunGroupForm->handleRequest($request);
 
@@ -331,6 +335,25 @@ class SequenceController extends AbstractController
                     }
                     $run->addMeasurement($measurement);
                     $entityManager->persist($run);
+                    $entityManager->flush();
+                    return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
+                }
+
+                if ($appendRecordForm->isSubmitted()) {
+                    $recordId = $appendRecordForm->get('recordId')->getData();
+                    $record = $recordRepository->find($recordId);
+                    if($record === null) {
+                        $this->addFlash('error', 'Record not found');
+                        return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
+                    }
+
+                    $measurement = $measurementRepository->find($appendRecordForm->get('parent_id')->getData());
+                    if ($measurement === null) {
+                        throw new \Exception("measurement doesn't exist");
+                    }
+
+                    $record->setMeasurement($measurement);
+                    $entityManager->persist($record);
                     $entityManager->flush();
                     return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
                 }
@@ -449,6 +472,7 @@ class SequenceController extends AbstractController
                     'sequence' => $sequence,
                     'measurementForm' => $newMesurementForm->createView(),
                     'appendMeasurementForm' => $appendMesurementForm->createView(),
+                    'appendRecordForm' => $appendRecordForm->createView(),
                     'runForm' => $newRunForm->createView(),
                     'runGroupForm' => $newRunGroupForm->createView(),
                     'runSevice' => $runService,
