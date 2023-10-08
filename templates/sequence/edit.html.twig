@@ -361,7 +361,7 @@
                                                                                         </div>
                                                                                     </div>
 
-                                                                                    <div class="row margin-bottom">
+                                                                                    <div class="row margin-bottom-sm">
                                                                                         <div class="col-sm-12 align-right">
                                                                                             <a class="btn btn-info btn-sm"
                                                                                                href="javascript:;"
@@ -373,6 +373,17 @@
                                                                                         </div>
                                                                                     </div>
 
+                                                                                <div class="row margin-bottom">
+                                                                                    <div class="col-sm-12 align-right">
+                                                                                    <a type="button" class="btn btn-info btn-sm"
+                                                                                            data-toggle="modal"
+                                                                                            data-parent="{{ measurementArray['id'] }}"
+                                                                                            data-target="#append_record">
+                                                                                        <i class="fa fa-chain"></i>&nbsp;&nbsp;&nbsp;{% trans %}append record{% endtrans %}
+                                                                                    </a>
+
+                                                                                    </div>
+                                                                                </div>
 
                                                                                     {% include "forms/measurementTypeModalEdit.html.twig"  with {'parentId':runArray['id']} %}
 
@@ -626,6 +637,7 @@
     {% if (is_granted('edit',sequence)) %}
         {% include "forms/measurementTypeModalNew.html.twig" %}
         {% include "forms/measurementTypeModalAppend.html.twig" %}
+        {% include "forms/recordTypeModalAppend.html.twig" %}
         {% include "forms/recordTypeModalNew.html.twig" %}
         {% include "forms/runTypeModalNew.html.twig" %}
         {% include "forms/runGroupTypeModalNew.html.twig" %}

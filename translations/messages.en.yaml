@@ -191,8 +191,11 @@ Fullname: Jméno
 Username: Login
 organization: Organizace
 footer_text: Supported by the research grant QK1810341 of the National Agency for the agricultural research.
-append measurement: Připojit měření
-measurementId: ID měření
+append measurement: Append measurement
+measurementId: Measurement ID
+append record: Append record
+append foreign record: Append foreign record
+record: Record ID
 unlink?: Zrušit vazbu?
 projectName: Název projektu
 projectCode: Kód projektu

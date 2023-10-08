@@ -195,6 +195,9 @@ Username: Login
 organization: Organizace
 footer_text: Podpořeno výzkumným projektem QK1810341 Národní agentury zemědělského výzkumu.
 append measurement: Připojit měření
+append record: Připojit záznam
+append foreign record: Připojit záznam z jiného měření
+record: ID záznamu
 measurementId: ID měření
 unlink?: Zrušit vazbu?
 projectName: Název projektu
