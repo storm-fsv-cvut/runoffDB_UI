@@ -119,7 +119,7 @@ class DefinitionEntityControler extends AbstractController
             'definitionEntity/edit.html.twig',
             ['form' => $form->createView(), 'class_name' => $translator->trans(
                 $class
-            ), 'class' => $class]
+            ), 'class' => $class, 'id'=>$id]
         );
     }
 
