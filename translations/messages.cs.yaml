@@ -76,6 +76,7 @@ precedingPrecipitation: Předchozí srážky
 note: Poznámka
 descriptionCZ: Popis (cs)
 descriptionEN: Popis (en)
+Name: Název
 nameCZ: Název (cs)
 nameEN: Název (en)
 noteCZ: Poznámka (cs)
@@ -221,6 +222,7 @@ relatedValueYUnit: Veličina Y rozměru
 variety: variety
 isCatchCrop: is catch crop
 Crop type: Typ plodiny
+Crop Type: Typ plodiny
 Croper type: ER typ plodiny
 Edit group: Upravit skupinu simulací
 Edit run: Upravit simulaci
