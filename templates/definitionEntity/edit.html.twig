@@ -4,7 +4,7 @@
     {% if (is_granted('edit')) %}
         <section class="content-header">
             <h1>
-                {{ class_name }}
+                {{ class_name }} #{{ id }}
             </h1>
             <ol class="breadcrumb">
                 <li><a href="{{ url('settings',{class:class}) }}"><i class="fa fa-list"></i> Seznam</a></li>
