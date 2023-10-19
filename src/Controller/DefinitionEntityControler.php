@@ -11,8 +11,10 @@ namespace App\Controller;
 use App\Form\AgrotechnologyType;
 use App\Form\CropFilterType;
 use App\Form\DefinitionEntityType;
+use App\Form\PlotFilterType;
 use App\Form\ProjectType;
 use App\Repository\CropRepository;
+use App\Repository\PlotRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -36,6 +38,7 @@ class DefinitionEntityControler extends AbstractController
         TranslatorInterface    $translator,
         PaginatorInterface     $paginator,
         CropRepository         $cropRepository,
+        PlotRepository         $plotRepository,
         string $class
     ): Response {
         $this->denyAccessUnlessGranted('edit');
@@ -69,6 +72,32 @@ class DefinitionEntityControler extends AbstractController
             $params['sort_columns']['name'] = $translator->getLocale() == 'en' ? 'crop.nameEN' : 'crop.nameCZ';
 
             return $this->render('crop/list.html.twig', $params);
+        } else if ($class == "App\Entity\Plot") {
+            $filter = $this->createForm(
+                PlotFilterType::class,
+                null,
+                ['method' => 'get', 'action' => $this->generateUrl('settings', ['class' => $class])]
+            );
+
+            $filter->handleRequest($request);
+
+            $pagination = $paginator->paginate(
+                $plotRepository->getPaginatorQuery(
+                    $filter->getData(),
+                    $request->get('order', 'nameCZ'),
+                    $request->get('direction', 'DESC')
+                ),
+                $request->query->getInt('page', 1),
+                20
+            );
+
+
+            $params['pagination'] = $pagination;
+            $params['filter'] = $filter->createView();
+            $params['sort_columns']['crop'] = $translator->getLocale() == 'en' ? 'c.nameEN' : 'c.nameCZ';
+            $params['sort_columns']['protectionMeasure'] = $translator->getLocale() == 'en' ? 'pm.nameEN' : 'pm.nameCZ';
+
+            return $this->render('plot/list.html.twig', $params);
         } else {
             $repo = $em->getRepository($class);
             $builder = $repo->createQueryBuilder('e');
