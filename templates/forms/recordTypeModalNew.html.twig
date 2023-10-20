@@ -28,28 +28,6 @@
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs">
                                 <li class="active">
-                                    <a href="#{{ recordForm.noteCZ.vars.id }}" data-toggle="tab" aria-expanded="true">{{ form_label(recordForm.noteCZ) }}</a>
-                                </li>
-                                <li class="">
-                                    <a href="#{{ recordForm.noteEN.vars.id }}" data-toggle="tab" aria-expanded="false">{{ form_label(recordForm.noteEN) }}</a>
-                                </li>
-                            </ul>
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="{{ recordForm.noteCZ.vars.id }}">
-                                    {{ form_widget(recordForm.noteCZ) }}
-                                </div>
-                                <div class="tab-pane" id="{{ recordForm.noteEN.vars.id }}">
-                                    {{ form_widget(recordForm.noteEN) }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-sm-12">
-                        <div class="nav-tabs-custom">
-                            <ul class="nav nav-tabs">
-                                <li class="active">
                                     <a href="#{{ recordForm.descriptionCZ.vars.id }}" data-toggle="tab" aria-expanded="true">{{ form_label(recordForm.descriptionCZ) }}</a>
                                 </li>
                                 <li class="">
@@ -67,7 +45,28 @@
                         </div>
                     </div>
                 </div>
-
+                <div class="row">
+                    <div class="form-group col-sm-12">
+                        <div class="nav-tabs-custom">
+                            <ul class="nav nav-tabs">
+                                <li class="active">
+                                    <a href="#{{ recordForm.noteCZ.vars.id }}" data-toggle="tab" aria-expanded="true">{{ form_label(recordForm.noteCZ) }}</a>
+                                </li>
+                                <li class="">
+                                    <a href="#{{ recordForm.noteEN.vars.id }}" data-toggle="tab" aria-expanded="false">{{ form_label(recordForm.noteEN) }}</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="{{ recordForm.noteCZ.vars.id }}">
+                                    {{ form_widget(recordForm.noteCZ) }}
+                                </div>
+                                <div class="tab-pane" id="{{ recordForm.noteEN.vars.id }}">
+                                    {{ form_widget(recordForm.noteEN) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="form-group col-sm-6">
                         {{ form_row(recordForm.sourceRecords) }}
