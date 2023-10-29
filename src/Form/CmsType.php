@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Cms;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -31,6 +32,9 @@ class CmsType extends AbstractType
                 'label'=>$this->translator->trans('status')
             ])
             ->add('slug')
+            ->add('menuOrder', IntegerType::class, [
+                'empty_data' => 0
+            ])
             ->add('language', ChoiceType::class, [
                 'choices'=>['cs'=>'cs','en'=>'en'],
                 'label'=>$this->translator->trans('language')
