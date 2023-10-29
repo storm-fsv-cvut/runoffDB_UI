@@ -32,6 +32,16 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-12">
+                        {% if type == 'content' %}
+                            {{ form_row(form.menuOrder) }}
+                        {% else %}
+                            <label class="control-label required" for="cms_status">{{ 'menuOrder-tooltip' | trans }}</label>
+                            {{ form_widget(form.menuOrder) }}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
                         {{ form_row(form.language) }}
                     </div>
                 </div>
