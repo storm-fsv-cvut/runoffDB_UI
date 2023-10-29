@@ -46,7 +46,7 @@ class CmsControler extends AbstractController {
     /**
      * @Route("/{_locale}/cms/{type}/{id}", name="cms")
      */
-    function edit(CmsRepository $cmsRepository, Request $request, EntityManagerInterface $entityManager, ?int $id = null, string $type) {
+    function edit(CmsRepository $cmsRepository, Request $request, EntityManagerInterface $entityManager, string $type, ?int $id = null) {
         $this->denyAccessUnlessGranted('edit');
         if ($id!==null) {
             $entity = $cmsRepository->find($id);
