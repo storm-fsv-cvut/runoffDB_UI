@@ -69,7 +69,7 @@
                     <div class="box box-primary bg-gray">
                         <div class="box-header">
                             <h2 class="box-title text-bold">
-                                {{ runGroup.getRunType()|capitalize }}
+                                {{ runGroup.getRunType() }}
                             </h2>
                         </div>
                         <div class="box-body">
@@ -296,7 +296,7 @@
                                                                             <div class="col-md-6">
 
                                                                                 <h4 style="margin-top: 0px;">
-                                                                                    {{ formMeasurement.vars.value.getPhenomenon()|capitalize }}
+                                                                                    {{ formMeasurement.vars.value.getPhenomenon() }}
                                                                                 </h4>
 
                                                                                 {% if (is_granted('edit',sequence)) %}
@@ -430,7 +430,7 @@
                                                                                                        class="collapsed"
                                                                                                        aria-expanded="false">
                                                                                                         {% if record.getUnit() is not same as(null) %}
-                                                                                                            {{ record.getUnit().getName()|capitalize }}
+                                                                                                            {{ record.getUnit().getName() }}
                                                                                                         {% endif %}
                                                                                                     </a>
 
@@ -614,7 +614,7 @@
                                     <div class="box box-primary chart-box">
                                         <div class="box-header with-border">
                                             <i class="fa fa-bar-chart-o"></i>
-                                            <h3 class="box-title">{{ runGroup.getRunType()|capitalize }}</h3>
+                                            <h3 class="box-title">{{ runGroup.getRunType() }}</h3>
                                         </div>
                                         <div class="box-body collapse">
                                             <div id="chart-run-{{ runGroup.getId() }}" style="height: 300px;"
