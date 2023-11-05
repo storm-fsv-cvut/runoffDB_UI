@@ -41,11 +41,15 @@ class SequenceRepository extends ServiceEntityRepository
 
         if (isset($filter['crop']) && $filter['crop']) {
             $plots = $this->plotRepository->findBy(['crop'=>$filter['crop']]);
-            $plotsIds = [];
-            foreach ($plots as $plot) {
-                $plotsIds[]=$plot->getId();
+            if(sizeof($plots)>0) {
+                $plotsIds = [];
+                foreach ($plots as $plot) {
+                    $plotsIds[]=$plot->getId();
+                }
+                $queryBuilder->andWhere($queryBuilder->expr()->in('r.plot',$plotsIds));
+            } else {
+                $queryBuilder->andWhere($queryBuilder->expr()->in('r.plot',[0]));
             }
-            $queryBuilder->andWhere($queryBuilder->expr()->in('r.plot',$plotsIds));
         }
         if (isset($filter['plot']) && $filter['plot']) {
             $queryBuilder->andWhere($queryBuilder->expr()->eq('r.plot',$filter['plot']->getId()));

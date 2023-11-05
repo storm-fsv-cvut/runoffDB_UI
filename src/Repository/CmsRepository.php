@@ -40,7 +40,7 @@ class CmsRepository extends ServiceEntityRepository
             if ($status!==null) {
                 $qb->andWhere('c.status = :status')->setParameter('status', $status);
             }
-
+            $qb->orderBy('c.menuOrder', 'ASC');
             return  $qb->getQuery()->getArrayResult();
     }
 

@@ -76,6 +76,7 @@ precedingPrecipitation: Předchozí srážky
 note: Poznámka
 descriptionCZ: Popis (cs)
 descriptionEN: Popis (en)
+Name: Název
 nameCZ: Název (cs)
 nameEN: Název (en)
 noteCZ: Poznámka (cs)
@@ -195,6 +196,9 @@ Username: Login
 organization: Organizace
 footer_text: Podpořeno výzkumným projektem QK1810341 Národní agentury zemědělského výzkumu.
 append measurement: Připojit měření
+append record: Připojit záznam
+append foreign record: Připojit záznam z jiného měření
+record: ID záznamu
 measurementId: ID měření
 unlink?: Zrušit vazbu?
 projectName: Název projektu
@@ -218,6 +222,7 @@ relatedValueYUnit: Veličina Y rozměru
 variety: variety
 isCatchCrop: is catch crop
 Crop type: Typ plodiny
+Crop Type: Typ plodiny
 Croper type: ER typ plodiny
 Edit group: Upravit skupinu simulací
 Edit run: Upravit simulaci
@@ -230,3 +235,4 @@ est.: Zal.
 belongs to run: Náleží k simulaci
 show chart: Zobrazit v grafu
 Export result: Exportovat
+Menu order: Pořadí v menu
