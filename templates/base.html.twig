@@ -21,53 +21,61 @@
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
-    <header class="main-header">
+    <header class="main-header" style="z-index: 700;">
         <a href="/" class="logo">
             <span class="logo-mini"><b>Run-off</b>DB</span>
             <span class="logo-lg"><b>Run-off</b>DB</span>
         </a>
 
         <nav class="navbar navbar-static-top" role="navigation">
-            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
-                <span class="sr-only">Toggle navigation</span>
-            </a>
-            {{ render(controller(
-                'App\\Controller\\CmsControler::pagesMenu'
-            )) }}
-            <div class="navbar-custom-menu">
-                <ul class="nav navbar-nav">
+            <div class="container">
+                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
 
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            {{ app.request.getLocale() }}
-                        </a>
-                        <ul class="dropdown-menu">
-                            {% set route = app.request.attributes.get('_route') %}
-                            {% set route_params = app.request.attributes.get('_route_params') %}
-                            {% set params = route_params|merge(app.request.query.all) %}
-                            <li>
-                                <a class="" href="{{ path(route, params|merge({ _locale: 'cs' })) }}">
-                                    cs
-                                </a>
-                            </li>
-                            <li>
-                                <a class="" href="{{ path(route, params|merge({ _locale: 'en' })) }}">
-                                    en
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                <div class="collapse navbar-collapse pull-left" id="navbar-collapse-top">
                     {{ render(controller(
-                        'App\\Controller\\SecurityController::usermenu'
+                        'App\\Controller\\CmsControler::pagesMenu'
                     )) }}
-                </ul>
+                </div>
+
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                {{ app.request.getLocale() }}
+                            </a>
+                            <ul class="dropdown-menu">
+                                {% set route = app.request.attributes.get('_route') %}
+                                {% set route_params = app.request.attributes.get('_route_params') %}
+                                {% set params = route_params|merge(app.request.query.all) %}
+                                <li>
+                                    <a class="" href="{{ path(route, params|merge({ _locale: 'cs' })) }}">
+                                        cs
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="" href="{{ path(route, params|merge({ _locale: 'en' })) }}">
+                                        en
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        {{ render(controller(
+                            'App\\Controller\\SecurityController::usermenu'
+                        )) }}
+                    </ul>
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-top">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                </div>
             </div>
         </nav>
     </header>
-    <aside class="main-sidebar">
+    <aside class="main-sidebar" style="top: 60px; padding-top: 0px;">
 
         <section class="sidebar">
-                {{ knp_menu_render('admin') }}
+            {{ knp_menu_render('admin') }}
         </section>
     </aside>
 
@@ -82,7 +90,7 @@
 </div>
 {% block javascripts %}
     <script type="text/javascript">
-    var tooltips = '{{ tooltips()|raw }}';
+        var tooltips = '{{ tooltips()|raw }}';
     </script>
     {{ encore_entry_script_tags('app') }}
 {% endblock %}

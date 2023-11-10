@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Integer;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CmsRepository")
@@ -45,6 +46,11 @@ class Cms extends BaseEntity
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private ?string $status;
+
+    /**
+     * @ORM\Column(type="integer", nullable=false, options={"default" : 0})
+     */
+    private int $menuOrder;
 
 
     public function __construct() {
@@ -136,6 +142,16 @@ class Cms extends BaseEntity
         $this->status = $status;
 
         return $this;
+    }
+
+    public function getMenuOrder(): int
+    {
+        return $this->menuOrder;
+    }
+
+    public function setMenuOrder(int $menuOrder): void
+    {
+        $this->menuOrder = $menuOrder;
     }
 
 }

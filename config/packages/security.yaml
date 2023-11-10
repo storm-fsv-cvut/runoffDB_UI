@@ -13,6 +13,7 @@ security:
             logout:
                 path:   app_logout
                 target: homepage
+            access_denied_url: app_login
             anonymous: true
             provider: db_provider
             guard:
