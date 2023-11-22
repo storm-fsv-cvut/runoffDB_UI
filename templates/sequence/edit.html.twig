@@ -102,16 +102,29 @@
                                                         class="fa fa-pencil"></i>&nbsp;&nbsp;&nbsp;{% trans %}Edit group{% endtrans %}
                                             </a>
                                             {% include "forms/runGroupTypeModalEdit.html.twig" %}
+                                            {% endif %}
                                         </div>
                                     </div>
-                                    <div class="row margin-bottom">
+                                    <div class="row margin-bottom-sm">
                                         <div class="col-sm-12 align-right">
+                                            {% if (is_granted('edit',sequence)) %}
                                             <a type="button" class="btn btn-primary btn-sm" data-toggle="modal"
                                                data-target="#run" data-parent="{{ runGroup.getId() }}"
                                                tabindex="-1"
                                                href="javascript:;">
                                                 <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;{% trans %}add plotrun{% endtrans %}
                                             </a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class="row margin-bottom">
+                                        <div class="col-sm-12 align-right">
+                                            {% if (is_granted('edit',sequence)) %}
+                                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                            data-target="#deleteRunGroupType{{ runGroup.id }}">
+                                        <i class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;{% trans %}delete run group{% endtrans %}
+                                    </button>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -636,6 +649,13 @@
         {% endif %}
     </section>
     {% if (is_granted('edit',sequence)) %}
+
+        {% for runGroup in sequence.getRunGroups() %}
+            {% set deleteRunGroupForm =  deleteRunGroupForms[runGroup.getId()] %}
+            {% include "forms/deleteRunGroupTypeModal.html.twig"%}
+        {% endfor %}
+
+
         {% include "forms/measurementTypeModalNew.html.twig" %}
         {% include "forms/measurementTypeModalAppend.html.twig" %}
         {% include "forms/recordTypeModalAppend.html.twig" %}
