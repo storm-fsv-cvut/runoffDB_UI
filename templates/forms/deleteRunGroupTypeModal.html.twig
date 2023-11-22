@@ -1,0 +1,19 @@
+{{ form_start(deleteRunGroupForm) }}
+<div class="modal fade appendToCollection" id="deleteRunGroupType{{ runGroup.getId() }}">
+    <div class="modal-dialog modal-warning">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">{% trans %}Select measurements to delete{% endtrans %}</h4>
+            </div>
+            <div class="modal-body">
+                {% for child in deleteRunGroupForm.children %}
+                    {{ form_row(child) }}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{{ form_end(deleteRunGroupForm,{'render_rest': false}) }}
+

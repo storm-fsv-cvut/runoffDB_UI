@@ -236,3 +236,6 @@ belongs to run: Náleží k simulaci
 show chart: Zobrazit v grafu
 Export result: Exportovat
 Menu order: Pořadí v menu
+delete run group: Odstranit skupinu simulací
+Select measurements to delete: Vyberte měření která se mají trvale smazat
+delete run group and measurements: Odstranit skupinu simulací a měření

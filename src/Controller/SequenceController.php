@@ -16,6 +16,7 @@ use App\Entity\RunGroup;
 use App\Entity\Sequence;
 use App\Form\AppendMeasurementType;
 use App\Form\AppendRecordType;
+use App\Form\DeleteRunGroupType;
 use App\Form\MeasurementType;
 use App\Form\RecordType;
 use App\Form\RunGroupType;
@@ -283,6 +284,27 @@ class SequenceController extends AbstractController
             $newMesurementForm = $this->createForm(MeasurementType::class, new Measurement());
             $newRecordForm = $this->createForm(RecordType::class, new Record());
 
+            $deleteRunGroupForms = [];
+
+            /** @var RunGroup $runGroup */
+            foreach ($sequence->getRunGroups() as $runGroup) {
+                $deleteRunGroupForm = $this->createForm(
+                    DeleteRunGroupType::class,
+                    null,
+                    ['run_group' => $runGroup]
+                );
+                $deleteRunGroupForms[$runGroup->getId()] = $deleteRunGroupForm->createView();
+
+                $deleteRunGroupForm->handleRequest($request);
+                if ($deleteRunGroupForm->isSubmitted()) {
+                    $measurementIds = [];
+                    $data = $deleteRunGroupForm->getData();
+                    $runGroupService->deleteRunGroupFromForm($runGroup, $data);
+                    return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
+                }
+
+            }
+
 
             if ($request->isMethod('POST')) {
                 $sequenceForm->handleRequest($request);
@@ -478,6 +500,7 @@ class SequenceController extends AbstractController
                     'runSevice' => $runService,
                     'recordsService' => $recordsService,
                     'recordForm' => $newRecordForm->createView(),
+                    'deleteRunGroupForms' => $deleteRunGroupForms,
                 ]
             );
 
