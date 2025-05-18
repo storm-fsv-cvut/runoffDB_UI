@@ -14,10 +14,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\Matcher\Matcher;
 use Knp\Menu\Matcher\Voter\RegexVoter;
-use Knp\Menu\Matcher\Voter\RouteVoter;
-use Knp\Menu\Matcher\Voter\UriVoter;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MenuBuilder
@@ -30,8 +29,6 @@ class MenuBuilder
     private Matcher $matcher;
     private TranslatorInterface $translator;
     private RequestStack $requestStack;
-    private CmsRepository $cmsRepository;
-    private ContainerInterface $container;
 
 
     /**
@@ -46,7 +43,8 @@ class MenuBuilder
         TranslatorInterface $translator,
         RequestStack $requestStack,
         CmsRepository $cmsRepository,
-        ContainerInterface $container
+        ContainerInterface $container,
+        AuthorizationCheckerInterface $authChecker
     ) {
         foreach ($em->getMetadataFactory()->getAllMetadata() as $entity) {
             if (in_array(
@@ -61,8 +59,7 @@ class MenuBuilder
         $this->factory = $factory;
         $this->translator = $translator;
         $this->requestStack = $requestStack;
-        $this->cmsRepository = $cmsRepository;
-        $this->container = $container;
+        $this->authChecker = $authChecker;
     }
 
     /**
@@ -73,7 +70,7 @@ class MenuBuilder
     {
         $pattern = "/".substr($this->requestStack->getCurrentRequest()->attributes->get('_route'),0,3)."/";
         $this->matcher = new Matcher([new RegexVoter($pattern)]);
-        $authChecker = $this->container->get('security.authorization_checker');
+        $authChecker = $this->authChecker;
         $menu = $this->factory->createItem('root');
         $menu->setChildrenAttribute('class', 'sidebar-menu tree');
         $menu->setChildrenAttribute('data-widget', 'tree');

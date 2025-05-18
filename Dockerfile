@@ -1,4 +1,4 @@
-FROM php:8.0.3-apache
+FROM php:8.2-apache
 EXPOSE 80 443
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 RUN apt-get update \
@@ -15,7 +15,7 @@ RUN apt-get update \
  && docker-php-ext-install mysqli \
  && docker-php-ext-enable mysqli \
  && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
- && curl -sL https://deb.nodesource.com/setup_10.x | bash \
+ && curl -sL https://deb.nodesource.com/setup_20.x | bash \
  && apt-get install -y zlib1g-dev libzip-dev \
  && docker-php-ext-install zip \
  && apt-get install -y nodejs

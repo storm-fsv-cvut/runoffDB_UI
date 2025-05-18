@@ -20,7 +20,7 @@ security:
                 - App\Security\LoginFormAuthenticator
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-    encoders:
+    password_hashers:
         App\Entity\User:
             algorithm: bcrypt
             cost: 12
