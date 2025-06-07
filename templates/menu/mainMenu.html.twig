@@ -1,0 +1,52 @@
+<ul class="sidebar-menu tree" data-widget="tree">
+    <li class="treeview first menu-open"><a href="#">{{ "sequences"|trans }}</a>
+        <ul class="treeview-menu menu_level_1" style="display: block;">
+            {% if is_granted("edit") %}
+                <li class="first"><a href="{{ path('sequence') }}">{{ "add"|trans }}</a></li>
+            {% endif %}
+            <li><a href="{{ path('sequences') }}">{{ "list"|trans }}</a></li>
+            <li class="last"><a href="{{ path('sequencesOverview') }}">{{ "overview table"|trans }}</a></li>
+        </ul>
+    </li>
+    <li class="treeview"><a href="#">{{ 'soilSamples'|trans }}</a>
+        <ul class="treeview-menu menu_level_1">
+            {% if is_granted("edit") %}
+                <li class="first"><a href="{{ path('soilSample') }}">{{ "add"|trans }}</a></li>
+            {% endif %}
+            <li class="last"><a href="{{ path('soilSamples') }}">{{ "list"|trans }}</a></li>
+        </ul>
+    </li>
+    <li class="treeview"><a href="#">{{ 'measurements'|trans }}</a>
+        <ul class="treeview-menu menu_level_1">
+            {% if is_granted("edit") %}
+                <li class="first"><a href="{{ path('measurement') }}">{{ "add"|trans }}</a></li>
+            {% endif %}
+            <li class="last"><a href="{{ path('measurements') }}">{{ "list"|trans }}</a></li>
+        </ul>
+
+    </li>
+    {% if is_granted("editcontent") %}
+        <li class="treeview"><a href="#">{{ 'cms'|trans }}</a>
+            <ul class="treeview-menu menu_level_1">
+                <li class="first"><a href="{{ path('cms-list',{'type':'tooltip'}) }}">{{ "Tooltips"|trans }}</a></li>
+                <li class="last"><a href="{{ path('cms-list',{'type':'content'}) }}">{{ "Content"|trans }}</a></li>
+            </ul>
+        </li>
+    {% endif %}
+
+    {% if is_granted("admin") %}
+        <li class="treeview"><a href="#">{{ "Setup"|trans }}</a>
+            <ul class="treeview-menu menu_level_1">
+                {% for entity in entities %}
+                    <li class="first"><a href="{{ path('settings',{'class':entity}) }}">{{ entity|trans }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </li>
+    {% endif %}
+
+    {% if is_granted("admin") %}
+        <li class="last"><a href="{{ path('users') }}">{{ "Users"|trans }}</a>
+        </li>
+    {% endif %}
+</ul>

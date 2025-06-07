@@ -39,14 +39,3 @@ services:
     App\EventSubscriber\EntitySubscriber:
         tags:
             - { name: doctrine.event_listener, event: postLoad, lazy: true }
-
-    app.menu_builder:
-        class: App\Menu\MenuBuilder
-        arguments: ["@knp_menu.factory"]
-        tags:
-            - { name: knp_menu.menu_builder, method: createAdminMenu, alias: admin }
-            - { name: knp_menu.menu_builder, method: createEditorMenu, alias: editor }
-            - { name: knp_menu.menu_builder, method: createGuestMenu, alias: guest }
-
-
-
