@@ -442,7 +442,7 @@
                                                                                                 <h4 class="box-title">
                                                                                                     <a data-toggle="collapse"
                                                                                                        data-parent="#accordion"
-                                                                                                       href="#record-{{ record.getId() }}"
+                                                                                                       href="#record-{{ runGroup.id }}-{{ sequence.id }}-{{ measurement.id }}-{{ record.getId() }}"
                                                                                                        class="collapsed"
                                                                                                        aria-expanded="false">
                                                                                                         {% if record.getUnit() is not same as(null) %}
@@ -466,7 +466,7 @@
                                                                                                     </label>
                                                                                                 {% endif %}
                                                                                             </div>
-                                                                                            <div id="record-{{ record.getId() }}"
+                                                                                            <div id="record-{{ runGroup.id }}-{{ sequence.id }}-{{ measurement.id }}-{{ record.getId() }}"
                                                                                                  class="panel-collapse collapse"
                                                                                                  aria-expanded="false"
                                                                                                  style="height: 0px;">
