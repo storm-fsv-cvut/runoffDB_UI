@@ -431,7 +431,7 @@ class SequenceController extends AbstractController
 
             if ($request->get('unlink_measurement') !== null) {
                 $measurement = $this->measurementRepository->find($request->get('unlink_measurement'));
-                $run = $this->runRepository->find($request->get('unlink_measurement'));
+                $run = $this->runRepository->find($request->get('runId'));
                 if ($run === null) {
                     throw new \Exception("run doesn't exist");
                 }
