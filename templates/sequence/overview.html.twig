@@ -1,3 +1,6 @@
+{% set menu = 'sequence' %}
+{% set submenu = 'overview' %}
+
 {% extends 'base.html.twig' %}
 {% block title %}RunoffDB - {% trans %}overview table{% endtrans %}{% endblock %}
 {% block body %}
@@ -47,10 +50,17 @@
                                                     {{ sequence.getOrganizationCode() }}
                                                 </td>
                                                 <td rowspan="{{ runs.count() }}">
-                                                        {{ sequence.getID() }}
+                                                    {{ sequence.getID() }}
                                                 </td>
                                             {% endif %}
-                                            <td class="{% if run.getRunType().getId()==1 %}dry{% elseif run.getRunType().getId()==2 %}moist{% elseif run.getRunType().getId()==3 %}wet{% endif %}">
+                                            <td class="
+  {% set typeId = run.getRunType() is not null ? run.getRunType().getId() : null %}
+  {% if typeId == 1 %}dry
+  {% elseif typeId == 2 %}moist
+  {% elseif typeId == 3 %}wet
+  {% endif %}
+">
+
                                                 {% if run.getNote() %}
                                                     <span data-toggle="tooltip" class="tip" data-placement="top"
                                                           title="{{ run.getNote() }}">{{ run.getID() }}</span>
@@ -83,11 +93,11 @@
                                                 </td>
                                             {% endfor %}
 
-                                                <td class="hasrecords-0">
+                                            <td class="hasrecords-0">
                                                     <span class="d-block w-100" data-toggle="tooltip"
                                                           title="{% trans %}surfaceCover{% endtrans %}"
                                                           data-placement="top">0</span>
-                                                </td>
+                                            </td>
 
                                             {% set soilsample = run.getSoilSampleBulk() %}
                                             {% if soilsample %}

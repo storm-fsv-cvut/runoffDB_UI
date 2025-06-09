@@ -5,6 +5,7 @@ use App\Repository\CmsRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class ResponseSubscriber implements EventSubscriberInterface
@@ -19,7 +20,7 @@ class ResponseSubscriber implements EventSubscriberInterface
     }
 
 
-    public function onKernelResponse(FilterResponseEvent $event):void
+    public function onKernelResponse(ResponseEvent $event):void
     {
         $request = $event->getRequest();
         $response = $event->getResponse();
@@ -38,7 +39,7 @@ class ResponseSubscriber implements EventSubscriberInterface
         }
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::RESPONSE => [['onKernelResponse', 20]],

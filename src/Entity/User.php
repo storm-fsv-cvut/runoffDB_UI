@@ -6,12 +6,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use App\Security\UserRole;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User extends BaseEntity implements UserInterface {
+class User extends BaseEntity implements PasswordAuthenticatedUserInterface, UserInterface {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -244,5 +245,10 @@ class User extends BaseEntity implements UserInterface {
     public function setRole(string $role): void
     {
         $this->role = $role;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->username;
     }
 }

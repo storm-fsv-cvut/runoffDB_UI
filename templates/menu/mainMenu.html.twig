@@ -1,0 +1,78 @@
+<ul class="sidebar-menu tree" data-widget="tree">
+    <li class="treeview first{% if menu == 'sequence' %} menu-open{% endif %}">
+        <a href="#">{{ "sequences"|trans }}</a>
+        <ul class="treeview-menu menu_level_1"{% if menu == 'sequence' %} style="display: block;"{% endif %}>
+            {% if is_granted("edit") %}
+                <li class="first{% if submenu == 'add' %} active{% endif %}">
+                    <a href="{{ path('sequence') }}">{{ "add"|trans }}</a>
+                </li>
+            {% endif %}
+            <li{% if submenu == 'list' %} class="active"{% endif %}>
+                <a href="{{ path('sequences') }}">{{ "list"|trans }}</a>
+            </li>
+            <li class="last{% if submenu == 'overview' %} active{% endif %}">
+                <a href="{{ path('sequencesOverview') }}">{{ "overview table"|trans }}</a>
+            </li>
+        </ul>
+    </li>
+
+    <li class="treeview{% if menu == 'soilsample' %} menu-open{% endif %}">
+        <a href="#">{{ 'soilSamples'|trans }}</a>
+        <ul class="treeview-menu menu_level_1"{% if menu == 'soilsample' %} style="display: block;"{% endif %}>
+            {% if is_granted("edit") %}
+                <li class="first{% if submenu == 'add' %} active{% endif %}">
+                    <a href="{{ path('soilSample') }}">{{ "add"|trans }}</a>
+                </li>
+            {% endif %}
+            <li class="last{% if submenu == 'list' %} active{% endif %}">
+                <a href="{{ path('soilSamples') }}">{{ "list"|trans }}</a>
+            </li>
+        </ul>
+    </li>
+
+    <li class="treeview{% if menu == 'measurement' %} menu-open{% endif %}">
+        <a href="#">{{ 'measurements'|trans }}</a>
+        <ul class="treeview-menu menu_level_1"{% if menu == 'measurement' %} style="display: block;"{% endif %}>
+            {% if is_granted("edit") %}
+                <li class="first{% if submenu == 'add' %} active{% endif %}">
+                    <a href="{{ path('measurement') }}">{{ "add"|trans }}</a>
+                </li>
+            {% endif %}
+            <li class="last{% if submenu == 'list' %} active{% endif %}">
+                <a href="{{ path('measurements') }}">{{ "list"|trans }}</a>
+            </li>
+        </ul>
+    </li>
+
+    {% if is_granted("editcontent") %}
+        <li class="treeview{% if menu == 'cms' %} menu-open{% endif %}">
+            <a href="#">{{ 'cms'|trans }}</a>
+            <ul class="treeview-menu menu_level_1"{% if menu == 'cms' %} style="display: block;"{% endif %}>
+                <li class="first{% if submenu == 'tooltip' %} active{% endif %}">
+                    <a href="{{ path('cms-list',{'type':'tooltip'}) }}">{{ "Tooltips"|trans }}</a>
+                </li>
+                <li class="last{% if submenu == 'content' %} active{% endif %}">
+                    <a href="{{ path('cms-list',{'type':'content'}) }}">{{ "Content"|trans }}</a>
+                </li>
+            </ul>
+        </li>
+    {% endif %}
+
+    {% if is_granted("admin") %}
+        <li class="treeview{% if menu == 'definition-entity' %} menu-open{% endif %}">
+            <a href="#">{{ "Setup"|trans }}</a>
+            <ul class="treeview-menu menu_level_1"{% if menu == 'definition-entity' %} style="display: block;"{% endif %}>
+                {% for entity in entities %}
+                    {% set route = path('settings',{'class':entity}) %}
+                    <li class="first{% if submenu == entity %} active{% endif %}">
+                        <a href="{{ route }}">{{ entity|trans }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </li>
+
+        <li class="last{% if menu == 'user' %} active{% endif %}">
+            <a href="{{ path('users') }}">{{ "Users"|trans }}</a>
+        </li>
+    {% endif %}
+</ul>

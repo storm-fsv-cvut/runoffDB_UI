@@ -25,7 +25,7 @@ class PrintEntityExtension extends AbstractExtension {
         $this->translator = $translator;
     }
 
-    public function getFunctions() {
+    public function getFunctions(): array {
         return [
             new TwigFunction('printEntity', [$this, 'printEntity']),
         ];

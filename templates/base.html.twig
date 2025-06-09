@@ -73,9 +73,14 @@
         </nav>
     </header>
     <aside class="main-sidebar" style="top: 60px; padding-top: 0px;">
-
         <section class="sidebar">
-            {{ knp_menu_render('admin') }}
+            {{ render(controller(
+                'App\\Menu\\MenuController::mainMenu',
+                {
+                    menu: menu,
+                    submenu: submenu
+                }
+            )) }}
         </section>
     </aside>
 
