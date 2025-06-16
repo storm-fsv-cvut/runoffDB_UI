@@ -37,6 +37,7 @@ App\Entity\Phenomenon: Phenomen
 App\Entity\Model: Model
 App\Entity\QualityIndex: Quality index
 App\Entity\ProtectionMeasure: Protection measure
+App\Entity\Publication: Publication
 quality index: Quality index
 protection measure: Protection measure
 Protection measure: Protection measure

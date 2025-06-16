@@ -37,6 +37,7 @@ App\Entity\Phenomenon: Měřený jev
 App\Entity\Model: Model
 App\Entity\QualityIndex: Ukazatel kvality
 App\Entity\ProtectionMeasure: Protierozní opatření
+App\Entity\Publication: Publikace
 quality index: Ukazatel kvality
 protection measure: Protierozní opatření
 Protection measure: Protierozní opatření

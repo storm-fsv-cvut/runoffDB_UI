@@ -34,6 +34,11 @@ class Project extends BaseEntity implements DefinitionEntityInterface
     private Collection $organisations;
 
     /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Publication", inversedBy="projects")
+     */
+    private Collection $publications;
+
+    /**
      * @ORM\Column(type="string", length=512, nullable=true)
      */
     private ?string $descriptionCZ;
