@@ -45,9 +45,6 @@ class MeasurementController extends AbstractController
     public function edit(Request $request, ?int $id = null): Response
     {
         $user = $this->getUser();
-        if ($user === null) {
-            throw new \Exception("User token is null");
-        }
 
         if ($id !== null) {
             $measurement = $this->measurementService->getMeasurementById($id);
