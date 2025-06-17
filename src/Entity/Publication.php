@@ -136,6 +136,11 @@ class Publication extends BaseEntity implements DefinitionEntityInterface
         return $this->projects;
     }
 
+    public function getSimulators(): Collection
+    {
+        return $this->simulators;
+    }
+
     public function __toString(): String
     {
         return $this->getTitle() !== null ? $this->getTitle() : '#' . $this->getId();
