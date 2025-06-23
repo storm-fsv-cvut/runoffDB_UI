@@ -23,6 +23,14 @@ class DataType extends AbstractType {
                   'label'=>'value',
                   'attr'=>['class'=>'form-control value']
               ])
+              ->add('noteCZ', TextType::class, [
+                  'label'=>'noteCZ',
+                  'attr'=>['class'=>'form-control value']
+              ])
+              ->add('noteEN', TextType::class, [
+                  'label'=>'noteEN',
+                  'attr'=>['class'=>'form-control value']
+              ])
               ->add('related_value_X', NumberType::class, [
                   'label'=>'related_value_X',
                   'required'=>false,

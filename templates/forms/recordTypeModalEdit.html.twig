@@ -117,6 +117,9 @@
                                     <span data-depends="{{ formRecord.unit.vars.full_name }}"></span>
                                 </td>
                                 <td>
+                                    {{ "noteCZ"|trans }}
+                                </td>
+                                <td>
                                     <a class="text-danger removeRow" style="display: none;"><i class="fa fa-minus"></i></a>
                                     <a class="text-success addFormRow"><i class="fa fa-plus"></i></a>
                                 </td>
@@ -137,6 +140,29 @@
                                     </td>
                                     <td data-toggle-on="{{ formRecord.unit.vars.full_name }}">
                                         {{ form_widget(formData.value) }}
+                                    </td>
+                                    <td>
+
+
+
+                                        <div class="nav-tabs-custom">
+                                            <ul class="nav nav-tabs">
+                                                <li class="active">
+                                                    <a href="#data_{{ formData.vars.value.getId() }}_note_cz" data-toggle="tab" aria-expanded="true">{{ form_label(formData.noteCZ) }}</a>
+                                                </li>
+                                                <li class="">
+                                                    <a href="#data_{{ formData.vars.value.getId() }}_note_en" data-toggle="tab" aria-expanded="false">{{ form_label(formData.noteEN) }}</a>
+                                                </li>
+                                            </ul>
+                                            <div class="tab-content">
+                                                <div class="tab-pane active" id="data_{{ formData.vars.value.getId() }}_note_cz">
+                                                    {{ form_widget(formData.noteCZ) }}
+                                                </div>
+                                                <div class="tab-pane" id="data_{{ formData.vars.value.getId() }}_note_en">
+                                                    {{ form_widget(formData.noteEN) }}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
                                     <td>
                                         <a class="text-danger removeRow"><i class="fa fa-minus"></i></a>
