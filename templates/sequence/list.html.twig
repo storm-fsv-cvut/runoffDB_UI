@@ -29,7 +29,7 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-6">
-                        {% if (is_granted('edit')) %}
+                        {% if (is_granted('viewall')) %}
                             {{ form_widget(filter.export) }}
                         {% endif %}
                     </div>
