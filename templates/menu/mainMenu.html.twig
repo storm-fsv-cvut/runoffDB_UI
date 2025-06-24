@@ -58,7 +58,7 @@
         </li>
     {% endif %}
 
-    {% if is_granted("admin") %}
+    {% if is_granted("editcontent") %}
         <li class="treeview{% if menu == 'definition-entity' %} menu-open{% endif %}">
             <a href="#">{{ "Setup"|trans }}</a>
             <ul class="treeview-menu menu_level_1"{% if menu == 'definition-entity' %} style="display: block;"{% endif %}>
@@ -70,7 +70,8 @@
                 {% endfor %}
             </ul>
         </li>
-
+    {% endif %}
+    {% if is_granted("admin") %}
         <li class="last{% if menu == 'user' %} active{% endif %}">
             <a href="{{ path('users') }}">{{ "Users"|trans }}</a>
         </li>

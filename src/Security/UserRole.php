@@ -13,6 +13,7 @@ class UserRole
     public const ROLE_EDITOR = 'editor';
     public const ROLE_INSTITUTION_EDITOR = 'ieditor';
     public const ROLE_READER = 'reader';
+    public const ROLE_GUEST = 'guest';
 
 
 
