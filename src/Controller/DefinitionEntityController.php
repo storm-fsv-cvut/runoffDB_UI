@@ -7,6 +7,7 @@ use App\Form\CropFilterType;
 use App\Form\DefinitionEntityType;
 use App\Form\PlotFilterType;
 use App\Form\ProjectType;
+use App\Form\SimulatorType;
 use App\Repository\CropRepository;
 use App\Repository\PlotRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -113,6 +114,8 @@ class DefinitionEntityController extends AbstractController
             $form = $this->createForm(AgrotechnologyType::class, $dataClass, ['data_class' => $class]);
         } elseif ($class === "App\Entity\Project") {
             $form = $this->createForm(ProjectType::class, $dataClass, ['data_class' => $class]);
+        } elseif ($class === "App\Entity\Simulator") {
+            $form = $this->createForm(SimulatorType::class, $dataClass, ['data_class' => $class]);
         } else {
             $form = $this->createForm(DefinitionEntityType::class, $dataClass, ['data_class' => $class]);
         }
