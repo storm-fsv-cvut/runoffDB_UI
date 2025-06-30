@@ -29,7 +29,8 @@ class UserType extends AbstractType {
                     UserRole::ROLE_ADMIN=>UserRole::ROLE_ADMIN,
                     UserRole::ROLE_EDITOR=>UserRole::ROLE_EDITOR,
                     UserRole::ROLE_INSTITUTION_EDITOR=>UserRole::ROLE_INSTITUTION_EDITOR,
-                    UserRole::ROLE_READER=>UserRole::ROLE_READER
+                    UserRole::ROLE_READER=>UserRole::ROLE_READER,
+                    UserRole::ROLE_GUEST=>UserRole::ROLE_GUEST
                 ],
                 'multiple'=>false
             ])

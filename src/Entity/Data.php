@@ -50,6 +50,16 @@ class Data extends BaseEntity
      */
     private ?float $relatedValueZ;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $noteCZ = null;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $noteEN = null;
+
     public function __construct()
     {
         $this->time = null;
@@ -57,6 +67,8 @@ class Data extends BaseEntity
         $this->relatedValueX = null;
         $this->relatedValueY = null;
         $this->relatedValueZ = null;
+        $this->noteCZ = null;
+        $this->noteEN = null;
     }
 
     public function __toString(): string
@@ -93,11 +105,12 @@ class Data extends BaseEntity
 
     public function getValueRounded(): string
     {
-        return number_format((float)$this->value,
-                             ($this->getRecord()->getUnit() !== null) ? $this->getRecord()->getUnit()->getDecimals(
-                             ) : Unit::DEFAULT_DECIMALS,
-                             ".",
-                             ""
+        return number_format(
+            (float)$this->value,
+            ($this->getRecord()->getUnit() !== null) ? $this->getRecord()->getUnit()->getDecimals(
+            ) : Unit::DEFAULT_DECIMALS,
+            ".",
+            ""
         );
     }
 
@@ -125,12 +138,13 @@ class Data extends BaseEntity
 
     public function getRelatedValueXRounded(): string
     {
-        return number_format((float)$this->relatedValueX,
-                             $this->getRecord()->getRelatedValueXUnit() !== null ? $this->getRecord()
-                                                                                        ->getRelatedValueXUnit()
-                                                                                        ->getDecimals() : 10,
-                             ".",
-                             ""
+        return number_format(
+            (float)$this->relatedValueX,
+            $this->getRecord()->getRelatedValueXUnit() !== null ? $this->getRecord()
+                                                                       ->getRelatedValueXUnit()
+                                                                       ->getDecimals() : 10,
+            ".",
+            ""
         );
     }
 
@@ -148,12 +162,13 @@ class Data extends BaseEntity
 
     public function getRelatedValueYRounded(): string
     {
-        return number_format((float)$this->relatedValueY,
-                             $this->getRecord()->getRelatedValueYUnit() !== null ? $this->getRecord()
-                                                                                        ->getRelatedValueYUnit()
-                                                                                        ->getDecimals() : 10,
-                             ".",
-                             ""
+        return number_format(
+            (float)$this->relatedValueY,
+            $this->getRecord()->getRelatedValueYUnit() !== null ? $this->getRecord()
+                                                                       ->getRelatedValueYUnit()
+                                                                       ->getDecimals() : 10,
+            ".",
+            ""
         );
     }
 
@@ -171,18 +186,49 @@ class Data extends BaseEntity
 
     public function getRelatedValueZRounded(): string
     {
-        return number_format((float)$this->relatedValueZ,
-                             $this->getRecord()->getRelatedValueZUnit() !== null ? $this->getRecord()
-                                                                                        ->getRelatedValueZUnit()
-                                                                                        ->getDecimals() : 10,
-                             ".",
-                             ""
+        return number_format(
+            (float)$this->relatedValueZ,
+            $this->getRecord()->getRelatedValueZUnit() !== null ? $this->getRecord()
+                                                                       ->getRelatedValueZUnit()
+                                                                       ->getDecimals() : 10,
+            ".",
+            ""
         );
     }
 
     public function setRelatedValueZ(?float $relatedValueZ): self
     {
         $this->relatedValueZ = $relatedValueZ;
+
+        return $this;
+    }
+
+    public function getNote(): ?string
+    {
+        return $this->getLocale() == 'en' ? $this->getNoteEN() : $this->getNoteCZ();
+    }
+
+
+    public function getNoteCZ(): ?string
+    {
+        return $this->noteCZ;
+    }
+
+    public function setNoteCZ(?string $noteCZ): self
+    {
+        $this->noteCZ = $noteCZ;
+
+        return $this;
+    }
+
+    public function getNoteEN(): ?string
+    {
+        return $this->noteEN;
+    }
+
+    public function setNoteEN(?string $noteEN): self
+    {
+        $this->noteEN = $noteEN;
 
         return $this;
     }

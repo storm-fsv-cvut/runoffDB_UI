@@ -56,7 +56,9 @@ class SecurityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
             $newpass = $form->get('newpass')->getData();
-            $this->securityService->changePass($user, $newpass);
+            if($newpass !== null && $newpass !== '') {
+                $this->securityService->changePass($user, $newpass);
+            }
         }
 
         return $this->render('security/user.html.twig', [

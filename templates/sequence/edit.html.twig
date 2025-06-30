@@ -550,6 +550,9 @@
                                                                                                                             [{{ record.getUnit().getUnit()|raw }}]
                                                                                                                         {% endif %}
                                                                                                                     </th>
+                                                                                                                    <th>
+                                                                                                                        {{ 'note'|trans }}
+                                                                                                                    </th>
                                                                                                                 </tr>
                                                                                                                 {% if (is_granted('viewall',sequence)) %}
                                                                                                                     {% for data in record.getData() %}
@@ -577,6 +580,7 @@
                                                                                                                                 {% endif %}
                                                                                                                             {% endif %}
                                                                                                                             <td>{{ data.getValueRounded() }}</td>
+                                                                                                                            <td>{{ data.getNote() }}</td>
                                                                                                                         </tr>
                                                                                                                     {% endfor %}
                                                                                                                 {% endif %}

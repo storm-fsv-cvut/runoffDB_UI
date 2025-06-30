@@ -11,6 +11,7 @@ class EntityVoter extends Voter
 {
 
     const VIEW_ALL = 'viewall';
+    const VIEW_LESS = 'viewless';
     const EDIT = 'edit';
     const VIEW = 'view';
     const ADMIN = 'admin';
@@ -20,7 +21,7 @@ class EntityVoter extends Voter
 
     protected function supports($attribute, $subject): bool
     {
-        if (!in_array($attribute, [self::ADMIN, self::VIEW, self::EDIT, self::VIEW_ALL, self::EDITUSER, self::CMS], true)) {
+        if (!in_array($attribute, [self::ADMIN, self::VIEW, self::EDIT, self::VIEW_ALL, self::VIEW_LESS, self::EDITUSER, self::CMS], true)) {
             return false;
         }
         return true;
@@ -69,6 +70,14 @@ class EntityVoter extends Voter
                     [
                         UserRole::ROLE_EDITOR,
                         UserRole::ROLE_READER
+                    ]
+                )) {
+                    return true;
+                }
+            } else if ($attribute == self::VIEW_LESS) {
+                if ($user->isInRole(
+                    [
+                        UserRole::ROLE_GUEST
                     ]
                 )) {
                     return true;

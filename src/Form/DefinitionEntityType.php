@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -34,8 +35,8 @@ class DefinitionEntityType extends AbstractType
         foreach ($metadata->getFieldNames() as $field) {
             if ($field != 'id') {
                 if($metadata->getTypeOfField($field)==='date') {
-                    $builder->add($field,DateTimeType::class, [
-                        'label' => 'datetime',
+                    $builder->add($field,DateType::class, [
+                        'label' => 'date',
                         'widget'=>'single_text',
                         'required'=>true
                     ]);
