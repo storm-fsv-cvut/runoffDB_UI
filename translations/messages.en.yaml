@@ -37,6 +37,7 @@ App\Entity\Phenomenon: Phenomen
 App\Entity\Model: Model
 App\Entity\QualityIndex: Quality index
 App\Entity\ProtectionMeasure: Protection measure
+App\Entity\Publication: Publication
 quality index: Quality index
 protection measure: Protection measure
 Protection measure: Protection measure
@@ -229,3 +230,8 @@ financed from: Zdroj financování
 est.: Zal.
 belongs to run: Náleží k simulaci
 show chart: Zobrazit v grafu
+titleCZ: Title (cs)
+titleEN: Title (en)
+authors: Authors
+journalName: Journal name
+publicationYear: Publication year

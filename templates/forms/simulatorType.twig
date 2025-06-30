@@ -1,9 +1,16 @@
 {{ form_start(form) }}
-
-
 <div class="row">
     <div class="col-md-12">
-        {{ form_row(form.projectName) }}
+        {{ form_row(form.nameCZ) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {{ form_row(form.nameEN) }}
+    </div>
+</div><div class="row">
+    <div class="col-md-12">
+        {{ form_row(form.descriptionCZ) }}
     </div>
 </div>
 <div class="row">
@@ -13,22 +20,12 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-        {{ form_row(form.descriptionEN) }}
+        {{ form_row(form.reference) }}
     </div>
 </div>
 <div class="row">
     <div class="col-md-12">
-        {{ form_row(form.fundingAgency) }}
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        {{ form_row(form.projectCode) }}
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        {{ form_row(form.organisations) }}
+        {{ form_row(form.organization) }}
     </div>
 </div>
 <div class="row">

@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Agrotechnology;
 use App\Entity\Organization;
 use App\Entity\Project;
+use App\Entity\Publication;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -35,6 +36,17 @@ class ProjectType extends AbstractType
                 'multiple'=>true,
                 'class' => Organization::class,
                 'label' => 'organisations'
+            ]
+        );
+
+        $builder->add(
+            'publications',
+            EntityType::class,
+            [
+                'expanded'=>true,
+                'multiple'=>true,
+                'class' => Publication::class,
+                'label' => 'publications'
             ]
         );
 

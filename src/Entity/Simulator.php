@@ -55,6 +55,11 @@ class Simulator extends BaseEntity implements DefinitionEntityInterface
      */
     private ?string $reference;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Publication", inversedBy="simulators")
+     */
+    private Collection $publications;
+
     public function __construct()
     {
         $this->nameCZ = null;
@@ -149,6 +154,29 @@ class Simulator extends BaseEntity implements DefinitionEntityInterface
             if ($sequence->getSimulator() === $this) {
                 $sequence->setSimulator(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getPublications(): Collection
+    {
+        return $this->publications;
+    }
+
+    public function addPublication(Publication $publication): self
+    {
+        if (!$this->publications->contains($publication)) {
+            $this->publications[] = $publication;
+        }
+
+        return $this;
+    }
+
+    public function removePublication(Publication $publication): self
+    {
+        if ($this->publications->contains($publication)) {
+            $this->publications->removeElement($publication);
         }
 
         return $this;

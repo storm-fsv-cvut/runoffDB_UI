@@ -37,6 +37,7 @@ App\Entity\Phenomenon: Měřený jev
 App\Entity\Model: Model
 App\Entity\QualityIndex: Ukazatel kvality
 App\Entity\ProtectionMeasure: Protierozní opatření
+App\Entity\Publication: Publikace
 quality index: Ukazatel kvality
 protection measure: Protierozní opatření
 Protection measure: Protierozní opatření
@@ -239,3 +240,8 @@ Menu order: Pořadí v menu
 delete run group: Odstranit skupinu simulací
 Select measurements to delete: Vyberte měření která se mají trvale smazat
 delete run group and measurements: Odstranit skupinu simulací a měření
+titleCZ: Název (cs)
+titleEN: Název (en)
+authors: Autoři
+journalName: Název časopisu
+publicationYear: Rok vydání

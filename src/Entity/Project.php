@@ -34,6 +34,11 @@ class Project extends BaseEntity implements DefinitionEntityInterface
     private Collection $organisations;
 
     /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Publication", inversedBy="projects")
+     */
+    private Collection $publications;
+
+    /**
      * @ORM\Column(type="string", length=512, nullable=true)
      */
     private ?string $descriptionCZ;
@@ -183,6 +188,29 @@ class Project extends BaseEntity implements DefinitionEntityInterface
     public function setProjectCode(?string $projectCode): self
     {
         $this->projectCode = $projectCode;
+
+        return $this;
+    }
+
+    public function getPublications(): Collection
+    {
+        return $this->publications;
+    }
+
+    public function addPublication(Publication $publication): self
+    {
+        if (!$this->publications->contains($publication)) {
+            $this->publications[] = $publication;
+        }
+
+        return $this;
+    }
+
+    public function removePublication(Publication $publication): self
+    {
+        if ($this->publications->contains($publication)) {
+            $this->publications->removeElement($publication);
+        }
 
         return $this;
     }
