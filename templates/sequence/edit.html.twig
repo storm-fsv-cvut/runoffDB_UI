@@ -8,7 +8,6 @@
     <script type="text/javascript">
         google.charts.load('current', {'packages': ['corechart']});
     </script>
-
     <section class="content-header">
         <h1>
             {{ header['date'] }} - {{ header['locality'] }}
@@ -20,6 +19,12 @@
     </section>
 
     <section class="content">
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }} alert-dismissable" role="alert"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>{{ message }}</div>
+            {% endfor %}
+        {% endfor %}
+
         {% if (is_granted('edit',sequence)) %}
             {{ form_start(form) }}
         {% endif %}

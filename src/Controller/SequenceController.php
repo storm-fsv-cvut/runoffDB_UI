@@ -51,6 +51,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 
 class SequenceController extends AbstractController
@@ -70,7 +71,8 @@ class SequenceController extends AbstractController
         private PhenomenonRepository $phenomenonRepository,
         private RunGroupRepository $runGroupRepository,
         private RunGroupService $runGroupService,
-        private Security $security
+        private Security $security,
+        private readonly TranslatorInterface $translator,
     ) {}
 
     #[Route('/{_locale}/chart-data', name: 'chartData')]
@@ -457,6 +459,10 @@ class SequenceController extends AbstractController
                 $this->entityManager->flush();
 
                 return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
+            }
+
+            if($user === null) {
+                $this->addFlash('warning', $this->translator->trans('not logged info'));
             }
 
             return $this->render(
