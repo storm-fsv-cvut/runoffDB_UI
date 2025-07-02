@@ -44,6 +44,10 @@
 
                 </p>
                 {% endif %}
+
+                {% if sequence.note!=null %}
+                    {% trans %}note{% endtrans %}: <span class="text">{{ sequence.note }}</span>
+                {% endif %}
             </div>
 
             <div class="col-md-6">
