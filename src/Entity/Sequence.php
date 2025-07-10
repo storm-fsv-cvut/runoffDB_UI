@@ -51,6 +51,17 @@ class Sequence extends BaseEntity
      */
     private ?User $user;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $noteCZ = null;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $noteEN = null;
+
+
     public function __construct()
     {
         $this->id = null;
@@ -59,6 +70,8 @@ class Sequence extends BaseEntity
         $this->date = null;
         $this->projects = new ArrayCollection();
         $this->runGroups = new ArrayCollection();
+        $this->noteCZ = null;
+        $this->noteEN = null;
     }
 
     public function __toString(): string
@@ -301,5 +314,35 @@ class Sequence extends BaseEntity
         }
 
         return '';
+    }
+
+    public function getNote(): ?string
+    {
+        return $this->getLocale() == 'en' ? $this->getNoteEN() : $this->getNoteCZ();
+    }
+
+
+    public function getNoteCZ(): ?string
+    {
+        return $this->noteCZ;
+    }
+
+    public function setNoteCZ(?string $noteCZ): self
+    {
+        $this->noteCZ = $noteCZ;
+
+        return $this;
+    }
+
+    public function getNoteEN(): ?string
+    {
+        return $this->noteEN;
+    }
+
+    public function setNoteEN(?string $noteEN): self
+    {
+        $this->noteEN = $noteEN;
+
+        return $this;
     }
 }

@@ -11,6 +11,28 @@
             </div>
             <div class="modal-body">
                 <div class="row">
+                    <div class="form-group">
+                        <div class="nav-tabs-custom">
+                            <ul class="nav nav-tabs">
+                                <li class="active">
+                                    <a href="#sequence_{{ form.vars.value.getId() }}_note_cz" data-toggle="tab" aria-expanded="true">{{ form_label(form.noteCZ) }}</a>
+                                </li>
+                                <li class="">
+                                    <a href="#sequence_{{ form.vars.value.getId() }}_note_en" data-toggle="tab" aria-expanded="false">{{ form_label(form.noteEN) }}</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="sequence_{{ form.vars.value.getId() }}_note_cz">
+                                    {{ form_widget(form.noteCZ) }}
+                                </div>
+                                <div class="tab-pane" id="sequence_{{ form.vars.value.getId() }}_note_en">
+                                    {{ form_widget(form.noteEN) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="form-group col-md-12">
                         {{ form_row(form.simulator) }}
                     </div>

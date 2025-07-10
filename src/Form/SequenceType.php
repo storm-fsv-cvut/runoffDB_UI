@@ -17,6 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -34,6 +35,16 @@ class SequenceType extends AbstractType {
         $builder
             ->add('simulator')
             ->add('date', DateType::class,['widget'=>'single_text', 'label'=>'date'])
+            ->add('noteCZ', TextareaType::class, [
+                'label'=>'noteCZ',
+                'required'=>false,
+                'attr'=>['class'=>'form-control value']
+            ])
+            ->add('noteEN', TextareaType::class, [
+                'label'=>'noteEN',
+                'required'=>false,
+                'attr'=>['class'=>'form-control value']
+            ])
             ->add(
                 'projects',
                 EntityType::class,
