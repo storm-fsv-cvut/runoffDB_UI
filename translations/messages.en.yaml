@@ -75,6 +75,7 @@ runType: Run type
 runoffStart: delay till the surface runoff
 precedingPrecipitation: Preceeding precipitation
 note: Note
+description: Description
 descriptionCZ: Description (cs)
 descriptionEN: Description (en)
 nameCZ: Name (cs)

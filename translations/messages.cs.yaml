@@ -75,6 +75,7 @@ runType: Typ simulace
 runoffStart: Počátek povrchového odtoku
 precedingPrecipitation: Předchozí srážky
 note: Poznámka
+description: Popis
 descriptionCZ: Popis (cs)
 descriptionEN: Popis (en)
 Name: Název
