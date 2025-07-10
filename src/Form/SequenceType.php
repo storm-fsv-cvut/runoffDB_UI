@@ -22,14 +22,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SequenceType extends AbstractType {
-    /**
-     * @var RecordsService
-     */
-    private $recordsService;
-
-    public function __construct(RecordsService $recordsService) {
-        $this->recordsService = $recordsService;
-    }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void {
         $builder
@@ -42,6 +34,16 @@ class SequenceType extends AbstractType {
             ])
             ->add('noteEN', TextareaType::class, [
                 'label'=>'noteEN',
+                'required'=>false,
+                'attr'=>['class'=>'form-control value']
+            ])
+            ->add('descriptionCZ', TextareaType::class, [
+                'label'=>'descriptionCZ',
+                'required'=>false,
+                'attr'=>['class'=>'form-control value']
+            ])
+            ->add('descriptionEN', TextareaType::class, [
+                'label'=>'descriptionEN',
                 'required'=>false,
                 'attr'=>['class'=>'form-control value']
             ])

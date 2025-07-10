@@ -21,7 +21,9 @@
     <section class="content">
         {% for label, messages in app.flashes %}
             {% for message in messages %}
-                <div class="alert alert-{{ label }} alert-dismissable" role="alert"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>{{ message }}</div>
+                <div class="alert alert-{{ label }} alert-dismissable" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>{{ message }}
+                </div>
             {% endfor %}
         {% endfor %}
 
@@ -32,21 +34,30 @@
 
             <div class="dl col-md-6">
                 {% if header['simulator']!=null %}
-                <p class="lead">{{ header['simulator'].getName() }}</p>
-                <p>
-                    {% if header['simulator'].getOrganization()!=null %}
-                        <span>{{ header['simulator'].getOrganization() }}</span><br/>
-                    {% endif %}
+                    <p class="lead">{{ header['simulator'].getName() }}</p>
+                    <p>
+                        {% if header['simulator'].getOrganization()!=null %}
+                            <span>{{ header['simulator'].getOrganization() }}</span><br/>
+                        {% endif %}
 
-                    {% if header['projects']!=null %}
-                        {% trans %}financed from{% endtrans %}: <span class="text-bold">{{ header['projects'] }}</span>
-                    {% endif %}
+                        {% if header['projects']!=null %}
+                            {% trans %}financed from{% endtrans %}: <span
+                                class="text-bold">{{ header['projects'] }}</span>
+                        {% endif %}
 
-                </p>
+                    </p>
                 {% endif %}
 
                 {% if sequence.note!=null %}
-                    {% trans %}note{% endtrans %}: <span class="text">{{ sequence.note }}</span>
+                    <p>
+                        {% trans %}note{% endtrans %}: <span class="text">{{ sequence.note }}</span>
+                    </p>
+                {% endif %}
+
+                {% if sequence.description!=null %}
+                    <p>
+                        {% trans %}description{% endtrans %}: <span class="text">{{ sequence.description }}</span>
+                    </p>
                 {% endif %}
             </div>
 
@@ -108,24 +119,24 @@
                                     <div class="row margin-bottom-sm">
                                         <div class="col-sm-12 align-right">
                                             {% if (is_granted('edit',sequence)) %}
-                                            <a class="btn btn-sm btn-primary" data-toggle="modal"
-                                               data-target="#runGroupType{{ runGroup.getId() }}"
-                                               href="javascript:;"><i
-                                                        class="fa fa-pencil"></i>&nbsp;&nbsp;&nbsp;{% trans %}Edit group{% endtrans %}
-                                            </a>
-                                            {% include "forms/runGroupTypeModalEdit.html.twig" %}
+                                                <a class="btn btn-sm btn-primary" data-toggle="modal"
+                                                   data-target="#runGroupType{{ runGroup.getId() }}"
+                                                   href="javascript:;"><i
+                                                            class="fa fa-pencil"></i>&nbsp;&nbsp;&nbsp;{% trans %}Edit group{% endtrans %}
+                                                </a>
+                                                {% include "forms/runGroupTypeModalEdit.html.twig" %}
                                             {% endif %}
                                         </div>
                                     </div>
                                     <div class="row margin-bottom-sm">
                                         <div class="col-sm-12 align-right">
                                             {% if (is_granted('edit',sequence)) %}
-                                            <a type="button" class="btn btn-primary btn-sm" data-toggle="modal"
-                                               data-target="#run" data-parent="{{ runGroup.getId() }}"
-                                               tabindex="-1"
-                                               href="javascript:;">
-                                                <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;{% trans %}add plotrun{% endtrans %}
-                                            </a>
+                                                <a type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                                   data-target="#run" data-parent="{{ runGroup.getId() }}"
+                                                   tabindex="-1"
+                                                   href="javascript:;">
+                                                    <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;{% trans %}add plotrun{% endtrans %}
+                                                </a>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -133,10 +144,10 @@
                                     <div class="row margin-bottom">
                                         <div class="col-sm-12 align-right">
                                             {% if (is_granted('edit',sequence)) %}
-                                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
-                                            data-target="#deleteRunGroupType{{ runGroup.id }}">
-                                        <i class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;{% trans %}delete run group{% endtrans %}
-                                    </button>
+                                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                                        data-target="#deleteRunGroupType{{ runGroup.id }}">
+                                                    <i class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;{% trans %}delete run group{% endtrans %}
+                                                </button>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -399,17 +410,18 @@
                                                                                         </div>
                                                                                     </div>
 
-                                                                                <div class="row margin-bottom">
-                                                                                    <div class="col-sm-12 align-right">
-                                                                                    <a type="button" class="btn btn-info btn-sm"
-                                                                                            data-toggle="modal"
-                                                                                            data-parent="{{ measurementArray['id'] }}"
-                                                                                            data-target="#append_record">
-                                                                                        <i class="fa fa-chain"></i>&nbsp;&nbsp;&nbsp;{% trans %}append record{% endtrans %}
-                                                                                    </a>
+                                                                                    <div class="row margin-bottom">
+                                                                                        <div class="col-sm-12 align-right">
+                                                                                            <a type="button"
+                                                                                               class="btn btn-info btn-sm"
+                                                                                               data-toggle="modal"
+                                                                                               data-parent="{{ measurementArray['id'] }}"
+                                                                                               data-target="#append_record">
+                                                                                                <i class="fa fa-chain"></i>&nbsp;&nbsp;&nbsp;{% trans %}append record{% endtrans %}
+                                                                                            </a>
 
+                                                                                        </div>
                                                                                     </div>
-                                                                                </div>
 
                                                                                     {% include "forms/measurementTypeModalEdit.html.twig"  with {'parentId':runArray['id']} %}
 
@@ -498,26 +510,27 @@
                                                                                                                 <p>
                                                                                                                     <label class="text-gray-dark text-normal">{% trans %}set as init moisture{% endtrans %}
                                                                                                                         {% if recordsService.isRecordSetAsInitMoistureInSequenceContext(record, sequence) %}
-                                                                                                                        <input
-                                                                                                                                checked="checked"
-                                                                                                                                type="checkbox"
-                                                                                                                                class="href"
-                                                                                                                                data-hardlink="{{ path('isinitmoisturer', {removeRecordId:record.getId()})}}"/>
-                                                                                                                            {% else %}
-                                                                                                                                <input
-                                                                                                                                        type="checkbox"
-                                                                                                                                        class="href"
-                                                                                                                                        data-hardlink="{{ path('isinitmoisturer', {recordId:record.getId()}) }}"/>
+                                                                                                                            <input
+                                                                                                                                    checked="checked"
+                                                                                                                                    type="checkbox"
+                                                                                                                                    class="href"
+                                                                                                                                    data-hardlink="{{ path('isinitmoisturer', {removeRecordId:record.getId()}) }}"/>
+                                                                                                                        {% else %}
+                                                                                                                            <input
+                                                                                                                                    type="checkbox"
+                                                                                                                                    class="href"
+                                                                                                                                    data-hardlink="{{ path('isinitmoisturer', {recordId:record.getId()}) }}"/>
                                                                                                                         {% endif %}
                                                                                                                     </label>
                                                                                                                     <br/>
-                                                                                                                    <label class="text-gray-dark text-normal" href="{{ path('israinintensityr', {recordId:record.getId()}) }}">{% trans %}set as rain intensity{% endtrans %}
+                                                                                                                    <label class="text-gray-dark text-normal"
+                                                                                                                           href="{{ path('israinintensityr', {recordId:record.getId()}) }}">{% trans %}set as rain intensity{% endtrans %}
                                                                                                                         {% if recordsService.isRecordSetAsRainIntenzityInSequenceContext(record, sequence) %}
-                                                                                                                        <input
-                                                                                                                                checked="checked"
-                                                                                                                                type="checkbox"
-                                                                                                                                class="href"
-                                                                                                                                data-hardlink="{{ path('israinintensityr', {removeRecordId:record.getId()}) }}"/>
+                                                                                                                            <input
+                                                                                                                                    checked="checked"
+                                                                                                                                    type="checkbox"
+                                                                                                                                    class="href"
+                                                                                                                                    data-hardlink="{{ path('israinintensityr', {removeRecordId:record.getId()}) }}"/>
                                                                                                                         {% else %}
                                                                                                                             <input
                                                                                                                                     type="checkbox"
@@ -598,26 +611,26 @@
                                                                                                     </div>
                                                                                                 </div>
                                                                                                 {% if (is_granted('edit',sequence)) %}
-                                                                                                <div class="box-footer bg-gray-light align-right">
-                                                                                                    <a
-                                                                                                            data-confirm="{% trans %}delete?{% endtrans %}"
-                                                                                                            class="btn btn-info btn-sm"
-                                                                                                            href="{{ path('sequence', {id:header['id'],delete_record:record.getId()}) }}"><i
-                                                                                                                class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;{% trans %}delete{% endtrans %}
-                                                                                                    </a>
+                                                                                                    <div class="box-footer bg-gray-light align-right">
+                                                                                                        <a
+                                                                                                                data-confirm="{% trans %}delete?{% endtrans %}"
+                                                                                                                class="btn btn-info btn-sm"
+                                                                                                                href="{{ path('sequence', {id:header['id'],delete_record:record.getId()}) }}"><i
+                                                                                                                    class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;{% trans %}delete{% endtrans %}
+                                                                                                        </a>
 
-                                                                                                    <a role="menuitem"
-                                                                                                       class="btn btn-info btn-sm"
-                                                                                                       href="#"
-                                                                                                       data-toggle="modal"
-                                                                                                       data-target="#record{{ record.getId() }}"><i
-                                                                                                                class="fa fa-pencil"></i>&nbsp;&nbsp;&nbsp;{% trans %}edit{% endtrans %}
-                                                                                                    </a>
+                                                                                                        <a role="menuitem"
+                                                                                                           class="btn btn-info btn-sm"
+                                                                                                           href="#"
+                                                                                                           data-toggle="modal"
+                                                                                                           data-target="#record{{ record.getId() }}"><i
+                                                                                                                    class="fa fa-pencil"></i>&nbsp;&nbsp;&nbsp;{% trans %}edit{% endtrans %}
+                                                                                                        </a>
 
 
-                                                                                                    {% include "forms/recordTypeModalEdit.html.twig" %}
+                                                                                                        {% include "forms/recordTypeModalEdit.html.twig" %}
 
-                                                                                                </div>
+                                                                                                    </div>
                                                                                                 {% endif %}
                                                                                             </div>
                                                                                         </div>
@@ -668,7 +681,7 @@
 
         {% for runGroup in sequence.getRunGroups() %}
             {% set deleteRunGroupForm =  deleteRunGroupForms[runGroup.getId()] %}
-            {% include "forms/deleteRunGroupTypeModal.html.twig"%}
+            {% include "forms/deleteRunGroupTypeModal.html.twig" %}
         {% endfor %}
 
 
