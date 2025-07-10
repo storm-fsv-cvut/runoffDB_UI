@@ -37,10 +37,12 @@ class SequenceType extends AbstractType {
             ->add('date', DateType::class,['widget'=>'single_text', 'label'=>'date'])
             ->add('noteCZ', TextareaType::class, [
                 'label'=>'noteCZ',
+                'required'=>false,
                 'attr'=>['class'=>'form-control value']
             ])
             ->add('noteEN', TextareaType::class, [
                 'label'=>'noteEN',
+                'required'=>false,
                 'attr'=>['class'=>'form-control value']
             ])
             ->add(
