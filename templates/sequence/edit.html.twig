@@ -494,12 +494,14 @@
                                                                                                 <div class="box-body">
                                                                                                     <div class="row">
                                                                                                         <div class="col-md-6">
+                                                                                                            {% if record.getSourceRecords()|length > 0 %}
                                                                                                             <p>
                                                                                                                 {% trans %}derived from{% endtrans %}
                                                                                                                 {% for sourceRecord in record.getSourceRecords() %}
                                                                                                                     <span class="badge bg-primary"> #{{ sourceRecord.getId() }}</span>
                                                                                                                 {% endfor %}
                                                                                                             </p>
+                                                                                                            {% endif %}
                                                                                                             <p>{{ record.getDescription() }}</p>
                                                                                                             <p>
                                                                                                                 <i>{{ record.getNote() }}</i>
