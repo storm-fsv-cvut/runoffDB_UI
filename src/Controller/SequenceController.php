@@ -203,6 +203,8 @@ class SequenceController extends AbstractController
             $entity = $this->runRepository->find($request->get('runId'));
         } elseif ($request->get('measurementId') !== null) {
             $entity = $this->measurementRepository->find($request->get('measurementId'));
+        } elseif($request->get('sequenceId') !== null) {
+            $entity = $this->sequenceRepository->find($request->get('sequenceId'));
         } else {
             $entity = null;
         }
@@ -230,6 +232,8 @@ class SequenceController extends AbstractController
             $entity = $this->runRepository->find($request->get('runId'));
         } elseif ($request->get('measurementId') !== null) {
             $entity = $this->measurementRepository->find($request->get('measurementId'));
+        } elseif($request->get('sequenceId') !== null) {
+            $entity = $this->sequenceRepository->find($request->get('sequenceId'));
         } else {
             $entity = null;
         }
@@ -392,6 +396,9 @@ class SequenceController extends AbstractController
                             }
                             if ($partialData instanceof Measurement) {
                                 $this->measurementService->uploadFile($file, $partialData);
+                            }
+                            if ($partialData instanceof Sequence) {
+                                $this->sequenceService->uploadFile($file, $partialData);
                             }
                         }
                     }

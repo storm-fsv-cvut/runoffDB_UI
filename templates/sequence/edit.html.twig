@@ -59,6 +59,28 @@
                         {% trans %}description{% endtrans %}: <span class="text">{{ sequence.description }}</span>
                     </p>
                 {% endif %}
+
+
+                {% if sequence.getFiles()|length>0 %}
+
+                    <div class="box bg-gray-light">
+                        <div class="box-body">
+                            <dt>{% trans %}files{% endtrans %}</dt>
+                            <dd>
+                                {% for file in sequence.getFiles() %}
+                                    <a href="{{ path('downloadSequenceFile',{'id':sequence.getId(),'sequenceId':sequence.getId(),'filename':file}) }}"
+                                       target="_blank">{{ file }}</a>
+                                    <a class="text-danger"
+                                       data-confirm="{% trans %}delete?{% endtrans %}"
+                                       href="{{ path('deleteSequenceFile',{'id':sequence.getId(),'sequenceId':sequence.getId(),'filename':file}) }}"><i
+                                                class="fa fa-trash"></i></a>
+                                    <br/>
+                                {% endfor %}
+                            </dd>
+                        </div>
+                    </div>
+                {% endif %}
+
             </div>
 
             <div class="col-md-6">
