@@ -6,6 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use DOMDocument;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
 
 /**
@@ -213,7 +215,7 @@ class Sequence extends BaseEntity
         $plots = [];
         if ($this->getRuns() !== null) {
             foreach ($this->getRuns()->toArray() as $run) {
-                if($run->getPlot() !== null) {
+                if ($run->getPlot() !== null) {
                     $plots[] = $run->getPlot();
                 }
             }
@@ -225,7 +227,7 @@ class Sequence extends BaseEntity
     {
         $names = [];
         foreach ($this->getPlots() as $plot) {
-            if ($plot!==null && $plot->getCrop() !== null) {
+            if ($plot !== null && $plot->getCrop() !== null) {
                 if (!in_array($plot->getCrop()->getName(), $names, true)) {
                     $names[] = $plot->getCrop()->getName();
                 }
@@ -316,9 +318,10 @@ class Sequence extends BaseEntity
         return $this;
     }
 
-    public function getOrganizationCode(): string {
-        if($this->getSimulator() !== null) {
-            if($this->getSimulator()->getOrganization()!==null) {
+    public function getOrganizationCode(): string
+    {
+        if ($this->getSimulator() !== null) {
+            if ($this->getSimulator()->getOrganization() !== null) {
                 return $this->getSimulator()
                             ->getOrganization()
                             ->getNameCode();
@@ -383,5 +386,34 @@ class Sequence extends BaseEntity
     {
         $this->descriptionEN = $descriptionEN;
         return $this;
+    }
+
+    public function getFilesPath(): string
+    {
+        return 'data/sequence/' . $this->getId();
+    }
+
+    public function getFiles(): array
+    {
+        $files = [];
+        $filesystem = new Filesystem();
+        $dir = $this->getFilesPath();
+        if ($filesystem->exists($dir)) {
+            $finder = new Finder();
+            $finder->files()->in($dir);
+            foreach ($finder as $file) {
+                $files[] = $file->getRelativePathname();
+            }
+        }
+        return $files;
+    }
+
+    public function removeFile(string $filename): void
+    {
+        $filesystem = new Filesystem();
+        $path = $this->getFilesPath() . '/' . $filename;
+        if ($filesystem->exists($path)) {
+            $filesystem->remove($path);
+        }
     }
 }

@@ -4,6 +4,7 @@
 namespace App\Services;
 
 
+use App\Entity\Measurement;
 use App\Entity\Sequence;
 use App\Repository\RunRepository;
 use App\Repository\SequenceRepository;
@@ -12,7 +13,9 @@ use Doctrine\ORM\QueryBuilder;
 use DOMDocument;
 use Exception;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -46,13 +49,17 @@ class SequenceService
      * @var string
      */
     private $locale;
+    private ParameterBagInterface $parameterBag;
+    private Filesystem $filesystem;
 
     public function __construct(
         SequenceRepository        $sequenceRepository,
         TillageSequenceRepository $tillageSequenceRepository,
         TranslatorInterface       $translator,
         RequestStack              $requestStack,
-        RunRepository             $runRepository
+        RunRepository             $runRepository,
+        ParameterBagInterface $parameterBag,
+        Filesystem $filesystem
     ) {
         $this->sequenceRepository = $sequenceRepository;
         $this->tillageSequenceRepository = $tillageSequenceRepository;
@@ -64,6 +71,8 @@ class SequenceService
         }
 
         $this->locale = $this->requestStack->getCurrentRequest()->getLocale();
+        $this->parameterBag = $parameterBag;
+        $this->filesystem = $filesystem;
     }
 
     public function getRunsArray(Sequence $sequence): array
@@ -182,6 +191,15 @@ class SequenceService
         $dom->append($sequencesDom);
         $xmlString = $dom->saveXML();
         return $xmlString;
+    }
+
+    public function uploadFile(UploadedFile $file, Sequence $sequence): void
+    {
+        $dir = $this->parameterBag->get('kernel.project_dir') . "/public/".$sequence->getFilesPath();
+        if (!$this->filesystem->exists($dir)) {
+            $this->filesystem->mkdir($dir);
+        }
+        $file->move($dir, $file->getClientOriginalName());
     }
 
 }

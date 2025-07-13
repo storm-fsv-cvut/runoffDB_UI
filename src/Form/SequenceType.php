@@ -15,65 +15,80 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class SequenceType extends AbstractType {
+class SequenceType extends AbstractType
+{
 
-    public function buildForm(FormBuilderInterface $builder, array $options): void {
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
         $builder
             ->add('simulator')
-            ->add('date', DateType::class,['widget'=>'single_text', 'label'=>'date'])
+            ->add('date', DateType::class, ['widget' => 'single_text', 'label' => 'date'])
             ->add('noteCZ', TextareaType::class, [
-                'label'=>'noteCZ',
-                'required'=>false,
-                'attr'=>['class'=>'form-control value']
+                'label' => 'noteCZ',
+                'required' => false,
+                'attr' => ['class' => 'form-control value']
             ])
             ->add('noteEN', TextareaType::class, [
-                'label'=>'noteEN',
-                'required'=>false,
-                'attr'=>['class'=>'form-control value']
+                'label' => 'noteEN',
+                'required' => false,
+                'attr' => ['class' => 'form-control value']
             ])
             ->add('descriptionCZ', TextareaType::class, [
-                'label'=>'descriptionCZ',
-                'required'=>false,
-                'attr'=>['class'=>'form-control value']
+                'label' => 'descriptionCZ',
+                'required' => false,
+                'attr' => ['class' => 'form-control value']
             ])
             ->add('descriptionEN', TextareaType::class, [
-                'label'=>'descriptionEN',
-                'required'=>false,
-                'attr'=>['class'=>'form-control value']
+                'label' => 'descriptionEN',
+                'required' => false,
+                'attr' => ['class' => 'form-control value']
             ])
             ->add(
                 'projects',
                 EntityType::class,
                 [
-                    'expanded'=>true,
+                    'expanded' => true,
                     'mapped' => true,
-                    'multiple'=>true,
+                    'multiple' => true,
                     'class' => Project::class,
                     'label' => 'projects'
                 ]
             )
-            ->add('save', SubmitType::class,[
-                'attr'=>['class'=>'btn btn-success']
+            ->add(
+                'rawData',
+                FileType::class,
+                [
+                    'label' => 'rawData',
+                    'multiple' => true,
+                    'required' => false,
+                    'mapped' => false
+                ]
+            )
+            ->add('save', SubmitType::class, [
+                'attr' => ['class' => 'btn btn-success']
             ]);
 
         $builder->add('runGroups', CollectionType::class, [
             'entry_type' => RunGroupType::class,
-            'label'=>'run_group',
+            'label' => 'run_group',
             'mapped' => true,
             'prototype' => true,
             'allow_add' => true,
             'allow_delete' => true
         ]);
     }
-    public function configureOptions(OptionsResolver $resolver): void {
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
         $resolver->setDefaults([
-            'data_class' => Sequence::class,
-        ]);
+                                   'data_class' => Sequence::class,
+                               ]);
     }
 }
