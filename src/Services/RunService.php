@@ -90,4 +90,5 @@ class RunService {
     public function findBySoilSample(SoilSample $soilSample): array {
         return $this->runRepository->findBySoilSample($soilSample);
     }
+
 }

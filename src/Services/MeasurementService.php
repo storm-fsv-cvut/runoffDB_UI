@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Entity\Measurement;
 use App\Entity\Run;
 use App\Repository\MeasurementRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -122,5 +123,15 @@ class MeasurementService
             $this->filesystem->mkdir($dir);
         }
         $file->move($dir, $file->getClientOriginalName());
+    }
+
+    public function getRelatedSoilSamples(Measurement $measurement): array
+    {
+        return $measurement->getSoilSamples()->toArray();
+    }
+
+    public function getRelatedRuns(Measurement $measurement): array
+    {
+        return $measurement->getRuns()->toArray();
     }
 }
