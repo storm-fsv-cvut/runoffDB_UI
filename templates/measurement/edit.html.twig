@@ -18,6 +18,64 @@
         {{ form_start(formMeasurement) }}
     {% endif %}
     <section class="content">
+
+        {% if relatedSoilSamples|length>0 %}
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="box box-solid">
+                    <div class="box-header">
+                        <h4 class="box-title">
+                            <a data-toggle="collapse" data-parent="#accordion"
+                               href="#soilSamples" class="collapsed"
+                               aria-expanded="false">{% trans %}related soil samples{% endtrans %}
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="soilSamples" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                        <div class="box-body">
+                            {% for soilSample in relatedSoilSamples %}
+                                <p>
+                                    {{ soilSample }}
+                                        <a href="{{ path('soilSample',{'id':soilSample.getId()}) }}"
+                                           target="_blank"> <i class="fa fa-external-link"></i></a>
+                                </p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if relatedRuns|length>0 %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="box box-solid">
+                        <div class="box-header">
+                            <h4 class="box-title">
+                                <a data-toggle="collapse" data-parent="#accordion"
+                                   href="#relatedRuns" class="collapsed"
+                                   aria-expanded="false">{% trans %}related runs{% endtrans %}
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="relatedRuns" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                            <div class="box-body">
+                                {% for run in relatedRuns %}
+                                    <p>
+                                        {{ run }}
+                                        <a href="{{ path('sequence',{'id':run.getSequence().getId()}) }}"
+                                           target="_blank"> <i class="fa fa-external-link"></i></a>
+                                    </p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+
         <div class="row">
             <div class="col-md-12">
 
@@ -78,26 +136,27 @@
 
                         {% if measurement.getFiles()|length>0 %}
 
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="box box-solid">
-                                                <div class="box-body">
-                                                    <dt>{% trans %}files{% endtrans %}</dt>
-                                                    <dd>
-                                                        {% for file in measurement.getFiles() %}
-                                                            <a href="{{ path('downloadMeasurementFile',{'id':measurement.getId(),'filename':file}) }}"
-                                                               target="_blank">{{ file }}</a>
-                                                            <a class="text-danger" data-confirm="{% trans %}delete?{% endtrans %}"
-                                                               href="{{ path('deleteMeasurementFile',{'id':measurement.getId(),'filename':file}) }}"><i
-                                                                        class="fa fa-trash"></i></a>
-                                                            <br/>
-                                                        {% endfor %}
-                                                    </dd>
-                                                </div>
-                                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="box box-solid">
+                                        <div class="box-body">
+                                            <dt>{% trans %}files{% endtrans %}</dt>
+                                            <dd>
+                                                {% for file in measurement.getFiles() %}
+                                                    <a href="{{ path('downloadMeasurementFile',{'id':measurement.getId(),'filename':file}) }}"
+                                                       target="_blank">{{ file }}</a>
+                                                    <a class="text-danger"
+                                                       data-confirm="{% trans %}delete?{% endtrans %}"
+                                                       href="{{ path('deleteMeasurementFile',{'id':measurement.getId(),'filename':file}) }}"><i
+                                                                class="fa fa-trash"></i></a>
+                                                    <br/>
+                                                {% endfor %}
+                                            </dd>
                                         </div>
                                     </div>
-                                {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
 
                         <div class="row">
                             <div class="col-md-12">

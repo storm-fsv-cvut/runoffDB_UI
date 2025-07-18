@@ -110,10 +110,14 @@ class MeasurementController extends AbstractController
                 return $this->redirectToRoute('measurements');
             }
 
+            $relatedSoilSamples = $this->measurementService->getRelatedSoilSamples($measurement);
+            $relatedRuns = $this->measurementService->getRelatedRuns($measurement);
             return $this->render('measurement/edit.html.twig', [
                 'recordForm' => $newRecordForm->createView(),
                 'measurement' => $measurement,
                 'formMeasurement' => $measurementForm->createView(),
+                'relatedSoilSamples' => $relatedSoilSamples,
+                'relatedRuns' => $relatedRuns,
             ]);
         }
 
@@ -131,6 +135,8 @@ class MeasurementController extends AbstractController
                 return $this->redirectToRoute('measurement', ['id' => $measurement->getId()]);
             }
         }
+
+
 
         return $this->render('measurement/add.html.twig', [
             'form' => $form->createView()
