@@ -142,18 +142,6 @@
                                         {{ form_widget(formData.value) }}
                                     </td>
                                     <td>
-
-
-
-                                        <div class="nav-tabs-custom">
-                                            <ul class="nav nav-tabs">
-                                                <li class="active">
-                                                    <a href="#data_{{ formData.vars.value.getId() }}_note_cz" data-toggle="tab" aria-expanded="true">{{ form_label(formData.noteCZ) }}</a>
-                                                </li>
-                                                <li class="">
-                                                    <a href="#data_{{ formData.vars.value.getId() }}_note_en" data-toggle="tab" aria-expanded="false">{{ form_label(formData.noteEN) }}</a>
-                                                </li>
-                                            </ul>
                                             <div class="tab-content">
                                                 <div class="tab-pane active" id="data_{{ formData.vars.value.getId() }}_note_cz">
                                                     {{ form_widget(formData.noteCZ) }}
@@ -162,7 +150,15 @@
                                                     {{ form_widget(formData.noteEN) }}
                                                 </div>
                                             </div>
-                                        </div>
+
+                                        <ul class="nav-tabs-small">
+                                            <li class="active">
+                                                <a href="#data_{{ formData.vars.value.getId() }}_note_cz" data-toggle="tab" aria-expanded="true">cs</a>
+                                            </li>
+                                            <li class="">
+                                                <a href="#data_{{ formData.vars.value.getId() }}_note_en" data-toggle="tab" aria-expanded="false">en</a>
+                                            </li>
+                                        </ul>
                                     </td>
                                     <td>
                                         <a class="text-danger removeRow"><i class="fa fa-minus"></i></a>

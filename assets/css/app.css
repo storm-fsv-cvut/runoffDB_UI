@@ -122,6 +122,19 @@ label.text-normal {
     margin-bottom: 5px;
 }
 
+.nav-tabs-small {
+    list-style: none;
+    margin: 0 !important;
+}
+
+.nav-tabs-small li {
+    display: inline-block;
+}
+
+.nav-tabs-small li.active {
+    text-decoration: underline;
+}
+
 @media (min-width: 768px) {
     .modal-dialog {
         width: 700px;
