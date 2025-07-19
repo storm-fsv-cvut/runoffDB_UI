@@ -237,3 +237,10 @@ function drawChart(element, ids) {
     );
 }
 
+function fixLayout() {
+    $(".main-sidebar").css("padding-top", $(".main-header").outerHeight() + "px");
+}
+
+window.addEventListener("resize", fixLayout);
+window.addEventListener("DOMContentLoaded", fixLayout);
+
