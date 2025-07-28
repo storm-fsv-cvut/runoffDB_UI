@@ -5,6 +5,7 @@ namespace App\Form;
 
 use App\Entity\Organization;
 use App\Entity\User;
+use App\Form\Type\DescendingIdEntityType;
 use App\Security\UserRole;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -23,7 +24,7 @@ class UserType extends AbstractType {
             ->add('fullname', TextType::class)
             ->add('email', EmailType::class)
             ->add('username', TextType::class)
-            ->add('organization', EntityType::class, ['class'=>Organization::class, 'label'=>'organization'])
+            ->add('organization', DescendingIdEntityType::class, ['class'=>Organization::class, 'label'=>'organization'])
             ->add('role', ChoiceType::class, [
                 'choices' => [
                     UserRole::ROLE_ADMIN=>UserRole::ROLE_ADMIN,

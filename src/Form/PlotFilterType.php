@@ -6,6 +6,7 @@ use App\Entity\Crop;
 use App\Entity\CropType;
 use App\Entity\Locality;
 use App\Entity\ProtectionMeasure;
+use App\Form\Type\DescendingIdEntityType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -40,7 +41,7 @@ class PlotFilterType extends AbstractType
             )
             ->add(
                 'locality',
-                EntityType::class,
+                DescendingIdEntityType::class,
                 [
                     'class' => Locality::class,
                     'placeholder' => '',
@@ -50,7 +51,7 @@ class PlotFilterType extends AbstractType
             )
             ->add(
                 'crop',
-                EntityType::class,
+                DescendingIdEntityType::class,
                 [
                     'class' => Crop::class,
                     'placeholder' => '',
@@ -60,7 +61,7 @@ class PlotFilterType extends AbstractType
             )
             ->add(
                 'protectionMeasure',
-                EntityType::class,
+                DescendingIdEntityType::class,
                 [
                     'class' => ProtectionMeasure::class,
                     'placeholder' => '',

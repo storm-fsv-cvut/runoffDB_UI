@@ -7,6 +7,7 @@ use App\Entity\Organization;
 use App\Entity\Project;
 use App\Entity\Publication;
 use App\Entity\Simulator;
+use App\Form\Type\DescendingIdEntityType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -28,13 +29,13 @@ class SimulatorType extends AbstractType
             ->add('descriptionCZ', TextareaType::class, ['label' => 'descriptionCz', 'required' => false])
             ->add('descriptionEN', TextareaType::class, ['label' => 'descriptionEn', 'required' => false])
             ->add('reference', TextType::class, ['label' => 'reference', 'required' => false])
-            ->add('organization', EntityType::class, [
+            ->add('organization', DescendingIdEntityType::class, [
                 'class' => Organization::class,
                 'label' => 'organization',
             ])
             ->add(
                 'publications',
-                EntityType::class,
+                DescendingIdEntityType::class,
                 [
                     'expanded' => true,
                     'multiple' => true,
@@ -56,7 +57,7 @@ class SimulatorType extends AbstractType
 
         $builder->add(
             'publications',
-            EntityType::class,
+            DescendingIdEntityType::class,
             [
                 'expanded'=>true,
                 'multiple'=>true,
