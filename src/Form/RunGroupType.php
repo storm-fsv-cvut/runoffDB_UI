@@ -10,6 +10,7 @@ use App\Entity\Run;
 use App\Entity\RunGroup;
 use App\Entity\RunType as RunTypeEntity;
 use App\Entity\SoilSample;
+use App\Form\Type\DescendingIdEntityType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -37,7 +38,7 @@ class RunGroupType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options): void {
         $builder
-            ->add('runType', EntityType::class, [
+            ->add('runType', DescendingIdEntityType::class, [
                 'class' => RunTypeEntity::class,
                 'label' => "runType"
             ])

@@ -2,7 +2,11 @@
 
 namespace App\Form;
 
+use App\Entity\Locality;
+use App\Entity\Plot;
+use App\Entity\Run;
 use App\Entity\SoilSample;
+use App\Form\Type\DescendingIdEntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -24,10 +28,22 @@ class SoilSampleType extends AbstractType
             ->add('dateProcessed', DateType::class, ['widget' => 'single_text'])
             ->add('rawDataPath')
             ->add('processedAt')
-            ->add('plot')
+            ->add('plot', DescendingIdEntityType::class, [
+                'class' => Plot::class,
+                'label' => 'plot',
+                'placeholder' => '',
+            ])
             ->add('wrbSoilClass')
-            ->add('locality')
-            ->add('Run')
+            ->add('locality', DescendingIdEntityType::class, [
+                'class' => Locality::class,
+                'label' => 'locality',
+                'placeholder' => '',
+            ])
+            ->add('Run', DescendingIdEntityType::class, [
+                'class' => Run::class,
+                'label' => 'run',
+                'placeholder' => '',
+            ])
             ->add(
                 'save',
                 SubmitType::class,

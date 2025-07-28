@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Locality;
+use App\Form\Type\DescendingIdEntityType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -29,7 +30,7 @@ class SoilSampleFilterType extends AbstractType
         $builder
             ->add(
                 'locality',
-                EntityType::class,
+                DescendingIdEntityType::class,
                 [
                     'class' => Locality::class,
                     'required' => false,

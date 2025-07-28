@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Operation;
 use App\Entity\TillageSequence;
+use App\Form\Type\DescendingIdEntityType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -16,7 +17,7 @@ class TillageSequenceType extends AbstractType
     {
         $builder
             ->add('date', DateType::class, ['widget'=>'single_text'])
-            ->add('operation', EntityType::class,['class'=>Operation::class,'label'=>'operation']);
+            ->add('operation', DescendingIdEntityType::class,['class'=>Operation::class,'label'=>'operation']);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

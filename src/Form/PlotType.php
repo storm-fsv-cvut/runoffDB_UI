@@ -7,6 +7,7 @@ use App\Entity\Crop;
 use App\Entity\Locality;
 use App\Entity\Plot;
 use App\Entity\ProtectionMeasure;
+use App\Form\Type\DescendingIdEntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -27,25 +28,25 @@ class PlotType extends AbstractType
                 'label' => 'name',
                 'required' => true,
             ])
-            ->add('locality', EntityType::class, [
+            ->add('locality', DescendingIdEntityType::class, [
                 'class' => Locality::class,
                 'label' => 'locality',
                 'required' => false,
                 'placeholder' => '',
             ])
-            ->add('soilOriginLocality', EntityType::class, [
+            ->add('soilOriginLocality', DescendingIdEntityType::class, [
                 'class' => Locality::class,
                 'label' => 'soilOriginLocality',
                 'required' => false,
                 'placeholder' => '',
             ])
-            ->add('crop', EntityType::class, [
+            ->add('crop', DescendingIdEntityType::class, [
                 'class' => Crop::class,
                 'label' => 'crop',
                 'required' => false,
                 'placeholder' => '',
             ])
-            ->add('agrotechnology', EntityType::class, [
+            ->add('agrotechnology', DescendingIdEntityType::class, [
                 'class' => Agrotechnology::class,
                 'label' => 'agrotechnology',
                 'required' => false,
@@ -76,7 +77,7 @@ class PlotType extends AbstractType
                 'label' => 'noteEN',
                 'required' => false,
             ])
-            ->add('protectionMeasures', EntityType::class, [
+            ->add('protectionMeasures', DescendingIdEntityType::class, [
                 'class' => ProtectionMeasure::class,
                 'label' => 'protection measure',
                 'multiple' => true,

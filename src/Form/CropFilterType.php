@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\CropType;
 use App\Entity\Locality;
+use App\Form\Type\DescendingIdEntityType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -33,7 +34,7 @@ class CropFilterType extends AbstractType
             )
             ->add(
                 'cropType',
-                EntityType::class,
+                DescendingIdEntityType::class,
                 [
                     'class' => CropType::class,
                     'placeholder' => '',

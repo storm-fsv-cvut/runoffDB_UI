@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Locality;
 use App\Entity\Organization;
 use App\Entity\Phenomenon;
+use App\Form\Type\DescendingIdEntityType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -31,7 +32,7 @@ class MeasurementFilterType extends AbstractType
         $builder
             ->add(
                 'phenomenon',
-                EntityType::class,
+                DescendingIdEntityType::class,
                 [
                     'class' => Phenomenon::class,
                     'required' => false,
@@ -41,7 +42,7 @@ class MeasurementFilterType extends AbstractType
             )
             ->add(
                 'locality',
-                EntityType::class,
+                DescendingIdEntityType::class,
                 [
                     'class' => Locality::class,
                     'required' => false,
@@ -51,7 +52,7 @@ class MeasurementFilterType extends AbstractType
             )
             ->add(
                 'organization',
-                EntityType::class,
+                DescendingIdEntityType::class,
                 [
                     'class' => Organization::class,
                     'required' => false,

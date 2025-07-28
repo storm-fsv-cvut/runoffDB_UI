@@ -8,6 +8,7 @@ use App\Entity\Organization;
 use App\Entity\Plot;
 use App\Entity\Record;
 use App\Entity\Simulator;
+use App\Form\Type\DescendingIdEntityType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
@@ -32,13 +33,13 @@ class SequenceFilterType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options): void {
         $builder
-            ->add('locality', EntityType::class, [
+            ->add('locality', DescendingIdEntityType::class, [
                 'class' => Locality::class,
                 'required' => false,
                 'placeholder' => '',
                 'label' => 'Locality'
             ])
-            ->add('organization', EntityType::class, [
+            ->add('organization', DescendingIdEntityType::class, [
                 'class' => Organization::class,
                 'required' => false,
                 'placeholder' => '',
@@ -56,13 +57,13 @@ class SequenceFilterType extends AbstractType {
                 'widget'=>'single_text',
                 'label' => ucfirst($this->translator->trans("date to")),
             ])
-            ->add('crop', EntityType::class, [
+            ->add('crop', DescendingIdEntityType::class, [
                 'class' => Crop::class,
                 'required' => false,
                 'placeholder' => '',
                 'label' => 'Crop'
             ])
-            ->add('simulator', EntityType::class, [
+            ->add('simulator', DescendingIdEntityType::class, [
                 'class' => Simulator::class,
                 'required' => false,
                 'placeholder' => '',

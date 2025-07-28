@@ -8,6 +8,7 @@ use App\Entity\Project;
 use App\Entity\Record;
 use App\Entity\Sequence;
 use App\Entity\Simulator;
+use App\Form\Type\DescendingIdEntityType;
 use App\Repository\OrganizationRepository;
 use App\Repository\PhenomenonRepository;
 use App\Repository\RecordRepository;
@@ -49,11 +50,15 @@ class SequenceBasicType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('simulator')
+            ->add('simulator', DescendingIdEntityType::class, [
+                'class' => Simulator::class,
+                'label' => 'simulator',
+                'placeholder' => '',
+            ])
             ->add('date', DateType::class,['widget'=>'single_text'])
             ->add(
                 'projects',
-                EntityType::class,
+                DescendingIdEntityType::class,
                 [
                     'expanded'=>true,
                     'multiple'=>true,

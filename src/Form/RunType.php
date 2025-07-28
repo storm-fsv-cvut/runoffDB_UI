@@ -10,6 +10,7 @@ use App\Entity\Record;
 use App\Entity\Run;
 use App\Entity\RunType as RunTypeEntity;
 use App\Entity\SoilSample;
+use App\Form\Type\DescendingIdEntityType;
 use App\Services\RecordsService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -41,39 +42,39 @@ class RunType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options): void {
         $builder
             ->add('parent_id', HiddenType::class, ['mapped' => false])
-            ->add('plot', EntityType::class, [
+            ->add('plot', DescendingIdEntityType::class, [
                 'class' => Plot::class,
                 'label' => "plot",
                 'required'=>false,
                 'placeholder' => $this->translator->trans("not set")
             ])
-            ->add('soilSampleBulk', EntityType::class, [
+            ->add('soilSampleBulk', DescendingIdEntityType::class, [
                 'class' => SoilSample::class,
                 'label' => "soilSampleBulk",
                 'required'=>false,
                 'placeholder' => $this->translator->trans("not set")
             ])
-            ->add('bulkAssignmentType', EntityType::class, [
+            ->add('bulkAssignmentType', DescendingIdEntityType::class, [
                 'class' => AssignmentType::class,
                 'label' => "assignmentType"
             ])
-            ->add('soilSampleTexture', EntityType::class, [
+            ->add('soilSampleTexture', DescendingIdEntityType::class, [
                 'class' => SoilSample::class,
                 'label' => "soilSampleTexture",
                 'required'=>false,
                 'placeholder' => $this->translator->trans("not set")
             ])
-            ->add('textureAssignmentType', EntityType::class, [
+            ->add('textureAssignmentType', DescendingIdEntityType::class, [
                 'class' => AssignmentType::class,
                 'label' => "assignmentType"
             ])
-            ->add('soilSampleCorg', EntityType::class, [
+            ->add('soilSampleCorg', DescendingIdEntityType::class, [
                 'class' => SoilSample::class,
                 'label' => "soilSampleCorg",
                 'required'=>false,
                 'placeholder' => $this->translator->trans("not set")
             ])
-            ->add('corgAssignmentType', EntityType::class, [
+            ->add('corgAssignmentType', DescendingIdEntityType::class, [
                 'class' => AssignmentType::class,
                 'label' => "assignmentType"
             ])
@@ -103,7 +104,7 @@ class RunType extends AbstractType {
                 'required' => false,
                 'mapped'=>false
             ])
-            ->add('surfaceCover', EntityType::class, [
+            ->add('surfaceCover', DescendingIdEntityType::class, [
                 'class'=>Record::class,
                 'choices'=>$this->recordsService->getRecordsByPhenomenonKey("surcov"),
                 'label' => 'surfaceCover',

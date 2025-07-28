@@ -4,7 +4,11 @@
 namespace App\Form;
 
 
+use App\Entity\Locality;
 use App\Entity\Measurement;
+use App\Entity\Phenomenon;
+use App\Entity\Plot;
+use App\Form\Type\DescendingIdEntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -25,9 +29,21 @@ class MeasurementType extends AbstractType {
             ->add('descriptionEN', TextareaType::class, ['label' => 'descriptionEN','required'=>false])
             ->add('noteCZ', TextareaType::class, ['label' => 'noteCZ','required'=>false])
             ->add('noteEN', TextareaType::class, ['label' => 'noteEN','required'=>false])
-            ->add('phenomenon')
-            ->add('locality')
-            ->add('plot')
+            ->add('phenomenon', DescendingIdEntityType::class, [
+                'class' => Phenomenon::class,
+                'label' => 'phenomenon',
+                'placeholder' => '',
+            ])
+            ->add('locality', DescendingIdEntityType::class, [
+                'class' => Locality::class,
+                'label' => 'locality',
+                'placeholder' => '',
+            ])
+            ->add('plot', DescendingIdEntityType::class, [
+                'class' => Plot::class,
+                'label' => 'plot',
+                'placeholder' => '',
+            ])
             ->add('date', DateType::class,['widget'=>'single_text'])
             ->add('save', SubmitType::class, [
                 'attr' => ['class' => 'btn btn-success'],
