@@ -25,7 +25,6 @@ class PlotRepository extends ServiceEntityRepository
         $queryBuilder = $this->createQueryBuilder('plot');
         $queryBuilder->leftJoin('plot.locality', 'l', 'WITH', 'plot.locality = l.id');
         $queryBuilder->leftJoin('plot.crop', 'c', 'WITH', 'plot.crop = c.id');
-        $queryBuilder->leftJoin('plot.protectionMeasure', 'pm', 'WITH', 'plot.protectionMeasure = pm.id');
 
         if(isset($filter['locality'])) {
             $queryBuilder->andWhere($queryBuilder->expr()->eq('plot.locality',':locality'))->setParameter('locality',$filter['locality']);
@@ -40,8 +39,11 @@ class PlotRepository extends ServiceEntityRepository
             $queryBuilder->andWhere($queryBuilder->expr()->eq('plot.crop',':crop'))->setParameter('crop',$filter['crop']);
         }
 
-        if(isset($filter['protectionMeasure'])) {
-            $queryBuilder->andWhere($queryBuilder->expr()->eq('plot.protectionMeasure',':protectionMeasure'))->setParameter('protectionMeasure',$filter['protectionMeasure']);
+        if (isset($filter['protectionMeasure'])) {
+            $queryBuilder
+                ->join('plot.protectionMeasures', 'pm') // nebo leftJoin, pokud potřebuješ všechny záznamy
+                ->andWhere('pm.id = :protectionMeasure')
+                ->setParameter('protectionMeasure', $filter['protectionMeasure']);
         }
 
         if(isset($filter['dateFrom'])) {

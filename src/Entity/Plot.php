@@ -93,6 +93,11 @@ class Plot extends BaseEntity implements DefinitionEntityInterface
      */
     private ?ProtectionMeasure $protectionMeasure;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\ProtectionMeasure", inversedBy="plots")
+     */
+    private Collection $protectionMeasures;
+
     public function __construct() {
         $this->noteCZ = null;
         $this->noteEN = null;
@@ -338,5 +343,40 @@ class Plot extends BaseEntity implements DefinitionEntityInterface
     {
         $plot = $dom->createElement('plot', (string) $this);
         return $plot;
+    }
+
+    public function getProtectionMeasures(): Collection
+    {
+        return $this->protectionMeasures;
+    }
+
+    public function getProtectionMeasuresString(): string
+    {
+        $protectionMeasures = $this->getProtectionMeasures();
+        $names = [];
+        foreach ($protectionMeasures as $measure) {
+            $names[] = $measure->getName();
+        }
+        return implode(', ', $names);
+    }
+
+    public function addProtectionMeasure(ProtectionMeasure $protectionMeasure): self
+    {
+        if (!$this->protectionMeasures->contains($protectionMeasure)) {
+            $this->protectionMeasures[] = $protectionMeasure;
+            $protectionMeasure->addPlot($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProtectionMeasure(ProtectionMeasure $protectionMeasure): self
+    {
+        if ($this->protectionMeasures->contains($protectionMeasure)) {
+            $this->protectionMeasures->removeElement($protectionMeasure);
+            $protectionMeasure->removePlot($this);
+        }
+
+        return $this;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -35,6 +36,11 @@ class ProtectionMeasure extends BaseEntity implements DefinitionEntityInterface
      * @ORM\Column(type="text", nullable=true)
      */
     private ?string $descriptionEN;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Plot", mappedBy="protectionMeasures")
+     */
+    private Collection $plots;
 
     public function __construct()
     {
@@ -104,6 +110,31 @@ class ProtectionMeasure extends BaseEntity implements DefinitionEntityInterface
     public function setDescriptionEN(?string $descriptionEN): self
     {
         $this->descriptionEN = $descriptionEN;
+
+        return $this;
+    }
+
+    public function getPlots(): Collection
+    {
+        return $this->plots;
+    }
+
+    public function addPlot(Plot $plot): self
+    {
+        if (!$this->plots->contains($plot)) {
+            $this->plots[] = $plot;
+            $plot->addProtectionMeasure($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlot(Plot $plot): self
+    {
+        if ($this->plots->contains($plot)) {
+            $this->plots->removeElement($plot);
+            $plot->removeProtectionMeasure($this);
+        }
 
         return $this;
     }

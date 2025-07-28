@@ -1,0 +1,68 @@
+{{ form_start(form) }}
+
+<div class="row">
+    <div class="col-md-12">
+        {{ form_row(form.name) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {{ form_row(form.locality) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {{ form_row(form.soilOriginLocality) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {{ form_row(form.crop) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {{ form_row(form.agrotechnology) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {{ form_row(form.established) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        {{ form_row(form.plotWidth) }}
+    </div>
+    <div class="col-md-4">
+        {{ form_row(form.plotLength) }}
+    </div>
+    <div class="col-md-4">
+        {{ form_row(form.plotSlope) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {{ form_row(form.noteCZ) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {{ form_row(form.noteEN) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {{ form_row(form.protectionMeasures) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        {{ form_row(form.save) }}
+    </div>
+    <div class="col-md-6">
+        <a href="{{ path('settings', {'class': class}) }}" class="btn btn-warning pull-right">{% trans %}cancel{% endtrans %}</a>
+    </div>
+</div>
+
+{{ form_end(form, { 'render_rest': false }) }}
