@@ -50,7 +50,7 @@
                         <th> {{ knp_pagination_sortable(pagination, 'Established'|trans({}, 'messages'), ['plot.established']) }}</th>
                         <th> {{ knp_pagination_sortable(pagination, 'Length '|trans({}, 'messages'), ['plot.plotLength']) }}</th>
                         <th> {{ knp_pagination_sortable(pagination, 'Inclination '|trans({}, 'messages'), ['plot.plotSlope']) }}</th>
-                        <th> {{ knp_pagination_sortable(pagination, 'Protection measure'|trans({}, 'messages'), [sort_columns.protectionMeasure]) }}</th>
+                        <th> {{ 'Protection measure'|trans}}</th>
                     </tr>
                     </thead>
                     {# table body #}
@@ -64,7 +64,7 @@
                             <td>{{ plot.getEstablished().format('d.m.Y') }}</td>
                             <td>{{ plot.getPlotLength() }}</td>
                             <td>{{ plot.getPlotSlope() }}</td>
-                            <td>{{ plot.getProtectionMeasure() }}</td>
+                            <td>{{ plot.getProtectionMeasuresString() }}</td>
                             <td>
                                 <a class="btn btn-sm btn-primary" href="javascript:;" data-toggle="modal"
                                    data-target="#{{ plot.getId() }}"><i class="fa fa-eye"></i></a>

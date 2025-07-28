@@ -20,6 +20,8 @@
                 <div class="box-body">
                     {% if(class_name=="App\Entity\Agrotechnology") %}
                         {% include "forms/agrotechnologyType.html.twig" %}
+                    {% elseif(class_name=="App\Entity\Plot") %}
+                        {% include "forms/plotType.html.twig" %}
                     {% else %}
                         {% include "forms/definitionEntityType.html.twig" %}
                     {% endif %}
