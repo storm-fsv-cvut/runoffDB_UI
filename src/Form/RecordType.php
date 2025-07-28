@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\QualityIndex;
 use App\Entity\Record;
 use App\Entity\Unit;
+use App\Form\Type\DescendingIdEntityType;
 use App\Services\RecordsService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -46,14 +47,14 @@ class RecordType extends AbstractType
                 'label' => 'descriptionEN',
                 'required'=>false
             ])
-            ->add('recordType',EntityType::class, ['class'=>\App\Entity\RecordType::class,'label'=>'record type'])
-            ->add('qualityIndex',EntityType::class, ['class'=>QualityIndex::class,'label'=>'quality index', 'placeholder' => ""])
+            ->add('recordType',DescendingIdEntityType::class, ['class'=>\App\Entity\RecordType::class,'label'=>'record type'])
+            ->add('qualityIndex',DescendingIdEntityType::class, ['class'=>QualityIndex::class,'label'=>'quality index', 'placeholder' => ""])
             ->add('parent_id', HiddenType::class, ['mapped' => false])
-            ->add('unit', EntityType::class, ['class'=>Unit::class,'label'=>'unit','attr'=>['data-change-label'=>true]])
-            ->add('relatedValueXUnit', EntityType::class, ['required'=>false,'class'=>Unit::class, 'placeholder' => "",'label'=>'relatedValueXUnit','attr'=>['data-change-label'=>true]])
-            ->add('relatedValueYUnit', EntityType::class, ['required'=>false,'class'=>Unit::class, 'placeholder' => "",'label'=>'relatedValueYUnit','attr'=>['data-change-label'=>true]])
-            ->add('relatedValueZUnit', EntityType::class, ['required'=>false,'class'=>Unit::class, 'placeholder' => "",'label'=>'relatedValueZUnit','attr'=>['data-change-label'=>true]])
-            ->add('sourceRecords', EntityType::class, [
+            ->add('unit', DescendingIdEntityType::class, ['class'=>Unit::class,'label'=>'unit','attr'=>['data-change-label'=>true]])
+            ->add('relatedValueXUnit', DescendingIdEntityType::class, ['required'=>false,'class'=>Unit::class, 'placeholder' => "",'label'=>'relatedValueXUnit','attr'=>['data-change-label'=>true]])
+            ->add('relatedValueYUnit', DescendingIdEntityType::class, ['required'=>false,'class'=>Unit::class, 'placeholder' => "",'label'=>'relatedValueYUnit','attr'=>['data-change-label'=>true]])
+            ->add('relatedValueZUnit', DescendingIdEntityType::class, ['required'=>false,'class'=>Unit::class, 'placeholder' => "",'label'=>'relatedValueZUnit','attr'=>['data-change-label'=>true]])
+            ->add('sourceRecords', DescendingIdEntityType::class, [
                 'required'=>false,
                 'class'=>Record::class,
                 'choice_label'=>'idAndUnitString',

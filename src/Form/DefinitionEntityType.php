@@ -2,6 +2,8 @@
 
 namespace App\Form;
 
+use App\Form\Type\DescendingIdEntityType;
+use Doctrine\ORM\EntityRepository;
 use Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -56,9 +58,12 @@ class DefinitionEntityType extends AbstractType
                 ) !== false) {
             } else {
                 $metadata->getAssociationMappedByTargetField($associationName);
-                $nullable = str_contains($metadata->getReflectionProperty($associationName)->getDocComment(),'nullable=true');
+                $nullable = str_contains(
+                    $metadata->getReflectionProperty($associationName)->getDocComment(),
+                    'nullable=true'
+                );
                 $targetClass = ($metadata->getAssociationTargetClass($associationName));
-                $builder->add($associationName, EntityType::class, ['class' => $targetClass, 'required' => !$nullable]);
+                $builder->add($associationName, DescendingIdEntityType::class, ['class' => $targetClass, 'required' => !$nullable,]);
             }
         }
 

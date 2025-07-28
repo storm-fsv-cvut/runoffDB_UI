@@ -8,6 +8,8 @@ use App\Entity\Project;
 use App\Entity\Record;
 use App\Entity\Run;
 use App\Entity\Sequence;
+use App\Entity\Simulator;
+use App\Form\Type\DescendingIdEntityType;
 use App\Services\RecordsService;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -28,7 +30,13 @@ class SequenceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('simulator')
+            ->add('simulator',
+                  DescendingIdEntityType::class,
+                  [
+                      'mapped' => true,
+                      'class' => Simulator::class,
+                      'label' => 'projects',
+                  ])
             ->add('date', DateType::class, ['widget' => 'single_text', 'label' => 'date'])
             ->add('noteCZ', TextareaType::class, [
                 'label' => 'noteCZ',
@@ -52,13 +60,13 @@ class SequenceType extends AbstractType
             ])
             ->add(
                 'projects',
-                EntityType::class,
+                DescendingIdEntityType::class,
                 [
                     'expanded' => true,
                     'mapped' => true,
                     'multiple' => true,
                     'class' => Project::class,
-                    'label' => 'projects'
+                    'label' => 'projects',
                 ]
             )
             ->add(
