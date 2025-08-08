@@ -107,6 +107,7 @@ class Plot extends BaseEntity implements DefinitionEntityInterface
         $this->agrotechnology = null;
         $this->soilSamples = new ArrayCollection();
         $this->measurements = new ArrayCollection();
+        $this->protectionMeasures = new ArrayCollection();
     }
 
 
