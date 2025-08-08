@@ -111,11 +111,6 @@ class Instrument extends BaseEntity implements DefinitionEntityInterface, FileSt
     private ?string $link = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private ?string $filesPath = null;
-
-    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\ProcessingStep", mappedBy="instruments")
      */
     private Collection $processingSteps;

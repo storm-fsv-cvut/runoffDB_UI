@@ -24,7 +24,7 @@ final class Version20250729201222 extends AbstractMigration
             CREATE TABLE instrument (id INT AUTO_INCREMENT NOT NULL, name_cz VARCHAR(255) NOT NULL, name_en VARCHAR(255) NOT NULL, description_cz LONGTEXT DEFAULT NULL, description_en LONGTEXT DEFAULT NULL, link VARCHAR(512) DEFAULT NULL, files_path VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE methodics (id INT AUTO_INCREMENT NOT NULL, name_cz VARCHAR(255) NOT NULL, name_en VARCHAR(255) NOT NULL, description_cz LONGTEXT DEFAULT NULL, description_en LONGTEXT DEFAULT NULL, note_cz LONGTEXT DEFAULT NULL, note_en LONGTEXT DEFAULT NULL, files_path VARCHAR(255) DEFAULT NULL, links JSON DEFAULT NULL COMMENT '(DC2Type:json)', PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
+            CREATE TABLE methodics (id INT AUTO_INCREMENT NOT NULL, name_cz VARCHAR(255) NOT NULL, name_en VARCHAR(255) NOT NULL, description_cz LONGTEXT DEFAULT NULL, description_en LONGTEXT DEFAULT NULL, note_cz LONGTEXT DEFAULT NULL, note_en LONGTEXT DEFAULT NULL, files_path VARCHAR(255) DEFAULT NULL, links LONGTEXT DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE methodics_processing_step (methodics_id INT NOT NULL, processing_step_id INT NOT NULL, INDEX IDX_8D2231C393630D13 (methodics_id), INDEX IDX_8D2231C318EA3207 (processing_step_id), PRIMARY KEY(methodics_id, processing_step_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB

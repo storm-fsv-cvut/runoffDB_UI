@@ -72,12 +72,12 @@ class Methodics extends BaseEntity implements DefinitionEntityInterface, FileSto
         $this->noteEN = $noteEN;
     }
 
-    public function getLinks(): ?array
+    public function getLinks(): ?string
     {
         return $this->links;
     }
 
-    public function setLinks(?array $links): void
+    public function setLinks(?string $links): void
     {
         $this->links = $links;
     }
@@ -129,14 +129,9 @@ class Methodics extends BaseEntity implements DefinitionEntityInterface, FileSto
     private ?string $noteEN = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
-    private ?string $filesPath = null;
-
-    /**
-     * @ORM\Column(type="json", nullable=true)
-     */
-    private ?array $links = [];
+    private ?string $links = null;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\ProcessingStep", inversedBy="methodics")
