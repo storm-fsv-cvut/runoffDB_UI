@@ -73,6 +73,22 @@ class Sequence extends BaseEntity
      */
     private ?string $descriptionEN = null;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Methodics")
+     * @ORM\JoinColumn(name="methodics_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     */
+    private $methodics;
+
+    public function getMethodics(): ?Methodics
+    {
+        return $this->methodics;
+    }
+
+    public function setMethodics(?Methodics $methodics): self
+    {
+        $this->methodics = $methodics;
+        return $this;
+    }
 
     public function __construct()
     {

@@ -59,7 +59,11 @@
                         {% trans %}description{% endtrans %}: <span class="text">{{ sequence.description }}</span>
                     </p>
                 {% endif %}
-
+                {% if sequence.methodics!=null %}
+                    <p>
+                        {% trans %}methodics{% endtrans %}: <span class="text">{{ sequence.methodics }}</span>
+                    </p>
+                {% endif %}
 
                 {% if sequence.getFiles()|length>0 %}
 

@@ -103,7 +103,10 @@
                                         <dt>{% trans %}sampleLocation{% endtrans %}:</dt>
                                         <dd>{{ soilSample.getSampleLocation() }}</dd>
                                     {% endif %}
-
+                                    {% if soilSample.getMethodics() is not same as null %}
+                                        <dt>{% trans %}Methodics{% endtrans %}:</dt>
+                                        <dd>{{ soilSample.getMethodics() }}</dd>
+                                    {% endif %}
                                     {% if soilSample.getDescription() is not same as null %}
                                         <dt>{% trans %}Description{% endtrans %}:</dt>
                                         <dd>{{ soilSample.getDescription() }}</dd>
@@ -125,7 +128,6 @@
                                     data-parent="{{ soilSample.getId() }}" data-target="#measurement">
                                 <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;{% trans %}add measurement{% endtrans %}
                             </button>
-
 
                             <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
                                     data-parent="{{ soilSample.getId() }}" data-target="#append_measurement">

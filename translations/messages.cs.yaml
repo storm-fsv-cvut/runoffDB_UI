@@ -38,6 +38,13 @@ App\Entity\Model: Model
 App\Entity\QualityIndex: Ukazatel kvality
 App\Entity\ProtectionMeasure: Protierozní opatření
 App\Entity\Publication: Publikace
+App\Entity\Instrument: Nástroj
+App\Entity\ProcessingStep: Krok zpracování
+processingSteps: Kroky zpracování
+links: Odkazy
+uploadedFiles: Nahrané soubory
+App\Entity\Methodics: Metodika
+methodics: Metodika
 quality index: Ukazatel kvality
 protection measure: Protierozní opatření
 Protection measure: Protierozní opatření

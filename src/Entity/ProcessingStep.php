@@ -5,21 +5,120 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ProcessingStepRepository;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=ProcessingStepRepository::class)
  */
 class ProcessingStep extends BaseEntity implements DefinitionEntityInterface
 {
-    public function getMethodics(): Collection
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    private int $id;
+
+    /**
+     * Dříve: ManyToMany na Methodics (neumožňovalo extra sloupce).
+     * Nově: OneToMany na join entitu s polem `sort`.
+     *
+     * @ORM\OneToMany(
+     *     targetEntity=MethodicsProcessingStep::class,
+     *     mappedBy="processingStep",
+     *     cascade={"persist","remove"},
+     *     orphanRemoval=true
+     * )
+     */
+    private Collection $methodicsProcessingSteps;
+
+    /**
+     * Pořadí kroku v rámci “globální” definice kroku (ne v rámci konkrétní Methodics).
+     * To ponechávám dle tvé entity.
+     *
+     * @ORM\Column(type="integer")
+     */
+    private int $stepOrder;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private string $nameCZ;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private string $nameEN;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private ?string $descriptionCZ = null;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private ?string $descriptionEN = null;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Instrument", inversedBy="processingSteps")
+     */
+    private Collection $instruments;
+
+    public function __construct()
     {
-        return $this->methodics;
+        $this->methodicsProcessingSteps = new ArrayCollection();
+        $this->instruments = new ArrayCollection();
     }
 
-    public function setMethodics(Collection $methodics): void
+    // --- vztah k Methodics přes join entitu ---
+
+    /** @return Collection<int, MethodicsProcessingStep> */
+    public function getMethodicsProcessingSteps(): Collection
     {
-        $this->methodics = $methodics;
+        return $this->methodicsProcessingSteps;
     }
+
+    public function addMethodicsProcessingStep(MethodicsProcessingStep $link): self
+    {
+        if (!$this->methodicsProcessingSteps->contains($link)) {
+            $this->methodicsProcessingSteps->add($link);
+            $link->setProcessingStep($this);
+        }
+        return $this;
+    }
+
+    public function removeMethodicsProcessingStep(MethodicsProcessingStep $link): self
+    {
+        if ($this->methodicsProcessingSteps->removeElement($link)) {
+            if ($link->getProcessingStep() === $this) {
+                // u kompozitního PK nelze nastavovat null; odstranění řeší ORM
+            }
+        }
+        return $this;
+    }
+
+    // --- původní API doplň: volitelné helpery ---
+
+    /**
+     * Pokud chceš rychle získat jen seznam Methodics (bez sort),
+     * můžeš mít helper (nepersistovaný):
+     *
+     * @return Collection<int, Methodics>
+     */
+    public function getMethodics(): Collection
+    {
+        $methodics = new ArrayCollection();
+        foreach ($this->methodicsProcessingSteps as $link) {
+            $m = $link->getMethodics();
+            if (!$methodics->contains($m)) {
+                $methodics->add($m);
+            }
+        }
+        return $methodics;
+    }
+
+    // --- getters/setters podle tvé entity ---
 
     public function getStepOrder(): int
     {
@@ -79,51 +178,6 @@ class ProcessingStep extends BaseEntity implements DefinitionEntityInterface
     public function setInstruments(Collection $instruments): void
     {
         $this->instruments = $instruments;
-    }
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private int $id;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Methodics", mappedBy="processingSteps")
-     */
-    private Collection $methodics;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private int $stepOrder;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private string $nameCZ;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private string $nameEN;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private ?string $descriptionCZ = null;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private ?string $descriptionEN = null;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Instrument", inversedBy="processingSteps")
-     */
-    private Collection $instruments;
-
-    public function __construct()
-    {
     }
 
     public function getName(): string

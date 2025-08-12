@@ -7,6 +7,7 @@ use App\Form\AgrotechnologyType;
 use App\Form\CropFilterType;
 use App\Form\DefinitionEntityType;
 use App\Form\InstrumentType;
+use App\Form\MethodicsType;
 use App\Form\PlotFilterType;
 use App\Form\PlotType;
 use App\Form\ProjectType;
@@ -133,6 +134,8 @@ class DefinitionEntityController extends AbstractController
             $form = $this->createForm(PlotType::class, $dataClass, ['data_class' => $class]);
         } elseif ($class === "App\Entity\Instrument") {
             $form = $this->createForm(InstrumentType::class, $dataClass, ['data_class' => $class]);
+        } elseif ($class === "App\Entity\Methodics") {
+            $form = $this->createForm(MethodicsType::class, $dataClass, ['data_class' => $class]);
         } else {
             $form = $this->createForm(DefinitionEntityType::class, $dataClass, ['data_class' => $class]);
         }
