@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Methodics;
 use App\Entity\QualityIndex;
 use App\Entity\Record;
 use App\Entity\Unit;
@@ -78,6 +79,14 @@ class RecordType extends AbstractType
                 'attr'=>['data-name'=>"first_column_time","checked"=>"checked"],
                 'mapped'=>false,
                 'required'=>false
+            ])
+            ->add('methodics', DescendingIdEntityType::class, [
+                'class' => Methodics::class,
+                'choice_label' => function (Methodics $methodics) {
+                    return $methodics->getName();
+                },
+                'placeholder' => '',
+                'required' => false,
             ])
             ->add('save', SubmitType::class,[
                 'attr'=>['class'=>'btn btn-success'],

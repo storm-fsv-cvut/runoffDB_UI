@@ -93,6 +93,11 @@
                                         {{ measurement.getDescription() }}
                                     {% endif %}
                                 </p>
+                                <p>
+                                    {% if measurement.getMethodics() %}
+                                    {{ "methodics"|trans }}: {{ measurement.getMethodics() }}
+                                    {% endif %}
+                                </p>
                                 {% if measurement.getNote() %}
                                     <i>* {{ measurement.getNote() }}</i>
                                 {% endif %}
@@ -191,6 +196,9 @@
                                                                 {% endfor %}
                                                             </p>
                                                             <p>{{ record.getDescription() }}</p>
+                                                            {% if record.getMethodics()!=null%}
+                                                                <p>{{ "methodics"|trans }}{{ record.getMethodics() }}</p>
+                                                            {%endif%}
                                                             <p>
                                                                 <i>{{ record.getNote() }}</i>
                                                             </p>

@@ -1,0 +1,64 @@
+{{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+
+<div class="row">
+    <div class="col-md-12">
+        {{ form_row(form.nameCZ) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {{ form_row(form.nameEN) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {{ form_row(form.descriptionCZ) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {{ form_row(form.descriptionEN) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {{ form_row(form.link) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {{ form_row(form.uploadedFiles) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {% if entity.getFiles()|length>0 %}
+            <div class="box bg-gray-light">
+                <div class="box-body">
+                    <dt>{% trans %}files{% endtrans %}</dt>
+                    <dd>
+                        {% for file in entity.getFiles() %}
+                            <a href="{{ path('downloadFile',{'id':class.getId(),'entityId':entity.getId(),'filename':file}) }}"
+                               target="_blank">{{ file }}</a>
+                            <a class="text-danger"
+                               data-confirm="{% trans %}delete?{% endtrans %}"
+                               href="{{ path('deleteFile',{'id':entity.getId(),'filename':file}) }}"><i
+                                        class="fa fa-trash"></i></a>
+                            <br/>
+                        {% endfor %}
+                    </dd>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-md-6">
+        {{ form_row(form.save) }}
+    </div>
+    <div class="col-md-6 text-end">
+        <a href="{{ path('settings', {'class': class}) }}" class="btn btn-warning pull-right">{% trans %}back{% endtrans %}</a>
+    </div>
+</div>
+
+{{ form_end(form, { 'render_rest': false }) }}

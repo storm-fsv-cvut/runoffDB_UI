@@ -6,6 +6,7 @@ namespace App\Form;
 
 use App\Entity\Locality;
 use App\Entity\Measurement;
+use App\Entity\Methodics;
 use App\Entity\Phenomenon;
 use App\Entity\Plot;
 use App\Form\Type\DescendingIdEntityType;
@@ -45,6 +46,14 @@ class MeasurementType extends AbstractType {
                 'placeholder' => '',
             ])
             ->add('date', DateType::class,['widget'=>'single_text'])
+            ->add('methodics', DescendingIdEntityType::class, [
+                'class' => Methodics::class,
+                'choice_label' => function (Methodics $methodics) {
+                    return $methodics->getName();
+                },
+                'placeholder' => '',
+                'required' => false,
+            ])
             ->add('save', SubmitType::class, [
                 'attr' => ['class' => 'btn btn-success'],
                 'label' => 'save'

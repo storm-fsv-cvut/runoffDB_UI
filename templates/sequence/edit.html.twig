@@ -59,7 +59,11 @@
                         {% trans %}description{% endtrans %}: <span class="text">{{ sequence.description }}</span>
                     </p>
                 {% endif %}
-
+                {% if sequence.methodics!=null %}
+                    <p>
+                        {% trans %}methodics{% endtrans %}: <span class="text">{{ sequence.methodics }}</span>
+                    </p>
+                {% endif %}
 
                 {% if sequence.getFiles()|length>0 %}
 
@@ -260,6 +264,7 @@
                                                                         </dd>
                                                                     {% endif %}
 
+
                                                                     {% if runArray['init_moisture']!=null %}
                                                                         <dt>{% trans %}init_moisture{% endtrans %}:</dt>
                                                                         <dd>{{ runArray['init_moisture']|raw }}
@@ -275,7 +280,10 @@
                                                                     {{ macros.soilsample('soil_sample_corg', runArray['soil_sample_corg'], runArray['soil_sample_corg_assignment']) }}
                                                                     {{ macros.soilsample('soil_sample_bulk', runArray['soil_sample_bulk'], runArray['soil_sample_bulk_assignment']) }}
                                                                     {{ macros.soilsample('soil_sample_texture', runArray['soil_sample_texture'], runArray['soil_sample_texture_assignment']) }}
-
+                                                                    {% if run.methodics!=null %}
+                                                                        <dt>{% trans %}methodics{% endtrans %}</dt>
+                                                                        <dd>{{ run.methodics}}</dd>
+                                                                    {% endif %}
                                                                     {% if runArray['files']|length>0 %}
                                                                         <dt>{% trans %}files{% endtrans %}</dt>
                                                                         <dd>
@@ -383,6 +391,11 @@
                                                                                     <p>
                                                                                         <i>{{ measurementArray['note'] }}</i>
                                                                                     </p>
+                                                                                {% endif %}
+
+                                                                                {% if measurement.methodics!=null %}
+                                                                                    <p>{% trans %}methodics{% endtrans %}:
+                                                                                    {{ run.methodics}}</p>
                                                                                 {% endif %}
 
                                                                             </div>

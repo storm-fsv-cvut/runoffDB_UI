@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Locality;
+use App\Entity\Methodics;
 use App\Entity\Plot;
 use App\Entity\Run;
 use App\Entity\SoilSample;
@@ -50,7 +51,15 @@ class SoilSampleType extends AbstractType
                 [
                     'attr' => ['class' => 'btn btn-success']
                 ]
-            );
+            )
+            ->add('methodics', DescendingIdEntityType::class, [
+                'class' => Methodics::class,
+                'choice_label' => function (Methodics $methodics) {
+                    return $methodics->getName();
+                },
+                'placeholder' => '',
+                'required' => false,
+            ]);
 
         $builder->add(
             'rawData',

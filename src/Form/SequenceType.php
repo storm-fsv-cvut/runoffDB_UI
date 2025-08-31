@@ -4,6 +4,7 @@
 namespace App\Form;
 
 
+use App\Entity\Methodics;
 use App\Entity\Project;
 use App\Entity\Record;
 use App\Entity\Run;
@@ -81,6 +82,14 @@ class SequenceType extends AbstractType
             )
             ->add('save', SubmitType::class, [
                 'attr' => ['class' => 'btn btn-success']
+            ])
+            ->add('methodics', DescendingIdEntityType::class, [
+                'class' => Methodics::class,
+                'choice_label' => function (Methodics $methodics) {
+                    return $methodics->getName();
+                },
+                'placeholder' => '',
+                'required' => false,
             ]);
 
         $builder->add('runGroups', CollectionType::class, [

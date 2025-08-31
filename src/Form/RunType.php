@@ -5,6 +5,7 @@ namespace App\Form;
 
 
 use App\Entity\AssignmentType;
+use App\Entity\Methodics;
 use App\Entity\Plot;
 use App\Entity\Record;
 use App\Entity\Run;
@@ -119,6 +120,14 @@ class RunType extends AbstractType {
                 'required'=>false
             ])
             ->add('cropBBCH')
+            ->add('methodics', DescendingIdEntityType::class, [
+                'class' => Methodics::class,
+                'choice_label' => function (Methodics $methodics) {
+                    return $methodics->getName();
+                },
+                'placeholder' => '',
+                'required' => false,
+            ])
             ->add('save', SubmitType::class,[
                 'attr'=>['class'=>'btn btn-success']
             ]);

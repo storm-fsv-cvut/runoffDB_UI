@@ -49,21 +49,37 @@ class DefinitionEntityType extends AbstractType
         }
 
         foreach ($metadata->getAssociationNames() as $associationName) {
-            $targetClass = ($metadata->getAssociationTargetClass($associationName));
-            $targetClassArray = explode("\\", $targetClass);
-            if ($metadata->getReflectionClass()->getProperty($associationName)->getDocComment() !== false &&
-                strpos(
-                    $metadata->getReflectionClass()->getProperty($associationName)->getDocComment(),
-                    "mappedBy"
-                ) !== false) {
+            $targetClass = $metadata->getAssociationTargetClass($associationName);
+
+            // přeskoč vztahy s mappedBy (jsou vlastněné druhou stranou)
+            if (
+                $metadata->getReflectionClass()->getProperty($associationName)->getDocComment() !== false &&
+                strpos($metadata->getReflectionClass()->getProperty($associationName)->getDocComment(), "mappedBy") !== false
+            ) {
+                continue;
+            }
+
+            $associationMapping = $metadata->getAssociationMapping($associationName);
+            $isCollection = $metadata->isCollectionValuedAssociation($associationName);
+
+            if ($isCollection) {
+                // Kolekce – ManyToMany nebo OneToMany
+                $builder->add($associationName, EntityType::class, [
+                    'class' => $targetClass,
+                    'multiple' => true,
+                    'expanded' => true, // změň na true pro checkboxy
+                    'required' => false,
+                    'label' => $associationName
+                ]);
             } else {
-                $metadata->getAssociationMappedByTargetField($associationName);
-                $nullable = str_contains(
-                    $metadata->getReflectionProperty($associationName)->getDocComment(),
-                    'nullable=true'
-                );
-                $targetClass = ($metadata->getAssociationTargetClass($associationName));
-                $builder->add($associationName, DescendingIdEntityType::class, ['class' => $targetClass, 'required' => !$nullable,]);
+                // Jednoduchá vazba (ManyToOne, OneToOne)
+                $nullable = $associationMapping['joinColumns'][0]['nullable'] ?? false;
+
+                $builder->add($associationName, DescendingIdEntityType::class, [
+                    'class' => $targetClass,
+                    'required' => !$nullable,
+                    'label' => $associationName
+                ]);
             }
         }
 

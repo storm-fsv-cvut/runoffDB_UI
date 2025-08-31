@@ -6,48 +6,75 @@
                 {{ form_row(child) }}
             </div>
             <div class="col-md-6">
-                <a href="{{ path('settings',{'class':class}) }}" class="btn btn-warning pull-right">{% trans %}cancel{% endtrans %}</a>
+                <a href="{{ path('settings',{'class':class}) }}"
+                   class="btn btn-warning pull-right">{% trans %}cancel{% endtrans %}</a>
             </div>
         </div>
     {% else %}
-    {% if child.vars['allow_add'] is defined %}
-        <div class="row">
-            <div class="form-group col-md-12">
-                {{ form_label(child) }}
-                <table class="table table-bordered">
-                    <tr>
-                        {% for subchild in child.vars.prototype.children %}
-                            <td data-prototype='{{ form_widget(subchild) }}'>
-                                {{ form_label(subchild) }}
-                            </td>
-                        {% endfor %}
-                        <td>
-                            <a class="text-danger removeRow" style="display: none;"><i class="fa fa-minus"></i></a>
-                            <a class="text-success addFormRow"><i class="fa fa-plus"></i></a>
-                        </td>
-                    </tr>
-                    {% for subform in child.children %}
+        {% if child.vars['allow_add'] is defined %}
+            <div class="row">
+                <div class="form-group col-md-12">
+                    {{ form_label(child) }}
+                    <table class="table table-bordered">
                         <tr>
-                            {% for subchild in subform %}
-                                <td>
-                                    {{ form_widget(subchild) }}
+                            {% for subchild in child.vars.prototype.children %}
+                                <td data-prototype='{{ form_widget(subchild) }}'>
+                                    {{ form_label(subchild) }}
                                 </td>
                             {% endfor %}
                             <td>
-                                <a class="text-danger removeRow"><i class="fa fa-minus"></i></a>
+                                <a class="text-danger removeRow" style="display: none;"><i class="fa fa-minus"></i></a>
+                                <a class="text-success addFormRow"><i class="fa fa-plus"></i></a>
                             </td>
                         </tr>
-                    {% endfor %}
-                </table>
+                        {% for subform in child.children %}
+                            <tr>
+                                {% for subchild in subform %}
+                                    <td>
+                                        {{ form_widget(subchild) }}
+                                    </td>
+                                {% endfor %}
+                                <td>
+                                    <a class="text-danger removeRow"><i class="fa fa-minus"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
             </div>
-        </div>
-    {% else %}
-        <div class="row">
-            <div class="form-group col-md-12">
-                {{ form_row(child) }}
+        {% else %}
+            <div class="row">
+                <div class="form-group col-md-12">
+                    {{ form_row(child) }}
+                </div>
             </div>
-        </div>
-    {% endif %}
+        {% endif %}
     {% endif %}
 {% endfor %}
+
+{% if(hasFiles) %}
+    <div class="row">
+        <div class="col-md-12">
+            {% if entity.getFiles()|length>0 %}
+                <div class="box bg-gray-light">
+                    <div class="box-body">
+                        <dt>{% trans %}files{% endtrans %}</dt>
+                        <dd>
+                            {% for file in entity.getFiles() %}
+                                <a href="{{ path('downloadSettingsFile',{'id':entity.getId(),'filename':file, 'class': class}) }}"
+                                   target="_blank">{{ file }}</a>
+                                <a class="text-danger"
+                                   data-confirm="{% trans %}delete?{% endtrans %}"
+                                   href="{{ path('deleteSettingsFile',{'id':entity.getId(),'filename':file, 'class': class}) }}"><i
+                                            class="fa fa-trash"></i></a>
+                                <br/>
+                            {% endfor %}
+                        </dd>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}
+
 {{ form_end(form,{'render_rest': false}) }}
