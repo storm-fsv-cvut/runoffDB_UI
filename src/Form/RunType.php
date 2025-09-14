@@ -128,6 +128,12 @@ class RunType extends AbstractType {
                 'placeholder' => '',
                 'required' => false,
             ])
+            ->add('referenceRun', DescendingIdEntityType::class, [
+                'class' => Run::class,
+                'label' => 'reference',
+                'placeholder' => '',
+                'required' => false,
+            ])
             ->add('save', SubmitType::class,[
                 'attr'=>['class'=>'btn btn-success']
             ]);

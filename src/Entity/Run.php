@@ -152,7 +152,13 @@ class Run extends BaseEntity implements FileStorageEntityInterface
      * @ORM\ManyToOne(targetEntity="App\Entity\Methodics")
      * @ORM\JoinColumn(name="methodics_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
-    private $methodics;
+    private ?Methodics $methodics;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Run")
+     * @ORM\JoinColumn(name="reference_run_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     */
+    private ?Run $referenceRun;
 
     public function getMethodics(): ?Methodics
     {
@@ -187,6 +193,8 @@ class Run extends BaseEntity implements FileStorageEntityInterface
         $this->cropConditionCZ = null;
         $this->cropConditionEN = null;
         $this->surfaceCover = null;
+        $this->methodics = null;
+        $this->referenceRun = null;
     }
 
     public function getSurfaceCover(): ?Record
@@ -671,5 +679,15 @@ class Run extends BaseEntity implements FileStorageEntityInterface
         $this->plot = $plot;
 
         return $this;
+    }
+
+    public function getReferenceRun(): ?Run
+    {
+        return $this->referenceRun;
+    }
+
+    public function setReferenceRun(?Run $referenceRun): void
+    {
+        $this->referenceRun = $referenceRun;
     }
 }
