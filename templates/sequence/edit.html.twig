@@ -312,6 +312,15 @@
                                                                         </dt>
                                                                         <dd>{{ runArray['crop_condition'] }}</dd>
                                                                     {% endif %}
+                                                                    {% if run.referenceRun!=null %}
+                                                                        <dt>{% trans %}reference run{% endtrans %}:
+                                                                        </dt>
+                                                                        <dd>
+                                                                            <a href="{{ path('sequence',{'id':run.referenceRun.getSequence().getId()}) }}"
+                                                                               target="_blank">{{ run.referenceRun }} <i
+                                                                                        class="fa fa-external-link"></i></a>
+                                                                        </dd>
+                                                                    {% endif %}
 
                                                                 </dl>
                                                             </div>
