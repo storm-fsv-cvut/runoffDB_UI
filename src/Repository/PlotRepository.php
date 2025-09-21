@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\Plot;
@@ -8,10 +10,11 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * @extends ServiceEntityRepository<Plot>
  * @method Plot|null find($id, $lockMode = null, $lockVersion = null)
  * @method Plot|null findOneBy(array $criteria, array $orderBy = null)
- * @method Plot[]    findAll()
- * @method Plot[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method array<Plot> findAll()
+ * @method array<Plot> findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class PlotRepository extends ServiceEntityRepository
 {
@@ -20,23 +23,23 @@ class PlotRepository extends ServiceEntityRepository
         parent::__construct($registry, Plot::class);
     }
 
-
-    public function getPaginatorQuery(?array $filter, string $order, string $direction):QueryBuilder {
+    public function getPaginatorQuery(?array $filter, string $order, string $direction): QueryBuilder
+    {
         $queryBuilder = $this->createQueryBuilder('plot');
         $queryBuilder->leftJoin('plot.locality', 'l', 'WITH', 'plot.locality = l.id');
         $queryBuilder->leftJoin('plot.crop', 'c', 'WITH', 'plot.crop = c.id');
 
-        if(isset($filter['locality'])) {
-            $queryBuilder->andWhere($queryBuilder->expr()->eq('plot.locality',':locality'))->setParameter('locality',$filter['locality']);
+        if (isset($filter['locality'])) {
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('plot.locality', ':locality'))->setParameter('locality', $filter['locality']);
         }
 
-        if(isset($filter['name'])) {
-            $queryBuilder->andWhere($queryBuilder->expr()->like('plot.name',':name'))
-                         ->setParameter('name','%'.$filter['name'].'%');
+        if (isset($filter['name'])) {
+            $queryBuilder->andWhere($queryBuilder->expr()->like('plot.name', ':name'))
+                         ->setParameter('name', '%' . $filter['name'] . '%');
         }
 
-        if(isset($filter['crop'])) {
-            $queryBuilder->andWhere($queryBuilder->expr()->eq('plot.crop',':crop'))->setParameter('crop',$filter['crop']);
+        if (isset($filter['crop'])) {
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('plot.crop', ':crop'))->setParameter('crop', $filter['crop']);
         }
 
         if (isset($filter['protectionMeasure'])) {
@@ -46,12 +49,12 @@ class PlotRepository extends ServiceEntityRepository
                 ->setParameter('protectionMeasure', $filter['protectionMeasure']);
         }
 
-        if(isset($filter['dateFrom'])) {
-            $queryBuilder->andWhere($queryBuilder->expr()->gte('plot.established',':establishedFrom'))->setParameter('establishedFrom',$filter['dateFrom']);
+        if (isset($filter['dateFrom'])) {
+            $queryBuilder->andWhere($queryBuilder->expr()->gte('plot.established', ':establishedFrom'))->setParameter('establishedFrom', $filter['dateFrom']);
         }
 
-        if(isset($filter['dateTo'])) {
-            $queryBuilder->andWhere($queryBuilder->expr()->lte('plot.established',':establishedTo'))->setParameter('establishedTo',$filter['dateTo']);
+        if (isset($filter['dateTo'])) {
+            $queryBuilder->andWhere($queryBuilder->expr()->lte('plot.established', ':establishedTo'))->setParameter('establishedTo', $filter['dateTo']);
         }
 
         return $queryBuilder;

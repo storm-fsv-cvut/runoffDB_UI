@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -33,44 +35,35 @@ class Methodics extends BaseEntity implements DefinitionEntityInterface, FileSto
      */
     private Collection $methodicsProcessingSteps;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    /** @ORM\Column(type="string", length=255) */
     private string $nameCZ;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    /** @ORM\Column(type="string", length=255) */
     private string $nameEN;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    /** @ORM\Column(type="text", nullable=true) */
     private ?string $descriptionCZ = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    /** @ORM\Column(type="text", nullable=true) */
     private ?string $descriptionEN = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    /** @ORM\Column(type="text", nullable=true) */
     private ?string $noteCZ = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    /** @ORM\Column(type="text", nullable=true) */
     private ?string $noteEN = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    /** @ORM\Column(type="text", nullable=true) */
     private ?string $links = null;
 
     public function __construct()
     {
         $this->methodicsProcessingSteps = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->getName();
     }
 
     /** @return Collection<int, MethodicsProcessingStep> */
@@ -119,7 +112,7 @@ class Methodics extends BaseEntity implements DefinitionEntityInterface, FileSto
 
         $i = 0;
         foreach ($processingSteps as $ps) {
-            $link = new MethodicsProcessingStep($this, $ps, $i++);
+            $link = new MethodicsProcessingStep();
             $this->addMethodicsProcessingStep($link);
         }
     }
@@ -135,7 +128,6 @@ class Methodics extends BaseEntity implements DefinitionEntityInterface, FileSto
         $link->setSort($sort);
         return $this->addMethodicsProcessingStep($link);
     }
-
 
     public function getName(): string
     {
@@ -244,11 +236,6 @@ class Methodics extends BaseEntity implements DefinitionEntityInterface, FileSto
     public function setLinks(?string $links): void
     {
         $this->links = $links;
-    }
-
-    public function __toString(): string
-    {
-        return $this->getName();
     }
 
     public function getId(): int

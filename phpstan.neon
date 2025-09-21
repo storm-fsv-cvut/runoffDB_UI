@@ -1,12 +1,36 @@
 includes:
-	- vendor/phpstan/phpstan-doctrine/extension.neon
-	- vendor/phpstan/phpstan-symfony/extension.neon
-	- vendor/phpstan/phpstan-strict-rules/rules.neon
+  - vendor/phpstan/phpstan-doctrine/extension.neon
+  - vendor/phpstan/phpstan-doctrine/rules.neon
+  - vendor/phpstan/phpstan-symfony/extension.neon
+  - vendor/phpstan/phpstan-symfony/rules.neon
+  - vendor/phpstan/phpstan-strict-rules/rules.neon
 
 parameters:
-    checkMissingIterableValueType: false
-    checkGenericClassInNonGenericObjectType: false
-    symfony:
-    	container_xml_path: %rootDir%/../../../var/cache/dev/srcApp_KernelDevDebugContainer.xml
-    excludes_analyse:
-        - %currentWorkingDirectory%/src/Migrations/*
+  level: 8
+
+  # co analyzovat
+  paths:
+    - src
+
+  # náhrada za dřívější `excludes_analyse`
+  excludePaths:
+    analyse:
+      - %currentWorkingDirectory%/src/Migrations/*
+      - %currentWorkingDirectory%/var/*
+      - %currentWorkingDirectory%/vendor/*
+
+  # Symfony – opravena camelCase varianta klíče
+  symfony:
+    containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
+
+  # (volitelné) pokud chceš dočasně potlačit chybějící typy
+  # místo deprecated voleb:
+  # ignoreErrors:
+  #   - identifier: missingType.iterableValue
+  #   - identifier: missingType.generics
+
+  # (doporučeno pro rychlost/stabilitu)
+  tmpDir: var/phpstan
+  # (nebo spusť přes CLI, viz níže)
+  # memoryLimit: 1G
+  treatPhpDocTypesAsCertain: false

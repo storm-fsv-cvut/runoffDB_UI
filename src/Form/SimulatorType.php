@@ -1,16 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
-use App\Entity\Agrotechnology;
 use App\Entity\Organization;
-use App\Entity\Project;
 use App\Entity\Publication;
 use App\Entity\Simulator;
 use App\Form\Type\DescendingIdEntityType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -21,7 +19,7 @@ class SimulatorType extends AbstractType
 {
     public function buildForm(
         FormBuilderInterface $builder,
-        array $options
+        array $options,
     ): void {
         $builder
             ->add('nameCZ', TextType::class, ['label' => 'nameCz', 'required' => true])
@@ -44,26 +42,26 @@ class SimulatorType extends AbstractType
                     'choice_label' => function (Publication $publication) {
                         return $publication->getTitle();
                     },
-                ]
+                ],
             )
             ->add(
                 'save',
                 SubmitType::class,
                 [
                     'attr' => ['class' => 'btn btn-success'],
-                    'label' => 'save'
-                ]
+                    'label' => 'save',
+                ],
             );
 
         $builder->add(
             'publications',
             DescendingIdEntityType::class,
             [
-                'expanded'=>true,
-                'multiple'=>true,
+                'expanded' => true,
+                'multiple' => true,
                 'class' => Publication::class,
-                'label' => 'publications'
-            ]
+                'label' => 'publications',
+            ],
         );
 
         $builder->add(
@@ -71,8 +69,8 @@ class SimulatorType extends AbstractType
             SubmitType::class,
             [
                 'attr' => ['class' => 'btn btn-success'],
-                'label' => 'save'
-            ]
+                'label' => 'save',
+            ],
         );
     }
 
@@ -81,7 +79,7 @@ class SimulatorType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => Simulator::class,
-            ]
+            ],
         );
     }
 }

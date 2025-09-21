@@ -1,16 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Entity\MethodicsProcessingStep;
 use App\Entity\ProcessingStep;
+use App\Repository\ProcessingStepRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use App\Repository\ProcessingStepRepository;
 
 class MethodicsProcessingStepType extends AbstractType
 {
@@ -21,7 +22,7 @@ class MethodicsProcessingStepType extends AbstractType
                 'class' => ProcessingStep::class,
                 'choice_label' => 'name',
                 'placeholder' => '— vyber krok —',
-                'query_builder' => fn (ProcessingStepRepository $r) => $r->createSortedQueryBuilder(),
+                'query_builder' => fn(ProcessingStepRepository $r) => $r->createSortedQueryBuilder(),
             ])
             ->add('sort', IntegerType::class, [
                 'empty_data' => '0',

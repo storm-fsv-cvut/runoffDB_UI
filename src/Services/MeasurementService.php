@@ -1,13 +1,12 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Services;
-
 
 use App\Entity\Measurement;
 use App\Entity\Run;
 use App\Repository\MeasurementRepository;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -24,7 +23,7 @@ class MeasurementService
         MeasurementRepository $measurementRepository,
         EntityManagerInterface $entityManager,
         ParameterBagInterface $parameterBag,
-        Filesystem $filesystem
+        Filesystem $filesystem,
     ) {
         $this->measurementRepository = $measurementRepository;
         $this->entityManager = $entityManager;
@@ -118,7 +117,7 @@ class MeasurementService
 
     public function uploadFile(UploadedFile $file, Measurement $measurement): void
     {
-        $dir = $this->parameterBag->get('kernel.project_dir') . "/public/".$measurement->getFilesPath();
+        $dir = $this->parameterBag->get('kernel.project_dir') . '/public/' . $measurement->getFilesPath();
         if (!$this->filesystem->exists($dir)) {
             $this->filesystem->mkdir($dir);
         }

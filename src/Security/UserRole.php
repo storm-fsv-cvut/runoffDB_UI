@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Security;
-
 
 use Exception;
 use ReflectionClass;
@@ -15,11 +15,7 @@ class UserRole
     public const ROLE_READER = 'reader';
     public const ROLE_GUEST = 'guest';
 
-
-
-    /**
-     * @var string
-     */
+    /** @var string */
     private $role;
 
     public function __construct(string $role)
@@ -56,13 +52,13 @@ class UserRole
             $constArray = [];
 
             foreach ($const as $constName => $value) {
-                if (strpos($constName, 'ROLE_') == 0) {
+                if (strpos($constName, 'ROLE_') === 0) {
                     $constArray[$constName] = $value;
                 }
             }
 
             return $constArray;
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             return [];
         }
     }

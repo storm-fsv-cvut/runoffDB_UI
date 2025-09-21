@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -16,19 +18,13 @@ class Crop extends BaseEntity implements DefinitionEntityInterface
      */
     private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=50)
-     */
+    /** @ORM\Column(type="string", length=50) */
     private string $nameCZ;
 
-    /**
-     * @ORM\Column(type="string", length=50, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=50, nullable=true) */
     private ?string $nameEN;
 
-    /**
-     * @ORM\Column(type="string", length=100, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=100, nullable=true) */
     private ?string $variety;
 
     /**
@@ -43,22 +39,17 @@ class Crop extends BaseEntity implements DefinitionEntityInterface
      */
     private ?CropErType $croperType;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    /** @ORM\Column(type="boolean", nullable=true) */
     private ?bool $isCatchCrop;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $descriptionCZ;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $descriptionEN;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->nameEN = null;
         $this->variety = null;
         $this->cropType = null;
@@ -68,16 +59,19 @@ class Crop extends BaseEntity implements DefinitionEntityInterface
         $this->descriptionEN = null;
     }
 
-    public function __toString(): string {
-        return $this->getName()!==null ? $this->getName() : '#' . $this->getId();
+    public function __toString(): string
+    {
+        return $this->getName() ?? '#' . $this->getId();
     }
 
-    public function getName():?string {
-        return $this->getLocale() == 'en' ? $this->getNameEN() : $this->getNameCZ();
+    public function getName(): ?string
+    {
+        return $this->getLocale() === 'en' ? $this->getNameEN() : $this->getNameCZ();
     }
 
-    public function getDescription():?string {
-        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
+    public function getDescription(): ?string
+    {
+        return $this->getLocale() === 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
     public function getId(): int
@@ -132,7 +126,8 @@ class Crop extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-    public function getLabel(): string {
+    public function getLabel(): string
+    {
         return $this->nameCZ;
     }
 

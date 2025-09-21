@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -19,19 +21,13 @@ class RunGroup extends BaseEntity
      */
     private int $id;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    /** @ORM\Column(type="datetime") */
     private ?\DateTimeInterface $datetime;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
+    /** @ORM\Column(type="float", nullable=true) */
     private ?float $precedingPrecipitation;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    /** @ORM\Column(type="text", nullable=true) */
     private ?string $noteCZ;
 
     /**
@@ -46,17 +42,14 @@ class RunGroup extends BaseEntity
      */
     private ?Sequence $sequence;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    /** @ORM\Column(type="text", nullable=true) */
     private ?string $noteEN;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Run", mappedBy="runGroup")
-     */
+    /** @ORM\OneToMany(targetEntity="App\Entity\Run", mappedBy="runGroup") */
     private Collection $runs;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->precedingPrecipitation = null;
         $this->noteCZ = null;
         $this->datetime = null;
@@ -66,7 +59,7 @@ class RunGroup extends BaseEntity
         $this->runs = new ArrayCollection();
     }
 
-    public function __toString():string
+    public function __toString(): string
     {
         return (string) $this->getId();
     }
@@ -112,8 +105,9 @@ class RunGroup extends BaseEntity
         return $this;
     }
 
-    public function getNote():?string {
-        return $this->getLocale() == 'en' ? $this->getNoteEN() : $this->getNoteCZ();
+    public function getNote(): ?string
+    {
+        return $this->getLocale() === 'en' ? $this->getNoteEN() : $this->getNoteCZ();
     }
 
     public function getRunType(): ?RunType
@@ -152,9 +146,6 @@ class RunGroup extends BaseEntity
         return $this;
     }
 
-    /**
-     * @return Collection|Run[]
-     */
     public function getRuns(): Collection
     {
         return $this->runs;
@@ -183,7 +174,8 @@ class RunGroup extends BaseEntity
         return $this;
     }
 
-    public function getMeasurements():array {
+    public function getMeasurements(): array
+    {
         $measurements = [];
         foreach ($this->getRuns() as $run) {
             $measurements[$run->getId()] = $run;
@@ -192,7 +184,8 @@ class RunGroup extends BaseEntity
         return $measurements;
     }
 
-    public function getXmlDomElement(DOMDocument $dom):\DOMElement {
+    public function getXmlDomElement(DOMDocument $dom): \DOMElement
+    {
         $runGroup = $dom->createElement('runGroup');
 
         $runs = $dom->createElement('runs');
@@ -201,9 +194,9 @@ class RunGroup extends BaseEntity
         }
 
         $runGroup->append(
-            $dom->createElement('id',$this->getId()),
-            $dom->createElement('note',$this->getNote()),
-            $runs
+            $dom->createElement('id', (string) $this->getId()),
+            $dom->createElement('note', $this->getNote()),
+            $runs,
         );
 
         return $runGroup;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Entity\Cms;
@@ -14,13 +16,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CmsType extends AbstractType
 {
-
-    /**
-     * @var TranslatorInterface
-     */
+    /** @var TranslatorInterface */
     private $translator;
 
-    public function __construct(TranslatorInterface $translator) {
+    public function __construct(TranslatorInterface $translator)
+    {
         $this->translator = $translator;
     }
 
@@ -28,28 +28,28 @@ class CmsType extends AbstractType
     {
         $builder
             ->add('status', ChoiceType::class, [
-                'choices'=>['draft'=>'draft','published'=>'published'],
-                'label'=>$this->translator->trans('status')
+                'choices' => ['draft' => 'draft','published' => 'published'],
+                'label' => $this->translator->trans('status'),
             ])
             ->add('slug')
             ->add('menuOrder', IntegerType::class, [
-                'empty_data' => 0
+                'empty_data' => 0,
             ])
             ->add('language', ChoiceType::class, [
-                'choices'=>['cs'=>'cs','en'=>'en'],
-                'label'=>$this->translator->trans('language')
+                'choices' => ['cs' => 'cs','en' => 'en'],
+                'label' => $this->translator->trans('language'),
             ])
-            ->add('title', TextType::class ,[
-                'label'=>'title',
+            ->add('title', TextType::class, [
+                'label' => 'title',
                 'empty_data' => '',
-                'required'=>false
+                'required' => false,
             ])
             ->add('content');
 
 
         $builder->add('save', SubmitType::class, [
             'attr' => ['class' => 'btn btn-success'],
-            'label' => 'save'
+            'label' => 'save',
         ]);
     }
 

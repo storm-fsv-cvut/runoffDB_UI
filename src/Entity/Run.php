@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
-use _HumbugBox01d8f9a04075\Nette\Utils\DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use DOMDocument;
-use phpDocumentor\Reflection\Types\String_;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
@@ -59,34 +59,22 @@ class Run extends BaseEntity implements FileStorageEntityInterface
      */
     private ?AssignmentType $corgAssignmentType;
 
-    /**
-     * @ORM\Column(type="time", nullable=true)
-     */
+    /** @ORM\Column(type="time", nullable=true) */
     private ?\DateTimeInterface $runoffStart;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $cropPictures;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $plotPictures;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $rawDataPath;
 
-    /**
-     * @ORM\Column(type="string", length=512, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=512, nullable=true) */
     private ?string $noteCZ;
 
-    /**
-     * @ORM\Column(type="string", length=512, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=512, nullable=true) */
     private ?string $noteEN;
 
     /**
@@ -95,19 +83,13 @@ class Run extends BaseEntity implements FileStorageEntityInterface
      */
     private ?Plot $plot;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\SoilSample", mappedBy="Run")     *
-     */
+    /** @ORM\OneToMany(targetEntity="App\Entity\SoilSample", mappedBy="Run") * */
     private Collection $soilSamples;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Measurement", mappedBy="runs")
-     */
+    /** @ORM\ManyToMany(targetEntity="App\Entity\Measurement", mappedBy="runs") */
     private Collection $measurements;
 
-    /**
-     * @ORM\Column(type="time", nullable=true)
-     */
+    /** @ORM\Column(type="time", nullable=true) */
     private ?\DateTimeInterface $pondingStart;
 
     /**
@@ -122,9 +104,7 @@ class Run extends BaseEntity implements FileStorageEntityInterface
      */
     private ?Record $rainIntensity;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\RunGroup", inversedBy="runs")
-     */
+    /** @ORM\ManyToOne(targetEntity="App\Entity\RunGroup", inversedBy="runs") */
     private ?RunGroup $runGroup;
 
     /**
@@ -133,19 +113,13 @@ class Run extends BaseEntity implements FileStorageEntityInterface
      */
     private ?Record $surfaceCover;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    /** @ORM\Column(type="integer", nullable=true) */
     private ?int $cropBBCH;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $cropConditionCZ;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $cropConditionEN;
 
     /**
@@ -159,17 +133,6 @@ class Run extends BaseEntity implements FileStorageEntityInterface
      * @ORM\JoinColumn(name="reference_run_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     private ?Run $referenceRun;
-
-    public function getMethodics(): ?Methodics
-    {
-        return $this->methodics;
-    }
-
-    public function setMethodics(?Methodics $methodics): self
-    {
-        $this->methodics = $methodics;
-        return $this;
-    }
 
     public function __construct()
     {
@@ -197,6 +160,22 @@ class Run extends BaseEntity implements FileStorageEntityInterface
         $this->referenceRun = null;
     }
 
+    public function __toString()
+    {
+        return '#' . $this->getId();
+    }
+
+    public function getMethodics(): ?Methodics
+    {
+        return $this->methodics;
+    }
+
+    public function setMethodics(?Methodics $methodics): self
+    {
+        $this->methodics = $methodics;
+        return $this;
+    }
+
     public function getSurfaceCover(): ?Record
     {
         return $this->surfaceCover;
@@ -211,7 +190,7 @@ class Run extends BaseEntity implements FileStorageEntityInterface
 
     public function getCropCondition(): ?string
     {
-        return $this->getLocale() == 'en' ? $this->getCropConditionEN() : $this->getCropConditionCZ();
+        return $this->getLocale() === 'en' ? $this->getCropConditionEN() : $this->getCropConditionCZ();
     }
 
     public function getCropConditionEN(): ?string
@@ -248,11 +227,6 @@ class Run extends BaseEntity implements FileStorageEntityInterface
         $this->cropBBCH = $cropBBCH;
 
         return $this;
-    }
-
-    public function __toString()
-    {
-        return "#" . $this->getId();
     }
 
     public function getId(): int
@@ -315,9 +289,6 @@ class Run extends BaseEntity implements FileStorageEntityInterface
         return $this;
     }
 
-    /**
-     * @return Collection|SoilSample[]
-     */
     public function getSoilSamples(): Collection
     {
         return $this->soilSamples;
@@ -365,7 +336,7 @@ class Run extends BaseEntity implements FileStorageEntityInterface
 
     public function getFilesPath(): string
     {
-        return "data/run/" . $this->getId();
+        return 'data/run/' . $this->getId();
     }
 
     public function removeFile(string $filename): void
@@ -380,7 +351,7 @@ class Run extends BaseEntity implements FileStorageEntityInterface
     public function validateSoilSamples(): bool
     {
         return $this->getSoilSampleCorg() !== null && $this->getSoilSampleBulk(
-            ) !== null && $this->getSoilSampleTexture() !== null;
+        ) !== null && $this->getSoilSampleTexture() !== null;
     }
 
     public function getSoilSampleCorg(): ?SoilSample
@@ -420,7 +391,6 @@ class Run extends BaseEntity implements FileStorageEntityInterface
 
     public function getSequence(): ?Sequence
     {
-
         return $this->getRunGroup() !== null ? $this->getRunGroup()->getSequence() : null;
     }
 
@@ -449,8 +419,8 @@ class Run extends BaseEntity implements FileStorageEntityInterface
         return $this->getRunGroup() !== null ? $this->getRunGroup()->getDatetime() !== null ? $this->getRunGroup()
                                                                                                    ->getDatetime()
                                                                                                    ->format(
-                                                                                                       "d.m.Y H:i"
-                                                                                                   ) : " - " : " - ";
+                                                                                                       'd.m.Y H:i',
+                                                                                                   ) : ' - ' : ' - ';
     }
 
     public function getRunType(): ?RunType
@@ -468,9 +438,9 @@ class Run extends BaseEntity implements FileStorageEntityInterface
         }
 
         $run->append(
-            $dom->createElement('id', $this->getId()),
+            $dom->createElement('id', (string) $this->getId()),
             $dom->createElement('note', $this->getNote()),
-            $measurements
+            $measurements,
         );
 
         if ($this->getSoilSampleBulk() !== null) {
@@ -505,20 +475,20 @@ class Run extends BaseEntity implements FileStorageEntityInterface
 
         if ($this->getRunoffStart() !== null) {
             $run->append(
-                $dom->createElement('runoffStart', $this->getFormatedRunoffStart())
+                $dom->createElement('runoffStart', $this->getFormatedRunoffStart()),
             );
         }
 
         if ($this->getPondingStart() !== null) {
             $run->append(
-                $dom->createElement('pondingStart', $this->getFormatedPondingStart())
+                $dom->createElement('pondingStart', $this->getFormatedPondingStart()),
             );
         }
 
         if ($this->getInitMoisture() !== null) {
             $initMoisture = $dom->createElement('initMoisture');
             $initMoisture->append(
-                $this->getInitMoisture()->getXmlDomElement($dom)
+                $this->getInitMoisture()->getXmlDomElement($dom),
             );
             $run->append($initMoisture);
         }
@@ -526,7 +496,7 @@ class Run extends BaseEntity implements FileStorageEntityInterface
         if ($this->getRainIntensity() !== null) {
             $rainIntensity = $dom->createElement('rainIntensity');
             $rainIntensity->append(
-                $this->getRainIntensity()->getXmlDomElement($dom)
+                $this->getRainIntensity()->getXmlDomElement($dom),
             );
             $run->append($rainIntensity);
         }
@@ -538,9 +508,6 @@ class Run extends BaseEntity implements FileStorageEntityInterface
         return $run;
     }
 
-    /**
-     * @return Collection|Measurement[]
-     */
     public function getMeasurements(): Collection
     {
         return $this->measurements;
@@ -548,7 +515,7 @@ class Run extends BaseEntity implements FileStorageEntityInterface
 
     public function getNote(): ?string
     {
-        return $this->getLocale() == 'en' ? $this->getNoteEN() : $this->getNoteCZ();
+        return $this->getLocale() === 'en' ? $this->getNoteEN() : $this->getNoteCZ();
     }
 
     public function getNoteEN(): ?string
@@ -625,7 +592,7 @@ class Run extends BaseEntity implements FileStorageEntityInterface
 
     public function getFormatedRunoffStart(): string
     {
-        return $this->getRunoffStart() !== null ? $this->getRunoffStart()->format("G:i:s") : ' - ';
+        return $this->getRunoffStart() !== null ? $this->getRunoffStart()->format('G:i:s') : ' - ';
     }
 
     public function getPondingStart(): ?\DateTimeInterface
@@ -642,7 +609,7 @@ class Run extends BaseEntity implements FileStorageEntityInterface
 
     public function getFormatedPondingStart(): string
     {
-        return $this->getPondingStart() !== null ? $this->getPondingStart()->format("G:i:s") : ' - ';
+        return $this->getPondingStart() !== null ? $this->getPondingStart()->format('G:i:s') : ' - ';
     }
 
     public function getInitMoisture(): ?Record

@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use DateTimeInterface;
+use Doctrine\ORM\Mapping as ORM;
 use DOMDocument;
 
 /**
@@ -11,7 +13,6 @@ use DOMDocument;
  */
 class Data extends BaseEntity
 {
-
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -19,14 +20,10 @@ class Data extends BaseEntity
      */
     private int $id;
 
-    /**
-     * @ORM\Column(type="time", nullable=true)
-     */
+    /** @ORM\Column(type="time", nullable=true) */
     private ?DateTimeInterface $time;
 
-    /**
-     * @ORM\Column(type="float", length=255)
-     */
+    /** @ORM\Column(type="float", length=255) */
     private ?float $value;
 
     /**
@@ -35,29 +32,19 @@ class Data extends BaseEntity
      */
     private Record $record;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
+    /** @ORM\Column(type="float", nullable=true) */
     private ?float $relatedValueX;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
+    /** @ORM\Column(type="float", nullable=true) */
     private ?float $relatedValueY;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
+    /** @ORM\Column(type="float", nullable=true) */
     private ?float $relatedValueZ;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $noteCZ = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $noteEN = null;
 
     public function __construct()
@@ -73,10 +60,10 @@ class Data extends BaseEntity
 
     public function __toString(): string
     {
-        return (string)$this->getId();
+        return (string) $this->getId();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -88,7 +75,7 @@ class Data extends BaseEntity
 
     public function getFormatedTime(): string
     {
-        return $this->getTime() !== null ? $this->getTime()->format("H:i:s") : " - ";
+        return $this->getTime() !== null ? $this->getTime()->format('H:i:s') : ' - ';
     }
 
     public function setTime(?DateTimeInterface $time): self
@@ -106,11 +93,11 @@ class Data extends BaseEntity
     public function getValueRounded(): string
     {
         return number_format(
-            (float)$this->value,
-            ($this->getRecord()->getUnit() !== null) ? $this->getRecord()->getUnit()->getDecimals(
+            (float) $this->value,
+            $this->getRecord()->getUnit() !== null ? $this->getRecord()->getUnit()->getDecimals(
             ) : Unit::DEFAULT_DECIMALS,
-            ".",
-            ""
+            '.',
+            '',
         );
     }
 
@@ -139,12 +126,12 @@ class Data extends BaseEntity
     public function getRelatedValueXRounded(): string
     {
         return number_format(
-            (float)$this->relatedValueX,
+            (float) $this->relatedValueX,
             $this->getRecord()->getRelatedValueXUnit() !== null ? $this->getRecord()
                                                                        ->getRelatedValueXUnit()
                                                                        ->getDecimals() : 10,
-            ".",
-            ""
+            '.',
+            '',
         );
     }
 
@@ -163,12 +150,12 @@ class Data extends BaseEntity
     public function getRelatedValueYRounded(): string
     {
         return number_format(
-            (float)$this->relatedValueY,
+            (float) $this->relatedValueY,
             $this->getRecord()->getRelatedValueYUnit() !== null ? $this->getRecord()
                                                                        ->getRelatedValueYUnit()
                                                                        ->getDecimals() : 10,
-            ".",
-            ""
+            '.',
+            '',
         );
     }
 
@@ -187,12 +174,12 @@ class Data extends BaseEntity
     public function getRelatedValueZRounded(): string
     {
         return number_format(
-            (float)$this->relatedValueZ,
+            (float) $this->relatedValueZ,
             $this->getRecord()->getRelatedValueZUnit() !== null ? $this->getRecord()
                                                                        ->getRelatedValueZUnit()
                                                                        ->getDecimals() : 10,
-            ".",
-            ""
+            '.',
+            '',
         );
     }
 
@@ -205,9 +192,8 @@ class Data extends BaseEntity
 
     public function getNote(): ?string
     {
-        return $this->getLocale() == 'en' ? $this->getNoteEN() : $this->getNoteCZ();
+        return $this->getLocale() === 'en' ? $this->getNoteEN() : $this->getNoteCZ();
     }
-
 
     public function getNoteCZ(): ?string
     {
@@ -237,24 +223,24 @@ class Data extends BaseEntity
     {
         $data = $dom->createElement('data');
         $data->append(
-            $dom->createElement('id', $this->getId()),
+            $dom->createElement('id', (string) $this->getId()),
             $dom->createElement('time', $this->getFormatedTime()),
-            $dom->createElement('value', $this->getValue())
+            $dom->createElement('value', (string) $this->getValue()),
         );
 
         if ($this->getRelatedValueX() !== null) {
             $data->append(
-                $dom->createElement('relatedValueX', $this->getRelatedValueX())
+                $dom->createElement('relatedValueX', (string) $this->getRelatedValueX()),
             );
         }
         if ($this->getRelatedValueY() !== null) {
             $data->append(
-                $dom->createElement('relatedValueY', $this->getRelatedValueY())
+                $dom->createElement('relatedValueY', (string) $this->getRelatedValueY()),
             );
         }
         if ($this->getRelatedValueZ() !== null) {
             $data->append(
-                $dom->createElement('relatedValueZ', $this->getRelatedValueZ())
+                $dom->createElement('relatedValueZ', (string) $this->getRelatedValueZ()),
             );
         }
         return $data;

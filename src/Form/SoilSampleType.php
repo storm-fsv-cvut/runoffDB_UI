@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Entity\Locality;
@@ -49,8 +51,8 @@ class SoilSampleType extends AbstractType
                 'save',
                 SubmitType::class,
                 [
-                    'attr' => ['class' => 'btn btn-success']
-                ]
+                    'attr' => ['class' => 'btn btn-success'],
+                ],
             )
             ->add('methodics', DescendingIdEntityType::class, [
                 'class' => Methodics::class,
@@ -68,8 +70,8 @@ class SoilSampleType extends AbstractType
                 'label' => 'rawData',
                 'multiple' => true,
                 'required' => false,
-                'mapped' => false
-            ]
+                'mapped' => false,
+            ],
         );
 
         $builder->add(
@@ -81,8 +83,8 @@ class SoilSampleType extends AbstractType
                 'prototype' => true,
                 'allow_add' => true,
                 'allow_delete' => true,
-                'required' => false
-            ]
+                'required' => false,
+            ],
         );
     }
 
@@ -91,7 +93,7 @@ class SoilSampleType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => SoilSample::class,
-            ]
+            ],
         );
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -16,33 +18,23 @@ class Model extends BaseEntity implements DefinitionEntityInterface
      */
     private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $name;
 
-    /**
-     * @ORM\Column(type="string", length=1024, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=1024, nullable=true) */
     private ?string $descriptionCZ;
 
-    /**
-     * @ORM\Column(type="string", length=1024, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=1024, nullable=true) */
     private ?string $descriptionEN;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $homepage;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $reference;
 
-
-    public function __construct() {
+    public function __construct()
+    {
         $this->name = null;
         $this->descriptionCZ = null;
         $this->descriptionEN = null;
@@ -50,8 +42,9 @@ class Model extends BaseEntity implements DefinitionEntityInterface
         $this->reference = null;
     }
 
-    public function __toString(): string {
-        return $this->getName()!==null ? $this->getName() : "#".$this->getId();
+    public function __toString(): string
+    {
+        return $this->getName() ?? '#' . $this->getId();
     }
 
     public function getId(): int
@@ -83,7 +76,6 @@ class Model extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-
     public function getDescriptionEN(): ?string
     {
         return $this->descriptionEN;
@@ -96,8 +88,9 @@ class Model extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-    public function getDescription():?string {
-        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
+    public function getDescription(): ?string
+    {
+        return $this->getLocale() === 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
     public function getHomepage(): ?string

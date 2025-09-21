@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -8,7 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 use DOMDocument;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SequenceRepository")
@@ -22,9 +23,7 @@ class Sequence extends BaseEntity
      */
     private ?int $id;
 
-    /**
-     * @ORM\Column(type="date")
-     */
+    /** @ORM\Column(type="date") */
     private ?\DateTimeInterface $date;
 
     /**
@@ -33,44 +32,28 @@ class Sequence extends BaseEntity
      */
     private ?Simulator $simulator;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Project")
-     */
+    /** @ORM\ManyToMany(targetEntity="App\Entity\Project") */
     private Collection $projects;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\RunGroup", mappedBy="sequence", orphanRemoval=true)
-     */
+    /** @ORM\OneToMany(targetEntity="App\Entity\RunGroup", mappedBy="sequence", orphanRemoval=true) */
     private Collection $runGroups;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=false, options={"default": 0})
-     */
+    /** @ORM\Column(type="boolean", nullable=false, options={"default": 0}) */
     private ?bool $deleted;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="sequences")
-     */
+    /** @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="sequences") */
     private ?User $user;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $noteCZ = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $noteEN = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $descriptionCZ = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $descriptionEN = null;
 
     /**
@@ -78,17 +61,6 @@ class Sequence extends BaseEntity
      * @ORM\JoinColumn(name="methodics_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     private $methodics;
-
-    public function getMethodics(): ?Methodics
-    {
-        return $this->methodics;
-    }
-
-    public function setMethodics(?Methodics $methodics): self
-    {
-        $this->methodics = $methodics;
-        return $this;
-    }
 
     public function __construct()
     {
@@ -106,9 +78,19 @@ class Sequence extends BaseEntity
 
     public function __toString(): string
     {
+        return $this->getDate() !== null ? ($this->getDate()->format('d.m.Y') . ' - ' . $this->getLocality(
+        )) : ('#' . $this->getId() . ' - ' . $this->getLocality());
+    }
 
-        return $this->getDate() !== null ? ($this->getDate()->format("d.m.Y") . " - " . $this->getLocality(
-            )) : ("#" . $this->getId() . " - " . $this->getLocality());
+    public function getMethodics(): ?Methodics
+    {
+        return $this->methodics;
+    }
+
+    public function setMethodics(?Methodics $methodics): self
+    {
+        $this->methodics = $methodics;
+        return $this;
     }
 
     public function getDate(): ?\DateTimeInterface
@@ -126,15 +108,12 @@ class Sequence extends BaseEntity
     public function getLocality(): ?Locality
     {
         if ($this->getRuns() !== null && $this->getRuns()->count() > 0 && $this->getRuns()->get(0)->getPlot(
-            ) !== null) {
+        ) !== null) {
             return $this->getRuns()->get(0)->getPlot()->getLocality();
         }
         return null;
     }
 
-    /**
-     * @return Collection|Run[]
-     */
     public function getRuns(): ?Collection
     {
         $runs = new ArrayCollection();
@@ -147,27 +126,21 @@ class Sequence extends BaseEntity
         return $runs;
     }
 
-    /**
-     * @return Collection|RunGroup[]
-     */
     public function getRunGroups(): Collection
     {
         return $this->runGroups;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
     public function getFormatedDate(): string
     {
-        return $this->getDate() !== null ? $this->getDate()->format("d. m. Y") : ' - ';
+        return $this->getDate() !== null ? $this->getDate()->format('d. m. Y') : ' - ';
     }
 
-    /**
-     * @return Collection|Project[]
-     */
     public function getProjects(): Collection
     {
         return $this->projects;
@@ -200,7 +173,7 @@ class Sequence extends BaseEntity
             foreach ($this->getRuns()->toArray() as $run) {
                 if ($run->getMeasurements() !== null) {
                     foreach ($run->getMeasurements() as $measurement) {
-                        if ($measurement->getRecords() != null) {
+                        if ($measurement->getRecords() !== null) {
                             foreach ($measurement->getRecords() as $record) {
                                 $records[] = $record;
                             }
@@ -220,7 +193,7 @@ class Sequence extends BaseEntity
                 $names[] = $plot->getName();
             }
         }
-        return implode(", ", $names);
+        return implode(', ', $names);
     }
 
     /**
@@ -249,7 +222,7 @@ class Sequence extends BaseEntity
                 }
             }
         }
-        return implode(", ", $names);
+        return implode(', ', $names);
     }
 
     public function addRunGroup(RunGroup $runGroup): self
@@ -309,10 +282,9 @@ class Sequence extends BaseEntity
         }
 
         $sequence->append(
-            $dom->createElement('id', $this->getId()),
-            $dom->createElement('date', $this->getDate() != null ? $this->getDate()->format("Y-m-d") : ""),
+            $dom->createElement('id', (string) $this->getId()),
+            $dom->createElement('date', $this->getDate() !== null ? $this->getDate()->format('Y-m-d') : ''),
             $runGroups,
-
         );
 
         if ($this->getSimulator() !== null) {
@@ -349,9 +321,8 @@ class Sequence extends BaseEntity
 
     public function getNote(): ?string
     {
-        return $this->getLocale() == 'en' ? $this->getNoteEN() : $this->getNoteCZ();
+        return $this->getLocale() === 'en' ? $this->getNoteEN() : $this->getNoteCZ();
     }
-
 
     public function getNoteCZ(): ?string
     {
@@ -379,7 +350,7 @@ class Sequence extends BaseEntity
 
     public function getDescription(): ?string
     {
-        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
+        return $this->getLocale() === 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
     public function getDescriptionCZ(): ?string

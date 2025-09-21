@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Query\Expr\Base;
 use DOMDocument;
 
 /**
@@ -18,16 +19,11 @@ class AssignmentType extends BaseEntity implements DefinitionEntityInterface
      */
     private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $descriptionCZ;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $descriptionEN;
-
 
     public function __construct()
     {
@@ -35,16 +31,17 @@ class AssignmentType extends BaseEntity implements DefinitionEntityInterface
         $this->descriptionEN = null;
     }
 
-
-    public function __toString(): string {
-        return $this->getDescription() ?? (string)$this->getId();
+    public function __toString(): string
+    {
+        return $this->getDescription() ?? (string) $this->getId();
     }
 
-    public function getDescription():?string {
-        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
+    public function getDescription(): ?string
+    {
+        return $this->getLocale() === 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -73,11 +70,13 @@ class AssignmentType extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-    public function getLabel(): string {
-        return $this->getDescription() ?? (string)$this->getId();
+    public function getLabel(): string
+    {
+        return $this->getDescription() ?? (string) $this->getId();
     }
 
-    public function getXmlDomElement(DOMDocument $dom):\DOMElement {
-        return $dom->createElement('assignmentType',$this->getDescription());
+    public function getXmlDomElement(DOMDocument $dom): \DOMElement
+    {
+        return $dom->createElement('assignmentType', $this->getDescription());
     }
 }

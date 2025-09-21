@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -18,9 +20,7 @@ class Plot extends BaseEntity implements DefinitionEntityInterface
      */
     private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=128)
-     */
+    /** @ORM\Column(type="string", length=128) */
     private string $name;
 
     /**
@@ -47,44 +47,28 @@ class Plot extends BaseEntity implements DefinitionEntityInterface
      */
     private ?Agrotechnology $agrotechnology;
 
-    /**
-     * @ORM\Column(type="date")
-     */
+    /** @ORM\Column(type="date") */
     private \DateTimeInterface $established;
 
-    /**
-     * @ORM\Column(type="float")
-     */
+    /** @ORM\Column(type="float") */
     private float $plotWidth;
 
-    /**
-     * @ORM\Column(type="float")
-     */
+    /** @ORM\Column(type="float") */
     private float $plotLength;
 
-    /**
-     * @ORM\Column(type="float")
-     */
+    /** @ORM\Column(type="float") */
     private float $plotSlope;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\SoilSample", mappedBy="plot")
-     */
+    /** @ORM\OneToMany(targetEntity="App\Entity\SoilSample", mappedBy="plot") */
     private Collection $soilSamples;
 
-    /**
-     * @ORM\Column(type="string", length=512, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=512, nullable=true) */
     private ?string $noteCZ;
 
-    /**
-     * @ORM\Column(type="string", length=512, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=512, nullable=true) */
     private ?string $noteEN;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Measurement", mappedBy="plot")
-     */
+    /** @ORM\OneToMany(targetEntity="App\Entity\Measurement", mappedBy="plot") */
     private Collection $measurements;
 
     /**
@@ -93,12 +77,11 @@ class Plot extends BaseEntity implements DefinitionEntityInterface
      */
     private ?ProtectionMeasure $protectionMeasure;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\ProtectionMeasure", inversedBy="plots")
-     */
+    /** @ORM\ManyToMany(targetEntity="App\Entity\ProtectionMeasure", inversedBy="plots") */
     private Collection $protectionMeasures;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->noteCZ = null;
         $this->noteEN = null;
         $this->locality = null;
@@ -110,20 +93,21 @@ class Plot extends BaseEntity implements DefinitionEntityInterface
         $this->protectionMeasures = new ArrayCollection();
     }
 
-
-    public function __toString() {
-            if ($this->getLocale() == 'en' ) {
-                return $this->getName() . ' - ' . ($this->getCrop() ? $this->getCrop()->getName() : '') . ", est. " . $this->getEstablished()->format('Y-m-d')." (#".$this->getId().")";
-            } else {
-                return $this->getName() . ' - ' . ($this->getCrop() ? $this->getCrop()->getName() : '') . ", zal. " . $this->getEstablished()->format('d.m.Y')." (#".$this->getId().")";
-            }
+    public function __toString()
+    {
+        if ($this->getLocale() === 'en') {
+            return $this->getName() . ' - ' . ($this->getCrop() !== null ? $this->getCrop()->getName() : '') . ', est. ' . $this->getEstablished()->format('Y-m-d') . ' (#' . $this->getId() . ')';
+        } else {
+            return $this->getName() . ' - ' . ($this->getCrop() !== null ? $this->getCrop()->getName() : '') . ', zal. ' . $this->getEstablished()->format('d.m.Y') . ' (#' . $this->getId() . ')';
+        }
     }
 
-    public function getNote():?string {
-        return $this->getLocale() == 'en' ? $this->getNoteEN() : $this->getNoteCZ();
+    public function getNote(): ?string
+    {
+        return $this->getLocale() === 'en' ? $this->getNoteEN() : $this->getNoteCZ();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -212,7 +196,7 @@ class Plot extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-    public function getPlotSlope():?float
+    public function getPlotSlope(): ?float
     {
         return $this->plotSlope;
     }
@@ -224,9 +208,6 @@ class Plot extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-    /**
-     * @return Collection|SoilSample[]
-     */
     public function getSoilSamples(): Collection
     {
         return $this->soilSamples;
@@ -255,21 +236,24 @@ class Plot extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-    public function getLabel(): string {
+    public function getLabel(): string
+    {
         return $this->name;
     }
 
     /**
      * @return mixed
      */
-    public function getSoilOriginLocality() {
+    public function getSoilOriginLocality()
+    {
         return $this->soilOriginLocality;
     }
 
     /**
      * @param mixed $soilOriginLocality
      */
-    public function setSoilOriginLocality($soilOriginLocality): void {
+    public function setSoilOriginLocality($soilOriginLocality): void
+    {
         $this->soilOriginLocality = $soilOriginLocality;
     }
 
@@ -297,9 +281,6 @@ class Plot extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Measurement[]
-     */
     public function getMeasurements(): Collection
     {
         return $this->measurements;
@@ -342,8 +323,7 @@ class Plot extends BaseEntity implements DefinitionEntityInterface
 
     public function getXmlDomElement(\DOMDocument $dom)
     {
-        $plot = $dom->createElement('plot', (string) $this);
-        return $plot;
+        return $dom->createElement('plot', (string) $this);
     }
 
     public function getProtectionMeasures(): Collection

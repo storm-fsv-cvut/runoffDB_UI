@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -18,14 +20,10 @@ class Simulator extends BaseEntity implements DefinitionEntityInterface
      */
     private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $nameCZ;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $nameEN;
 
     /**
@@ -34,30 +32,19 @@ class Simulator extends BaseEntity implements DefinitionEntityInterface
      */
     private ?Organization $organization;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $descriptionCZ;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $descriptionEN;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Sequence", mappedBy="simulator")
-     *
-     */
+    /** @ORM\OneToMany(targetEntity="App\Entity\Sequence", mappedBy="simulator") */
     private Collection $sequences;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $reference;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Publication", inversedBy="simulators")
-     */
+    /** @ORM\ManyToMany(targetEntity="App\Entity\Publication", inversedBy="simulators") */
     private Collection $publications;
 
     public function __construct()
@@ -75,16 +62,16 @@ class Simulator extends BaseEntity implements DefinitionEntityInterface
     {
         if ($this->getName() !== null) {
             return $this->getName() . ' (' . ($this->getOrganization() !== null ? $this->getOrganization()->getName(
-                ) : "") . ')';
+            ) : '') . ')';
         } else {
-            return "#" . $this->getId() . ' (' . ($this->getOrganization() !== null ? $this->getOrganization()->getName(
-                ) : "") . ')';
+            return '#' . $this->getId() . ' (' . ($this->getOrganization() !== null ? $this->getOrganization()->getName(
+            ) : '') . ')';
         }
     }
 
     public function getName(): ?string
     {
-        return $this->getLocale() == 'en' ? $this->getNameEN() : $this->getNameCZ();
+        return $this->getLocale() === 'en' ? $this->getNameEN() : $this->getNameCZ();
     }
 
     public function getNameEN(): ?string
@@ -123,14 +110,11 @@ class Simulator extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return Collection|Sequence[]
-     */
     public function getSequences(): Collection
     {
         return $this->sequences;
@@ -186,10 +170,10 @@ class Simulator extends BaseEntity implements DefinitionEntityInterface
     {
         if ($this->getName() !== null) {
             return $this->getName() . ' (' . ($this->getOrganization() !== null ? $this->getOrganization()->getName(
-                ) : "") . ')';
+            ) : '') . ')';
         } else {
-            return "#" . $this->getId() . ' (' . ($this->getOrganization() !== null ? $this->getOrganization()->getName(
-                ) : "") . ')';
+            return '#' . $this->getId() . ' (' . ($this->getOrganization() !== null ? $this->getOrganization()->getName(
+            ) : '') . ')';
         }
     }
 
@@ -199,7 +183,7 @@ class Simulator extends BaseEntity implements DefinitionEntityInterface
         $simulator->append(
             $dom->createElement('name', $this->getName()),
             $dom->createElement('description', $this->getDescription()),
-            $dom->createElement('reference', $this->getReference())
+            $dom->createElement('reference', $this->getReference()),
         );
 
         if ($this->getOrganization() !== null) {
@@ -211,7 +195,7 @@ class Simulator extends BaseEntity implements DefinitionEntityInterface
 
     public function getDescription(): ?string
     {
-        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
+        return $this->getLocale() === 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
     public function getDescriptionEN(): ?string

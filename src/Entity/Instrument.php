@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Filesystem\Filesystem;
@@ -19,6 +20,33 @@ class Instrument extends BaseEntity implements DefinitionEntityInterface, FileSt
      * @ORM\Column(type="integer")
      */
     private int $id;
+
+    /** @ORM\Column(type="string", length=255) */
+    private string $nameCZ;
+
+    /** @ORM\Column(type="string", length=255) */
+    private string $nameEN;
+
+    /** @ORM\Column(type="text", nullable=true) */
+    private ?string $descriptionCZ = null;
+
+    /** @ORM\Column(type="text", nullable=true) */
+    private ?string $descriptionEN = null;
+
+    /** @ORM\Column(type="string", length=512, nullable=true) */
+    private ?string $link = null;
+
+    /** @ORM\ManyToMany(targetEntity="App\Entity\ProcessingStep", mappedBy="instruments") */
+    private Collection $processingSteps;
+
+    public function __construct()
+    {
+    }
+
+    public function __toString(): string
+    {
+        return $this->getName() . '#' . $this->getId();
+    }
 
     public function setNameCZ(string $nameCZ): void
     {
@@ -43,11 +71,6 @@ class Instrument extends BaseEntity implements DefinitionEntityInterface, FileSt
     public function setLink(?string $link): void
     {
         $this->link = $link;
-    }
-
-    public function setFilesPath(?string $filesPath): void
-    {
-        $this->filesPath = $filesPath;
     }
 
     public function setProcessingSteps(Collection $processingSteps): void
@@ -83,40 +106,6 @@ class Instrument extends BaseEntity implements DefinitionEntityInterface, FileSt
     public function getProcessingSteps(): Collection
     {
         return $this->processingSteps;
-    }
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private string $nameCZ;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private string $nameEN;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private ?string $descriptionCZ = null;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private ?string $descriptionEN = null;
-
-    /**
-     * @ORM\Column(type="string", length=512, nullable=true)
-     */
-    private ?string $link = null;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\ProcessingStep", mappedBy="instruments")
-     */
-    private Collection $processingSteps;
-
-    public function __construct()
-    {
     }
 
     public function getName(): string
@@ -156,11 +145,6 @@ class Instrument extends BaseEntity implements DefinitionEntityInterface, FileSt
         if ($filesystem->exists($path)) {
             $filesystem->remove($path);
         }
-    }
-
-    public function __toString(): string
-    {
-        return $this->getName() ?: '#' . $this->getId();
     }
 
     public function getId(): int

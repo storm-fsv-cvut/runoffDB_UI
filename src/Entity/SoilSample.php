@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -21,9 +23,7 @@ class SoilSample extends BaseEntity implements FileStorageEntityInterface
      */
     private int $id;
 
-    /**
-     * @ORM\Column(type="date")
-     */
+    /** @ORM\Column(type="date") */
     private ?\DateTimeInterface $dateSampled;
 
     /**
@@ -32,9 +32,7 @@ class SoilSample extends BaseEntity implements FileStorageEntityInterface
      */
     private ?Organization $processedAt;
 
-    /**
-     * @ORM\Column(type="string", length=500, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=500, nullable=true) */
     private ?string $sampleLocation;
 
     /**
@@ -55,14 +53,10 @@ class SoilSample extends BaseEntity implements FileStorageEntityInterface
      */
     private ?Locality $locality;
 
-    /**
-     * @ORM\Column(type="string", length=512, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=512, nullable=true) */
     private ?string $descriptionCZ;
 
-    /**
-     * @ORM\Column(type="string", length=512, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=512, nullable=true) */
     private ?string $descriptionEN;
 
     /**
@@ -71,14 +65,10 @@ class SoilSample extends BaseEntity implements FileStorageEntityInterface
      */
     private ?Run $Run;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
+    /** @ORM\Column(type="float", nullable=true) */
     private ?float $sampleDepthM;
 
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
+    /** @ORM\Column(type="date", nullable=true) */
     private ?\DateTimeInterface $dateProcessed;
 
     /**
@@ -105,24 +95,16 @@ class SoilSample extends BaseEntity implements FileStorageEntityInterface
      */
     private ?Record $textureRecord;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Measurement", mappedBy="soilSamples")
-     */
+    /** @ORM\ManyToMany(targetEntity="App\Entity\Measurement", mappedBy="soilSamples") */
     private Collection $measurements;
 
-    /**
-     * @ORM\Column(type="string", length=512, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=512, nullable=true) */
     private ?string $rawDataPath;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    /** @ORM\Column(type="boolean", nullable=true) */
     private ?bool $deleted;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="soilSamples")
-     */
+    /** @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="soilSamples") */
     private ?User $user;
 
     /**
@@ -130,17 +112,6 @@ class SoilSample extends BaseEntity implements FileStorageEntityInterface
      * @ORM\JoinColumn(name="methodics_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     private $methodics;
-
-    public function getMethodics(): ?Methodics
-    {
-        return $this->methodics;
-    }
-
-    public function setMethodics(?Methodics $methodics): self
-    {
-        $this->methodics = $methodics;
-        return $this;
-    }
 
     public function __construct()
     {
@@ -167,12 +138,23 @@ class SoilSample extends BaseEntity implements FileStorageEntityInterface
 
     public function __toString()
     {
-        return "#" . $this->getId() . " - " . $this->getLocality();
+        return '#' . $this->getId() . ' - ' . $this->getLocality();
+    }
+
+    public function getMethodics(): ?Methodics
+    {
+        return $this->methodics;
+    }
+
+    public function setMethodics(?Methodics $methodics): self
+    {
+        $this->methodics = $methodics;
+        return $this;
     }
 
     public function getDescription(): ?string
     {
-        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
+        return $this->getLocale() === 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
     public function getId(): int
@@ -187,7 +169,7 @@ class SoilSample extends BaseEntity implements FileStorageEntityInterface
 
     public function getFormatedDateSampled(): string
     {
-        return $this->dateSampled !== null ? $this->dateSampled->format('d.m.Y') : " - ";
+        return $this->dateSampled !== null ? $this->dateSampled->format('d.m.Y') : ' - ';
     }
 
     public function setDateSampled(?\DateTimeInterface $dateSampled): self
@@ -259,7 +241,7 @@ class SoilSample extends BaseEntity implements FileStorageEntityInterface
 
     public function getLabel(): string
     {
-        return "#" . $this->getId();
+        return '#' . $this->getId();
     }
 
     public function getDescriptionCZ(): ?string
@@ -305,7 +287,7 @@ class SoilSample extends BaseEntity implements FileStorageEntityInterface
 
     public function getRoundedSampleDepthM(): ?float
     {
-        return round($this->sampleDepthM,2);
+        return round($this->sampleDepthM, 2);
     }
 
     public function setSampleDepthM(?float $sampleDepthM): self
@@ -322,7 +304,7 @@ class SoilSample extends BaseEntity implements FileStorageEntityInterface
 
     public function getFormatedDateProcessed(): string
     {
-        return $this->dateProcessed !== null ? $this->dateProcessed->format('d.m.Y') : "";
+        return $this->dateProcessed !== null ? $this->dateProcessed->format('d.m.Y') : '';
     }
 
     public function setDateProcessed(?\DateTimeInterface $dateProcessed): self
@@ -380,9 +362,6 @@ class SoilSample extends BaseEntity implements FileStorageEntityInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Measurement[]
-     */
     public function getMeasurements(): Collection
     {
         return $this->measurements;
@@ -464,7 +443,7 @@ class SoilSample extends BaseEntity implements FileStorageEntityInterface
 
     public function getFilesPath(): string
     {
-        return "data/soilsample/" . $this->getId();
+        return 'data/soilsample/' . $this->getId();
     }
 
     public function removeFile(string $filename): void
@@ -480,59 +459,59 @@ class SoilSample extends BaseEntity implements FileStorageEntityInterface
     {
         $soilSample = $dom->createElement('soilSample');
         $soilSample->append(
-            $dom->createElement('id', $this->getId()),
+            $dom->createElement('id', (string) $this->getId()),
             $dom->createElement('sampleLocation', $this->getSampleLocation()),
             $dom->createElement('description', $this->getDescription()),
-            $dom->createElement('sampleDepthM', $this->getSampleDepthM())
+            $dom->createElement('sampleDepthM', (string) $this->getSampleDepthM()),
         );
-        if ($this->getDateSampled()!==null) {
+        if ($this->getDateSampled() !== null) {
             $soilSample->append(
                 $dom->createElement('dateSampled', $this->getDateSampled()->format('Y-m-d')),
             );
         }
-        if ($this->getDateProcessed()!==null) {
+        if ($this->getDateProcessed() !== null) {
             $soilSample->append(
                 $dom->createElement('dateProcessed', $this->getDateProcessed()->format('Y-m-d')),
             );
         }
-        if ($this->getProcessedAt()!==null) {
+        if ($this->getProcessedAt() !== null) {
             $soilSample->append(
                 $dom->createElement('processedAt', $this->getProcessedAt()->getName()),
             );
         }
-        if ($this->getBulkDensity()!==null) {
+        if ($this->getBulkDensity() !== null) {
             $soilSample->append(
-                $this->getBulkDensity()->getXmlDomElement($dom)
+                $this->getBulkDensity()->getXmlDomElement($dom),
             );
         }
-        if ($this->getCorg()!==null) {
+        if ($this->getCorg() !== null) {
             $soilSample->append(
-                $this->getCorg()->getXmlDomElement($dom)
+                $this->getCorg()->getXmlDomElement($dom),
             );
         }
-        if ($this->getMoisture()!==null) {
+        if ($this->getMoisture() !== null) {
             $soilSample->append(
-                $this->getMoisture()->getXmlDomElement($dom)
+                $this->getMoisture()->getXmlDomElement($dom),
             );
         }
-        if ($this->getTextureRecord()!==null) {
+        if ($this->getTextureRecord() !== null) {
             $soilSample->append(
-                $this->getTextureRecord()->getXmlDomElement($dom)
+                $this->getTextureRecord()->getXmlDomElement($dom),
             );
         }
-        if ($this->getLocality()!==null) {
+        if ($this->getLocality() !== null) {
             $soilSample->append(
-                $dom->createElement('locality', (string) $this->getLocality())
+                $dom->createElement('locality', (string) $this->getLocality()),
             );
         }
-        if ($this->getPlot()!==null) {
+        if ($this->getPlot() !== null) {
             $soilSample->append(
-                $dom->createElement('plot', (string) $this->getPlot())
+                $dom->createElement('plot', (string) $this->getPlot()),
             );
         }
-        if ($this->getWrbSoilClass()!==null) {
+        if ($this->getWrbSoilClass() !== null) {
             $soilSample->append(
-                $dom->createElement('wrbSoilClass', (string) $this->WrbSoilClass())
+                $dom->createElement('wrbSoilClass', (string) $this->getWrbSoilClass()),
             );
         }
         return $soilSample;

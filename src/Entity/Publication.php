@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\Collection;
@@ -10,6 +12,42 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Publication extends BaseEntity implements DefinitionEntityInterface
 {
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    private int $id;
+
+    /** @ORM\Column(type="string", length=512, nullable=false) */
+    private string $titleCZ;
+
+    /** @ORM\Column(type="string", length=512, nullable=true) */
+    private ?string $titleEN;
+
+    /** @ORM\Column(type="string", length=512, nullable=true) */
+    private ?string $authors;
+
+    /** @ORM\Column(type="string", length=512, nullable=true) */
+    private ?string $DOI;
+
+    /** @ORM\Column(type="string", length=512, nullable=true) */
+    private ?string $journalName;
+
+    /** @ORM\Column(type="string", length=512, nullable=true) */
+    private ?int $publicationYear;
+
+    /** @ORM\ManyToMany(targetEntity="App\Entity\Project", mappedBy="publications") */
+    private Collection $projects;
+
+    /** @ORM\ManyToMany(targetEntity="App\Entity\Simulator", mappedBy="publications") */
+    private Collection $simulators;
+
+    public function __toString(): String
+    {
+        return $this->getTitle() ?? '#' . $this->getId();
+    }
+
     public function setTitleCZ(string $titleCZ): void
     {
         $this->titleCZ = $titleCZ;
@@ -49,52 +87,6 @@ class Publication extends BaseEntity implements DefinitionEntityInterface
     {
         $this->simulators = $simulators;
     }
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private int $id;
-
-    /**
-     * @ORM\Column(type="string", length=512, nullable=false)
-     */
-    private string $titleCZ;
-
-    /**
-     * @ORM\Column(type="string", length=512, nullable=true)
-     */
-    private ?string $titleEN;
-
-    /**
-     * @ORM\Column(type="string", length=512, nullable=true)
-     */
-    private ?string $authors;
-
-    /**
-     * @ORM\Column(type="string", length=512, nullable=true)
-     */
-    private ?string $DOI;
-
-    /**
-     * @ORM\Column(type="string", length=512, nullable=true)
-     */
-    private ?string $journalName;
-
-    /**
-     * @ORM\Column(type="string", length=512, nullable=true)
-     */
-    private ?int $publicationYear;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Project", mappedBy="publications")
-     */
-    private Collection $projects;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Simulator", mappedBy="publications")
-     */
-    private Collection $simulators;
 
     public function getId(): int
     {
@@ -141,12 +133,8 @@ class Publication extends BaseEntity implements DefinitionEntityInterface
         return $this->simulators;
     }
 
-    public function __toString(): String
+    public function getTitle(): ?string
     {
-        return $this->getTitle() !== null ? $this->getTitle() : '#' . $this->getId();
-    }
-
-    public function getTitle():?string {
-        return $this->getLocale() == 'en' ? $this->getTitleEN() : $this->getTitleCZ();
+        return $this->getLocale() === 'en' ? $this->getTitleEN() : $this->getTitleCZ();
     }
 }

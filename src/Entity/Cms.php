@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use phpDocumentor\Reflection\Types\Integer;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CmsRepository")
@@ -17,57 +18,43 @@ class Cms extends BaseEntity
      */
     private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=false)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=false) */
     private string $slug;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    /** @ORM\Column(type="text") */
     private string $content;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    /** @ORM\Column(type="string", length=255) */
     private string $language;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $title;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $type;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $status;
 
-    /**
-     * @ORM\Column(type="integer", nullable=false, options={"default" : 0})
-     */
+    /** @ORM\Column(type="integer", nullable=false, options={"default" : 0}) */
     private int $menuOrder;
 
-
-    public function __construct() {
+    public function __construct()
+    {
         $this->title = null;
         $this->type = null;
         $this->status = null;
-        $this->slug = "";
-        $this->language  = "cs";
-        $this->content  = "";
+        $this->slug = '';
+        $this->language = 'cs';
+        $this->content = '';
     }
 
-
-    public function __toString() {
-        return $this->getSlug() ?? "";
+    public function __toString()
+    {
+        return $this->getSlug() ?? '';
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -153,5 +140,4 @@ class Cms extends BaseEntity
     {
         $this->menuOrder = $menuOrder;
     }
-
 }

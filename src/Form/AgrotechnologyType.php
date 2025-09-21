@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Entity\Agrotechnology;
@@ -15,7 +17,7 @@ class AgrotechnologyType extends AbstractType
 {
     public function buildForm(
         FormBuilderInterface $builder,
-        array $options
+        array $options,
     ): void {
         $builder
             ->add('nameCZ', TextType::class, ['label' => 'nameCZ', 'required' => false])
@@ -38,7 +40,7 @@ class AgrotechnologyType extends AbstractType
                 'allow_delete' => true,
                 'required' => false,
                 'by_reference' => false,
-            ]
+            ],
         );
 
         $builder->add(
@@ -46,8 +48,8 @@ class AgrotechnologyType extends AbstractType
             SubmitType::class,
             [
                 'attr' => ['class' => 'btn btn-success'],
-                'label' => 'save'
-            ]
+                'label' => 'save',
+            ],
         );
     }
 
@@ -56,7 +58,7 @@ class AgrotechnologyType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => Agrotechnology::class,
-            ]
+            ],
         );
     }
 }

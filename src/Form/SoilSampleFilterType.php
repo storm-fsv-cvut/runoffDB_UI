@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Entity\Locality;
 use App\Form\Type\DescendingIdEntityType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -13,15 +14,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SoilSampleFilterType extends AbstractType
 {
-
-    /**
-     * @var TranslatorInterface
-     */
+    /** @var TranslatorInterface */
     private $translator;
 
     public function __construct(TranslatorInterface $translator)
     {
-
         $this->translator = $translator;
     }
 
@@ -35,8 +32,8 @@ class SoilSampleFilterType extends AbstractType
                     'class' => Locality::class,
                     'required' => false,
                     'placeholder' => '',
-                    'label' => 'Locality'
-                ]
+                    'label' => 'Locality',
+                ],
             )
             ->add(
                 'dateSampledFrom',
@@ -45,8 +42,8 @@ class SoilSampleFilterType extends AbstractType
                     'placeholder' => '',
                     'required' => false,
                     'widget' => 'single_text',
-                    'label' => ucfirst($this->translator->trans("date sampled from")),
-                ]
+                    'label' => ucfirst($this->translator->trans('date sampled from')),
+                ],
             )
             ->add(
                 'dateSampledTo',
@@ -55,17 +52,16 @@ class SoilSampleFilterType extends AbstractType
                     'placeholder' => '',
                     'required' => false,
                     'widget' => 'single_text',
-                    'label' => ucfirst($this->translator->trans("date sampled to")),
-                ]
+                    'label' => ucfirst($this->translator->trans('date sampled to')),
+                ],
             )
             ->add(
                 'search',
                 SubmitType::class,
                 [
                     'label' => 'Search',
-                    'attr' => ['class' => 'btn btn-success  pull-right']
-                ]
-            )->setMethod("GET");
+                    'attr' => ['class' => 'btn btn-success  pull-right'],
+                ],
+            )->setMethod('GET');
     }
-
 }
