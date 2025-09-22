@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\Collection;
@@ -17,29 +19,19 @@ class ProtectionMeasure extends BaseEntity implements DefinitionEntityInterface
      */
     private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $nameCZ;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $nameEN;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    /** @ORM\Column(type="text", nullable=true) */
     private ?string $descriptionCZ;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    /** @ORM\Column(type="text", nullable=true) */
     private ?string $descriptionEN;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Plot", mappedBy="protectionMeasures")
-     */
+    /** @ORM\ManyToMany(targetEntity="App\Entity\Plot", mappedBy="protectionMeasures") */
     private Collection $plots;
 
     public function __construct()
@@ -50,22 +42,26 @@ class ProtectionMeasure extends BaseEntity implements DefinitionEntityInterface
         $this->descriptionEN = null;
     }
 
-    public function __toString(): string {
-        return $this->getName() ?? "#".$this->getId();
+    public function __toString(): string
+    {
+        return $this->getName() ?? '#' . $this->getId();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getName():?string {
-        return $this->getLocale() == 'en' ? $this->getNameEN() : $this->getNameCZ();
+    public function getName(): ?string
+    {
+        return $this->getLocale() === 'en' ? $this->getNameEN() : $this->getNameCZ();
     }
 
-    public function getDescription():?string {
-        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
+    public function getDescription(): ?string
+    {
+        return $this->getLocale() === 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
+
     public function getNameCZ(): ?string
     {
         return $this->nameCZ;

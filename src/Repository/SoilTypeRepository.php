@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\WrbSoilClass;
@@ -7,10 +9,11 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * @extends ServiceEntityRepository<WrbSoilClass>
  * @method WrbSoilClass|null find($id, $lockMode = null, $lockVersion = null)
  * @method WrbSoilClass|null findOneBy(array $criteria, array $orderBy = null)
- * @method WrbSoilClass[]    findAll()
- * @method WrbSoilClass[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method array<WrbSoilClass> findAll()
+ * @method array<WrbSoilClass> findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class SoilTypeRepository extends ServiceEntityRepository
 {

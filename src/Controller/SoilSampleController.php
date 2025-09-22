@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Created by PhpStorm.
  * User: ppavel
@@ -20,7 +23,6 @@ use App\Form\SoilSampleType;
 use App\Repository\MeasurementRepository;
 use App\Repository\PhenomenonRepository;
 use App\Repository\RecordRepository;
-use App\Repository\RunRepository;
 use App\Repository\SoilSampleRepository;
 use App\Security\EntityVoter;
 use App\Services\MeasurementService;
@@ -54,8 +56,9 @@ class SoilSampleController extends AbstractController
         private SoilSampleRepository $soilSampleRepository,
         private PhenomenonRepository $phenomenonRepository,
         private RecordRepository $recordRepository,
-        private ParameterBagInterface $parameterBag
-    ) {}
+        private ParameterBagInterface $parameterBag,
+    ) {
+    }
 
     #[Route('/{_locale}/sample-chart-data', name: 'chartDataSoilSample')]
     public function getChartData(Request $request): JsonResponse
@@ -69,8 +72,8 @@ class SoilSampleController extends AbstractController
     }
 
     #[Route('/{_locale}/soil-sample/{id}', name: 'soilSample')]
-    public function edit(Request $request, int $id = null): Response {
-
+    public function edit(Request $request, ?int $id = null): Response
+    {
         $user = $this->security->getUser();
 
         if ($id !== null) {
@@ -95,7 +98,7 @@ class SoilSampleController extends AbstractController
                     $this->entityManager->persist($soilSample);
                     $this->entityManager->flush();
 
-                    if ($soilSampleForm->has('rawData') && $soilSampleForm->get('rawData') !== null) {
+                    if ($soilSampleForm->has('rawData')) {
                         foreach ($soilSampleForm->get('rawData')->getData() as $file) {
                             $this->soilSampleService->uploadFile($file, $soilSampleForm->getData());
                         }
@@ -114,7 +117,7 @@ class SoilSampleController extends AbstractController
                 if ($appendMesurementForm->isSubmitted()) {
                     $measurementId = $appendMesurementForm->get('measurementId')->getData();
                     $measurement = $this->measurementRepository->find($measurementId);
-                    if ($measurement != null) {
+                    if ($measurement !== null) {
                         $soilSample->addMeasurement($measurement);
                         $this->entityManager->persist($soilSample);
                         $this->entityManager->flush();
@@ -151,7 +154,7 @@ class SoilSampleController extends AbstractController
 
             if ($request->get('unlink_measurement') !== null) {
                 $measurement = $this->measurementRepository->find($request->get('unlink_measurement'));
-                if ($measurement != null) {
+                if ($measurement !== null) {
                     $soilSample->removeMeasurement($measurement);
                     $this->entityManager->persist($soilSample);
                     $this->entityManager->flush();
@@ -185,7 +188,7 @@ class SoilSampleController extends AbstractController
                     'soilSample' => $soilSample,
                     'runService' => $this->runService,
                     'form' => $soilSampleForm->createView(),
-                ]
+                ],
             );
         } else {
             $this->denyAccessUnlessGranted(EntityVoter::VIEW);
@@ -208,8 +211,8 @@ class SoilSampleController extends AbstractController
             return $this->render(
                 'soilSample/add.html.twig',
                 [
-                    'form' => $form->createView()
-                ]
+                    'form' => $form->createView(),
+                ],
             );
         }
     }
@@ -224,10 +227,10 @@ class SoilSampleController extends AbstractController
             $this->soilSampleRepository->getPaginatorQuery(
                 $filter->getData(),
                 $request->get('order', 'date'),
-                $request->get('direction', 'DESC')
+                $request->get('direction', 'DESC'),
             ),
             $request->query->getInt('page', 1),
-            20
+            20,
         );
 
         return $this->render(
@@ -237,7 +240,7 @@ class SoilSampleController extends AbstractController
                 'filter' => $filter->createView(),
                 'phenomenonRepository' => $this->phenomenonRepository,
                 'soilSampleService' => $this->soilSampleService,
-            ]
+            ],
         );
     }
 
@@ -351,10 +354,9 @@ class SoilSampleController extends AbstractController
                 'soilSamples' => $soilSamples,
                 'phenomenonRepository' => $this->phenomenonRepository,
                 'soilSampleService' => $this->soilSampleService,
-            ]
+            ],
         );
     }
-
 
     #[Route('/{_locale}/soil-sample/{id}/download-file', name: 'downloadSoilSampleFile')]
     public function downloadFile(Request $request, int $id): BinaryFileResponse
@@ -366,12 +368,12 @@ class SoilSampleController extends AbstractController
         }
 
         $filename = $request->get('filename');
-        $path = $this->parameterBag->get('kernel.project_dir') . "/public/" . $entity->getFilesPath() . '/' . $filename;
+        $path = $this->parameterBag->get('kernel.project_dir') . '/public/' . $entity->getFilesPath() . '/' . $filename;
 
         $response = new BinaryFileResponse($path);
         $response->setContentDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            $filename
+            $filename,
         );
 
         return $response;

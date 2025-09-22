@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -16,14 +18,10 @@ class OperationType extends BaseEntity implements DefinitionEntityInterface
      */
     private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=512, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=512, nullable=true) */
     private ?string $descriptionCZ;
 
-    /**
-     * @ORM\Column(type="string", length=512, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=512, nullable=true) */
     private ?string $descriptionEN;
 
     public function __construct()
@@ -32,22 +30,24 @@ class OperationType extends BaseEntity implements DefinitionEntityInterface
         $this->descriptionEN = null;
     }
 
-
-    public function __toString(): string {
-        return $this->getDescription()!==null ? $this->getDescription() : "#".$this->getId();
+    public function __toString(): string
+    {
+        return $this->getDescription() ?? '#' . $this->getId();
     }
 
-    public function getDescription():?string {
-        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
+    public function getDescription(): ?string
+    {
+        return $this->getLocale() === 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getLabel(): string {
-        return $this->getDescription()!==null ? $this->getDescription() : "#".$this->getId();
+    public function getLabel(): string
+    {
+        return $this->getDescription() ?? '#' . $this->getId();
     }
 
     public function getDescriptionCZ(): ?string

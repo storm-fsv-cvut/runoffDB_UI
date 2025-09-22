@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Created by PhpStorm.
  * User: ppavel
@@ -8,6 +11,6 @@
 
 namespace App\Entity;
 
-
-interface DefinitionEntityInterface {
+interface DefinitionEntityInterface
+{
 }

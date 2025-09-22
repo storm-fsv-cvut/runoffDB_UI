@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Form\CmsType;
@@ -16,8 +18,9 @@ class CmsControler extends AbstractController
     public function __construct(
         private readonly CmsRepository $cmsRepository,
         private readonly EntityManagerInterface $entityManager,
-        private readonly PaginatorInterface $paginator
-    ) {}
+        private readonly PaginatorInterface $paginator,
+    ) {
+    }
 
     #[Route('/{_locale}/cms-list/{type}', name: 'cms-list')]
     public function listCms(Request $request, string $type): Response
@@ -31,7 +34,7 @@ class CmsControler extends AbstractController
         $pagination = $this->paginator->paginate(
             $qb,
             $request->query->getInt('page', 1),
-            20
+            20,
         );
 
         return $this->render('cms/list.html.twig', [
@@ -52,7 +55,7 @@ class CmsControler extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit');
 
-        $entity = $id ? $this->cmsRepository->find($id) : null;
+        $entity = $id !== null ? $this->cmsRepository->find($id) : null;
         $form = $this->createForm(CmsType::class, $entity);
 
         $form->handleRequest($request);

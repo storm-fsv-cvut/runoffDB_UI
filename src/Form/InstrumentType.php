@@ -1,10 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Entity\Instrument;
-use App\Entity\ProcessingStep;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -39,9 +39,9 @@ class InstrumentType extends AbstractType
                 SubmitType::class,
                 [
                     'attr' => ['class' => 'btn btn-success'],
-                    'label' => 'save'
-                ]
-            );;
+                    'label' => 'save',
+                ],
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -18,47 +20,32 @@ class Project extends BaseEntity implements DefinitionEntityInterface
      */
     private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    /** @ORM\Column(type="string", length=255) */
     private string $projectName;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Sequence")
-     */
+    /** @ORM\ManyToMany(targetEntity="App\Entity\Sequence") */
     private Collection $sequences;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Organization", inversedBy="projects")
-     */
+    /** @ORM\ManyToMany(targetEntity="App\Entity\Organization", inversedBy="projects") */
     private Collection $organisations;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Publication", inversedBy="projects")
-     */
+    /** @ORM\ManyToMany(targetEntity="App\Entity\Publication", inversedBy="projects") */
     private Collection $publications;
 
-    /**
-     * @ORM\Column(type="string", length=512, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=512, nullable=true) */
     private ?string $descriptionCZ;
 
-    /**
-     * @ORM\Column(type="string", length=512, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=512, nullable=true) */
     private ?string $descriptionEN;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $fundingAgency;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private ?string  $projectCode;
+    /** @ORM\Column(type="string", length=255, nullable=true) */
+    private ?string $projectCode;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->descriptionCZ = null;
         $this->descriptionEN = null;
         $this->fundingAgency = null;
@@ -67,8 +54,9 @@ class Project extends BaseEntity implements DefinitionEntityInterface
         $this->organisations = new ArrayCollection();
     }
 
-    public function __toString(): string {
-        return $this->getProjectName()!==null ? $this->getProjectName() : "#".$this->getId();
+    public function __toString(): string
+    {
+        return $this->getProjectName() ?? '#' . $this->getId();
     }
 
     public function getId(): int
@@ -88,9 +76,6 @@ class Project extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Sequence[]
-     */
     public function getSequences(): Collection
     {
         return $this->sequences;
@@ -114,13 +99,11 @@ class Project extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-    public function getLabel(): string {
-        return $this->getProjectName()!==null ? $this->getProjectName() : "";
+    public function getLabel(): string
+    {
+        return $this->getProjectName() ?? '';
     }
 
-    /**
-     * @return Collection|Organization[]
-     */
     public function getOrganisations(): Collection
     {
         return $this->organisations;

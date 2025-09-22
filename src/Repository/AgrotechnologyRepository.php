@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\Agrotechnology;
@@ -9,8 +11,8 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @method Agrotechnology|null find($id, $lockMode = null, $lockVersion = null)
  * @method Agrotechnology|null findOneBy(array $criteria, array $orderBy = null)
- * @method Agrotechnology[]    findAll()
- * @method Agrotechnology[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method array<Agrotechnology> findAll()
+ * @method array<Agrotechnology> findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class AgrotechnologyRepository extends ServiceEntityRepository
 {

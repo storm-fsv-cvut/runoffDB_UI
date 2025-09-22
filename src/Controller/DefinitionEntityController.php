@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Entity\FileStorageEntityInterface;
@@ -25,19 +27,19 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DefinitionEntityController extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly TranslatorInterface    $translator,
-        private readonly PaginatorInterface     $paginator,
-        private readonly CropRepository         $cropRepository,
-        private readonly PlotRepository         $plotRepository,
-        private ParameterBagInterface           $parameterBag,
-        private Filesystem                      $filesystem,
+        private readonly TranslatorInterface $translator,
+        private readonly PaginatorInterface $paginator,
+        private readonly CropRepository $cropRepository,
+        private readonly PlotRepository $plotRepository,
+        private ParameterBagInterface $parameterBag,
+        private Filesystem $filesystem,
     ) {
     }
 
@@ -51,11 +53,11 @@ class DefinitionEntityController extends AbstractController
             'class_name' => $this->translator->trans($class),
         ];
 
-        if ($class === "App\Entity\Crop") {
+        if ($class === 'App\Entity\Crop') {
             $filter = $this->createForm(
                 CropFilterType::class,
                 null,
-                ['method' => 'get', 'action' => $this->generateUrl('settings', ['class' => $class])]
+                ['method' => 'get', 'action' => $this->generateUrl('settings', ['class' => $class])],
             );
             $filter->handleRequest($request);
 
@@ -63,10 +65,10 @@ class DefinitionEntityController extends AbstractController
                 $this->cropRepository->getPaginatorQuery(
                     $filter->getData(),
                     $request->get('order', 'nameCZ'),
-                    $request->get('direction', 'DESC')
+                    $request->get('direction', 'DESC'),
                 ),
                 $request->query->getInt('page', 1),
-                20
+                20,
             );
 
             $params['filter'] = $filter->createView();
@@ -76,11 +78,11 @@ class DefinitionEntityController extends AbstractController
             return $this->render('crop/list.html.twig', $params);
         }
 
-        if ($class === "App\Entity\Plot") {
+        if ($class === 'App\Entity\Plot') {
             $filter = $this->createForm(
                 PlotFilterType::class,
                 null,
-                ['method' => 'get', 'action' => $this->generateUrl('settings', ['class' => $class])]
+                ['method' => 'get', 'action' => $this->generateUrl('settings', ['class' => $class])],
             );
             $filter->handleRequest($request);
 
@@ -88,10 +90,10 @@ class DefinitionEntityController extends AbstractController
                 $this->plotRepository->getPaginatorQuery(
                     $filter->getData(),
                     $request->get('order', 'nameCZ'),
-                    $request->get('direction', 'DESC')
+                    $request->get('direction', 'DESC'),
                 ),
                 $request->query->getInt('page', 1),
-                20
+                20,
             );
 
             $params['pagination'] = $pagination;
@@ -109,7 +111,7 @@ class DefinitionEntityController extends AbstractController
         $pagination = $this->paginator->paginate(
             $builder,
             $request->query->getInt('page', 1),
-            20
+            20,
         );
 
         $params['pagination'] = $pagination;
@@ -124,17 +126,17 @@ class DefinitionEntityController extends AbstractController
         $class = $request->get('class');
         $dataClass = $id !== null ? $this->entityManager->find($class, $id) : null;
 
-        if ($class === "App\Entity\Agrotechnology") {
+        if ($class === 'App\Entity\Agrotechnology') {
             $form = $this->createForm(AgrotechnologyType::class, $dataClass, ['data_class' => $class]);
-        } elseif ($class === "App\Entity\Project") {
+        } elseif ($class === 'App\Entity\Project') {
             $form = $this->createForm(ProjectType::class, $dataClass, ['data_class' => $class]);
-        } elseif ($class === "App\Entity\Simulator") {
+        } elseif ($class === 'App\Entity\Simulator') {
             $form = $this->createForm(SimulatorType::class, $dataClass, ['data_class' => $class]);
-        } elseif ($class === "App\Entity\Plot") {
+        } elseif ($class === 'App\Entity\Plot') {
             $form = $this->createForm(PlotType::class, $dataClass, ['data_class' => $class]);
-        } elseif ($class === "App\Entity\Instrument") {
+        } elseif ($class === 'App\Entity\Instrument') {
             $form = $this->createForm(InstrumentType::class, $dataClass, ['data_class' => $class]);
-        } elseif ($class === "App\Entity\Methodics") {
+        } elseif ($class === 'App\Entity\Methodics') {
             $form = $this->createForm(MethodicsType::class, $dataClass, ['data_class' => $class]);
         } else {
             $form = $this->createForm(DefinitionEntityType::class, $dataClass, ['data_class' => $class]);
@@ -146,7 +148,7 @@ class DefinitionEntityController extends AbstractController
             if ($form->has('uploadedFiles')) {
                 $files = $form->get('uploadedFiles')->getData();
 
-                if (!empty($files)) {
+                if (sizeof($files) > 0) {
                     if (!is_array($files)) {
                         $files = [$files];
                     }
@@ -154,8 +156,8 @@ class DefinitionEntityController extends AbstractController
                     foreach ($files as $file) {
                         if ($file instanceof UploadedFile) {
                             $dir = $this->parameterBag->get(
-                                    'kernel.project_dir'
-                                ) . "/public/" . $entity->getFilesPath();
+                                'kernel.project_dir',
+                            ) . '/public/' . $entity->getFilesPath();
                             if (!$this->filesystem->exists($dir)) {
                                 $this->filesystem->mkdir($dir);
                             }
@@ -201,12 +203,12 @@ class DefinitionEntityController extends AbstractController
         $entity = $this->entityManager->find($class, $id);
 
         $filename = $request->get('filename');
-        $path = $this->parameterBag->get('kernel.project_dir') . "/public/" . $entity->getFilesPath() . '/' . $filename;
+        $path = $this->parameterBag->get('kernel.project_dir') . '/public/' . $entity->getFilesPath() . '/' . $filename;
 
         $response = new BinaryFileResponse($path);
         $response->setContentDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            $filename
+            $filename,
         );
 
         return $response;

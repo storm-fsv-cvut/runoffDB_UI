@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Entity\Locality;
 use App\Entity\Organization;
 use App\Entity\Phenomenon;
 use App\Form\Type\DescendingIdEntityType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -15,15 +16,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MeasurementFilterType extends AbstractType
 {
-
-    /**
-     * @var TranslatorInterface
-     */
+    /** @var TranslatorInterface */
     private $translator;
 
     public function __construct(TranslatorInterface $translator)
     {
-
         $this->translator = $translator;
     }
 
@@ -37,8 +34,8 @@ class MeasurementFilterType extends AbstractType
                     'class' => Phenomenon::class,
                     'required' => false,
                     'placeholder' => '',
-                    'label' => 'Phenomenon'
-                ]
+                    'label' => 'Phenomenon',
+                ],
             )
             ->add(
                 'locality',
@@ -47,8 +44,8 @@ class MeasurementFilterType extends AbstractType
                     'class' => Locality::class,
                     'required' => false,
                     'placeholder' => '',
-                    'label' => 'Locality'
-                ]
+                    'label' => 'Locality',
+                ],
             )
             ->add(
                 'organization',
@@ -57,8 +54,8 @@ class MeasurementFilterType extends AbstractType
                     'class' => Organization::class,
                     'required' => false,
                     'placeholder' => '',
-                    'label' => 'Organization'
-                ]
+                    'label' => 'Organization',
+                ],
             )
             ->add(
                 'dateFrom',
@@ -67,8 +64,8 @@ class MeasurementFilterType extends AbstractType
                     'placeholder' => '',
                     'required' => false,
                     'widget' => 'single_text',
-                    'label' => ucfirst($this->translator->trans("date from")),
-                ]
+                    'label' => ucfirst($this->translator->trans('date from')),
+                ],
             )
             ->add(
                 'dateTo',
@@ -77,17 +74,16 @@ class MeasurementFilterType extends AbstractType
                     'placeholder' => '',
                     'required' => false,
                     'widget' => 'single_text',
-                    'label' => ucfirst($this->translator->trans("date to")),
-                ]
+                    'label' => ucfirst($this->translator->trans('date to')),
+                ],
             )
             ->add(
                 'search',
                 SubmitType::class,
                 [
                     'label' => 'Search',
-                    'attr' => ['class' => 'btn btn-success pull-right']
-                ]
-            )->setMethod("GET");
+                    'attr' => ['class' => 'btn btn-success pull-right'],
+                ],
+            )->setMethod('GET');
     }
-
 }

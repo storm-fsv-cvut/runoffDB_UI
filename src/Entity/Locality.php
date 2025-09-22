@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -18,19 +20,13 @@ class Locality extends BaseEntity implements DefinitionEntityInterface
      */
     private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    /** @ORM\Column(type="string", length=255) */
     private string $name;
 
-    /**
-     * @ORM\Column(type="float")
-     */
-    private float  $lat;
+    /** @ORM\Column(type="float") */
+    private float $lat;
 
-    /**
-     * @ORM\Column(type="float")
-     */
+    /** @ORM\Column(type="float") */
     private float $lng;
 
     /**
@@ -39,37 +35,26 @@ class Locality extends BaseEntity implements DefinitionEntityInterface
      */
     private ?Organization $organization;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\WrbSoilClass")
-     */
+    /** @ORM\ManyToOne(targetEntity="App\Entity\WrbSoilClass") */
     private ?WrbSoilClass $wrbSoilClass;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Plot", mappedBy="locality")
-     */
+    /** @ORM\OneToMany(targetEntity="App\Entity\Plot", mappedBy="locality") */
     private Collection $plots;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\SoilSample", mappedBy="locality")
-     */
+    /** @ORM\OneToMany(targetEntity="App\Entity\SoilSample", mappedBy="locality") */
     private Collection $soilSamples;
 
-    /**
-     * @ORM\Column(type="string", length=512, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=512, nullable=true) */
     private ?string $descriptionCZ;
 
-    /**
-     * @ORM\Column(type="string", length=512, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=512, nullable=true) */
     private ?string $descriptionEN;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Measurement", mappedBy="locality")
-     */
+    /** @ORM\OneToMany(targetEntity="App\Entity\Measurement", mappedBy="locality") */
     private Collection $measurements;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->organization = null;
         $this->descriptionCZ = null;
         $this->descriptionEN = null;
@@ -79,12 +64,14 @@ class Locality extends BaseEntity implements DefinitionEntityInterface
         $this->measurements = new ArrayCollection();
     }
 
-    public function __toString():string {
+    public function __toString(): string
+    {
         return $this->getName();
     }
 
-    public function getDescription():?string {
-        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
+    public function getDescription(): ?string
+    {
+        return $this->getLocale() === 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
     public function getId(): int
@@ -152,9 +139,6 @@ class Locality extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Plot[]
-     */
     public function getPlots(): Collection
     {
         return $this->plots;
@@ -183,9 +167,6 @@ class Locality extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-    /**
-     * @return Collection|SoilSample[]
-     */
     public function getSoilSamples(): Collection
     {
         return $this->soilSamples;
@@ -214,8 +195,9 @@ class Locality extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-    public function getLabel(): string {
-        return $this;
+    public function getLabel(): string
+    {
+        return $this->__toString();
     }
 
     public function getDescriptionCZ(): ?string
@@ -242,9 +224,6 @@ class Locality extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Measurement[]
-     */
     public function getMeasurements(): Collection
     {
         return $this->measurements;

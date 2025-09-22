@@ -1,16 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Entity\Crop;
-use App\Entity\CropType;
 use App\Entity\Locality;
 use App\Entity\ProtectionMeasure;
 use App\Form\Type\DescendingIdEntityType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,13 +17,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PlotFilterType extends AbstractType
 {
-    /**
-     * @var TranslatorInterface
-     */
+    /** @var TranslatorInterface */
     private $translator;
 
-    public function __construct(TranslatorInterface $translator) {
-
+    public function __construct(TranslatorInterface $translator)
+    {
         $this->translator = $translator;
     }
 
@@ -36,8 +33,8 @@ class PlotFilterType extends AbstractType
                 TextType::class,
                 [
                     'required' => false,
-                    'label' => 'Name'
-                ]
+                    'label' => 'Name',
+                ],
             )
             ->add(
                 'locality',
@@ -46,8 +43,8 @@ class PlotFilterType extends AbstractType
                     'class' => Locality::class,
                     'placeholder' => '',
                     'required' => false,
-                    'label' => "Locality"
-                ]
+                    'label' => 'Locality',
+                ],
             )
             ->add(
                 'crop',
@@ -56,8 +53,8 @@ class PlotFilterType extends AbstractType
                     'class' => Crop::class,
                     'placeholder' => '',
                     'required' => false,
-                    'label' => "Crop"
-                ]
+                    'label' => 'Crop',
+                ],
             )
             ->add(
                 'protectionMeasure',
@@ -66,28 +63,28 @@ class PlotFilterType extends AbstractType
                     'class' => ProtectionMeasure::class,
                     'placeholder' => '',
                     'required' => false,
-                    'label' => "Protection measure"
-                ]
+                    'label' => 'Protection measure',
+                ],
             )
             ->add('dateFrom', DateType::class, [
-                'placeholder' =>'',
+                'placeholder' => '',
                 'required' => false,
-                'widget'=>'single_text',
-                'label' =>  ucfirst($this->translator->trans("date from")),
+                'widget' => 'single_text',
+                'label' => ucfirst($this->translator->trans('date from')),
             ])
             ->add('dateTo', DateType::class, [
                 'placeholder' => '',
                 'required' => false,
-                'widget'=>'single_text',
-                'label' => ucfirst($this->translator->trans("date to")),
+                'widget' => 'single_text',
+                'label' => ucfirst($this->translator->trans('date to')),
             ])
             ->add(
                 'search',
                 SubmitType::class,
                 [
                     'label' => 'Search',
-                    'attr' => ['class' => 'btn btn-success  pull-right']
-                ]
-            )->setMethod("GET");
+                    'attr' => ['class' => 'btn btn-success  pull-right'],
+                ],
+            )->setMethod('GET');
     }
 }

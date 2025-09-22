@@ -1,6 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -24,14 +27,22 @@ class MethodicsProcessingStep extends BaseEntity
      */
     private ProcessingStep $processingStep;
 
-    /**
-     * @ORM\Column(type="integer", options={"default":0})
-     */
+    /** @ORM\Column(type="integer", options={"default":0}) */
     private int $sort = 0;
 
     public function __construct()
     {
         $this->sort = 0;
+    }
+
+    public function __toString(): string
+    {
+        return sprintf(
+            '%s → %s (#%d)',
+            (string) $this->methodics,
+            (string) $this->processingStep,
+            $this->sort,
+        );
     }
 
     public function getMethodics(): Methodics
@@ -66,14 +77,4 @@ class MethodicsProcessingStep extends BaseEntity
         $this->sort = $sort;
         return $this;
     }
-
-    public function __toString(): string
-    {
-        return sprintf('%s → %s (#%d)',
-                       (string) $this->methodics,
-                       (string) $this->processingStep,
-                       $this->sort
-        );
-    }
 }
-

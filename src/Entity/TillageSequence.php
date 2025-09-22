@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -15,7 +16,7 @@ class TillageSequence extends BaseEntity
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private int  $id;
+    private int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Agrotechnology", inversedBy="tillageSequences")
@@ -23,9 +24,7 @@ class TillageSequence extends BaseEntity
      */
     private ?Agrotechnology $agrotechnology;
 
-    /**
-     * @ORM\Column(type="date")
-     */
+    /** @ORM\Column(type="date") */
     private \DateTimeInterface $date;
 
     /**
@@ -40,12 +39,12 @@ class TillageSequence extends BaseEntity
         $this->operation = null;
     }
 
-    public function __toString():string
+    public function __toString(): string
     {
         return (string) $this->getId();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

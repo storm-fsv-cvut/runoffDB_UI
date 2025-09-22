@@ -1,10 +1,12 @@
 <?php
+
+declare(strict_types=1);
+
 namespace App\EventSubscriber;
 
 use App\Repository\CmsRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -19,8 +21,7 @@ class ResponseSubscriber implements EventSubscriberInterface
         $this->cmsRepository = $cmsRepository;
     }
 
-
-    public function onKernelResponse(ResponseEvent $event):void
+    public function onKernelResponse(ResponseEvent $event): void
     {
         $request = $event->getRequest();
         $response = $event->getResponse();
@@ -32,7 +33,7 @@ class ResponseSubscriber implements EventSubscriberInterface
             $content = $response->getContent();
 
             foreach ($tooltips as $tooltip) {
-                $content = preg_replace("/([\s.,>])(" . $tooltip['slug'] . ")([\s.,<])/", '$1<span data-toggle="tooltip" class="tip" data-placement="top" title="' . $tooltip['content'] . '">' . $tooltip['slug'] . '</span>$3', $content);
+                $content = preg_replace('/([\s.,>])(' . $tooltip['slug'] . ')([\s.,<])/', '$1<span data-toggle="tooltip" class="tip" data-placement="top" title="' . $tooltip['content'] . '">' . $tooltip['slug'] . '</span>$3', $content);
             }
             $response->setContent($content);
             $event->setResponse($response);

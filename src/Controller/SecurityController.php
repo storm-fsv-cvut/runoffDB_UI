@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Entity\User;
@@ -11,14 +13,15 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
     public function __construct(
         private readonly SecurityService $securityService,
-    ) {}
+    ) {
+    }
 
     #[Route('/{_locale}/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
@@ -56,7 +59,7 @@ class SecurityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
             $newpass = $form->get('newpass')->getData();
-            if($newpass !== null && $newpass !== '') {
+            if ($newpass !== null && $newpass !== '') {
                 $this->securityService->changePass($user, $newpass);
             }
         }
@@ -70,7 +73,7 @@ class SecurityController extends AbstractController
     public function deleteUser(
         UserRepository $userRepository,
         EntityManagerInterface $entityManager,
-        ?int $id = null
+        ?int $id = null,
     ): Response {
         $this->denyAccessUnlessGranted('admin');
 
@@ -89,7 +92,7 @@ class SecurityController extends AbstractController
     public function list(
         EntityManagerInterface $entityManager,
         Request $request,
-        PaginatorInterface $paginator
+        PaginatorInterface $paginator,
     ): Response {
         $this->denyAccessUnlessGranted('admin');
 
@@ -97,7 +100,7 @@ class SecurityController extends AbstractController
         $pagination = $paginator->paginate(
             $repo->createQueryBuilder('e'),
             $request->query->getInt('page', 1),
-            20
+            20,
         );
 
         return $this->render('security/list.html.twig', [

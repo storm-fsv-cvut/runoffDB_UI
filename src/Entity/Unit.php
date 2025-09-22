@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -19,56 +21,48 @@ class Unit extends BaseEntity implements DefinitionEntityInterface
      */
     private int $id;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    /** @ORM\Column(type="integer") */
     private int $decimals;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $nameCZ;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $nameEN;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    /** @ORM\Column(type="string", length=255) */
     private string $unit;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $descriptionCZ;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $descriptionEN;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->nameCZ = null;
         $this->nameEN = null;
         $this->descriptionCZ = null;
         $this->descriptionEN = null;
     }
 
-    public function __toString() {
-        return $this->getName()." [".$this->getUnit()."]";
+    public function __toString()
+    {
+        return $this->getName() . ' [' . $this->getUnit() . ']';
     }
 
-    public function getName():?string {
-        return $this->getLocale() == 'en' ? $this->getNameEN() : $this->getNameCZ();
+    public function getName(): ?string
+    {
+        return $this->getLocale() === 'en' ? $this->getNameEN() : $this->getNameCZ();
     }
 
-    public function getDescription():?string {
-        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
+    public function getDescription(): ?string
+    {
+        return $this->getLocale() === 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -136,25 +130,28 @@ class Unit extends BaseEntity implements DefinitionEntityInterface
     /**
      * @return int
      */
-    public function getDecimals():int {
+    public function getDecimals(): int
+    {
         return $this->decimals;
     }
 
     /**
      * @param int $decimals
      */
-    public function setDecimals(int $decimals): void {
+    public function setDecimals(int $decimals): void
+    {
         $this->decimals = $decimals;
     }
 
-    public function getXmlDomElement(DOMDocument $dom):\DOMElement {
+    public function getXmlDomElement(DOMDocument $dom): \DOMElement
+    {
         $unit = $dom->createElement('unit');
         $unit->append(
-            $dom->createElement('id',$this->getId()),
-            $dom->createElement('name',$this->getName()),
-            $dom->createElement('unit',$this->getUnit()),
-            $dom->createElement('decimals',$this->getDecimals()),
-            $dom->createElement('description',$this->getDescription())
+            $dom->createElement('id', (string) $this->getId()),
+            $dom->createElement('name', $this->getName()),
+            $dom->createElement('unit', $this->getUnit()),
+            $dom->createElement('decimals', (string) $this->getDecimals()),
+            $dom->createElement('description', $this->getDescription()),
         );
         return $unit;
     }

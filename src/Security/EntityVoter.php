@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Security;
 
@@ -9,7 +10,6 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class EntityVoter extends Voter
 {
-
     const VIEW_ALL = 'viewall';
     const VIEW_LESS = 'viewless';
     const EDIT = 'edit';
@@ -17,7 +17,6 @@ class EntityVoter extends Voter
     const ADMIN = 'admin';
     const EDITUSER = 'edituser';
     const CMS = 'editcontent';
-
 
     protected function supports($attribute, $subject): bool
     {
@@ -27,7 +26,6 @@ class EntityVoter extends Voter
         return true;
     }
 
-
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
@@ -35,69 +33,68 @@ class EntityVoter extends Voter
             if ($user->isInRole(
                 [
                     UserRole::ROLE_ADMIN,
-                ]
+                ],
             )) {
                 return true;
             }
 
-            if ($attribute == self::VIEW) {
+            if ($attribute === self::VIEW) {
                 return true;
-            } else if ($attribute == self::EDIT) {
+            } else if ($attribute === self::EDIT) {
                 if ($user->isInRole(
                     [
-                        UserRole::ROLE_EDITOR
-                    ]
+                        UserRole::ROLE_EDITOR,
+                    ],
                 )) {
                     return true;
                 }
 
                 if ($user->isInRole(
                     [
-                        UserRole::ROLE_INSTITUTION_EDITOR
-                    ]
+                        UserRole::ROLE_INSTITUTION_EDITOR,
+                    ],
                 )) {
-                    if (
-                        $subject !== null
+                    if ($subject !== null
                         && $subject->getUser() !== null
                         && $subject->getUser()->getOrganization() !== null) {
-                        return $subject->getUser()->getOrganization()->getId() == $user->getOrganization()->getId();
+                        return $subject->getUser()->getOrganization()->getId() === $user->getOrganization()->getId();
                     } else if ($subject === null) {
                         return true;
                     }
                 }
-            } else if ($attribute == self::VIEW_ALL) {
+            } else if ($attribute === self::VIEW_ALL) {
                 if ($user->isInRole(
                     [
                         UserRole::ROLE_EDITOR,
-                        UserRole::ROLE_READER
-                    ]
+                        UserRole::ROLE_READER,
+                    ],
                 )) {
                     return true;
                 }
-            } else if ($attribute == self::VIEW_LESS) {
+            } else if ($attribute === self::VIEW_LESS) {
                 if ($user->isInRole(
                     [
-                        UserRole::ROLE_GUEST
-                    ]
+                        UserRole::ROLE_GUEST,
+                    ],
                 )) {
                     return true;
                 }
-            } else if ($attribute == self::EDITUSER) {
+            } else if ($attribute === self::EDITUSER) {
                 if ($user->getId() === $subject->getId()) {
                     return true;
                 }
-            } else if ($attribute == self::CMS) {
+            } else if ($attribute === self::CMS) {
                 if ($user->isInRole(
                     [
                         UserRole::ROLE_ADMIN,
-                        UserRole::ROLE_EDITOR
-                    ]
+                        UserRole::ROLE_EDITOR,
+                    ],
                 )) {
                     return true;
                 }
             }
         } else {
-            if ($attribute == self::VIEW) {
+            if ($attribute === self::VIEW) {
                 return true;
             }
         }

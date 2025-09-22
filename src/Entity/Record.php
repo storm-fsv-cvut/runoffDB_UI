@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -11,7 +13,8 @@ use DOMDocument;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RecordRepository")
  */
-class Record extends BaseEntity {
+class Record extends BaseEntity
+{
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -31,24 +34,16 @@ class Record extends BaseEntity {
      */
     private ?RecordType $recordType = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $noteCZ = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $noteEN = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $descriptionCZ = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $descriptionEN = null;
 
     /**
@@ -57,9 +52,7 @@ class Record extends BaseEntity {
      */
     private ?Unit $unit;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Record")
-     */
+    /** @ORM\ManyToMany(targetEntity="App\Entity\Record") */
     private Collection $sourceRecords;
 
     /**
@@ -86,14 +79,10 @@ class Record extends BaseEntity {
      */
     private ?Unit $relatedValueZUnit;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\QualityIndex")
-     */
+    /** @ORM\ManyToOne(targetEntity="App\Entity\QualityIndex") */
     private ?QualityIndex $qualityIndex;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    /** @ORM\Column(type="boolean", nullable=true) */
     private ?bool $isTimeline = null;
 
     /**
@@ -102,18 +91,8 @@ class Record extends BaseEntity {
      */
     private $methodics;
 
-    public function getMethodics(): ?Methodics
+    public function __construct()
     {
-        return $this->methodics;
-    }
-
-    public function setMethodics(?Methodics $methodics): self
-    {
-        $this->methodics = $methodics;
-        return $this;
-    }
-
-    public function __construct() {
         $this->measurement = null;
         $this->recordType = null;
         $this->noteCZ = null;
@@ -128,109 +107,131 @@ class Record extends BaseEntity {
         $this->datas = new ArrayCollection();
     }
 
-    public function __toString() {
-        $decimals = ($this->getUnit()!==null ? $this->getUnit()->getDecimals() : 0);
-        if ($this->getData()->get(0) !==null) {
-            if($this->getMeasurement()!==null && $this->getMeasurement()->getLocality()!==null) {
-                return "#".$this->getId()." (".$this->getMeasurement()->getLocality()." ".$this->getMeasurement()->getFormatedDate().") ".number_format((float)$this->getData()->get(0)->getValue(), $decimals) . " " . ($this->getUnit()!==null ? $this->getUnit()->getUnit() : '');
+    public function __toString()
+    {
+        $decimals = ($this->getUnit() !== null ? $this->getUnit()->getDecimals() : 0);
+        if ($this->getData()->get(0) !== null) {
+            if ($this->getMeasurement() !== null && $this->getMeasurement()->getLocality() !== null) {
+                return '#' . $this->getId() . ' (' . $this->getMeasurement()->getLocality() . ' ' . $this->getMeasurement()->getFormatedDate() . ') ' . number_format((float) $this->getData()->get(0)->getValue(), $decimals) . ' ' . ($this->getUnit() !== null ? $this->getUnit()->getUnit() : '');
             } else {
-                return "#".$this->getId()." ".number_format((float)$this->getData()->get(0)->getValue(), $decimals) . " " . ($this->getUnit()!==null ? $this->getUnit()->getUnit() : '');
+                return '#' . $this->getId() . ' ' . number_format((float) $this->getData()->get(0)->getValue(), $decimals) . ' ' . ($this->getUnit() !== null ? $this->getUnit()->getUnit() : '');
             }
         } else {
-            return "#".$this->getId();
+            return '#' . $this->getId();
         }
     }
 
-    public function getHtmlLabel() {
-        $decimals = ($this->getUnit()!==null ? $this->getUnit()->getDecimals() : 0);
-        $label =  '<span data-toggle="tooltip" data-placement="top" title="#'.$this->getId().'">'.number_format((float)$this->getData()->get(0)->getValue(), $decimals) . " " . ($this->getUnit()!==null ? $this->getUnit()->getUnit() : ''). '</span>';
-        return $label;
+    public function getMethodics(): ?Methodics
+    {
+        return $this->methodics;
     }
 
-    public function getIdAndUnitString():string {
-        return "#".$this->getId().($this->getUnit()!==null ? " (".$this->getUnit()->getName().")" : '');
+    public function setMethodics(?Methodics $methodics): self
+    {
+        $this->methodics = $methodics;
+        return $this;
     }
 
-    public function getNote():?string {
-        return $this->getLocale() == 'en' ? $this->getNoteEN() : $this->getNoteCZ();
+    public function getHtmlLabel()
+    {
+        $decimals = ($this->getUnit() !== null ? $this->getUnit()->getDecimals() : 0);
+        return '<span data-toggle="tooltip" data-placement="top" title="#' . $this->getId() . '">' . number_format((float) $this->getData()->get(0)->getValue(), $decimals) . ' ' . ($this->getUnit() !== null ? $this->getUnit()->getUnit() : '') . '</span>';
     }
 
-    public function getDescription():?string {
-        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
+    public function getIdAndUnitString(): string
+    {
+        return '#' . $this->getId() . ($this->getUnit() !== null ? ' (' . $this->getUnit()->getName() . ')' : '');
     }
 
-    public function getId(): ?int {
+    public function getNote(): ?string
+    {
+        return $this->getLocale() === 'en' ? $this->getNoteEN() : $this->getNoteCZ();
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->getLocale() === 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
+    }
+
+    public function getId(): int
+    {
         return $this->id;
     }
 
-    public function getMeasurement(): ?Measurement {
+    public function getMeasurement(): ?Measurement
+    {
         return $this->measurement;
     }
 
-    public function setMeasurement(?Measurement $measurement): self {
+    public function setMeasurement(?Measurement $measurement): self
+    {
         $this->measurement = $measurement;
 
         return $this;
     }
 
-
-    public function getRecordType(): ?RecordType {
+    public function getRecordType(): ?RecordType
+    {
         return $this->recordType;
     }
 
-    public function setRecordType(?RecordType $recordType): self {
+    public function setRecordType(?RecordType $recordType): self
+    {
         $this->recordType = $recordType;
 
         return $this;
     }
 
-    public function getNoteCZ(): ?string {
+    public function getNoteCZ(): ?string
+    {
         return $this->noteCZ;
     }
 
-    public function setNoteCZ(?string $noteCZ): self {
+    public function setNoteCZ(?string $noteCZ): self
+    {
         $this->noteCZ = $noteCZ;
 
         return $this;
     }
 
-    public function getNoteEN(): ?string {
+    public function getNoteEN(): ?string
+    {
         return $this->noteEN;
     }
 
-    public function setNoteEN(?string $noteEN): self {
+    public function setNoteEN(?string $noteEN): self
+    {
         $this->noteEN = $noteEN;
 
         return $this;
     }
 
-    public function getUnit(): ?Unit {
+    public function getUnit(): ?Unit
+    {
         return $this->unit;
     }
 
-    public function setUnit(?Unit $unit): self {
+    public function setUnit(?Unit $unit): self
+    {
         $this->unit = $unit;
 
         return $this;
     }
 
-    /**
- * @return Collection|Data[]
- */
-    public function getData(): Collection {
+    public function getData(): Collection
+    {
         $criteria = Criteria::create();
-        $criteria->orderBy(array("time" => Criteria::ASC));
+        $criteria->orderBy(array('time' => Criteria::ASC));
         return $this->datas->matching($criteria);
     }
 
-    /**
-     * @return Collection|Data[]
-     */
-    public function getDatas(): Collection {
+    public function getDatas(): Collection
+    {
         return $this->getData();
     }
 
-    public function addData(Data $data): self {
+    public function addData(Data $data): self
+    {
         if (!$this->datas->contains($data)) {
             $data->setRecord($this);
             $this->datas[] = $data;
@@ -238,7 +239,8 @@ class Record extends BaseEntity {
         return $this;
     }
 
-    public function removeData(Data $data): self {
+    public function removeData(Data $data): self
+    {
         if ($this->datas->contains($data)) {
             $this->datas->removeElement($data);
         }
@@ -246,14 +248,13 @@ class Record extends BaseEntity {
         return $this;
     }
 
-    /**
-     * @return Collection|self[]
-     */
-    public function getSourceRecords(): Collection {
+    public function getSourceRecords(): Collection
+    {
         return $this->sourceRecords;
     }
 
-    public function addSourceRecord(self $sourceRecord): self {
+    public function addSourceRecord(self $sourceRecord): self
+    {
         if (!$this->sourceRecords->contains($sourceRecord)) {
             $this->sourceRecords[] = $sourceRecord;
         }
@@ -261,7 +262,8 @@ class Record extends BaseEntity {
         return $this;
     }
 
-    public function removeSourceRecord(self $sourceRecord): self {
+    public function removeSourceRecord(self $sourceRecord): self
+    {
         if ($this->sourceRecords->contains($sourceRecord)) {
             $this->sourceRecords->removeElement($sourceRecord);
         }
@@ -329,12 +331,10 @@ class Record extends BaseEntity {
         return $this;
     }
 
-
     public function getDescriptionCZ(): ?string
     {
         return $this->descriptionCZ;
     }
-
 
     public function setDescriptionCZ(?string $descriptionCZ): void
     {
@@ -351,29 +351,30 @@ class Record extends BaseEntity {
         $this->descriptionEN = $descriptionEN;
     }
 
-    public function getXmlDomElement(DOMDocument $dom):\DOMElement {
+    public function getXmlDomElement(DOMDocument $dom): \DOMElement
+    {
         $record = $dom->createElement('record');
         $datas = $dom->createElement('datas');
         foreach ($this->getData() as $data) {
             $datas->append($data->getXmlDomElement($dom));
         }
         $record->append(
-            $dom->createElement('id',$this->getId()),
-            $dom->createElement('recordType',$this->getRecordType()->getName()),
-            $dom->createElement('note',$this->getNote()),
-            $dom->createElement('description',$this->getDescription()),
-            $dom->createElement('unit',$this->getUnit()->getUnit()),
-            $dom->createElement('qualityIndex',$this->getQualityIndex()),
-            $datas
+            $dom->createElement('id', (string) $this->getId()),
+            $dom->createElement('recordType', $this->getRecordType()->getName()),
+            $dom->createElement('note', $this->getNote()),
+            $dom->createElement('description', $this->getDescription()),
+            $dom->createElement('unit', $this->getUnit()->getUnit()),
+            $dom->createElement('qualityIndex', (string) $this->getQualityIndex()),
+            $datas,
         );
 
-        if ($this->getRelatedValueXUnit()!==null) {
+        if ($this->getRelatedValueXUnit() !== null) {
             $record->append($this->getRelatedValueXUnit()->getUnit());
         }
-        if ($this->getRelatedValueYUnit()!==null) {
+        if ($this->getRelatedValueYUnit() !== null) {
             $record->append($this->getRelatedValueYUnit()->getUnit());
         }
-        if ($this->getRelatedValueZUnit()!==null) {
+        if ($this->getRelatedValueZUnit() !== null) {
             $record->append($this->getRelatedValueZUnit()->getUnit());
         }
 

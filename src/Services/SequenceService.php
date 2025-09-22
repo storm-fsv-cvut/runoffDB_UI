@@ -1,76 +1,39 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Services;
 
-
-use App\Entity\Measurement;
 use App\Entity\Sequence;
-use App\Repository\RunRepository;
 use App\Repository\SequenceRepository;
-use App\Repository\TillageSequenceRepository;
-use Doctrine\ORM\QueryBuilder;
 use DOMDocument;
 use Exception;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SequenceService
 {
-    /**
-     * @var SequenceRepository
-     */
+    /** @var SequenceRepository */
     private $sequenceRepository;
-    /**
-     * @var TillageSequenceRepository
-     */
-    private $tillageSequenceRepository;
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
 
-    /**
-     * @var RequestStack
-     */
+    /** @var RequestStack */
     private $requestStack;
-
-    /**
-     * @var RunRepository
-     */
-    private $runRepository;
-
-    /**
-     * @var string
-     */
-    private $locale;
     private ParameterBagInterface $parameterBag;
     private Filesystem $filesystem;
 
     public function __construct(
-        SequenceRepository        $sequenceRepository,
-        TillageSequenceRepository $tillageSequenceRepository,
-        TranslatorInterface       $translator,
-        RequestStack              $requestStack,
-        RunRepository             $runRepository,
+        SequenceRepository $sequenceRepository,
+        RequestStack $requestStack,
         ParameterBagInterface $parameterBag,
-        Filesystem $filesystem
+        Filesystem $filesystem,
     ) {
         $this->sequenceRepository = $sequenceRepository;
-        $this->tillageSequenceRepository = $tillageSequenceRepository;
-        $this->runRepository = $runRepository;
-        $this->translator = $translator;
         $this->requestStack = $requestStack;
         if ($this->requestStack->getCurrentRequest() === null) {
             throw new Exception('Invalid request');
         }
-
-        $this->locale = $this->requestStack->getCurrentRequest()->getLocale();
         $this->parameterBag = $parameterBag;
         $this->filesystem = $filesystem;
     }
@@ -81,28 +44,26 @@ class SequenceService
         $runs = $sequence->getRuns();
         if ($runs !== null) {
             foreach ($runs as $run) {
-                if (
-                    $run->getRainIntensity() !== null &&
+                if ($run->getRainIntensity() !== null &&
                     $run->getRainIntensity()->getData()->get(0) !== null
                 ) {
                     $rain_intensity = $run->getRainIntensity()->getHtmlLabel();
                 } else {
-                    $rain_intensity = "";
+                    $rain_intensity = '';
                 }
 
-                if (
-                    $run->getInitMoisture() !== null &&
+                if ($run->getInitMoisture() !== null &&
                     $run->getInitMoisture()->getData()->get(0) !== null
                 ) {
                     $init_moisture = $run->getInitMoisture()->getHtmlLabel();
                 } else {
-                    $init_moisture = "";
+                    $init_moisture = '';
                 }
 
                 $runArray = [
                     'id' => $run->getId(),
-                    'runoff_start' => $run->getRunoffStart() !== null ? $run->getRunoffStart()->format("H:i:s") : "",
-                    'ponding_start' => $run->getPondingStart() !== null ? $run->getPondingStart()->format("H:i:s") : "",
+                    'runoff_start' => $run->getRunoffStart() !== null ? $run->getRunoffStart()->format('H:i:s') : '',
+                    'ponding_start' => $run->getPondingStart() !== null ? $run->getPondingStart()->format('H:i:s') : '',
                     'soil_sample_texture' => $run->getSoilSampleTexture(),
                     'soil_sample_texture_assignment' => $run->getTextureAssignmentType(),
                     'soil_sample_bulk' => $run->getSoilSampleBulk(),
@@ -115,7 +76,7 @@ class SequenceService
                     'rain_intensity' => $rain_intensity,
                     'init_moisture' => $init_moisture,
                     'soil_sample_corg_assignment' => $run->getCorgAssignmentType(),
-                    'files' => $run->getFiles()
+                    'files' => $run->getFiles(),
                 ];
 
                 $measurements = $run->getMeasurements();
@@ -126,7 +87,7 @@ class SequenceService
                         'id' => $measurement->getId(),
                         'note' => $measurement->getNote(),
                         'description' => $measurement->getDescription(),
-                        'records' => $measurement->getRecords()
+                        'records' => $measurement->getRecords(),
                     ];
                     $measurementsArray[$measurement->getId()] = $measurementArray;
                 }
@@ -142,7 +103,7 @@ class SequenceService
         $locality = $sequence->getLocality();
         $projects = null;
         foreach ($sequence->getProjects() as $project) {
-            $projects .= $project->getProjectName() . " ";
+            $projects .= $project->getProjectName() . ' ';
         }
         return [
             'id' => $sequence->getId(),
@@ -150,12 +111,12 @@ class SequenceService
             'simulator' => $sequence->getSimulator(),
             'organization' => $sequence->getSimulator(),
             'projects' => $projects,
-            'locality' => $locality !== null ? $locality->getName() : " n/a "
+            'locality' => $locality !== null ? $locality->getName() : ' n/a ',
         ];
     }
 
     public function exportSequence(
-        int $id
+        int $id,
     ): string {
         $sequence = $this->getSequenceById($id);
         $dom = new DOMDocument();
@@ -163,8 +124,7 @@ class SequenceService
         $dom->xmlVersion = '1.0';
         $dom->formatOutput = true;
         $dom->append($sequence->getXmlDomElement($dom));
-        $xmlString = $dom->saveXML();
-        return $xmlString;
+        return $dom->saveXML();
     }
 
     public function getSequenceById(int $id): Sequence
@@ -189,17 +149,15 @@ class SequenceService
         }
 
         $dom->append($sequencesDom);
-        $xmlString = $dom->saveXML();
-        return $xmlString;
+        return $dom->saveXML();
     }
 
     public function uploadFile(UploadedFile $file, Sequence $sequence): void
     {
-        $dir = $this->parameterBag->get('kernel.project_dir') . "/public/".$sequence->getFilesPath();
+        $dir = $this->parameterBag->get('kernel.project_dir') . '/public/' . $sequence->getFilesPath();
         if (!$this->filesystem->exists($dir)) {
             $this->filesystem->mkdir($dir);
         }
         $file->move($dir, $file->getClientOriginalName());
     }
-
 }

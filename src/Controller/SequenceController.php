@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Created by PhpStorm.
  * User: ppavel
@@ -26,11 +29,9 @@ use App\Form\SequenceType;
 use App\Repository\MeasurementRepository;
 use App\Repository\PhenomenonRepository;
 use App\Repository\RecordRepository;
-use App\Repository\RecordTypeRepository;
 use App\Repository\RunGroupRepository;
 use App\Repository\RunRepository;
 use App\Repository\SequenceRepository;
-use App\Repository\UnitRepository;
 use App\Security\EntityVoter;
 use App\Services\MeasurementService;
 use App\Services\RecordsService;
@@ -43,7 +44,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -52,7 +52,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
-
 
 class SequenceController extends AbstractController
 {
@@ -73,13 +72,14 @@ class SequenceController extends AbstractController
         private RunGroupService $runGroupService,
         private Security $security,
         private readonly TranslatorInterface $translator,
-    ) {}
+    ) {
+    }
 
     #[Route('/{_locale}/chart-data', name: 'chartData')]
     public function getChartData(RecordsService $recordsService, Request $request): JsonResponse
     {
         $data = $request->get('ids');
-        if ($data != null) {
+        if ($data !== null) {
             return $this->json($recordsService->getChartData($data));
         } else {
             return $this->json(0);
@@ -112,9 +112,9 @@ class SequenceController extends AbstractController
             return $this->json(
                 $this->recordsService->validateDataFile(
                     $file->get('datafile'),
-                    $request->get('skip_first_row', false) === "1",
-                    $request->get('first_column_time', false) === "1"
-                )
+                    $request->get('skip_first_row', false) === '1',
+                    $request->get('first_column_time', false) === '1',
+                ),
             );
         }
 
@@ -159,7 +159,6 @@ class SequenceController extends AbstractController
         return null;
     }
 
-
     #[Route('/{_locale}/isinitmoisturer', name: 'isinitmoisturer')]
     public function isinitmoisturer(Request $request): RedirectResponse
     {
@@ -203,7 +202,7 @@ class SequenceController extends AbstractController
             $entity = $this->runRepository->find($request->get('runId'));
         } elseif ($request->get('measurementId') !== null) {
             $entity = $this->measurementRepository->find($request->get('measurementId'));
-        } elseif($request->get('sequenceId') !== null) {
+        } elseif ($request->get('sequenceId') !== null) {
             $entity = $this->sequenceRepository->find($request->get('sequenceId'));
         } else {
             $entity = null;
@@ -214,12 +213,12 @@ class SequenceController extends AbstractController
         }
 
         $filename = $request->get('filename');
-        $path = $this->parameterBag->get('kernel.project_dir') . "/public/" . $entity->getFilesPath() . '/' . $filename;
+        $path = $this->parameterBag->get('kernel.project_dir') . '/public/' . $entity->getFilesPath() . '/' . $filename;
 
         $response = new BinaryFileResponse($path);
         $response->setContentDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            $filename
+            $filename,
         );
 
         return $response;
@@ -232,7 +231,7 @@ class SequenceController extends AbstractController
             $entity = $this->runRepository->find($request->get('runId'));
         } elseif ($request->get('measurementId') !== null) {
             $entity = $this->measurementRepository->find($request->get('measurementId'));
-        } elseif($request->get('sequenceId') !== null) {
+        } elseif ($request->get('sequenceId') !== null) {
             $entity = $this->sequenceRepository->find($request->get('sequenceId'));
         } else {
             $entity = null;
@@ -249,7 +248,8 @@ class SequenceController extends AbstractController
     }
 
     #[Route('/{_locale}/sequence/{id}', name: 'sequence')]
-    public function edit(Request $request, int $id = null): Response {
+    public function edit(Request $request, ?int $id = null): Response
+    {
         $user = $this->security->getUser();
 
         if ($id !== null) {
@@ -271,7 +271,7 @@ class SequenceController extends AbstractController
                 $deleteRunGroupForm = $this->createForm(
                     DeleteRunGroupType::class,
                     null,
-                    ['run_group' => $runGroup]
+                    ['run_group' => $runGroup],
                 );
                 $deleteRunGroupForms[$runGroup->getId()] = $deleteRunGroupForm->createView();
 
@@ -282,7 +282,6 @@ class SequenceController extends AbstractController
                     $this->runGroupService->deleteRunGroupFromForm($runGroup, $data);
                     return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
                 }
-
             }
 
 
@@ -344,7 +343,7 @@ class SequenceController extends AbstractController
                 if ($appendRecordForm->isSubmitted()) {
                     $recordId = $appendRecordForm->get('recordId')->getData();
                     $record = $this->recordRepository->find($recordId);
-                    if($record === null) {
+                    if ($record === null) {
                         $this->addFlash('error', 'Record not found');
                         return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
                     }
@@ -468,7 +467,7 @@ class SequenceController extends AbstractController
                 return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
             }
 
-            if($user === null) {
+            if ($user === null) {
                 $this->addFlash('warning', $this->translator->trans('not logged info'));
             }
 
@@ -488,9 +487,8 @@ class SequenceController extends AbstractController
                     'recordsService' => $this->recordsService,
                     'recordForm' => $newRecordForm->createView(),
                     'deleteRunGroupForms' => $deleteRunGroupForms,
-                ]
+                ],
             );
-
         } else {
             $form = $this->createForm(SequenceBasicType::class, new Sequence());
 
@@ -507,8 +505,8 @@ class SequenceController extends AbstractController
             return $this->render(
                 'sequence/add.html.twig',
                 [
-                    'form' => $form->createView()
-                ]
+                    'form' => $form->createView(),
+                ],
             );
         }
     }
@@ -524,7 +522,7 @@ class SequenceController extends AbstractController
     public function exportSequence(Request $request): Response
     {
         if ($request->get('id') === null) {
-            throw new \Exception("Invalid parameter id");
+            throw new \Exception('Invalid parameter id');
         }
 
         $id = $request->get('id');
@@ -543,7 +541,6 @@ class SequenceController extends AbstractController
         return $response;
     }
 
-
     #[Route('/{_locale}/sequences', name: 'sequences')]
     public function list(Request $request): Response
     {
@@ -553,7 +550,7 @@ class SequenceController extends AbstractController
         $paginatorQuery = $this->sequenceRepository->getPaginatorQuery(
             $filter->getData(),
             $request->get('order', 'date'),
-            $request->get('direction', 'DESC')
+            $request->get('direction', 'DESC'),
         );
 
         if ($filter->isSubmitted() && $filter->get('export')->isClicked()) {
@@ -578,7 +575,7 @@ class SequenceController extends AbstractController
             [
                 PaginatorInterface::DEFAULT_SORT_FIELD_NAME => 'sequence.date',
                 PaginatorInterface::DEFAULT_SORT_DIRECTION => 'DESC',
-            ]
+            ],
         );
 
         return $this->render(
@@ -586,7 +583,7 @@ class SequenceController extends AbstractController
             [
                 'pagination' => $pagination,
                 'filter' => $filter->createView(),
-            ]
+            ],
         );
     }
 
@@ -597,14 +594,14 @@ class SequenceController extends AbstractController
             $this->sequenceRepository->getPaginatorQuery(
                 [],
                 $request->get('order', 'date'),
-                $request->get('direction', 'DESC')
+                $request->get('direction', 'DESC'),
             ),
             $request->query->getInt('page', 1),
             1000,
             [
                 PaginatorInterface::DEFAULT_SORT_FIELD_NAME => 'sequence.date',
                 PaginatorInterface::DEFAULT_SORT_DIRECTION => 'DESC',
-            ]
+            ],
         );
 
         return $this->render(
@@ -613,9 +610,7 @@ class SequenceController extends AbstractController
                 'pagination' => $pagination,
                 'runSevice' => $this->runService,
                 'phenomenonRepository' => $this->phenomenonRepository,
-            ]
+            ],
         );
     }
-
-
 }

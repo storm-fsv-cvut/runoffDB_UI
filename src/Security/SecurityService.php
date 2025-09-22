@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Security;
 
 use App\Entity\User;
@@ -13,7 +15,7 @@ class SecurityService
 
     public function __construct(
         UserPasswordHasherInterface $hasher,
-        UserRepository              $userRepository
+        UserRepository $userRepository,
     ) {
         $this->hasher = $hasher;
         $this->userRepository = $userRepository;

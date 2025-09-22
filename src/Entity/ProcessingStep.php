@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
+use App\Repository\ProcessingStepRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\ProcessingStepRepository;
 
 /**
  * @ORM\Entity(repositoryClass=ProcessingStepRepository::class)
@@ -40,29 +42,19 @@ class ProcessingStep extends BaseEntity implements DefinitionEntityInterface
      */
     private int $stepOrder;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    /** @ORM\Column(type="string", length=255) */
     private string $nameCZ;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    /** @ORM\Column(type="string", length=255) */
     private string $nameEN;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    /** @ORM\Column(type="text", nullable=true) */
     private ?string $descriptionCZ = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    /** @ORM\Column(type="text", nullable=true) */
     private ?string $descriptionEN = null;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Instrument", inversedBy="processingSteps")
-     */
+    /** @ORM\ManyToMany(targetEntity="App\Entity\Instrument", inversedBy="processingSteps") */
     private Collection $instruments;
 
     public function __construct()
@@ -72,6 +64,11 @@ class ProcessingStep extends BaseEntity implements DefinitionEntityInterface
     }
 
     // --- vztah k Methodics přes join entitu ---
+
+    public function __toString(): string
+    {
+        return $this->getName() . '#' . $this->getId();
+    }
 
     /** @return Collection<int, MethodicsProcessingStep> */
     public function getMethodicsProcessingSteps(): Collection
@@ -188,11 +185,6 @@ class ProcessingStep extends BaseEntity implements DefinitionEntityInterface
     public function getDescription(): ?string
     {
         return $this->getLocale() === 'en' ? $this->descriptionEN : $this->descriptionCZ;
-    }
-
-    public function __toString(): string
-    {
-        return $this->getName() ?: '#' . $this->getId();
     }
 
     public function getId(): int

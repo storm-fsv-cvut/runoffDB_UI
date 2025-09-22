@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -18,49 +20,31 @@ class Organization extends BaseEntity implements DefinitionEntityInterface
      */
     private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    /** @ORM\Column(type="string", length=255) */
     private ?string $name;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $contactPerson;
 
-    /**
-     * @ORM\Column(type="string", length=10, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=10, nullable=true) */
     private ?string $contactNumber;
 
-    /**
-     * @ORM\Column(type="string", length=50, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=50, nullable=true) */
     private ?string $contactEmail;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Locality", mappedBy="organization")
-     */
+    /** @ORM\OneToMany(targetEntity="App\Entity\Locality", mappedBy="organization") */
     private Collection $localities;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Simulator", mappedBy="organization")
-     */
+    /** @ORM\OneToMany(targetEntity="App\Entity\Simulator", mappedBy="organization") */
     private Collection $simulators;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $name_code;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Project", mappedBy="organisations")
-     */
+    /** @ORM\ManyToMany(targetEntity="App\Entity\Project", mappedBy="organisations") */
     private Collection $projects;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="organization")
-     */
+    /** @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="organization") */
     private Collection $users;
 
     public function __construct()
@@ -78,7 +62,7 @@ class Organization extends BaseEntity implements DefinitionEntityInterface
 
     public function __toString(): string
     {
-        return $this->getName() !== null ? $this->getName() : "#" . $this->getId();
+        return $this->getName() ?? '#' . $this->getId();
     }
 
     public function getName(): ?string
@@ -98,9 +82,6 @@ class Organization extends BaseEntity implements DefinitionEntityInterface
         return $this->id;
     }
 
-    /**
-     * @return Collection|Locality[]
-     */
     public function getLocalities(): Collection
     {
         return $this->localities;
@@ -131,12 +112,9 @@ class Organization extends BaseEntity implements DefinitionEntityInterface
 
     public function getLabel(): string
     {
-        return $this->getName() !== null ? $this->getName() : "#" . $this->getId();
+        return $this->getName() ?? '#' . $this->getId();
     }
 
-    /**
-     * @return Collection|Simulator[]
-     */
     public function getSimulators(): Collection
     {
         return $this->simulators;
@@ -182,9 +160,6 @@ class Organization extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Project[]
-     */
     public function getProjects(): Collection
     {
         return $this->projects;
@@ -210,9 +185,6 @@ class Organization extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-    /**
-     * @return Collection|User[]
-     */
     public function getUsers(): Collection
     {
         return $this->users;
@@ -249,7 +221,7 @@ class Organization extends BaseEntity implements DefinitionEntityInterface
             $dom->createElement('name', $this->getName()),
             $dom->createElement('contactPerson', $this->getContactPerson()),
             $dom->createElement('contactNumber', $this->getContactNumber()),
-            $dom->createElement('contactEmail', $this->getContactEmail())
+            $dom->createElement('contactEmail', $this->getContactEmail()),
         );
 
         return $organization;

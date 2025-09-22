@@ -1,57 +1,44 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
-use Exception;
-
-;
-
+use App\Entity\Data;
 use App\Entity\Record;
 use App\Entity\Sequence;
 use App\Entity\SoilSample;
 use App\Repository\MeasurementRepository;
 use App\Repository\PhenomenonRepository;
 use App\Repository\RecordRepository;
-use App\Repository\SequenceRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use ParseCsv\Csv;
-use ReflectionClass;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class RecordsService
 {
-    /**
-     * @var RecordRepository
-     */
+    /** @var RecordRepository */
     private $recordRepository;
-    /**
-     * @var MeasurementRepository
-     */
+
+    /** @var MeasurementRepository */
     private $measurementRepository;
-    /**
-     * @var PhenomenonRepository
-     */
+
+    /** @var PhenomenonRepository */
     private $phenomenonRepository;
-    /**
-     * @var SequenceRepository
-     */
-    private $sequenceRepository;
-    /**
-     * @var EntityManagerInterface
-     */
+
+    /** @var EntityManagerInterface */
     private $entityManager;
 
     public function __construct(
-        RecordRepository       $recordRepository,
-        MeasurementRepository  $measurementRepository,
-        PhenomenonRepository   $phenomenonRepository,
-        SequenceRepository     $sequenceRepository,
-        EntityManagerInterface $entityManager
+        RecordRepository $recordRepository,
+        MeasurementRepository $measurementRepository,
+        PhenomenonRepository $phenomenonRepository,
+        EntityManagerInterface $entityManager,
     ) {
         $this->recordRepository = $recordRepository;
         $this->measurementRepository = $measurementRepository;
         $this->phenomenonRepository = $phenomenonRepository;
-        $this->sequenceRepository = $sequenceRepository;
         $this->entityManager = $entityManager;
     }
 
@@ -62,21 +49,21 @@ class RecordsService
         $datarow = [];
 
         $typeMapper = [
-            'precip' => 'steppedArea'
+            'precip' => 'steppedArea',
         ];
 
         $records = array_map(
             function ($id): ?Record {
                 return $this->recordRepository->find($id);
             },
-            $ids
+            $ids,
         );
 
         $columns[] = ['timeofday', ''];
         $counter = 0;
         foreach ($records as $record) {
             if ($record === null) {
-                throw new Exception("Invalid record ID");
+                throw new Exception('Invalid record ID');
             }
             if ($record->getMeasurement() !== null && $record->getMeasurement()->getPhenomenon() !== null) {
                 $counter++;
@@ -85,28 +72,27 @@ class RecordsService
                     $datasets[$phenomenon] = [];
                 }
                 if ($record->getUnit() !== null) {
-                    $columns[] = ['number', $record->getUnit()->getName() . " [" . $record->getUnit()->getUnit(
-                        ) . "]", $typeMapper[$phenomenon] ?? 'line', $phenomenon];
+                    $columns[] = ['number', $record->getUnit()->getName() . ' [' . $record->getUnit()->getUnit(
+                    ) . ']', $typeMapper[$phenomenon] ?? 'line', $phenomenon];
                 } else {
-                    $columns[] = ['number', " - [ - ]", $typeMapper[$phenomenon] ?? 'line', $phenomenon];
+                    $columns[] = ['number', ' - [ - ]', $typeMapper[$phenomenon] ?? 'line', $phenomenon];
                 }
+                /** @var Data $data */
                 foreach ($record->getData() as $data) {
-                    if ($data->getTime() != null) {
-                        if ($data->getTime() !== null) {
-                            $datarow = [
-                                0 => [(int)$data->getTime()->format('H'), (int)$data->getTime()->format(
-                                    'i'
-                                ), (int)$data->getTime()->format('s')]
-                            ];
-                        } else {
-                            $datarow = [
-                                0 => [0, 0, 0]
-                            ];
-                        }
+                    if ($data->getTime() !== null) {
+                        $datarow = [
+                            0 => [(int) $data->getTime()->format('H'), (int) $data->getTime()->format(
+                                'i',
+                            ), (int) $data->getTime()->format('s')],
+                        ];
+                    } else {
+                        $datarow = [
+                            0 => [0, 0, 0],
+                        ];
                     }
                     for ($i = 1; $i <= sizeof($records); $i++) {
-                        if ($i == $counter) {
-                            $datarow[$i] = ((int)$data->getValue()) + 0;
+                        if ($i === $counter) {
+                            $datarow[$i] = (int) $data->getValue() + 0;
                         } else {
                             $datarow[$i] = null;
                         }
@@ -119,7 +105,7 @@ class RecordsService
         if (isset($datasets['precip'])) {
             $newDataSet = [];
             foreach ($datasets['precip'] as $key => $data) {
-                if ($key == 0) {
+                if ($key === 0) {
                     $newDataSet[$key] = $data;
                 }
                 if (isset($datasets['precip'][$key + 1])) {
@@ -146,8 +132,8 @@ class RecordsService
         $res = [];
 
         if ($file->isValid()) {
-            if ($file->getClientOriginalExtension() != 'csv') {
-                $res['error'] = "Invalid file extension";
+            if ($file->getClientOriginalExtension() !== 'csv') {
+                $res['error'] = 'Invalid file extension';
             } else {
                 $parser = new Csv($file->getPathname());
                 $parser->init(0);
@@ -176,7 +162,7 @@ class RecordsService
         $records = [];
         $phenomenon = $this->phenomenonRepository->findByKey($phenomenon_key);
         if ($phenomenon === null) {
-            throw new Exception("Phenomenon not found");
+            throw new Exception('Phenomenon not found');
         }
         foreach ($this->measurementRepository->findByPhenomenon($phenomenon) as $measurement) {
             $records = array_merge($records, $measurement->getRecords()->toArray());
@@ -238,23 +224,23 @@ class RecordsService
         return false;
     }
 
-    public function isRecordSetAsInSoilSampleContext(Record $record, SoilSample $soilSample, string $type = null): bool
+    public function isRecordSetAsInSoilSampleContext(Record $record, SoilSample $soilSample, ?string $type = null): bool
     {
-        if ($soilSample->getBulkDensity() !== null && $soilSample->getBulkDensity()->getId() === $record->getId() && ($type === null || $type === "bulk_density")) {
+        if ($soilSample->getBulkDensity() !== null && $soilSample->getBulkDensity()->getId() === $record->getId() && ($type === null || $type === 'bulk_density')) {
             return true;
         }
         if ($soilSample->getCorg() !== null && $soilSample->getCorg()->getId() === $record->getId()
-            && ($type === null || $type === "corg")
+            && ($type === null || $type === 'corg')
         ) {
             return true;
         }
         if ($soilSample->getMoisture() !== null && $soilSample->getMoisture()->getId() === $record->getId()
-            && ($type === null || $type === "moisture")
+            && ($type === null || $type === 'moisture')
         ) {
             return true;
         }
         if ($soilSample->getTextureRecord() !== null && $soilSample->getTextureRecord()->getId() === $record->getId()
-            && ($type === null || $type === "texture")
+            && ($type === null || $type === 'texture')
         ) {
             return true;
         }

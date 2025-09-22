@@ -1,16 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DefinitionEntityService
 {
     public function __construct(
         private EntityManagerInterface $em,
-    )
-    {
+    ) {
     }
 
     public function getDefinitionEntitiesArray(): array
@@ -20,7 +20,7 @@ class DefinitionEntityService
             if (in_array(
                 'App\Entity\DefinitionEntityInterface',
                 $entity->getReflectionClass()->getInterfaceNames(),
-                true
+                true,
             )) {
                 $definitionEntities[] = $entity->name;
             }

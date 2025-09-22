@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Entity;
@@ -20,44 +21,31 @@ class Agrotechnology extends BaseEntity implements DefinitionEntityInterface
      */
     private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $nameCZ;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $nameEN;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $descriptionCZ;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $descriptionEN;
 
     /**
+     * @var Collection<int, TillageSequence>
      * @ORM\OneToMany(targetEntity="App\Entity\TillageSequence", mappedBy="agrotechnology", cascade={"persist","remove"})
      */
     private Collection $tillageSequences;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $managTyp;
 
-    /**
-     * @ORM\Column(type="string", length=500, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=500, nullable=true) */
     private ?string $noteCZ;
 
-    /**
-     * @ORM\Column(type="string", length=500, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=500, nullable=true) */
     private ?string $noteEN;
 
     public function __construct()
@@ -72,23 +60,22 @@ class Agrotechnology extends BaseEntity implements DefinitionEntityInterface
         $this->tillageSequences = new ArrayCollection();
     }
 
-
     public function __toString(): string
     {
-        return $this->getName() ?? (string)$this->getId();
+        return $this->getName() ?? (string) $this->getId();
     }
 
     public function getName(): ?string
     {
-        return $this->getLocale() == 'en' ? $this->getNameEN() : $this->getNameCZ();
+        return $this->getLocale() === 'en' ? $this->getNameEN() : $this->getNameCZ();
     }
 
     public function getDescription(): ?string
     {
-        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
+        return $this->getLocale() === 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -116,13 +103,10 @@ class Agrotechnology extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-    /**
-     * @return Collection|TillageSequence[]
-     */
     public function getTillageSequences(): Collection
     {
         $criteria = Criteria::create();
-        $criteria->orderBy(array("date" => Criteria::ASC));
+        $criteria->orderBy(array('date' => Criteria::ASC));
         return $this->tillageSequences->matching($criteria);
     }
 
@@ -151,7 +135,7 @@ class Agrotechnology extends BaseEntity implements DefinitionEntityInterface
 
     public function getNote(): ?string
     {
-        return $this->getLocale() == 'en' ? $this->getNoteEN() : $this->getNoteCZ();
+        return $this->getLocale() === 'en' ? $this->getNoteEN() : $this->getNoteCZ();
     }
 
     public function getNameCZ(): ?string

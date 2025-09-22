@@ -1,46 +1,42 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Form\Type\DescendingIdEntityType;
-use Doctrine\ORM\EntityRepository;
-use Exception;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class DefinitionEntityType extends AbstractType
 {
-
-    /**
-     * @var EntityManagerInterface
-     */
+    /** @var EntityManagerInterface */
     private $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
-
         $this->entityManager = $entityManager;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if ($builder->getDataClass() === null) {
-            throw new Exception("No data class set");
+            throw new Exception('No data class set');
         }
         $metadata = $this->entityManager->getMetadataFactory()->getMetadataFor($builder->getDataClass());
 
         foreach ($metadata->getFieldNames() as $field) {
-            if ($field != 'id') {
-                if($metadata->getTypeOfField($field)==='date') {
-                    $builder->add($field,DateType::class, [
+            if ($field !== 'id') {
+                if ($metadata->getTypeOfField($field) === 'date') {
+                    $builder->add($field, DateType::class, [
                         'label' => 'date',
-                        'widget'=>'single_text',
-                        'required'=>true
+                        'widget' => 'single_text',
+                        'required' => true,
                     ]);
                 } else {
                     $builder->add($field, null, ['label' => $field]);
@@ -52,9 +48,8 @@ class DefinitionEntityType extends AbstractType
             $targetClass = $metadata->getAssociationTargetClass($associationName);
 
             // přeskoč vztahy s mappedBy (jsou vlastněné druhou stranou)
-            if (
-                $metadata->getReflectionClass()->getProperty($associationName)->getDocComment() !== false &&
-                strpos($metadata->getReflectionClass()->getProperty($associationName)->getDocComment(), "mappedBy") !== false
+            if ($metadata->getReflectionClass()->getProperty($associationName)->getDocComment() !== false &&
+                strpos($metadata->getReflectionClass()->getProperty($associationName)->getDocComment(), 'mappedBy') !== false
             ) {
                 continue;
             }
@@ -69,7 +64,7 @@ class DefinitionEntityType extends AbstractType
                     'multiple' => true,
                     'expanded' => true, // změň na true pro checkboxy
                     'required' => false,
-                    'label' => $associationName
+                    'label' => $associationName,
                 ]);
             } else {
                 // Jednoduchá vazba (ManyToOne, OneToOne)
@@ -78,7 +73,7 @@ class DefinitionEntityType extends AbstractType
                 $builder->add($associationName, DescendingIdEntityType::class, [
                     'class' => $targetClass,
                     'required' => !$nullable,
-                    'label' => $associationName
+                    'label' => $associationName,
                 ]);
             }
         }
@@ -88,9 +83,8 @@ class DefinitionEntityType extends AbstractType
             SubmitType::class,
             [
                 'attr' => ['class' => 'btn btn-success'],
-                'label' => 'save'
-            ]
+                'label' => 'save',
+            ],
         );
     }
-
 }

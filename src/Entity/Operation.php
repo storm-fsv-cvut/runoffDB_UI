@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -16,14 +18,10 @@ class Operation extends BaseEntity implements DefinitionEntityInterface
      */
     private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=50)
-     */
+    /** @ORM\Column(type="string", length=50) */
     private string $nameCZ;
 
-    /**
-     * @ORM\Column(type="string", length=50)
-     */
+    /** @ORM\Column(type="string", length=50) */
     private string $nameEN;
 
     /**
@@ -32,9 +30,7 @@ class Operation extends BaseEntity implements DefinitionEntityInterface
      */
     private OperationIntensity $operationIntensity;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
+    /** @ORM\Column(type="float", nullable=true) */
     private ?float $operationDepthM;
 
     /**
@@ -43,27 +39,20 @@ class Operation extends BaseEntity implements DefinitionEntityInterface
      */
     private ?OperationType $operationType;
 
-    /**
-     * @ORM\Column(type="string", length=512, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=512, nullable=true) */
     private ?string $descriptionCZ;
 
-    /**
-     * @ORM\Column(type="string", length=512, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=512, nullable=true) */
     private ?string $descriptionEN;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $machineryTypeCZ;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    /** @ORM\Column(type="string", length=255, nullable=true) */
     private ?string $machineryTypeEN;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->operationType = null;
         $this->descriptionCZ = null;
         $this->descriptionEN = null;
@@ -71,20 +60,24 @@ class Operation extends BaseEntity implements DefinitionEntityInterface
         $this->machineryTypeEN = null;
     }
 
-    public function __toString(): string {
-        return $this->getName()!==null ? $this->getName() : "#".$this->getId();
+    public function __toString(): string
+    {
+        return $this->getName() ?? '#' . $this->getId();
     }
 
-    public function getName():?string {
-        return $this->getLocale() == 'en' ? $this->getNameEN() : $this->getNameCZ();
+    public function getName(): ?string
+    {
+        return $this->getLocale() === 'en' ? $this->getNameEN() : $this->getNameCZ();
     }
 
-    public function getDescription():?string {
-        return $this->getLocale() == 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
+    public function getDescription(): ?string
+    {
+        return $this->getLocale() === 'en' ? $this->getDescriptionEN() : $this->getDescriptionCZ();
     }
 
-    public function getMachineryType(): ?string {
-        return $this->getLocale() == 'en' ? $this->getMachineryTypeCZ() : $this->getMachineryTypeEN();
+    public function getMachineryType(): ?string
+    {
+        return $this->getLocale() === 'en' ? $this->getMachineryTypeCZ() : $this->getMachineryTypeEN();
     }
 
     public function getId(): int
@@ -152,8 +145,9 @@ class Operation extends BaseEntity implements DefinitionEntityInterface
         return $this;
     }
 
-    public function getLabel(): string {
-        return $this->getName()!==null ? $this->getName() : "#".$this->getId();
+    public function getLabel(): string
+    {
+        return $this->getName() ?? '#' . $this->getId();
     }
 
     public function getDescriptionCZ(): ?string

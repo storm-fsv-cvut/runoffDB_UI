@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\Unit;
@@ -7,10 +9,11 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * @extends ServiceEntityRepository<Unit>
  * @method Unit|null find($id, $lockMode = null, $lockVersion = null)
  * @method Unit|null findOneBy(array $criteria, array $orderBy = null)
- * @method Unit[]    findAll()
- * @method Unit[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method array<Unit> findAll()
+ * @method array<Unit> findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class UnitRepository extends ServiceEntityRepository
 {
@@ -18,33 +21,4 @@ class UnitRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Unit::class);
     }
-
-    // /**
-    //  * @return Unit[] Returns an array of Unit objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('v.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Unit
-    {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Entity\Agrotechnology;
@@ -9,19 +11,18 @@ use App\Entity\Plot;
 use App\Entity\ProtectionMeasure;
 use App\Form\Type\DescendingIdEntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PlotType extends AbstractType
 {
     public function buildForm(
         FormBuilderInterface $builder,
-        array $options
+        array $options,
     ): void {
         $builder
             ->add('name', null, [
@@ -89,8 +90,8 @@ class PlotType extends AbstractType
             SubmitType::class,
             [
                 'attr' => ['class' => 'btn btn-success'],
-                'label' => 'save'
-            ]
+                'label' => 'save',
+            ],
         );
     }
 
@@ -99,7 +100,7 @@ class PlotType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => Plot::class,
-            ]
+            ],
         );
     }
 }
