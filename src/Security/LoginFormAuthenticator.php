@@ -40,13 +40,13 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         $username = $request->request->get('username', '');
         $password = $request->request->get('password', '');
         $csrfToken = $request->request->get('_csrf_token');
-
         $request->getSession()->set(Security::LAST_USERNAME, $username);
 
         return new Passport(
             new UserBadge($username, function ($userIdentifier) {
                 $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $userIdentifier]);
-                if ($user !== null) {
+
+                if ($user === null) {
                     throw new CustomUserMessageAuthenticationException('Username could not be found.');
                 }
                 return $user;
