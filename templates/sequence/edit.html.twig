@@ -92,7 +92,9 @@
                 {% if (is_granted('edit',sequence)) %}
                     <div class="row margin-bottom-sm">
                         <div class="col-sm-12 align-right">
-                            {% include "forms/sequenceTypeModalEdit.html.twig" %}
+                            <button type="button" class="btn btn-success btn-sm async-form-modal-toggle" data-async-form="{{ path("getSequenceForm", {'id':sequence.getId()})}}" data-toggle="modal" data-target="#sequenceType">
+                                <i class="fa fa-pencil"></i>&nbsp;&nbsp;&nbsp;{% trans %}edit sequence{% endtrans %}
+                            </button>
                         </div>
                     </div>
                     <div class="row">
@@ -111,8 +113,7 @@
         <hr class="hr"/>
 
 
-        {% for runGroupForm in form.runGroups.children %}
-            {% set runGroup =  runGroupForm.vars.value %}
+        {% for runGroup in sequence.runGroups %}
             <div class="row">
                 <div class="col-xs-12">
                     <div class="box box-primary bg-gray">
@@ -145,12 +146,13 @@
                                     <div class="row margin-bottom-sm">
                                         <div class="col-sm-12 align-right">
                                             {% if (is_granted('edit',sequence)) %}
-                                                <a class="btn btn-sm btn-primary" data-toggle="modal"
-                                                   data-target="#runGroupType{{ runGroup.getId() }}"
-                                                   href="javascript:;"><i
-                                                            class="fa fa-pencil"></i>&nbsp;&nbsp;&nbsp;{% trans %}Edit group{% endtrans %}
+                                                <a class="btn btn-sm btn-primary async-form-modal-toggle"
+                                                   data-toggle="modal"
+                                                   data-target="#runGroupTypeEdit"
+                                                   data-async-form="{{ path('getRunGroupForm', {'id': sequence.getId(), 'rgid': runGroup.getId()}) }}"
+                                                   href="javascript:;">
+                                                    <i class="fa fa-pencil"></i>&nbsp;&nbsp;&nbsp;{% trans %}Edit group{% endtrans %}
                                                 </a>
-                                                {% include "forms/runGroupTypeModalEdit.html.twig" %}
                                             {% endif %}
                                         </div>
                                     </div>
@@ -184,8 +186,7 @@
                                 <div class="col-md-6">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            {% for runForm in runGroupForm.children.runs.children %}
-                                                {% set run =  runForm.vars.value %}
+                                            {% for run in runGroup.runs %}
                                                 {% set runArray = runs[run.getId() ] %}
                                                 <div class="panel box box-info">
                                                     <div class="box-header">
@@ -207,15 +208,15 @@
                                                                 {% if (is_granted('edit',sequence)) %}
                                                                     <div class="row margin-bottom-sm">
                                                                         <div class="col-sm-12 align-right">
-                                                                            <a class="btn btn-info btn-sm"
+                                                                            <a class="btn btn-info btn-sm async-form-modal-toggle"
                                                                                role="menuitem"
                                                                                data-toggle="modal"
-                                                                               data-target="#runType{{ run.getId() }}"
+                                                                               data-target="#runTypeEdit"
+                                                                               data-async-form="{{ path('getRunForm', {'id': sequence.getId(), 'runid': run.getId()}) }}"
                                                                                tabindex="-1"
                                                                                href="javascript:;">
                                                                                 <i class="fa fa-pencil"></i>
                                                                                 {% trans %}Edit run{% endtrans %}</a>
-                                                                            {% include "forms/runTypeModalEdit.html.twig" %}
                                                                         </div>
                                                                     </div>
                                                                     <div class="row margin-bottom">
@@ -352,14 +353,13 @@
                                     <div class="row">
                                         <div class="col-md-12 records">
                                             {% set exclude =  [] %}
-                                            {% for runForm in runGroupForm.children.runs.children %}
-                                                {% set run =  runForm.vars.value %}
+                                            {% for run in runGroup.runs %}
                                                 {% set runArray = runs[run.getId() ] %}
-                                                {% for formMeasurement in runForm.measurements %}
-                                                    {% if formMeasurement.vars.value.getId() not in exclude %}
-                                                        {% set exclude =  exclude|merge([formMeasurement.vars.value.getId()]) %}
-                                                        {% set measurement = formMeasurement.vars.value %}
-                                                        {% set measurementArray = runArray.measurements[formMeasurement.vars.value.getId()] %}
+
+                                                {% for measurement in run.measurements %}
+                                                    {% if measurement.getId() not in exclude %}
+                                                        {% set exclude =  exclude|merge([measurement.getId()]) %}
+                                                        {% set measurementArray = runArray.measurements[measurement.getId()] %}
                                                         <div class="row">
                                                             <div class="col-sm-12">
                                                                 <div class="panel box box-info">
@@ -371,7 +371,7 @@
                                                                             <div class="col-md-6">
 
                                                                                 <h4 style="margin-top: 0px;">
-                                                                                    {{ formMeasurement.vars.value.getPhenomenon() }}
+                                                                                    {{ measurement.getPhenomenon() }}
                                                                                 </h4>
 
                                                                                 {% if (is_granted('edit',sequence)) %}
@@ -414,7 +414,7 @@
                                                                                         <div class="col-sm-12 align-right">
                                                                                             <a class="btn btn-info btn-sm"
                                                                                                data-confirm="{% trans %}delete?{% endtrans %}"
-                                                                                               href="{{ path('sequence', {id:header['id'],delete_measurement:formMeasurement.vars.value.getId()}) }}">
+                                                                                               href="{{ path('sequence', {id:header['id'],delete_measurement:measurement.getId()}) }}">
                                                                                                 <i class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;{% trans %}delete measurement{% endtrans %}
                                                                                             </a>
                                                                                         </div>
@@ -422,9 +422,10 @@
 
                                                                                     <div class="row margin-bottom-sm">
                                                                                         <div class="col-sm-12 align-right">
-                                                                                            <a class="btn btn-info btn-sm"
+                                                                                            <a class="btn btn-info btn-sm async-form-modal-toggle"
                                                                                                data-toggle="modal"
-                                                                                               data-target="#measurement{{ formMeasurement.vars.value.getId() }}"
+                                                                                               data-async-form="{{ path('getMeasurementForm', {'id': sequence.getId(), 'mid': measurement.getId()}) }}"
+                                                                                               data-target="#measurementEdit"
                                                                                                tabindex="-1"
                                                                                                href="#">
                                                                                                 <i class="fa fa-pencil"></i>&nbsp;&nbsp;&nbsp;{% trans %}edit measurement{% endtrans %}
@@ -436,7 +437,7 @@
                                                                                         <div class="col-sm-12 align-right">
                                                                                             <a class="btn btn-info btn-sm"
                                                                                                data-confirm="{% trans %}unlink?{% endtrans %}"
-                                                                                               href="{{ path('sequence', {id:header['id'],runId:run.getId(),unlink_measurement:formMeasurement.vars.value.getId()}) }}">
+                                                                                               href="{{ path('sequence', {id:header['id'],runId:run.getId(),unlink_measurement:measurement.getId()}) }}">
                                                                                                 <i class="fa fa-chain-broken"></i>&nbsp;&nbsp;&nbsp;{% trans %}unlink measurement{% endtrans %}
                                                                                             </a>
                                                                                         </div>
@@ -467,8 +468,6 @@
                                                                                         </div>
                                                                                     </div>
 
-                                                                                    {% include "forms/measurementTypeModalEdit.html.twig"  with {'parentId':runArray['id']} %}
-
                                                                                 {% endif %}
                                                                             </div>
                                                                         </div>
@@ -497,8 +496,7 @@
                                                                                     {% endif %}
 
 
-                                                                                    {% for formRecord in formMeasurement.records %}
-                                                                                        {% set record = formRecord.vars.value %}
+                                                                                    {% for record in measurement.records %}
                                                                                         <div class="panel box bg-gray-light">
                                                                                             <div class="box-header{% if recordsService.isRecordSetAsInSequenceContext(record, sequence) %} bg-warning{% endif %}">
                                                                                                 <div>
@@ -665,17 +663,12 @@
                                                                                                                     class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;{% trans %}delete{% endtrans %}
                                                                                                         </a>
 
-                                                                                                        <a role="menuitem"
-                                                                                                           class="btn btn-info btn-sm"
-                                                                                                           href="#"
-                                                                                                           data-toggle="modal"
-                                                                                                           data-target="#record{{ record.getId() }}"><i
+                                                                                                        <a role="menuitem" class="btn btn-info btn-sm async-form-modal-toggle"
+                                                                                                        data-toggle="modal"
+                                                                                                        data-async-form="{{ path('getRecordForm', {'id': sequence.getId(), 'recordid': record.getId()}) }}"
+                                                                                                           data-target="#recordEdit"><i
                                                                                                                     class="fa fa-pencil"></i>&nbsp;&nbsp;&nbsp;{% trans %}edit{% endtrans %}
                                                                                                         </a>
-
-
-                                                                                                        {% include "forms/recordTypeModalEdit.html.twig" %}
-
                                                                                                     </div>
                                                                                                 {% endif %}
                                                                                             </div>
@@ -737,6 +730,12 @@
         {% include "forms/recordTypeModalNew.html.twig" %}
         {% include "forms/runTypeModalNew.html.twig" %}
         {% include "forms/runGroupTypeModalNew.html.twig" %}
+
+        {% include "forms/sequenceTypeModalEdit.html.twig" %}
+        {% include "forms/runGroupTypeModalEdit.html.twig" %}
+        {% include "forms/runTypeModalEdit.html.twig" %}
+        {% include "forms/measurementTypeModalEdit.html.twig" %}
+        {% include "forms/recordTypeModalEdit.html.twig" %}
     {% endif %}
 {% endblock %}
 

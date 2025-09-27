@@ -56,24 +56,25 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class SequenceController extends AbstractController
 {
     public function __construct(
-        private MeasurementRepository $measurementRepository,
-        private RunRepository $runRepository,
-        private MeasurementService $measurementService,
-        private RecordsService $recordsService,
-        private RecordRepository $recordRepository,
-        private EntityManagerInterface $entityManager,
-        private ParameterBagInterface $parameterBag,
-        private SequenceRepository $sequenceRepository,
-        private SequenceService $sequenceService,
-        private PaginatorInterface $paginator,
-        private RunService $runService,
-        private PhenomenonRepository $phenomenonRepository,
-        private RunGroupRepository $runGroupRepository,
-        private RunGroupService $runGroupService,
-        private Security $security,
+        private MeasurementRepository        $measurementRepository,
+        private RunRepository                $runRepository,
+        private MeasurementService           $measurementService,
+        private RecordsService               $recordsService,
+        private RecordRepository             $recordRepository,
+        private EntityManagerInterface       $entityManager,
+        private ParameterBagInterface        $parameterBag,
+        private SequenceRepository           $sequenceRepository,
+        private SequenceService              $sequenceService,
+        private PaginatorInterface           $paginator,
+        private RunService                   $runService,
+        private PhenomenonRepository         $phenomenonRepository,
+        private RunGroupRepository           $runGroupRepository,
+        private RunGroupService              $runGroupService,
+        private Security                     $security,
         private readonly TranslatorInterface $translator,
     ) {
     }
+
 
     #[Route('/{_locale}/chart-data', name: 'chartData')]
     public function getChartData(RecordsService $recordsService, Request $request): JsonResponse
@@ -247,6 +248,205 @@ class SequenceController extends AbstractController
         return $this->redirectToRoute('sequence', ['id' => $id]);
     }
 
+    #[Route('/{_locale}/sequence/{id}/edit', name: 'getSequenceForm', methods: ['GET'])]
+    public function getSequenceFormAction(?int $id = null): Response
+    {
+        $sequence = $this->sequenceService->getSequenceById($id);
+        $sequenceForm = $this->createForm(SequenceType::class, $sequence, [
+            'action' => $this->generateUrl('postSequenceForm', ['id' => $id]),
+        ]);
+
+        return $this->render('forms/_sequenceTypeEdit.html.twig', [
+            'form' => $sequenceForm->createView(),
+            'sequence' => $sequence,
+        ]);
+    }
+
+    #[Route('/{_locale}/sequence/{id}/edit', name: 'postSequenceForm', methods: ['POST'])]
+    public function postSequenceFormAction(Request $request, ?int $id = null): Response
+    {
+        $sequence = $this->sequenceService->getSequenceById($id);
+        $sequenceForm = $this->createForm(SequenceType::class, $sequence);
+
+        $sequenceForm->handleRequest($request);
+
+        if ($sequenceForm->isSubmitted()) {
+            $data = $sequenceForm->getData();
+            if ($sequenceForm->has('rawData') && $sequenceForm->get('rawData') !== null) {
+                foreach ($sequenceForm->get('rawData')->getData() as $file) {
+                    $this->sequenceService->uploadFile($file, $data);
+                }
+            }
+
+            $this->entityManager->persist($data);
+            $this->entityManager->flush();
+        }
+
+        return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
+    }
+
+    #[Route('/{_locale}/sequence/{id}/edit/rg/{rgid}', name: 'getRunGroupForm', methods: ['GET'])]
+    public function getSequenceRgFormAction(int $id, int $rgid): Response
+    {
+        $sequence = $this->sequenceService->getSequenceById($id);
+        $runGroup = $this->runGroupRepository->find($rgid);
+
+        $runGroupForm = $this->createForm(RunGroupType::class, $runGroup, [
+            'action' => $this->generateUrl('postRunGroupForm', ['id' => $id, 'rgid' => $rgid]),
+        ]);
+
+        return $this->render('forms/_runGroupTypeEdit.html.twig', [
+            'form' => $runGroupForm->createView(),
+            'runGroup' => $runGroup,
+            'sequence' => $sequence,
+        ]);
+    }
+
+    #[Route('/{_locale}/sequence/{id}/edit/rg/{rgid}', name: 'postRunGroupForm', methods: ['POST'])]
+    public function postSequenceRgFormAction(Request $request, int $id, int $rgid): Response
+    {
+        $sequence = $this->sequenceService->getSequenceById($id);
+        $runGroup = $this->runGroupRepository->find($rgid);
+
+        $runGroupForm = $this->createForm(RunGroupType::class, $runGroup);
+
+        $runGroupForm->handleRequest($request);
+
+        if ($runGroupForm->isSubmitted()) {
+            $data = $runGroupForm->getData();
+            $this->entityManager->persist($data);
+            $this->entityManager->flush();
+        }
+
+        return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
+
+    }
+
+    #[Route('/{_locale}/sequence/{id}/edit/measurement/{mid}', name: 'getMeasurementForm', methods: ['GET'])]
+    public function getSequenceMeasurementFormAction(int $id, int $mid): Response
+    {
+        $sequence = $this->sequenceService->getSequenceById($id);
+        $measurement = $this->measurementRepository->find($mid);
+
+        $measurementForm = $this->createForm(MeasurementType::class, $measurement, [
+            'action' => $this->generateUrl('postMeasurementForm', ['id' => $id, 'mid' => $mid]),
+        ]);
+
+        return $this->render('forms/_measurementTypeEdit.html.twig', [
+            'form' => $measurementForm->createView(),
+            'measurement' => $measurement,
+            'sequence' => $sequence,
+        ]);
+    }
+
+    #[Route('/{_locale}/sequence/{id}/edit/measurement/{mid}', name: 'postMeasurementForm', methods: ['POST'])]
+    public function postSequenceMeasurementFormAction(Request $request, int $id, int $mid): Response
+    {
+        $sequence = $this->sequenceService->getSequenceById($id);
+        $measurement = $this->measurementRepository->find($mid);
+
+        $measurementForm = $this->createForm(MeasurementType::class, $measurement);
+
+        $measurementForm->handleRequest($request);
+
+        if ($measurementForm->isSubmitted()) {
+            $data = $measurementForm->getData();
+
+            if ($measurementForm->has('rawData') && $measurementForm->get('rawData') !== null) {
+                foreach ($measurementForm->get('rawData')->getData() as $file) {
+                    $this->measurementService->uploadFile($file, $data);
+                }
+            }
+
+            $this->entityManager->persist($data);
+            $this->entityManager->flush();
+        }
+
+        return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
+
+    }
+
+    #[Route('/{_locale}/sequence/{id}/edit/run/{runid}', name: 'getRunForm', methods: ['GET'])]
+    public function getSequenceRunFormAction(int $id, int $runid): Response
+    {
+        $sequence = $this->sequenceService->getSequenceById($id);
+        $run = $this->runRepository->find($runid);
+
+        $runForm = $this->createForm(RunType::class, $run, [
+            'action' => $this->generateUrl('postRunForm', ['id' => $id, 'runid' => $runid]),
+        ]);
+
+        return $this->render('forms/_runTypeEdit.html.twig', [
+            'form' => $runForm->createView(),
+            'run' => $run,
+            'sequence' => $sequence,
+        ]);
+    }
+
+    #[Route('/{_locale}/sequence/{id}/edit/run/{runid}', name: 'postRunForm', methods: ['POST'])]
+    public function postSequenceRunFormAction(Request $request, int $id, int $runid): Response
+    {
+        $sequence = $this->sequenceService->getSequenceById($id);
+        $run = $this->runRepository->find($runid);
+
+        $runForm = $this->createForm(RunType::class, $run);
+
+        $runForm->handleRequest($request);
+
+        if ($runForm->isSubmitted()) {
+            $data = $runForm->getData();
+
+            if ($runForm->has('rawData') && $runForm->get('rawData') !== null) {
+                foreach ($runForm->get('rawData')->getData() as $file) {
+                    $this->runService->uploadFile($file, $data);
+                }
+            }
+
+            $this->entityManager->persist($data);
+            $this->entityManager->flush();
+        }
+
+        return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
+
+    }
+
+    #[Route('/{_locale}/sequence/{id}/edit/record/{recordid}', name: 'getRecordForm', methods: ['GET'])]
+    public function getSequenceRecordFormAction(int $id, int $recordid): Response
+    {
+        $sequence = $this->sequenceService->getSequenceById($id);
+        $record = $this->recordRepository->find($recordid);
+
+        $recordForm = $this->createForm(RecordType::class, $record, [
+            'action' => $this->generateUrl('postRecordForm', ['id' => $id, 'recordid' => $recordid]),
+        ]);
+
+        return $this->render('forms/_recordTypeEdit.html.twig', [
+            'form' => $recordForm->createView(),
+            'record' => $record,
+            'sequence' => $sequence,
+        ]);
+    }
+
+    #[Route('/{_locale}/sequence/{id}/edit/record/{recordid}', name: 'postRecordForm', methods: ['POST'])]
+    public function postSequenceRecordFormAction(Request $request, int $id, int $recordid): Response
+    {
+        $sequence = $this->sequenceService->getSequenceById($id);
+        $record = $this->recordRepository->find($recordid);
+
+        $recordForm = $this->createForm(RecordType::class, $record);
+
+        $recordForm->handleRequest($request);
+
+        if ($recordForm->isSubmitted()) {
+            $data = $recordForm->getData();
+            $this->entityManager->persist($data);
+            $this->entityManager->flush();
+        }
+
+        return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
+
+    }
+
     #[Route('/{_locale}/sequence/{id}', name: 'sequence')]
     public function edit(Request $request, ?int $id = null): Response
     {
@@ -283,7 +483,6 @@ class SequenceController extends AbstractController
                     return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
                 }
             }
-
 
             if ($request->isMethod('POST')) {
                 $sequenceForm->handleRequest($request);
@@ -534,7 +733,7 @@ class SequenceController extends AbstractController
         $response->headers->set('Cache-Control', 'private');
         $response->headers->set('Content-Type', 'application/xhtml+xml');
         $response->headers->set('Content-Disposition', 'attachment; filename="' . $filename . '";');
-        $response->headers->set('Content-Length', (string) strlen($xml));
+        $response->headers->set('Content-Length', (string)strlen($xml));
         $response->sendHeaders();
         $response->setContent($xml);
 
@@ -561,7 +760,7 @@ class SequenceController extends AbstractController
             $response->headers->set('Cache-Control', 'private');
             $response->headers->set('Content-Type', 'application/xhtml+xml');
             $response->headers->set('Content-Disposition', 'attachment; filename="' . $filename . '";');
-            $response->headers->set('Content-Length', (string) strlen($xml));
+            $response->headers->set('Content-Length', (string)strlen($xml));
             $response->sendHeaders();
             $response->setContent($xml);
 

@@ -1,4 +1,4 @@
-<div class="modal fade" data-collection='runs' id="runType{{ runForm.vars.value.getId() }}">
+<div class="modal fade async-form-modal" id="runTypeEdit">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -6,123 +6,10 @@
                     <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">{% trans %}edit run{% endtrans %}</h4>
             </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        {{ form_row(runForm.plot) }}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        {{ form_row(runForm.pondingStart) }}
-                    </div>
-                    <div class="form-group col-md-6">
-                        {{ form_row(runForm.runoffStart) }}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        {{ form_row(runForm.cropBBCH) }}
-                    </div>
-                    <div class="form-group col-md-6">
-                        {{ form_row(runForm.surfaceCover) }}
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="form-group col-md-12">
-
-                        <div class="nav-tabs-custom">
-                            <ul class="nav nav-tabs">
-                                <li class="active">
-                                    <a href="#Run_{{ runForm.vars.value.getId() }}_cropConditionCZ" data-toggle="tab" aria-expanded="true">{{ form_label(runForm.cropConditionCZ) }}</a>
-                                </li>
-                                <li class="">
-                                    <a href="#Run_{{ runForm.vars.value.getId() }}_cropConditionEN" data-toggle="tab" aria-expanded="false">{{ form_label(runForm.cropConditionEN) }}</a>
-                                </li>
-                            </ul>
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="Run_{{ runForm.vars.value.getId() }}_cropConditionCZ">
-                                    {{ form_widget(runForm.cropConditionCZ) }}
-                                </div>
-                                <div class="tab-pane" id="Run_{{ runForm.vars.value.getId() }}_cropConditionEN">
-                                    {{ form_widget(runForm.cropConditionEN) }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <div class="nav-tabs-custom">
-                            <ul class="nav nav-tabs">
-                                <li class="active">
-                                    <a href="#Run_{{ runForm.vars.value.getId() }}_noteCZ" data-toggle="tab" aria-expanded="true">{{ form_label(runForm.noteCZ) }}</a>
-                                </li>
-                                <li class="">
-                                    <a href="#Run_{{ runForm.vars.value.getId() }}_noteEN" data-toggle="tab" aria-expanded="false">{{ form_label(runForm.noteEN) }}</a>
-                                </li>
-                            </ul>
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="Run_{{ runForm.vars.value.getId() }}_noteCZ">
-                                    {{ form_widget(runForm.noteCZ) }}
-                                </div>
-                                <div class="tab-pane" id="Run_{{ runForm.vars.value.getId() }}_noteEN">
-                                    {{ form_widget(runForm.noteEN) }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        {{ form_row(runForm.methodics) }}
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            {{ form_row(runForm.rawData) }}
-                            <p class="help-block">Max. 32MB, *.zip</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        {{ form_row(runForm.soilSampleCorg) }}
-                    </div>
-                    <div class="form-group col-md-6">
-                        {{ form_row(runForm.corgAssignmentType) }}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        {{ form_row(runForm.soilSampleBulk) }}
-                    </div>
-                    <div class="form-group col-md-6">
-                        {{ form_row(runForm.bulkAssignmentType) }}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        {{ form_row(runForm.soilSampleTexture) }}
-                    </div>
-                    <div class="form-group col-md-6">
-                        {{ form_row(runForm.textureAssignmentType) }}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        {{ form_row(runForm.referenceRun) }}
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-warning pull-left" data-dismiss="modal">
-                    {% trans %}close{% endtrans %}
-                </button>
-                {{ form_row(runForm.save) }}
+            <div class="form-target">
+                <p class="text-center loader">
+                    <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
+                </p>
             </div>
         </div>
         <!-- /.modal-content -->

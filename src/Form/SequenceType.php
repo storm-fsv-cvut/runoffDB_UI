@@ -85,15 +85,6 @@ class SequenceType extends AbstractType
                 'placeholder' => '',
                 'required' => false,
             ]);
-
-        $builder->add('runGroups', CollectionType::class, [
-            'entry_type' => RunGroupType::class,
-            'label' => 'run_group',
-            'mapped' => true,
-            'prototype' => true,
-            'allow_add' => true,
-            'allow_delete' => true,
-        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

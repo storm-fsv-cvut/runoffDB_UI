@@ -1,5 +1,5 @@
 
-<div class="modal fade" data-collection='run_{{ parentId }}_measurements' id="measurement{{ formMeasurement.vars.value.getId() }}">
+<div class="modal fade async-form-modal" id="measurementEdit">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -7,83 +7,10 @@
                     <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">{% trans %}edit measurement{% endtrans %}</h4>
             </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        {{ form_row(formMeasurement.phenomenon) }}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        {{ form_row(formMeasurement.locality) }}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        {{ form_row(formMeasurement.plot) }}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        {{ form_row(formMeasurement.date) }}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        {{ form_row(formMeasurement.rawData) }}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        {{ form_row(formMeasurement.methodics) }}
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="nav-tabs-custom">
-                        <ul class="nav nav-tabs">
-                            <li class="active">
-                                <a href="#run_{{ parentId }}_measurement_{{ formMeasurement.vars.value.getId() }}_description_cz" data-toggle="tab" aria-expanded="true">{{ form_label(formMeasurement.descriptionCZ) }}</a>
-                            </li>
-                            <li class="">
-                                <a href="#run_{{ parentId }}_measurement_{{ formMeasurement.vars.value.getId() }}_description_en" data-toggle="tab" aria-expanded="false">{{ form_label(formMeasurement.descriptionEN) }}</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="run_{{ parentId }}_measurement_{{ formMeasurement.vars.value.getId() }}_description_cz">
-                                {{ form_widget(formMeasurement.descriptionCZ) }}
-                            </div>
-                            <div class="tab-pane" id="run_{{ parentId }}_measurement_{{ formMeasurement.vars.value.getId() }}_description_en">
-                                {{ form_widget(formMeasurement.descriptionEN) }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="nav-tabs-custom">
-                        <ul class="nav nav-tabs">
-                            <li class="active">
-                                <a href="#run_{{ parentId }}_measurement_{{ formMeasurement.vars.value.getId() }}_note_cz" data-toggle="tab" aria-expanded="true">{{ form_label(formMeasurement.noteCZ) }}</a>
-                            </li>
-                            <li class="">
-                                <a href="#run_{{ parentId }}_measurement_{{ formMeasurement.vars.value.getId() }}_note_en" data-toggle="tab" aria-expanded="false">{{ form_label(formMeasurement.noteEN) }}</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="run_{{ parentId }}_measurement_{{ formMeasurement.vars.value.getId() }}_note_cz">
-                                {{ form_widget(formMeasurement.noteCZ) }}
-                            </div>
-                            <div class="tab-pane" id="run_{{ parentId }}_measurement_{{ formMeasurement.vars.value.getId() }}_note_en">
-                                {{ form_widget(formMeasurement.noteEN) }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">
-                    {% trans %}close{% endtrans %}
-                </button>
-                {{ form_row(formMeasurement.save) }}
+            <div class="form-target">
+                <p class="text-center loader">
+                    <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
+                </p>
             </div>
         </div>
         <!-- /.modal-content -->
