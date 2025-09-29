@@ -1,0 +1,188 @@
+{{ form_start(form) }}
+<div class="modal-body">
+    <div class="row">
+        <div class="form-group col-sm-6">
+            {{ form_row(form.recordType) }}
+        </div>
+        <div class="form-group col-sm-6">
+            <label>&nbsp;</label>
+            {{ form_row(form.isTimeline) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-sm-6">
+            {{ form_row(form.qualityIndex) }}
+        </div>
+        <div class="form-group col-sm-6">
+            {{ form_row(form.methodics) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-sm-12">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#descriptionCZ" data-toggle="tab"
+                           aria-expanded="true">{{ form_label(form.descriptionCZ) }}</a>
+                    </li>
+                    <li class="">
+                        <a href="#descriptionEN" data-toggle="tab"
+                           aria-expanded="false">{{ form_label(form.descriptionEN) }}</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="descriptionCZ">
+                        {{ form_widget(form.descriptionCZ) }}
+                    </div>
+                    <div class="tab-pane" id="descriptionEN">
+                        {{ form_widget(form.descriptionEN) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-sm-12">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#noteCZ" data-toggle="tab"
+                           aria-expanded="true">{{ form_label(form.noteCZ) }}</a>
+                    </li>
+                    <li class="">
+                        <a href="#noteEN" data-toggle="tab"
+                           aria-expanded="false">{{ form_label(form.noteEN) }}</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="noteCZ">
+                        {{ form_widget(form.noteCZ) }}
+                    </div>
+                    <div class="tab-pane" id="noteEN">
+                        {{ form_widget(form.noteEN) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-sm-6">
+            {{ form_row(form.sourceRecords) }}
+        </div>
+    </div>
+    <div class="row file_upload">
+        <div class="form-group col-md-4">
+            <label>{% trans %}load data{% endtrans %}</label>
+            {{ form_row(form.datafile) }}
+            <p class="help-block">Max. 32MB, *.csv</p>
+        </div>
+        <div class="form-group col-md-4">
+            <label>&nbsp;</label>
+            {{ form_row(form.skip_first_row) }}
+        </div>
+        <div class="form-group col-md-4">
+            <label>&nbsp;</label>
+            {{ form_row(form.first_column_time) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-sm-3">
+            {{ form_row(form.relatedValueXUnit) }}
+        </div>
+        <div class="form-group col-sm-3">
+            {{ form_row(form.relatedValueYUnit) }}
+        </div>
+        <div class="form-group col-sm-3">
+            {{ form_row(form.relatedValueZUnit) }}
+        </div>
+        <div class="form-group col-sm-3">
+            {{ form_row(form.unit) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered">
+                <tr>
+                    <td data-prototype="{{ form_widget(form.datas.vars.prototype.time)|e }}">
+                        <i class="fa fa-clock-o"></i></td>
+                    <td data-toggle-on="{{ form.relatedValueXUnit.vars.full_name }}"
+                        data-prototype="{{ form_widget(form.datas.vars.prototype.related_value_X)|e }}">
+                        <span data-depends="{{ form.relatedValueXUnit.vars.full_name }}"></span>
+                    </td>
+                    <td data-toggle-on="{{ form.relatedValueYUnit.vars.full_name }}"
+                        data-prototype="{{ form_widget(form.datas.vars.prototype.related_value_Y)|e }}">
+                        <span data-depends="{{ form.relatedValueYUnit.vars.full_name }}"></span>
+                    </td>
+                    <td data-toggle-on="{{ form.relatedValueZUnit.vars.full_name }}"
+                        data-prototype="{{ form_widget(form.datas.vars.prototype.related_value_Z)|e }}">
+                        <span data-depends="{{ form.relatedValueZUnit.vars.full_name }}"></span>
+                    </td>
+                    <td data-toggle-on="{{ form.unit.vars.full_name }}"
+                        data-prototype="{{ form_widget(form.datas.vars.prototype.value)|e }}">
+                        <span data-depends="{{ form.unit.vars.full_name }}"></span>
+                    </td>
+                    <td>
+                        {{ "noteCZ"|trans }}
+                    </td>
+                    <td>
+                        <a class="text-danger removeRow" style="display: none;"><i class="fa fa-minus"></i></a>
+                        <a class="text-success addFormRow"><i class="fa fa-plus"></i></a>
+                    </td>
+                </tr>
+                {% for formData in form.datas %}
+                    <tr>
+                        <td>
+                            {{ form_widget(formData.time) }}
+                        </td>
+                        <td data-toggle-on="{{ form.relatedValueXUnit.vars.full_name }}">
+                            {{ form_widget(formData.related_value_X) }}
+                        </td>
+                        <td data-toggle-on="{{ form.relatedValueYUnit.vars.full_name }}">
+                            {{ form_widget(formData.related_value_Y) }}
+                        </td>
+                        <td data-toggle-on="{{ form.relatedValueZUnit.vars.full_name }}">
+                            {{ form_widget(formData.related_value_Z) }}
+                        </td>
+                        <td data-toggle-on="{{ form.unit.vars.full_name }}">
+                            {{ form_widget(formData.value) }}
+                        </td>
+                        <td>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="data_{{ formData.vars.value.getId() }}_note_cz">
+                                    {{ form_widget(formData.noteCZ) }}
+                                </div>
+                                <div class="tab-pane" id="data_{{ formData.vars.value.getId() }}_note_en">
+                                    {{ form_widget(formData.noteEN) }}
+                                </div>
+                            </div>
+
+                            <ul class="nav-tabs-small">
+                                <li class="active">
+                                    <a href="#data_{{ formData.vars.value.getId() }}_note_cz" data-toggle="tab"
+                                       aria-expanded="true">cs</a>
+                                </li>
+                                <li class="">
+                                    <a href="#data_{{ formData.vars.value.getId() }}_note_en" data-toggle="tab"
+                                       aria-expanded="false">en</a>
+                                </li>
+                            </ul>
+                        </td>
+                        <td>
+                            <a class="text-danger removeRow"><i class="fa fa-minus"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-warning pull-left" data-dismiss="modal">
+        {% trans %}close{% endtrans %}
+    </button>
+    <div class="modal-footer">
+        {{ form_row(form.save) }}
+    </div>
+</div>
+
+{{ form_end(form, {'render_rest': false}) }}

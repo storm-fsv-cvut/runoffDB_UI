@@ -1,4 +1,84 @@
 $(document).ready(function (e) {
+    domready()
+})
+
+$('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+    checkboxClass: 'icheckbox_minimal-blue',
+    radioClass: 'iradio_minimal-blue'
+})
+
+$('input[type="checkbox"].append-run').on('change', function (e) {
+    $.ajax($(this).data('link'), {
+        method: 'GET',
+        data: {'run_id': $(this).val()},
+        complete: function (xhr, status) {
+        }
+    })
+});
+
+$('input[type="checkbox"].href').on('change', function (e) {
+    window.location = $(this).data('hardlink');
+});
+
+function drawChart(element, ids) {
+    var data = new google.visualization.DataTable();
+    var chart = new google.visualization.ComboChart(document.getElementById($(element).attr('id')));
+
+    var options = {
+        bar: {groupWidth: "100%"},
+        seriesType: 'line',
+        series: {},
+        legend: {position: 'bottom'},
+        vAxes: {
+            0: {
+                direction: -1
+            },
+            1: {
+                direction: 1
+            }
+        }
+    };
+
+    $.ajax($(element).data('datalink'), {
+            method: 'GET',
+            data: {'ids': ids},
+            complete: function (xhr, status) {
+                if (xhr.responseText != '0') {
+                    $(element).parents('.chart-box').find('.box-body').collapse('show');
+                    let json = xhr.responseJSON;
+                    for (i in json[0]) {
+                        data.addColumn(json[0][i][0], json[0][i][1]);
+                        if (i != 0) {
+                            if (options.series[i - 1] == undefined) {
+                                options.series[i - 1] = {};
+                            }
+                            if (json[0][i][3] != undefined && json[0][i][3] == 'precip') {
+                                options.series[i - 1].targetAxisIndex = 0;
+                                options.series[i - 1].backgroundColor = '#66bc40';
+                            } else {
+                                options.series[i - 1].targetAxisIndex = i;
+                            }
+                            if (json[0][i][2] != undefined) {
+                                options.series[i - 1].type = json[0][i][2];
+                            }
+                        }
+                    }
+                    data.addRows(json[1]);
+                    chart.draw(data, options);
+                } else {
+                    $(element).parents('.chart-box').find('.box-body').collapse('hide');
+                    chart.clearChart();
+                }
+            }
+        }
+    );
+}
+
+function fixLayout() {
+    $(".main-sidebar").css("padding-top", $(".main-header").outerHeight() + "px");
+}
+
+function domready() {
     $("li.current ul").css({display: "block"});
     $("li.current").addClass("menu-open");
 
@@ -24,6 +104,17 @@ $(document).ready(function (e) {
     $(".removeRow").on('click', function (e) {
         $(this).parents('tr').remove();
     });
+
+    $('.async-form-modal').on('shown.bs.modal', function (e) {
+        let modal = $(this);
+        let trigger = $(e.relatedTarget);
+        let url = trigger.data('async-form');
+
+        modal.find('.form-target').load(url, function () {
+            domready()
+        });
+    });
+
 
     $("[data-change-label]").each((i, e) => {
         let parentModal = $(e).parents('.modal');
@@ -162,83 +253,6 @@ $(document).ready(function (e) {
     })
 
     $('[data-toggle="tooltip"]').tooltip()
-
-})
-
-$('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
-    checkboxClass: 'icheckbox_minimal-blue',
-    radioClass: 'iradio_minimal-blue'
-})
-
-$('input[type="checkbox"].append-run').on('change', function (e) {
-    $.ajax($(this).data('link'), {
-        method: 'GET',
-        data: {'run_id': $(this).val()},
-        complete: function (xhr, status) {
-        }
-    })
-});
-
-$('input[type="checkbox"].href').on('change', function (e) {
-    window.location = $(this).data('hardlink');
-});
-
-function drawChart(element, ids) {
-    var data = new google.visualization.DataTable();
-    var chart = new google.visualization.ComboChart(document.getElementById($(element).attr('id')));
-
-    var options = {
-        bar: {groupWidth: "100%"},
-        seriesType: 'line',
-        series: {},
-        legend: {position: 'bottom'},
-        vAxes: {
-            0: {
-                direction: -1
-            },
-            1: {
-                direction: 1
-            }
-        }
-    };
-
-    $.ajax($(element).data('datalink'), {
-            method: 'GET',
-            data: {'ids': ids},
-            complete: function (xhr, status) {
-                if (xhr.responseText != '0') {
-                    $(element).parents('.chart-box').find('.box-body').collapse('show');
-                    let json = xhr.responseJSON;
-                    for (i in json[0]) {
-                        data.addColumn(json[0][i][0], json[0][i][1]);
-                        if (i != 0) {
-                            if (options.series[i - 1] == undefined) {
-                                options.series[i - 1] = {};
-                            }
-                            if (json[0][i][3] != undefined && json[0][i][3] == 'precip') {
-                                options.series[i - 1].targetAxisIndex = 0;
-                                options.series[i - 1].backgroundColor = '#66bc40';
-                            } else {
-                                options.series[i - 1].targetAxisIndex = i;
-                            }
-                            if (json[0][i][2] != undefined) {
-                                options.series[i - 1].type = json[0][i][2];
-                            }
-                        }
-                    }
-                    data.addRows(json[1]);
-                    chart.draw(data, options);
-                } else {
-                    $(element).parents('.chart-box').find('.box-body').collapse('hide');
-                    chart.clearChart();
-                }
-            }
-        }
-    );
-}
-
-function fixLayout() {
-    $(".main-sidebar").css("padding-top", $(".main-header").outerHeight() + "px");
 }
 
 window.addEventListener("resize", fixLayout);

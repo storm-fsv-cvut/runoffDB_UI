@@ -148,11 +148,6 @@ class Organization extends BaseEntity implements DefinitionEntityInterface
         return $this->name_code;
     }
 
-    public function getName_code(): ?string
-    {
-        return $this->getNameCode();
-    }
-
     public function setNameCode(?string $name_code): self
     {
         $this->name_code = $name_code;

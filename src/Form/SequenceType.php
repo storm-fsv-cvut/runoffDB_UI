@@ -10,7 +10,6 @@ use App\Entity\Sequence;
 use App\Entity\Simulator;
 use App\Form\Type\DescendingIdEntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -85,15 +84,6 @@ class SequenceType extends AbstractType
                 'placeholder' => '',
                 'required' => false,
             ]);
-
-        $builder->add('runGroups', CollectionType::class, [
-            'entry_type' => RunGroupType::class,
-            'label' => 'run_group',
-            'mapped' => true,
-            'prototype' => true,
-            'allow_add' => true,
-            'allow_delete' => true,
-        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

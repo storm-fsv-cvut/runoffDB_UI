@@ -1,4 +1,4 @@
-<div class="modal fade appendToCollection" id="runGroupType{{ runGroup.getId() }}">
+<div class="modal fade async-form-modal" id="runGroupTypeEdit">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -6,52 +6,13 @@
                     <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">{% trans %}add run{% endtrans %}</h4>
             </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        {{ form_row(runGroupForm.runType) }}
-                    </div>
-                    <div class="form-group col-md-6">
-                        {{ form_row(runGroupForm.precedingPrecipitation) }}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        {{ form_row(runGroupForm.datetime) }}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <div class="nav-tabs-custom">
-                            <ul class="nav nav-tabs">
-                                <li class="active">
-                                    <a href="#tab_1" data-toggle="tab" aria-expanded="true">{{ form_label(runGroupForm.noteCZ) }}</a>
-                                </li>
-                                <li class="">
-                                    <a href="#tab_2" data-toggle="tab" aria-expanded="false">{{ form_label(runGroupForm.noteEN) }}</a>
-                                </li>
-                            </ul>
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="tab_1">
-                                    {{ form_widget(runGroupForm.noteCZ) }}
-                                </div>
-                                <div class="tab-pane" id="tab_2">
-                                    {{ form_widget(runGroupForm.noteEN) }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">
-                    {% trans %}close{% endtrans %}
-                </button>
-                {{ form_widget(runGroupForm.save) }}
+            <div class="form-target">
+                <p class="text-center loader">
+                    <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
+                </p>
             </div>
         </div>
     </div>
-
 </div>
 <!-- /.modal -->
 

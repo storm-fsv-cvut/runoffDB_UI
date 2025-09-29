@@ -45,7 +45,6 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         return new Passport(
             new UserBadge($username, function ($userIdentifier) {
                 $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $userIdentifier]);
-
                 if ($user === null) {
                     throw new CustomUserMessageAuthenticationException('Username could not be found.');
                 }

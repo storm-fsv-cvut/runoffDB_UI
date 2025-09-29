@@ -1,0 +1,88 @@
+{{ form_start(form) }}
+<div class="modal-body">
+    <div class="row">
+        <div class="form-group col-md-12">
+            {{ form_row(form.phenomenon) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-12">
+            {{ form_row(form.locality) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-12">
+            {{ form_row(form.plot) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-12">
+            {{ form_row(form.date) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-12">
+            {{ form_row(form.rawData) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-12">
+            {{ form_row(form.methodics) }}
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a href="#measurement_{{ form.vars.value.getId() }}_description_cz"
+                       data-toggle="tab" aria-expanded="true">{{ form_label(form.descriptionCZ) }}</a>
+                </li>
+                <li class="">
+                    <a href="#measurement_{{ form.vars.value.getId() }}_description_en"
+                       data-toggle="tab" aria-expanded="false">{{ form_label(form.descriptionEN) }}</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active"
+                     id="measurement_{{ form.vars.value.getId() }}_description_cz">
+                    {{ form_widget(form.descriptionCZ) }}
+                </div>
+                <div class="tab-pane"
+                     id="measurement_{{ form.vars.value.getId() }}_description_en">
+                    {{ form_widget(form.descriptionEN) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a href="#measurement_{{ form.vars.value.getId() }}_note_cz"
+                       data-toggle="tab" aria-expanded="true">{{ form_label(form.noteCZ) }}</a>
+                </li>
+                <li class="">
+                    <a href="#measurement_{{ form.vars.value.getId() }}_note_en"
+                       data-toggle="tab" aria-expanded="false">{{ form_label(form.noteEN) }}</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active"
+                     id="measurement_{{ form.vars.value.getId() }}_note_cz">
+                    {{ form_widget(form.noteCZ) }}
+                </div>
+                <div class="tab-pane"
+                     id="measurement_{{ form.vars.value.getId() }}_note_en">
+                    {{ form_widget(form.noteEN) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">
+        {% trans %}close{% endtrans %}
+    </button>
+    {{ form_row(form.save) }}
+</div>
+{{ form_end(form, {'render_rest': false}) }}

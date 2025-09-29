@@ -1,0 +1,49 @@
+{{ form_start(form) }}
+<div class="modal-body">
+    <div class="row">
+        <div class="form-group col-md-6">
+            {{ form_row(form.runType) }}
+        </div>
+        <div class="form-group col-md-6">
+            {{ form_row(form.precedingPrecipitation) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-12">
+            {{ form_row(form.datetime) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-12">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#tab_1" data-toggle="tab"
+                           aria-expanded="true">{{ form_label(form.noteCZ) }}</a>
+                    </li>
+                    <li class="">
+                        <a href="#tab_2" data-toggle="tab"
+                           aria-expanded="false">{{ form_label(form.noteEN) }}</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab_1">
+                        {{ form_widget(form.noteCZ) }}
+                    </div>
+                    <div class="tab-pane" id="tab_2">
+                        {{ form_widget(form.noteEN) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">
+        {% trans %}close{% endtrans %}
+    </button>
+    {{ form_widget(form.save) }}
+</div>
+
+{{ form_end(form, {'render_rest': false}) }}
+
