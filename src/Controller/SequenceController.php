@@ -43,7 +43,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -56,25 +56,24 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class SequenceController extends AbstractController
 {
     public function __construct(
-        private MeasurementRepository        $measurementRepository,
-        private RunRepository                $runRepository,
-        private MeasurementService           $measurementService,
-        private RecordsService               $recordsService,
-        private RecordRepository             $recordRepository,
-        private EntityManagerInterface       $entityManager,
-        private ParameterBagInterface        $parameterBag,
-        private SequenceRepository           $sequenceRepository,
-        private SequenceService              $sequenceService,
-        private PaginatorInterface           $paginator,
-        private RunService                   $runService,
-        private PhenomenonRepository         $phenomenonRepository,
-        private RunGroupRepository           $runGroupRepository,
-        private RunGroupService              $runGroupService,
-        private Security                     $security,
+        private MeasurementRepository $measurementRepository,
+        private RunRepository $runRepository,
+        private MeasurementService $measurementService,
+        private RecordsService $recordsService,
+        private RecordRepository $recordRepository,
+        private EntityManagerInterface $entityManager,
+        private ParameterBagInterface $parameterBag,
+        private SequenceRepository $sequenceRepository,
+        private SequenceService $sequenceService,
+        private PaginatorInterface $paginator,
+        private RunService $runService,
+        private PhenomenonRepository $phenomenonRepository,
+        private RunGroupRepository $runGroupRepository,
+        private RunGroupService $runGroupService,
+        private Security $security,
         private readonly TranslatorInterface $translator,
     ) {
     }
-
 
     #[Route('/{_locale}/chart-data', name: 'chartData')]
     public function getChartData(RecordsService $recordsService, Request $request): JsonResponse
@@ -272,7 +271,7 @@ class SequenceController extends AbstractController
 
         if ($sequenceForm->isSubmitted()) {
             $data = $sequenceForm->getData();
-            if ($sequenceForm->has('rawData') && $sequenceForm->get('rawData') !== null) {
+            if ($sequenceForm->has('rawData')) {
                 foreach ($sequenceForm->get('rawData')->getData() as $file) {
                     $this->sequenceService->uploadFile($file, $data);
                 }
@@ -319,7 +318,6 @@ class SequenceController extends AbstractController
         }
 
         return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
-
     }
 
     #[Route('/{_locale}/sequence/{id}/edit/measurement/{mid}', name: 'getMeasurementForm', methods: ['GET'])]
@@ -352,7 +350,7 @@ class SequenceController extends AbstractController
         if ($measurementForm->isSubmitted()) {
             $data = $measurementForm->getData();
 
-            if ($measurementForm->has('rawData') && $measurementForm->get('rawData') !== null) {
+            if ($measurementForm->has('rawData')) {
                 foreach ($measurementForm->get('rawData')->getData() as $file) {
                     $this->measurementService->uploadFile($file, $data);
                 }
@@ -363,7 +361,6 @@ class SequenceController extends AbstractController
         }
 
         return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
-
     }
 
     #[Route('/{_locale}/sequence/{id}/edit/run/{runid}', name: 'getRunForm', methods: ['GET'])]
@@ -396,7 +393,7 @@ class SequenceController extends AbstractController
         if ($runForm->isSubmitted()) {
             $data = $runForm->getData();
 
-            if ($runForm->has('rawData') && $runForm->get('rawData') !== null) {
+            if ($runForm->has('rawData')) {
                 foreach ($runForm->get('rawData')->getData() as $file) {
                     $this->runService->uploadFile($file, $data);
                 }
@@ -407,7 +404,6 @@ class SequenceController extends AbstractController
         }
 
         return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
-
     }
 
     #[Route('/{_locale}/sequence/{id}/edit/record/{recordid}', name: 'getRecordForm', methods: ['GET'])]
@@ -444,7 +440,6 @@ class SequenceController extends AbstractController
         }
 
         return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
-
     }
 
     #[Route('/{_locale}/sequence/{id}', name: 'sequence')]
@@ -559,10 +554,6 @@ class SequenceController extends AbstractController
                 }
 
                 if ($newRecordForm->isSubmitted()) {
-
-                    /**
-                     * @var Record
-                     */
                     $record = $newRecordForm->getData();
                     $measurement = $this->measurementRepository->find($newRecordForm->get('parent_id')->getData());
                     if ($measurement === null) {
@@ -574,35 +565,9 @@ class SequenceController extends AbstractController
                         $data->setRecord($record);
                     }
 
-                    $file = $newRecordForm->get('datafile')->getData();
-//                    if ($file !== null) {
-//                        $runService->uploadFile($file, $measurement->getRuns()->get(0));
-//                    }
                     $this->entityManager->flush();
 
                     return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
-                }
-
-                if ($sequenceForm->isSubmitted()) {
-                    /** @var FormInterface $partialForm */
-                    $partialForm = $sequenceForm->getClickedButton()->getParent();
-                    $partialData = $partialForm->getData();
-                    if ($partialForm->has('rawData') && $partialForm->get('rawData') !== null) {
-                        foreach ($partialForm->get('rawData')->getData() as $file) {
-                            if ($partialData instanceof Run) {
-                                $this->runService->uploadFile($file, $partialData);
-                            }
-                            if ($partialData instanceof Measurement) {
-                                $this->measurementService->uploadFile($file, $partialData);
-                            }
-                            if ($partialData instanceof Sequence) {
-                                $this->sequenceService->uploadFile($file, $partialData);
-                            }
-                        }
-                    }
-
-                    $this->entityManager->persist($partialData);
-                    $this->entityManager->flush();
                 }
 
                 return $this->redirectToRoute('sequence', ['id' => $sequence->getId()]);
@@ -682,7 +647,6 @@ class SequenceController extends AbstractController
                     'appendRecordForm' => $appendRecordForm->createView(),
                     'runForm' => $newRunForm->createView(),
                     'runGroupForm' => $newRunGroupForm->createView(),
-                    'runSevice' => $this->runService,
                     'recordsService' => $this->recordsService,
                     'recordForm' => $newRecordForm->createView(),
                     'deleteRunGroupForms' => $deleteRunGroupForms,
@@ -733,7 +697,7 @@ class SequenceController extends AbstractController
         $response->headers->set('Cache-Control', 'private');
         $response->headers->set('Content-Type', 'application/xhtml+xml');
         $response->headers->set('Content-Disposition', 'attachment; filename="' . $filename . '";');
-        $response->headers->set('Content-Length', (string)strlen($xml));
+        $response->headers->set('Content-Length', (string) strlen($xml));
         $response->sendHeaders();
         $response->setContent($xml);
 
@@ -751,8 +715,9 @@ class SequenceController extends AbstractController
             $request->get('order', 'date'),
             $request->get('direction', 'DESC'),
         );
-
-        if ($filter->isSubmitted() && $filter->get('export')->isClicked()) {
+        /** @var SubmitButton $exportButon */
+        $exportButon = $filter->get('export');
+        if ($filter->isSubmitted() && $exportButon->isClicked()) {
             $xml = $this->sequenceService->exportSequences($paginatorQuery->getQuery()->getResult());
             $response = new Response();
             $filename = 'sequences.xml';
@@ -760,7 +725,7 @@ class SequenceController extends AbstractController
             $response->headers->set('Cache-Control', 'private');
             $response->headers->set('Content-Type', 'application/xhtml+xml');
             $response->headers->set('Content-Disposition', 'attachment; filename="' . $filename . '";');
-            $response->headers->set('Content-Length', (string)strlen($xml));
+            $response->headers->set('Content-Length', (string) strlen($xml));
             $response->sendHeaders();
             $response->setContent($xml);
 

@@ -10,13 +10,13 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class EntityVoter extends Voter
 {
-    const VIEW_ALL = 'viewall';
-    const VIEW_LESS = 'viewless';
-    const EDIT = 'edit';
-    const VIEW = 'view';
-    const ADMIN = 'admin';
-    const EDITUSER = 'edituser';
-    const CMS = 'editcontent';
+    public const VIEW_ALL = 'viewall';
+    public const VIEW_LESS = 'viewless';
+    public const EDIT = 'edit';
+    public const VIEW = 'view';
+    public const ADMIN = 'admin';
+    public const EDITUSER = 'edituser';
+    public const CMS = 'editcontent';
 
     protected function supports($attribute, $subject): bool
     {
