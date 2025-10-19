@@ -276,7 +276,7 @@
                                                                     <div class="col-md-6 align-right">
                                                                         {% if (is_granted('edit',soilSample)) %}
                                                                             <p>
-
+                                                                                {% if(record.isPhenomenonByKey("soilmoist")) %}
                                                                                 <label class="text-gray-dark text-normal">{% trans %}set as moisture{% endtrans %}
                                                                                     {% if recordsService.isRecordSetAsInSoilSampleContext(record, soilSample, 'moisture') %}
                                                                                         <input
@@ -291,8 +291,10 @@
                                                                                                 data-hardlink="{{ path('ismoisture', {soilSampleId:soilSample.getId(),recordId:record.getId()}) }}"/>
                                                                                     {% endif %}
                                                                                 </label>
-                                                                                <br/>
 
+                                                                                <br/>
+                                                                                {% endif %}
+                                                                                {% if(record.isPhenomenonByKey("soiltext")) %}
                                                                                 <label class="text-gray-dark text-normal">{% trans %}set as texture{% endtrans %}
                                                                                     {% if recordsService.isRecordSetAsInSoilSampleContext(record, soilSample, 'texture') %}
                                                                                         <input
@@ -308,6 +310,9 @@
                                                                                     {% endif %}
                                                                                 </label>
                                                                                 <br/>
+
+                                                                                {% endif %}
+                                                                                {% if(record.isPhenomenonByKey("soilchem")) %}
                                                                                 <label class="text-gray-dark text-normal">{% trans %}set as corg{% endtrans %}
                                                                                     {% if recordsService.isRecordSetAsInSoilSampleContext(record, soilSample, 'corg') %}
                                                                                         <input
@@ -324,6 +329,8 @@
                                                                                 </label>
                                                                                 <br/>
 
+                                                                                {% endif %}
+                                                                                {% if(record.isPhenomenonByKey("soilphys")) %}
                                                                                 <label class="text-gray-dark text-normal">{% trans %}set as bulkDensity{% endtrans %}
                                                                                     {% if recordsService.isRecordSetAsInSoilSampleContext(record, soilSample, 'bulk_density') %}
                                                                                         <input
@@ -338,6 +345,8 @@
                                                                                                 data-hardlink="{{ path('isbulkDensity', {soilSampleId:soilSample.getId(),recordId:record.getId()}) }}"/>
                                                                                     {% endif %}
                                                                                 </label>
+
+                                                                                {% endif %}
                                                                             </p>
                                                                         {% endif %}
                                                                     </div>

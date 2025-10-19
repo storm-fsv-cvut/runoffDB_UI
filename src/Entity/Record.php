@@ -121,6 +121,10 @@ class Record extends BaseEntity
         }
     }
 
+    public function isPhenomenonByKey(string $phenomenonKey): bool
+    {
+        return $this->measurement?->getPhenomenon()?->getPhenomenonKey() === $phenomenonKey;
+    }
     public function getMethodics(): ?Methodics
     {
         return $this->methodics;
