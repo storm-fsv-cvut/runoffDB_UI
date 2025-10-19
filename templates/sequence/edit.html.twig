@@ -552,36 +552,40 @@
                                                                                                         <div class="col-md-6 align-right">
                                                                                                             {% if (is_granted('edit',sequence)) %}
                                                                                                                 <p>
-                                                                                                                    <label class="text-gray-dark text-normal">{% trans %}set as init moisture{% endtrans %}
-                                                                                                                        {% if recordsService.isRecordSetAsInitMoistureInSequenceContext(record, sequence) %}
-                                                                                                                            <input
-                                                                                                                                    checked="checked"
-                                                                                                                                    type="checkbox"
-                                                                                                                                    class="href"
-                                                                                                                                    data-hardlink="{{ path('isinitmoisturer', {removeRecordId:record.getId()}) }}"/>
-                                                                                                                        {% else %}
-                                                                                                                            <input
-                                                                                                                                    type="checkbox"
-                                                                                                                                    class="href"
-                                                                                                                                    data-hardlink="{{ path('isinitmoisturer', {recordId:record.getId()}) }}"/>
-                                                                                                                        {% endif %}
-                                                                                                                    </label>
-                                                                                                                    <br/>
-                                                                                                                    <label class="text-gray-dark text-normal"
-                                                                                                                           href="{{ path('israinintensityr', {recordId:record.getId()}) }}">{% trans %}set as rain intensity{% endtrans %}
-                                                                                                                        {% if recordsService.isRecordSetAsRainIntenzityInSequenceContext(record, sequence) %}
-                                                                                                                            <input
-                                                                                                                                    checked="checked"
-                                                                                                                                    type="checkbox"
-                                                                                                                                    class="href"
-                                                                                                                                    data-hardlink="{{ path('israinintensityr', {removeRecordId:record.getId()}) }}"/>
-                                                                                                                        {% else %}
-                                                                                                                            <input
-                                                                                                                                    type="checkbox"
-                                                                                                                                    class="href"
-                                                                                                                                    data-hardlink="{{ path('israinintensityr', {recordId:record.getId()}) }}"/>
-                                                                                                                        {% endif %}
-                                                                                                                    </label>
+                                                                                                                    {% if(record.isPhenomenonByKey("soilmoist")) %}
+                                                                                                                        <label class="text-gray-dark text-normal">{% trans %}set as init moisture{% endtrans %}
+                                                                                                                            {% if recordsService.isRecordSetAsInitMoistureInSequenceContext(record, sequence) %}
+                                                                                                                                <input
+                                                                                                                                        checked="checked"
+                                                                                                                                        type="checkbox"
+                                                                                                                                        class="href"
+                                                                                                                                        data-hardlink="{{ path('isinitmoisturer', {removeRecordId:record.getId()}) }}"/>
+                                                                                                                            {% else %}
+                                                                                                                                <input
+                                                                                                                                        type="checkbox"
+                                                                                                                                        class="href"
+                                                                                                                                        data-hardlink="{{ path('isinitmoisturer', {recordId:record.getId()}) }}"/>
+                                                                                                                            {% endif %}
+                                                                                                                        </label>
+                                                                                                                        <br/>
+                                                                                                                    {% endif %}
+                                                                                                                    {% if(record.isPhenomenonByKey("precip")) %}
+                                                                                                                        <label class="text-gray-dark text-normal"
+                                                                                                                               href="{{ path('israinintensityr', {recordId:record.getId()}) }}">{% trans %}set as rain intensity{% endtrans %}
+                                                                                                                            {% if recordsService.isRecordSetAsRainIntenzityInSequenceContext(record, sequence) %}
+                                                                                                                                <input
+                                                                                                                                        checked="checked"
+                                                                                                                                        type="checkbox"
+                                                                                                                                        class="href"
+                                                                                                                                        data-hardlink="{{ path('israinintensityr', {removeRecordId:record.getId()}) }}"/>
+                                                                                                                            {% else %}
+                                                                                                                                <input
+                                                                                                                                        type="checkbox"
+                                                                                                                                        class="href"
+                                                                                                                                        data-hardlink="{{ path('israinintensityr', {recordId:record.getId()}) }}"/>
+                                                                                                                            {% endif %}
+                                                                                                                        </label>
+                                                                                                                    {% endif %}
                                                                                                                 </p>
                                                                                                             {% endif %}
                                                                                                         </div>
